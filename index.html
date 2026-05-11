@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<!--
+  Allan Hancock College Project Dashboard
+  Project dashboard for AHC's Professional Development and EEO
+  Representative Programs — a $100,000 Tier 2 award under the
+  2026–2028 EEO Innovative Best Practices grant initiative.
+  Data sourced directly from the NOVA application submitted by
+  LeeAnne McNulty on Jul 21, 2025.
+-->
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AHC Project · Professional Development and EEO Representative Programs</title>
+  <meta name="description" content="Allan Hancock College — Professional Development and EEO Representative Programs project dashboard. $100,000 Tier 2 award under the 2026–2028 EEO Innovative Best Practices initiative. Two project goals: Diversity Resource Specialists for classified hiring and an equity-focused faculty mentorship model." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ════════════ APPLE-INSPIRED POLISH ON CCCCO PALETTE ════════════
+       Clean typography, generous whitespace, subtle layered shadows,
+       refined hover states. Brand colors stay CCCCO (dark blue, gold,
+       medium blue) — the polish is in the spacing and weights.
+    */
+    .page-header h2 { letter-spacing:-0.025em; font-weight:600; }
+    .topbar-title { letter-spacing:-0.018em; }
+    .kpi-value { letter-spacing:-0.025em; }
+    .kpi-label { letter-spacing:0.08em; }
+    .card-title, .chart-title { letter-spacing:-0.012em; }
+    .budget-card { transition:box-shadow 200ms cubic-bezier(0.16,1,0.3,1), transform 200ms cubic-bezier(0.16,1,0.3,1); }
+    .budget-card:hover { transform:translateY(-1px); }
+    .data-table th { font-weight:600; }
+    .data-table tbody tr { transition:background 140ms ease; }
+    .filter-btn, .nav-item, .icon-btn, .translate-btn { transition:all 180ms cubic-bezier(0.16,1,0.3,1); }
+    .nav-item:focus-visible, .filter-btn:focus-visible, .icon-btn:focus-visible { outline:2px solid var(--ccc-gold); outline-offset:2px; }
+    .topbar-badge { letter-spacing:0.04em; }
+    .grant-meta-item label { font-weight:600; }
+    button { -webkit-tap-highlight-color:transparent; }
+
+    /* Chart grid alignment */
+    .chart-grid { align-items: stretch; }
+    .chart-grid > .chart-card { display: flex; flex-direction: column; }
+    .chart-grid > .chart-card > .chart-wrap { flex: 1 1 auto; min-height: 320px; position: relative; }
+    .chart-grid > .chart-card > .chart-wrap > canvas { width: 100% !important; height: 100% !important; }
+
+    :root {
+      --ccc-dark-blue:#002F6D; --ccc-darker-blue:#002755; --ccc-medium-blue:#0066BA;
+      --ccc-light-blue:#40B4E5; --ccc-gold:#FFB600; --ccc-dark-gold:#D18A00;
+      --ccc-light-gold:#F6DC6B; --ccc-dark-grey:#555759; --ccc-medium-grey:#717271; --ccc-light-grey:#B2B3B2;
+      --bg:#F4F6FA; --bg-surface:#FFFFFF; --bg-surface-2:#F0F4FA; --bg-card:#FFFFFF;
+      --border:rgba(0,47,109,0.12); --border-strong:rgba(0,47,109,0.22);
+      --text-primary:#1A1F2E; --text-secondary:#555759; --text-muted:#717271; --text-on-dark:#FFFFFF; --text-on-gold:#002F6D;
+      --accent:#002F6D; --accent-hover:#002755; --accent-secondary:#0066BA; --accent-light:#40B4E5;
+      --accent-gold:#FFB600; --accent-dark-gold:#D18A00;
+      --tier1-color:#002F6D; --tier1-bg:rgba(0,47,109,0.08);
+      --tier2-color:#0066BA; --tier2-bg:rgba(0,102,186,0.08);
+      --lift-color:#D18A00; --lift-bg:rgba(255,182,0,0.12);
+      --success:#1a7a3c; --success-bg:rgba(26,122,60,0.08);
+      --font-display:'Crimson Text',Georgia,serif; --font-body:'Source Sans 3','Helvetica Neue',sans-serif;
+      --sidebar-w:240px; --header-h:64px; --mobile-nav-h:60px; --content-max:1280px;
+      --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:20px;
+      --shadow-sm:0 1px 3px rgba(0,47,109,0.08),0 1px 2px rgba(0,47,109,0.04);
+      --shadow-md:0 4px 12px rgba(0,47,109,0.10),0 2px 4px rgba(0,47,109,0.06);
+      --shadow-lg:0 12px 32px rgba(0,47,109,0.12),0 4px 8px rgba(0,47,109,0.06);
+      --transition:180ms cubic-bezier(0.16,1,0.3,1);
+    }
+    [data-theme="dark"] {
+      --bg:#0D1526; --bg-surface:#131D35; --bg-surface-2:#192340; --bg-card:#192340;
+      --border:rgba(64,180,229,0.15); --border-strong:rgba(64,180,229,0.28);
+      --text-primary:#E8EDF8; --text-secondary:#A8B4CC; --text-muted:#6B7A99; --text-on-dark:#FFFFFF;
+      --accent:#40B4E5; --accent-hover:#5EC5F0; --accent-light:#40B4E5;
+      --tier1-color:#40B4E5; --tier1-bg:rgba(64,180,229,0.12);
+      --tier2-color:#5EC5F0; --tier2-bg:rgba(94,197,240,0.10);
+      --lift-color:#FFB600; --lift-bg:rgba(255,182,0,0.14);
+      --success:#4CAF72; --success-bg:rgba(76,175,114,0.12);
+      --shadow-sm:0 1px 3px rgba(0,0,0,0.25); --shadow-md:0 4px 12px rgba(0,0,0,0.35); --shadow-lg:0 12px 32px rgba(0,0,0,0.45);
+    }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; -webkit-text-size-adjust:none; text-size-adjust:none; }
+    body { font-family:var(--font-body); background:var(--bg); color:var(--text-primary); min-height:100dvh; font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased; transition:background var(--transition),color var(--transition); }
+    img,svg { display:block; max-width:100%; }
+    button { cursor:pointer; background:none; border:none; font:inherit; color:inherit; }
+    a { color:inherit; text-decoration:none; }
+    table { border-collapse:collapse; width:100%; }
+    .app { display:flex; min-height:100dvh; }
+    .sidebar { position:fixed; left:0; top:0; height:100dvh; width:var(--sidebar-w); background:var(--ccc-dark-blue); color:#fff; display:flex; flex-direction:column; z-index:200; overflow-y:auto; overflow-x:hidden; transition:transform var(--transition); scrollbar-width:none; will-change:transform; }
+    .sidebar::-webkit-scrollbar { display:none; }
+    .sidebar-logo { padding:24px 20px 20px; border-bottom:1px solid rgba(255,255,255,0.12); }
+    .logo-mark { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .logo-icon-wrap { width:36px; height:36px; background:var(--ccc-gold); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .logo-icon-wrap svg { color:var(--ccc-dark-blue); }
+    .logo-title { font-family:var(--font-display); font-size:17px; font-weight:600; color:#fff; line-height:1.2; }
+    .logo-sub { font-size:10px; color:rgba(255,255,255,0.55); letter-spacing:0.08em; text-transform:uppercase; }
+    .sidebar-section-label { font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.4); padding:20px 20px 6px; }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 20px; font-size:13.5px; font-weight:500; color:rgba(255,255,255,0.7); cursor:pointer; border-left:3px solid transparent; transition:all var(--transition); border:none; background:none; width:100%; text-align:left; }
+    .nav-item:hover { background:rgba(255,255,255,0.07); color:#fff; }
+    .nav-item.active { background:rgba(255,182,0,0.15); color:var(--ccc-gold); border-left:3px solid var(--ccc-gold); }
+    .nav-item svg { flex-shrink:0; opacity:0.8; }
+    .nav-item.active svg { opacity:1; }
+    .sidebar-footer { margin-top:auto; padding:16px 20px; border-top:1px solid rgba(255,255,255,0.1); }
+    .sidebar-footer-label { font-size:10px; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px; }
+    .sidebar-footer-val { font-size:12px; color:rgba(255,255,255,0.6); }
+    .main { margin-left:var(--sidebar-w); flex:1; min-width:0; display:flex; flex-direction:column; height:100dvh; overflow:hidden; }
+    .topbar { position:sticky; top:0; background:var(--bg-surface); border-bottom:1px solid var(--border); height:var(--header-h); display:flex; align-items:center; justify-content:space-between; padding:0 28px; z-index:150; gap:16px; box-shadow:var(--shadow-sm); flex-shrink:0; }
+    .topbar-left { display:flex; align-items:center; gap:12px; min-width:0; }
+    .topbar-title { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--ccc-dark-blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    [data-theme="dark"] .topbar-title { color:var(--accent-light); }
+    .topbar-badge { background:var(--ccc-gold); color:var(--ccc-dark-blue); font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0; }
+    .topbar-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .icon-btn { width:38px; height:38px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; color:var(--text-secondary); transition:all var(--transition); border:1px solid var(--border); background:var(--bg-surface); }
+    .icon-btn:hover { background:var(--bg-surface-2); color:var(--accent); border-color:var(--border-strong); }
+    .translate-wrap { position:relative; }
+    .translate-btn { display:flex; align-items:center; gap:6px; padding:0 12px; height:38px; border-radius:var(--radius-md); border:1px solid var(--border); background:var(--bg-surface); font-size:12.5px; font-weight:500; color:var(--text-secondary); cursor:pointer; transition:all var(--transition); white-space:nowrap; }
+    .translate-btn:hover { background:var(--bg-surface-2); border-color:var(--border-strong); color:var(--accent); }
+    .translate-btn svg { flex-shrink:0; }
+    .translate-dropdown { position:absolute; top:calc(100% + 6px); right:0; background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:var(--radius-md); box-shadow:var(--shadow-lg); min-width:180px; overflow:hidden; z-index:500; display:none; }
+    .translate-dropdown.open { display:block; }
+    .translate-dropdown-header { padding:10px 14px 6px; font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted); border-bottom:1px solid var(--border); }
+    .lang-option { display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; color:var(--text-primary); cursor:pointer; transition:background var(--transition); border:none; background:none; width:100%; text-align:left; }
+    .lang-option:hover { background:var(--bg-surface-2); }
+    .lang-option.active { color:var(--ccc-medium-blue); font-weight:600; }
+    .lang-flag { font-size:18px; line-height:1; }
+    .lang-name { flex:1; }
+    .lang-native { font-size:11px; color:var(--text-muted); }
+    .content { flex:1; padding:28px; max-width:var(--content-max); width:100%; overflow-y:auto; overflow-x:hidden; }
+    .section { display:none; }
+    .section.active { display:block; }
+    .page-header { margin-bottom:24px; }
+    .page-header h2 { font-family:var(--font-display); font-size:26px; font-weight:600; color:var(--ccc-dark-blue); line-height:1.2; margin-bottom:4px; }
+    [data-theme="dark"] .page-header h2 { color:var(--accent-light); }
+    .page-header p { font-size:14px; color:var(--text-muted); }
+    .grant-meta { background:var(--ccc-dark-blue); border-radius:var(--radius-lg); padding:14px 20px; display:flex; flex-wrap:wrap; gap:24px; align-items:center; margin-bottom:24px; }
+    .grant-meta-item { display:flex; flex-direction:column; gap:2px; }
+    .grant-meta-item label { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.5); }
+    .grant-meta-item span { font-size:13px; font-weight:600; color:#fff; }
+    .grant-meta-item span.gold { color:var(--ccc-gold); }
+    .grant-meta-divider { width:1px; height:32px; background:rgba(255,255,255,0.15); }
+    /* Overview KPIs — locked 5-up layout for the five tiles so they sit evenly in one row on desktop */
+    .kpi-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-bottom:24px; }
+    /* LIFT chip floats above the "4" number on Tier 2 Districts, like a trademark on a logo.
+       Always visible — no hover or interaction needed. */
+    .kpi-value-wrap { position:relative; display:inline-block; }
+    .lift-mark-value {
+      position:absolute;
+      top:-8px;
+      right:-22px;
+      padding:2px 6px;
+      font-size:9px;
+      line-height:1.1;
+      letter-spacing:0.06em;
+      box-shadow:0 1px 3px rgba(0,0,0,0.18);
+    }
+    .kpi-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:18px 20px; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition),transform var(--transition); }
+    .kpi-card:hover { box-shadow:var(--shadow-md); transform:translateY(-1px); }
+    .kpi-label { font-size:11px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+    .kpi-value { font-family:var(--font-display); font-size:28px; font-weight:600; line-height:1; margin-bottom:4px; }
+    .kpi-value.blue { color:var(--ccc-dark-blue); }
+    .kpi-value.medium-blue { color:var(--ccc-medium-blue); }
+    .kpi-value.gold { color:var(--ccc-dark-gold); }
+    .kpi-value.grey { color:var(--ccc-dark-grey); }
+    .kpi-value.green { color:var(--success); }
+    [data-theme="dark"] .kpi-value.blue { color:var(--accent-light); }
+    [data-theme="dark"] .kpi-value.medium-blue { color:#5EC5F0; }
+    [data-theme="dark"] .kpi-value.gold { color:var(--ccc-gold); }
+    .kpi-sub { font-size:12px; color:var(--text-muted); line-height:1.3; }
+    .kpi-accent-bar { height:3px; border-radius:2px; margin-bottom:10px; }
+    .kpi-accent-bar.blue { background:var(--ccc-dark-blue); }
+    .kpi-accent-bar.medium-blue { background:var(--ccc-medium-blue); }
+    .kpi-accent-bar.gold { background:var(--ccc-gold); }
+    .kpi-accent-bar.grey { background:var(--ccc-dark-grey); }
+    .kpi-accent-bar.green { background:var(--success); }
+    .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; }
+    .chart-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); }
+    .chart-card-full { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); margin-bottom:24px; }
+    .chart-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:8px; }
+    .chart-title { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--text-primary); }
+    .chart-label { font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); }
+    .chart-wrap { position:relative; height:220px; }
+    .chart-wrap-tall { position:relative; height:280px; }
+    .chart-wrap-bar { position:relative; height:260px; }
+    .alliance-banner { background:linear-gradient(135deg,var(--ccc-dark-blue) 0%,var(--ccc-medium-blue) 100%); border-radius:var(--radius-lg); padding:18px 22px; display:flex; align-items:flex-start; gap:14px; margin-bottom:24px; }
+    .alliance-icon { width:40px; height:40px; background:var(--ccc-gold); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .alliance-icon svg { color:var(--ccc-dark-blue); }
+    .alliance-text strong { display:block; font-size:14px; font-weight:700; color:var(--ccc-gold); margin-bottom:4px; }
+    .alliance-text p { font-size:13px; color:rgba(255,255,255,0.85); line-height:1.5; }
+    .card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
+    .card-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--bg-surface-2); }
+    .card-title { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--text-primary); }
+    .card-body { padding:20px; }
+    .data-table-wrap { overflow-x:auto; }
+    .data-table { width:100%; font-size:13px; }
+    .data-table th { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); padding:10px 16px; text-align:left; border-bottom:2px solid var(--border); white-space:nowrap; background:var(--bg-surface-2); }
+    .data-table td { padding:11px 16px; border-bottom:1px solid var(--border); vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:var(--bg-surface-2); }
+    .data-table .amount { font-family:var(--font-body); font-weight:600; font-size:13px; color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .data-table .amount { color:var(--accent-light); }
+    .tier-badge { position:relative; display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .tier-badge.tier1 { background:var(--tier1-bg); color:var(--tier1-color); }
+    .tier-badge.tier2 { background:var(--tier2-bg); color:var(--tier2-color); }
+    .tier-badge.lift { background:var(--lift-bg); color:var(--lift-color); }
+    /* LIFT mark — hovers above the Tier 2 badge corner like a ™ on a logo */
+    .lift-mark {
+      position:absolute;
+      top:-7px;
+      right:-14px;
+      font-size:8px;
+      font-weight:800;
+      letter-spacing:0.05em;
+      color:#fff;
+      background:var(--ccc-dark-gold);
+      padding:1px 4px;
+      border-radius:4px;
+      line-height:1.1;
+      cursor:help;
+      white-space:nowrap;
+      box-shadow:0 1px 2px rgba(0,0,0,0.12);
+      z-index:1;
+    }
+    [data-theme="dark"] .lift-mark { background:var(--ccc-gold); color:var(--ccc-dark-blue); }
+    .filter-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; align-items:center; }
+    .filter-label { font-size:12px; font-weight:600; color:var(--text-muted); margin-right:4px; }
+    .filter-btn { padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; border:1.5px solid var(--border-strong); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all var(--transition); }
+    .filter-btn:hover { border-color:var(--ccc-medium-blue); color:var(--ccc-medium-blue); }
+    .filter-btn.active { background:var(--ccc-dark-blue); color:#fff; border-color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .filter-btn.active { background:var(--accent-light); color:var(--ccc-dark-blue); border-color:var(--accent-light); }
+    .district-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:18px; }
+    .district-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; transition:box-shadow var(--transition),transform var(--transition); cursor:pointer; }
+    .district-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); }
+    .district-card-top { padding:16px 18px 14px; background:var(--ccc-dark-blue); position:relative; }
+    .district-card-top.lift-card { background:linear-gradient(135deg,#002F6D 0%,#003F8A 100%); }
+    .district-card-name { font-family:var(--font-display); font-size:16px; font-weight:600; color:#fff; margin-bottom:4px; line-height:1.2; }
+    .district-card-program { font-size:12px; color:rgba(255,255,255,0.7); line-height:1.4; }
+    .district-card-lift-tag { position:absolute; top:12px; right:14px; background:var(--ccc-gold); color:var(--ccc-dark-blue); font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; letter-spacing:0.04em; }
+    .district-card-body { padding:14px 18px; }
+    .district-card-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:14px; }
+    .district-stat label { font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); display:block; margin-bottom:2px; }
+    .district-stat span { font-size:14px; font-weight:700; color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .district-stat span { color:var(--accent-light); }
+    .district-card-focus { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px; }
+    .focus-tag { background:var(--tier1-bg); color:var(--tier1-color); font-size:11px; font-weight:600; padding:3px 8px; border-radius:12px; }
+    .district-card-contact { font-size:12px; color:var(--text-muted); padding-top:10px; border-top:1px solid var(--border); display:flex; align-items:center; gap:6px; }
+    .outcomes-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .outcome-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+    .outcome-card-header { background:var(--ccc-dark-blue); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .outcome-card-name { font-size:13px; font-weight:700; color:#fff; }
+    /* Tier badge sitting on a dark header — flip to white on translucent so it stays legible */
+    .outcome-card-header .tier-badge { background:rgba(255,255,255,0.18); color:#fff; }
+    .outcome-card-header .lift-mark { background:var(--ccc-gold); color:var(--ccc-dark-blue); }
+    .outcome-list { list-style:none; padding:12px 16px; }
+    .outcome-list li { font-size:13px; color:var(--text-secondary); padding:6px 0; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
+    .outcome-list li:last-child { border-bottom:none; }
+    .outcome-list li::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ccc-medium-blue); margin-top:6px; flex-shrink:0; }
+
+    /* BUDGET — Y1/Y2 totals at top, full line items below (Indirect kept as-is) */
+    .budget-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
+    .budget-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition); }
+    .budget-card:hover { box-shadow:var(--shadow-md); }
+    .budget-card-header { background:var(--ccc-darker-blue); padding:12px 16px; display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+    .budget-card-name { font-size:13px; font-weight:700; color:#fff; letter-spacing:-0.005em; }
+    .budget-card-total { font-size:11px; color:var(--ccc-gold); font-weight:600; white-space:nowrap; }
+
+    .budget-year-summary { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); padding:1px 0; }
+    .budget-year-pill { background:var(--bg-surface-2); padding:11px 14px; display:flex; flex-direction:column; gap:2px; }
+    .budget-year-pill-label { font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--ccc-medium-blue); }
+    [data-theme="dark"] .budget-year-pill-label { color:var(--accent-light); }
+    .budget-year-pill-dates { font-size:10.5px; color:var(--text-muted); font-weight:500; }
+    .budget-year-pill-amount { font-family:var(--font-display); font-size:18px; font-weight:600; color:var(--ccc-dark-blue); margin-top:2px; line-height:1; }
+    [data-theme="dark"] .budget-year-pill-amount { color:var(--accent-light); }
+
+    .budget-lines-wrap { padding:6px 0 4px; }
+    .budget-line { display:flex; justify-content:space-between; align-items:center; padding:7px 16px 4px; font-size:12.5px; gap:8px; }
+    .budget-line-label { color:var(--text-secondary); flex:1; }
+    .budget-line-amount { font-weight:600; color:var(--ccc-dark-blue); white-space:nowrap; }
+    [data-theme="dark"] .budget-line-amount { color:var(--accent-light); }
+    .budget-line-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; margin:0 16px 8px; }
+    .budget-line-bar-fill { height:100%; background:var(--ccc-medium-blue); border-radius:2px; transition:width 0.6s ease; }
+    .budget-line.indirect-line .budget-line-label { color:var(--ccc-dark-gold); font-weight:700; }
+    .budget-line.indirect-line .budget-line-amount { color:var(--ccc-dark-gold); }
+
+    .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
+    .timeline-row { display:flex; align-items:center; padding:10px 20px; border-bottom:1px solid var(--border); gap:12px; }
+    .timeline-row:last-child { border-bottom:none; }
+    .timeline-label { width:160px; flex-shrink:0; font-size:12.5px; font-weight:600; color:var(--text-primary); }
+    .timeline-label small { display:block; font-size:11px; font-weight:400; color:var(--text-muted); margin-top:1px; }
+    .timeline-bars { flex:1; display:flex; gap:4px; }
+    .timeline-bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; }
+    .timeline-bar-inner { width:100%; height:20px; border-radius:4px; position:relative; overflow:hidden; }
+    .timeline-bar-fill { position:absolute; left:0; top:0; bottom:0; border-radius:4px; transition:width 0.8s ease; }
+    .timeline-bar-fill.y1 { background:var(--ccc-medium-blue); }
+    .timeline-bar-fill.y2 { background:var(--ccc-dark-blue); }
+    .timeline-bar-bg { background:var(--bg-surface-2); width:100%; }
+    .timeline-bar-label { font-size:10px; color:var(--text-muted); font-weight:600; }
+    .timeline-total { width:80px; flex-shrink:0; text-align:right; font-size:13px; font-weight:700; color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .timeline-total { color:var(--accent-light); }
+    .timeline-header-row { display:flex; align-items:center; padding:8px 20px; background:var(--bg-surface-2); border-bottom:2px solid var(--border); gap:12px; font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); }
+    .tl-hl { width:160px; flex-shrink:0; }
+    .tl-hb { flex:1; display:flex; gap:4px; }
+    .tl-hbi { flex:1; text-align:center; }
+    .tl-ht { width:80px; flex-shrink:0; text-align:right; }
+
+    .contacts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+    .contact-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition); }
+    .contact-card:hover { box-shadow:var(--shadow-md); }
+    .contact-card-header { background:var(--ccc-dark-blue); padding:12px 16px; }
+    .contact-card-district { font-size:13px; font-weight:700; color:#fff; }
+    .contact-card-region { font-size:11px; color:rgba(255,255,255,0.6); }
+    .contact-card-address { font-size:11px; color:rgba(255,255,255,0.55); margin-top:4px; line-height:1.3; }
+    .contact-phone { display:block; font-size:11.5px; color:var(--text-secondary); margin-top:1px; text-decoration:none; }
+    .contact-phone:hover { color:var(--ccc-medium-blue); }
+    [data-theme="dark"] .contact-phone:hover { color:var(--accent-light); }
+    .contact-body { padding:14px 16px; }
+    .contact-person { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+    .contact-person:last-child { border-bottom:none; }
+    .contact-avatar { width:32px; height:32px; border-radius:50%; background:var(--tier1-bg); color:var(--tier1-color); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+    .contact-info { flex:1; min-width:0; }
+    .contact-name { font-size:13px; font-weight:600; color:var(--text-primary); }
+    .contact-role { font-size:11px; color:var(--text-muted); margin-bottom:2px; }
+    .contact-email { font-size:11.5px; color:var(--ccc-medium-blue); word-break:break-all; }
+    [data-theme="dark"] .contact-email { color:var(--accent-light); }
+
+    .mobile-nav { display:none; position:fixed; bottom:0; left:0; right:0; height:var(--mobile-nav-h); background:var(--ccc-dark-blue); border-top:1px solid rgba(255,255,255,0.1); z-index:300; padding:0 4px; }
+    .mobile-nav-inner { display:flex; height:100%; }
+    .mobile-nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:rgba(255,255,255,0.5); font-size:9.5px; font-weight:600; letter-spacing:0.03em; cursor:pointer; border-radius:8px; transition:all var(--transition); padding:6px 2px; border:none; background:none; }
+    .mobile-nav-btn.active { color:var(--ccc-gold); }
+    .mobile-nav-btn svg { flex-shrink:0; }
+    .hamburger-btn { display:none; width:38px; height:38px; border-radius:var(--radius-md); align-items:center; justify-content:center; color:var(--text-secondary); border:1px solid var(--border); background:var(--bg-surface); cursor:pointer; transition:all var(--transition); }
+    .hamburger-btn:hover { background:var(--bg-surface-2); }
+    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:150; }
+    @media (max-width:900px) {
+      .sidebar { transform:translateX(-100%); }
+      .sidebar.open { transform:translateX(0); box-shadow:var(--shadow-lg); }
+      .sidebar-overlay.open { display:block; }
+      .hamburger-btn { display:flex; }
+      .main { margin-left:0; height:auto; }
+      .topbar { padding:0 16px; }
+      .content { padding:16px; }
+    }
+    @media (max-width:1180px) {
+      .kpi-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    }
+    @media (max-width:1024px) {
+      .kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width:768px) {
+      .chart-grid { grid-template-columns:1fr; }
+      .outcomes-grid { grid-template-columns:1fr; }
+      .mobile-nav { display:flex; }
+      .main { padding-bottom:var(--mobile-nav-h); height:auto; }
+      .district-grid,.contacts-grid,.budget-grid { grid-template-columns:1fr; }
+      .grant-meta { gap:14px; }
+      .grant-meta-divider { display:none; }
+      .topbar-title { font-size:16px; }
+      .timeline-label { width:120px; }
+      .timeline-total { width:64px; font-size:12px; }
+    }
+    @media (max-width:480px) {
+      .kpi-grid { grid-template-columns:1fr 1fr; }
+      .kpi-value { font-size:22px; }
+      .topbar-badge { display:none; }
+    }
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--border-strong); border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover { background:var(--ccc-medium-blue); }
+    @keyframes fadeSlideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .section.active { animation:fadeSlideIn 0.25s ease; }
+    .text-muted { color:var(--text-muted); }
+    .mb-24 { margin-bottom:24px; }
+    .progress-bar-wrap { background:var(--border); border-radius:3px; height:6px; overflow:hidden; margin-top:6px; }
+    .progress-bar-fill { height:100%; border-radius:3px; background:var(--ccc-medium-blue); transition:width 0.6s ease; }
+    .alloc-kpi-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; margin-bottom:24px; }
+    .risk-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .risk-badge.high { background:rgba(229,62,62,0.15); color:#c53030; }
+    .translation-active-bar { display:none; align-items:center; gap:10px; padding:8px 16px; background:rgba(0,102,186,0.08); border-bottom:1px solid var(--border); font-size:12px; color:var(--text-secondary); }
+    .translation-active-bar.show { display:flex; }
+    .translation-active-bar strong { color:var(--ccc-medium-blue); }
+    .translation-dismiss { margin-left:auto; font-size:11px; color:var(--text-muted); cursor:pointer; padding:2px 6px; border-radius:4px; transition:background var(--transition); }
+    .translation-dismiss:hover { background:var(--border); }
+  
+    /* CCCCO official branding */
+    .cccco-logo-link { display:block; text-decoration:none; margin-bottom:4px; }
+    .cccco-logo-link:focus-visible { outline:2px solid var(--ccc-gold); outline-offset:4px; border-radius:6px; }
+    .cccco-wordmark { display:block; width:100%; max-width:200px; height:auto; }
+    .cccco-wordmark--white { filter:drop-shadow(0 1px 2px rgba(0,0,0,0.08)); }
+    .logo-divider { height:1px; background:rgba(255,255,255,0.16); margin:14px 0 12px; }
+    .logo-attribution { font-size:9.5px; color:rgba(255,255,255,0.55); letter-spacing:0.06em; text-transform:uppercase; margin-top:8px; line-height:1.5; }
+    .cccco-topbar-stamp { display:flex; align-items:center; gap:8px; padding:0 8px 0 4px; height:36px; border-radius:18px; border:1px solid var(--border); background:var(--bg-surface); }
+    .cccco-topbar-stamp img { height:24px; width:auto; display:block; }
+    .cccco-topbar-stamp .cccco-stamp-label { white-space:nowrap; padding-right:4px; font-size:11px; font-weight:600; letter-spacing:0.04em; color:var(--ccc-dark-blue); text-transform:uppercase; }
+    @media (max-width:760px) { .cccco-topbar-stamp .cccco-stamp-label { display:none; } }
+  </style>
+</head>
+<body>
+
+<div class="translation-active-bar" id="transBanner">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+  Viewing in: <strong id="transLangName">English</strong>
+  <span class="translation-dismiss" onclick="resetLang()">✕ Reset to English</span>
+</div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <a class="cccco-logo-link" href="https://www.cccco.edu" target="_blank" rel="noopener noreferrer" aria-label="California Community Colleges Chancellor's Office">
+        <img class="cccco-wordmark cccco-wordmark--white" src="data:image/png;base64,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" alt="California Community Colleges" />
+      </a>
+      <div class="logo-divider"></div>
+      <div class="logo-title">AHC Project</div>
+      <div class="logo-sub">Professional Development &amp; EEO Representative Programs</div>
+      <div class="logo-attribution">Administered by the Chancellor&rsquo;s Office</div>
+    </div>
+
+    <div class="sidebar-section-label" data-i18n="sb_dashboard">Dashboard</div>
+    <button class="nav-item active" onclick="showSection('overview',this)" data-i18n="nav_overview">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </button>
+    <button class="nav-item" onclick="showSection('fund-allocations',this)" data-i18n="nav_funds">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Budget Allocation
+    </button>
+    <button class="nav-item" onclick="showSection('districts',this)" data-i18n="nav_districts">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      Districts
+    </button>
+
+    <div class="sidebar-section-label" data-i18n="sb_performance">Performance</div>
+    <button class="nav-item" onclick="showSection('outcomes',this)" data-i18n="nav_outcomes">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Outcomes
+    </button>
+    <button class="nav-item" onclick="showSection('budget',this)" data-i18n="nav_budget">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Budget Breakdown
+    </button>
+
+    <div class="sidebar-section-label" data-i18n="sb_program">Program</div>
+    <button class="nav-item" onclick="showSection('timeline',this)" data-i18n="nav_timeline">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Timeline
+    </button>
+    <button class="nav-item" onclick="showSection('contacts',this)" data-i18n="nav_contacts">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Contacts
+    </button>
+
+    <div class="sidebar-section-label" data-i18n="sb_spend_monitor">Spend Monitor</div>
+    <button class="nav-item" onclick="showSection('spenddown',this)" data-i18n="nav_spenddown">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Spend-Down Monitor
+    </button>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-label" data-i18n="meta_monitor">Grant Monitor</div>
+      <div class="sidebar-footer-val">Bulle Consulting</div>
+      <div class="sidebar-footer-val" style="color:rgba(255,255,255,0.35);font-size:11px;margin-top:2px;">admin@bulleconsulting.com</div>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <span class="topbar-title" data-i18n="topbar_title">AHC Project</span>
+        <span class="topbar-badge">2026–2028 EEO IBP</span>
+      </div>
+      <div class="topbar-right">
+      <div class="cccco-topbar-stamp" title="California Community Colleges Chancellor's Office">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWAAAACFCAMAAABSQdL7AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAP1aVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjYtYzEzOCA3OS4xNTk4MjQsIDIwMTYvMDkvMTQtMDE6MDk6MDEgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0idXVpZDo1RDIwODkyNDkzQkZEQjExOTE0QTg1OTBEMzE1MDhDOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGQjQxM0MyNDMzOEQxMUU4OTZGRkVCMUVBMUNBRDBEQyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGQjQxM0MyMzMzOEQxMUU4OTZGRkVCMUVBMUNBRDBEQyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBJbGx1c3RyYXRvciBDQyAyMDE3IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjQxOTM3YjRjLTdhYjktOWU0My1iNDcyLWM0ZDk1NmVmNzM0MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0MTkzN2I0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" alt="CCCCO" />
+        <span class="cccco-stamp-label" data-i18n="cccco_attr">CCCCO</span>
+      </div>
+      
+        <div class="translate-wrap">
+          <button class="translate-btn" onclick="toggleTranslate()" id="transBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+            <span id="transLabel">Translate</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="translate-dropdown" id="transDropdown">
+            <div class="translate-dropdown-header" data-i18n="select_language">Select Language</div>
+            <button class="lang-option active" onclick="setLang('en')"><span class="lang-flag">🇺🇸</span><span class="lang-name">English</span><span class="lang-native">English</span></button>
+            <button class="lang-option" onclick="setLang('es')"><span class="lang-flag">🇲🇽</span><span class="lang-name">Spanish</span><span class="lang-native">Español</span></button>
+            <button class="lang-option" onclick="setLang('vi')"><span class="lang-flag">🇻🇳</span><span class="lang-name">Vietnamese</span><span class="lang-native">Tiếng Việt</span></button>
+            <button class="lang-option" onclick="setLang('ar')"><span class="lang-flag">🇸🇦</span><span class="lang-name">Arabic</span><span class="lang-native">العربية</span></button>
+            <button class="lang-option" onclick="setLang('tl')"><span class="lang-flag">🇵🇭</span><span class="lang-name">Tagalog</span><span class="lang-native">Tagalog</span></button>
+            <button class="lang-option" onclick="setLang('zh')"><span class="lang-flag">🇹🇼</span><span class="lang-name">Chinese (Traditional)</span><span class="lang-native">繁體中文</span></button>
+          </div>
+        </div>
+        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--success);background:var(--success-bg);padding:4px 12px;border-radius:20px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block;"></span> Active
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <div id="section-overview" class="section active">
+        <div class="page-header">
+          <h2 data-i18n="overview_title">Program Overview</h2>
+          <p data-i18n="overview_sub">Kern Community College District — Tier 1 grantee, VR Faculty Development & Peer Mentoring Program</p>
+        </div>
+
+        <div class="grant-meta">
+          <div class="grant-meta-item"><label data-i18n="meta_monitor">Grant Monitor</label><span>Bulle Consulting</span></div>
+          <div class="grant-meta-divider"></div>
+          <div class="grant-meta-item"><label data-i18n="meta_grantid">Grant ID</label><span>2026-2028 EEO IBP</span></div>
+          <div class="grant-meta-divider"></div>
+          <div class="grant-meta-item"><label data-i18n="meta_start">Start</label><span>Jan 1, 2026</span></div>
+          <div class="grant-meta-divider"></div>
+          <div class="grant-meta-item"><label data-i18n="meta_duration">Funding Cycle</label><span>Jan 2026 – Jun 2028</span></div>
+          <div class="grant-meta-divider"></div>
+          <div class="grant-meta-item"><label data-i18n="meta_status">Status</label><span class="gold">● <span data-i18n="status_active">Active</span></span></div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_total_funding">Total Grant Funding</div><div class="kpi-value blue">$100,000</div><div class="kpi-sub" data-i18n="kpi_across">PD &amp; EEO Representative Programs</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_grant_tier">Grant Tier</div><div class="kpi-value medium-blue">Tier 2</div><div class="kpi-sub" data-i18n="kpi_grant_tier_sub">2026&ndash;2028 EEO IBP</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_dr_target">DRS Trained</div><div class="kpi-value blue">20</div><div class="kpi-sub" data-i18n="kpi_dr_target_sub">Classified staff over two cohorts</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_mentor_target">Mentor Cohort</div><div class="kpi-value medium-blue">4 + 8</div><div class="kpi-sub" data-i18n="kpi_mentor_target_sub">4 faculty mentors &middot; 8 mentees</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label" data-i18n="kpi_focus">Focus Areas</div><div class="kpi-value grey">4</div><div class="kpi-sub" data-i18n="kpi_focus_sub">Equity in Hiring &middot; Inclusive Pedagogy &middot; Mentorship &middot; Reflective Practice</div></div>
+        </div>
+
+        <div class="alliance-banner">
+          <div class="alliance-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="alliance-text">
+            <strong data-i18n="lift_title">LIFT Alliance — Leadership Institute for Tomorrow</strong>
+            <p data-i18n="lift_desc">The program runs across the district's three colleges — Bakersfield College, Cerro Coso Community College, and Porterville College — and is led by Bobby Becka, Rachel Tatro-Duarte (Porterville), and Todd Coston (AVC of Planning and Educational Technology). Executive sponsor: Chancellor Steven Bloomberg.</p>
+          </div>
+        </div>
+
+        <div class="chart-grid">
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title" data-i18n="chart_tier_dist">Fund Allocation by Tier</div><div class="chart-label" data-i18n="chart_total_dist">Total Distribution</div></div>
+            <div class="chart-wrap"><canvas id="tierChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title" data-i18n="chart_focus_areas">Program Focus Areas</div><div class="chart-label" data-i18n="chart_by_type">By Initiative Type</div></div>
+            <div class="chart-wrap"><canvas id="focusChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title" data-i18n="table_district_summary">Project Summary</div><div class="chart-label" data-i18n="all_districts_total">Kern CCD · $150,000 Total</div></div>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th data-i18n="th_period">Period</th><th data-i18n="th_tier">Tier</th><th data-i18n="th_funding">Funding</th><th data-i18n="th_y1">Year 1</th><th data-i18n="th_y2">Year 2</th><th data-i18n="th_focus">Primary Focus</th></tr></thead>
+              <tbody id="overview-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- FUND ALLOCATIONS -->
+      <div id="section-fund-allocations" class="section">
+        <div class="page-header">
+          <h2 data-i18n="funds_title">Budget Allocation</h2>
+          <p data-i18n="funds_sub">Detailed allocation of Allan Hancock College’s $100,000 Tier 2 award</p>
+        </div>
+        <div class="alloc-kpi-row">
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_total_allocated">Total Allocated</div><div class="kpi-value blue">$100,000</div><div class="kpi-sub" data-i18n="kpi_total_allocated_sub">Tier 2 award</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_direct_costs">Direct Costs</div><div class="kpi-value medium-blue">$95,238</div><div class="kpi-sub" data-i18n="kpi_direct_costs_sub">95.24% of total</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label" data-i18n="kpi_indirect_costs">Indirect (4.76%)</div><div class="kpi-value gold">$4,762</div><div class="kpi-sub" data-i18n="kpi_indirect_costs_sub">Object code 7000</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_y1y2_split">Year 1 / Year 2</div><div class="kpi-value blue">63% / 37%</div><div class="kpi-sub" data-i18n="kpi_y1y2_split_sub">$62,627 / $37,373</div></div>
+        </div>
+
+        <div class="chart-grid">
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title" data-i18n="chart_direct_indirect">Direct vs. Indirect</div><div class="chart-label">% of Total</div></div>
+            <div class="chart-wrap"><canvas id="tierSplitChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title" data-i18n="chart_y1y2">Year 1 vs. Year 2 Spend</div><div class="chart-label" data-i18n="chart_by_objcode">By Object Code</div></div>
+            <div class="chart-wrap"><canvas id="y1y2Chart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title" data-i18n="table_alloc_detail">Line-Item Expenditure Detail</div><div class="chart-label" data-i18n="table_alloc_sub">Per the Kern CCD application — totals to $150,000</div></div>
+          <div class="data-table-wrap"><table class="data-table" id="allocation-table"></table></div>
+        </div>
+      </div>
+
+      <!-- DISTRICTS -->
+      <div id="section-districts" class="section">
+        <div class="page-header"><h2 data-i18n="districts_title">Project Profile</h2><p data-i18n="districts_sub">Allan Hancock Joint CCD &middot; Professional Development and EEO Representative Programs</p></div>
+
+        <!-- Hero summary card -->
+        <div class="card mb-24" style="background:linear-gradient(135deg,var(--ccc-dark-blue) 0%,var(--ccc-darker-blue) 100%);color:#fff;border:none;">
+          <div class="card-body" style="padding:28px;">
+            <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;justify-content:space-between;margin-bottom:18px;">
+              <div style="flex:1;min-width:300px;">
+                <div style="font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ccc-gold);margin-bottom:8px;">2026&ndash;2028 EEO IBP Grant &middot; Tier 2</div>
+                <div style="font-family:var(--font-display);font-size:24px;font-weight:600;line-height:1.25;letter-spacing:-0.02em;">AHC Professional Development and EEO Representative Programs</div>
+                <div style="font-size:13.5px;color:rgba(255,255,255,0.78);margin-top:8px;">Allan Hancock Joint CCD &middot; 800 S. College Drive, Santa Maria, CA 93454</div>
+              </div>
+              <div style="text-align:right;min-width:160px;">
+                <div style="font-family:var(--font-display);font-size:32px;font-weight:600;line-height:1;">$100,000</div>
+                <div style="font-size:11.5px;color:rgba(255,255,255,0.7);margin-top:4px;letter-spacing:0.04em;">Tier 2 Award</div>
+              </div>
+            </div>
+            <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.92);margin:0;">Two interconnected initiatives at Allan Hancock College. The first pilots a Diversity Resource Specialist (DRS) program to embed trained classified staff into hiring committees and promote equitable hiring practices. The second develops an equity-focused faculty mentorship model that trains four mentors in culturally responsive teaching and supports a pilot cohort of eight mentees.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;">
+              <div style="background:rgba(255,255,255,0.08);padding:8px 14px;border-radius:8px;font-size:12px;"><span style="color:rgba(255,255,255,0.6);">Submitted by</span> &middot; <strong>LeeAnne McNulty</strong></div>
+              <div style="background:rgba(255,255,255,0.08);padding:8px 14px;border-radius:8px;font-size:12px;"><span style="color:rgba(255,255,255,0.6);">Submitted</span> &middot; <strong>Jul 21, 2025</strong></div>
+              <div style="background:rgba(255,255,255,0.08);padding:8px 14px;border-radius:8px;font-size:12px;"><span style="color:rgba(255,255,255,0.6);">Cycle</span> &middot; <strong>Jan 2026 &ndash; Jun 2028</strong></div>
+              <div style="background:rgba(255,255,255,0.08);padding:8px 14px;border-radius:8px;font-size:12px;"><span style="color:rgba(255,255,255,0.6);">Website</span> &middot; <a href="https://www.hancockcollege.edu/caep/" target="_blank" rel="noopener" style="color:var(--ccc-gold);text-decoration:none;"><strong>hancockcollege.edu/caep</strong></a></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Project Goals -->
+        <div class="card mb-24">
+          <div class="card-header"><div class="card-title">Two Project Goals</div><div class="chart-label">From the application workplan, Section 2.1</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;">
+              <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                  <span style="background:var(--ccc-medium-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">GOAL 1</span>
+                  <span style="font-size:12px;color:var(--text-muted);">DRS for Classified Hiring</span>
+                </div>
+                <div style="font-family:var(--font-display);font-weight:600;font-size:15px;margin-bottom:8px;">Pilot a Diversity Resource Specialist program for classified hiring</div>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0;">Train classified staff to embed equity advocates throughout recruitment, screening, and selection. Replicates the proven faculty DRS model for the largest, most demographically representative employee group on campus (65% BIPOC, 48% Latinx).</p>
+              </div>
+              <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                  <span style="background:var(--ccc-dark-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">GOAL 2</span>
+                  <span style="font-size:12px;color:var(--text-muted);">Faculty Mentorship Model</span>
+                </div>
+                <div style="font-family:var(--font-display);font-weight:600;font-size:15px;margin-bottom:8px;">Develop an equity-focused faculty mentorship model</div>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0;">Train four faculty mentors in culturally responsive teaching. Support a pilot cohort of eight mentees through curriculum design, inclusive andragogy, classroom management, equity-minded practices, and reflective instruction.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student demographics -->
+        <div class="card mb-24">
+          <div class="card-header"><div class="card-title">Why This Project</div><div class="chart-label">Demographic context, Section 1.1</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">14,000+</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">Students enrolled</div>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">70%</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">Identify as Hispanic / Latino</div>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">64%</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">Economically disadvantaged</div>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">39%</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">First-generation college</div>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">65%</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">BIPOC classified staff</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workplan Activities -->
+        <div class="card mb-24">
+          <div class="card-header"><div class="card-title">Workplan Activities</div><div class="chart-label">By project goal &middot; from Section 2.2</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+              <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                  <span style="background:var(--ccc-medium-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">GOAL 1 &middot; DRS</span>
+                </div>
+                <ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:var(--text-secondary);">
+                  <li><strong>Develop the DRS training toolkit.</strong> Comprehensive handbook focused on inclusive hiring practices, aligned with institutional DEIA / EEO goals.</li>
+                  <li><strong>Present to DEIA / EEO Committee and CSEA Executive Board.</strong> Refine through shared governance feedback.</li>
+                  <li><strong>Two annual training sessions.</strong> Up to 20 classified staff trained over two years (10 per cohort, representing all classified groups).</li>
+                  <li><strong>Deploy trained DRS members.</strong> Each serves on at least two hiring committees per semester.</li>
+                  <li><strong>Track CSEA hiring data.</strong> Pre/post analysis (2023&ndash;25 vs 2025&ndash;27), focus on Hispanic representation.</li>
+                </ul>
+              </div>
+              <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                  <span style="background:var(--ccc-dark-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">GOAL 2 &middot; Mentorship</span>
+                </div>
+                <ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:var(--text-secondary);">
+                  <li><strong>Train four faculty mentors.</strong> Culturally responsive teaching led by an equity consultant.</li>
+                  <li><strong>Co-develop the training framework.</strong> Five focus areas: inclusive andragogy, curriculum design, classroom management, equity-minded practices, reflective instruction.</li>
+                  <li><strong>Pilot cohort of eight mentees.</strong> Full training cycle including equity-focused course analysis, self-assessment, and instructional improvement plans.</li>
+                  <li><strong>Four formal training sessions.</strong> Plus mentor-mentee individualized plans, peer feedback, and outcome tracking.</li>
+                  <li><strong>Cross-functional workshops.</strong> 20% of staff and 10% of faculty target per semester.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leadership Team -->
+        <div class="card mb-24">
+          <div class="card-header"><div class="card-title">Leadership Team</div><div class="chart-label">Project management & institutional commitment</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);">
+                <div style="font-weight:600;color:var(--text-primary);">LeeAnne McNulty</div>
+                <div style="font-size:12px;color:var(--text-muted);">Project Lead Contact</div>
+                <a href="mailto:leeanne.mcnulty@hancockcollege.edu" style="font-size:12px;color:var(--ccc-medium-blue);">leeanne.mcnulty@hancockcollege.edu</a>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);">
+                <div style="font-weight:600;color:var(--text-primary);">Craig Bach, Ph.D.</div>
+                <div style="font-size:12px;color:var(--text-muted);">Project Lead Contact &middot; Plan Approver</div>
+                <a href="mailto:craig.bach@hancockcollege.edu" style="font-size:12px;color:var(--ccc-medium-blue);">craig.bach@hancockcollege.edu</a>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);">
+                <div style="font-weight:600;color:var(--text-primary);">Fernando Robles, M.A.</div>
+                <div style="font-size:12px;color:var(--text-muted);">Alternate Project Lead</div>
+                <a href="mailto:fernando.roblesjr@hancockcollege.edu" style="font-size:12px;color:var(--ccc-medium-blue);">fernando.roblesjr@hancockcollege.edu</a>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);">
+                <div style="font-weight:600;color:var(--text-primary);">Mackenzi Greeley</div>
+                <div style="font-size:12px;color:var(--text-muted);">Alternate Project Lead</div>
+                <a href="mailto:mackenzi.greeley1@hancockcollege.edu" style="font-size:12px;color:var(--ccc-medium-blue);">mackenzi.greeley1@hancockcollege.edu</a>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);">
+                <div style="font-weight:600;color:var(--text-primary);">Erica Biely</div>
+                <div style="font-size:12px;color:var(--text-muted);">Alternate Project Lead</div>
+                <a href="mailto:ebiely@hancockcollege.edu" style="font-size:12px;color:var(--ccc-medium-blue);">ebiely@hancockcollege.edu</a>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);">
+                <div style="font-weight:600;color:var(--text-primary);">Laura Becker</div>
+                <div style="font-size:12px;color:var(--text-muted);">Fiscal Reporter</div>
+                <a href="mailto:laura.becker@hancockcollege.edu" style="font-size:12px;color:var(--ccc-medium-blue);">laura.becker@hancockcollege.edu</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Institutional resources + Sustainability -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Institutional Resources Used</div></div>
+            <div class="card-body">
+              <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--text-secondary);">
+                <li><strong>Human Resources Department.</strong> Coordinates DRS training logistics; integrates equity checkpoints into hiring; partners with DEIA/EEO Committee and CSEA Executive Board.</li>
+                <li><strong>DEIA/EEO Committee.</strong> Shared governance oversight and feedback on training materials and outcomes.</li>
+                <li><strong>CSEA Executive Board.</strong> Labor partner for classified staff training and DRS deployment.</li>
+                <li><strong>Office of Institutional Effectiveness.</strong> Data collection, disaggregated analysis, dashboards, and reporting infrastructure.</li>
+                <li><strong>Existing faculty mentorship models.</strong> Faculty leaders and prior IBP grant experience seed the new cohort.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Five Faculty Focus Areas</div></div>
+            <div class="card-body">
+              <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 10px;line-height:1.5;">The mentorship framework trains across five domains identified through AHC's 2023&ndash;2025 EEO IBP grant + CORA training:</p>
+              <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--text-secondary);">
+                <li>Inclusive andragogy and pedagogy</li>
+                <li>Curriculum design reflecting student diversity and lived experiences</li>
+                <li>Classroom management and student engagement strategies</li>
+                <li>Equity-minded inclusion practices</li>
+                <li>Reflective instructional practice</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTCOMES -->
+      <div id="section-outcomes" class="section">
+        <div class="page-header"><h2 data-i18n="outcomes_title">Program Outcomes</h2><p data-i18n="outcomes_sub">Measurable outcomes for both AHC project goals — sourced from the application workplan (Section 2.3)</p></div>
+        <div class="outcomes-grid" id="outcomes-grid"></div>
+      </div>
+
+      <!-- BUDGET -->
+      <div id="section-budget" class="section">
+        <div class="page-header"><h2 data-i18n="budget_title">Budget Breakdown</h2><p data-i18n="budget_sub">Object-code expenditures split across Year 1 (Jan 2026 – Jun 2027) and Year 2 (Jul 2027 – Jun 2028). Indirect costs are folded into each year proportionally.</p></div>
+        <div class="budget-grid" id="budget-grid"></div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div id="section-timeline" class="section">
+        <div class="page-header"><h2 data-i18n="timeline_title">Implementation Timeline</h2><p data-i18n="timeline_sub">2-year funding cycle · Jan 1, 2026 → Jun 30, 2028</p></div>
+        <div class="chart-card-full">
+          <div class="chart-header"><div class="chart-title" data-i18n="chart_yearly">Year-by-Year Spend Profile</div><div class="chart-label" data-i18n="chart_all_districts">Kern CCD · Year 1 vs. Year 2</div></div>
+          <div class="chart-wrap-tall"><canvas id="yearlyChart"></canvas></div>
+        </div>
+        <div class="timeline-card">
+          <div class="timeline-header-row">
+            <div class="tl-hl" data-i18n="th_district">District</div>
+            <div class="tl-hb">
+              <div class="tl-hbi" data-i18n="tl_y1">Year 1 (Jan 2026 – Jun 2027)</div>
+              <div class="tl-hbi" data-i18n="tl_y2">Year 2 (Jul 2027 – Jun 2028)</div>
+            </div>
+            <div class="tl-ht" data-i18n="th_total">Total</div>
+          </div>
+          <div id="timeline-rows"></div>
+        </div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div id="section-contacts" class="section">
+        <div class="page-header"><h2 data-i18n="contacts_title">Project Contacts</h2><p data-i18n="contacts_sub">Project leads, alternates, and fiscal reporters</p></div>
+        <div class="card mb-24">
+          <div class="card-header" style="background:var(--ccc-dark-blue);">
+            <div class="card-title" style="color:#fff;" data-i18n="meta_monitor">Grant Monitor</div>
+            <div class="chart-label" style="color:rgba(255,255,255,0.65);">CCCCO Fund Monitor</div>
+          </div>
+          <div class="card-body">
+            <div class="contact-person" style="border:none;padding:0;">
+              <div class="contact-avatar" style="background:var(--tier1-bg);color:var(--tier1-color);width:44px;height:44px;font-size:16px;">MT</div>
+              <div class="contact-info">
+                <div class="contact-name">Marrin Thuston</div>
+                <div class="contact-role">Fund Monitor · CCCCO</div>
+                <div class="contact-email"><a href="mailto:mthuston@cccco.edu">mthuston@cccco.edu</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contacts-grid" id="contacts-grid"></div>
+      </div>
+
+      <!-- SPEND-DOWN MONITOR -->
+      <div id="section-spenddown" class="section">
+        <div class="page-header"><h2 data-i18n="spend_title">Spend-Down Monitor</h2><p data-i18n="spend_sub">Track Allan Hancock College's spend pace across the funding cycle and flag the project if Year 1 or Year 2 is at risk of underspending</p></div>
+        <div class="alloc-kpi-row" id="spend-kpi-row"></div>
+        <div class="card mb-24" id="underspend-alert-card">
+          <div class="card-header" style="background:rgba(229,62,62,0.08);border-bottom:2px solid rgba(229,62,62,0.25);">
+            <div class="card-title" style="color:#c53030;display:flex;align-items:center;gap:8px;"><span data-i18n="underspend_title">⚠ Underspend Risk Alerts</span></div>
+            <span id="underspend-count" class="risk-badge high" data-i18n="calculating">Calculating...</span>
+          </div>
+          <div class="card-body">
+            <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 14px;line-height:1.5;" data-i18n="underspend_desc">The project is flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.</p>
+            <div id="underspend-chart-wrap" style="position:relative;height:240px;margin-bottom:14px;display:none;">
+              <canvas id="underspendChart"></canvas>
+            </div>
+            <div id="underspend-list"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><div class="card-title" data-i18n="spend_table_title">Spend-Down Detail by Year</div><div class="chart-label" data-i18n="spend_table_sub">Kern CCD · Year-by-Year Allocation vs. Spend</div></div>
+          <div class="data-table-wrap">
+            <table class="data-table" id="spend-table">
+              <thead><tr><th data-i18n="th_period">Period</th><th data-i18n="th_period_budget">Period Budget</th><th data-i18n="th_share">Share of Total</th><th data-i18n="th_project_year">Project Year</th><th data-i18n="th_disbursed_pct">Spent So Far</th><th data-i18n="th_spend_pace">Spend Pace</th><th data-i18n="th_status">Status</th></tr></thead>
+              <tbody id="spend-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <button class="mobile-nav-btn active" onclick="showSection('overview',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg><span data-i18n="nav_overview">Overview</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('fund-allocations',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><span data-i18n="nav_funds">Funds</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('districts',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span data-i18n="nav_districts">Project Profile</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('outcomes',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span data-i18n="nav_outcomes">Outcomes</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('budget',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span data-i18n="nav_budget">Budget</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('timeline',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="nav_timeline">Timeline</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('contacts',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-i18n="nav_contacts">Contacts</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('spenddown',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-i18n="nav_spenddown">Spend</span></button>
+    </div>
+  </nav>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   2-YEAR FUNDING CYCLE: Jan 1 2026 – Jun 30 2028
+     Year 1: Jan 1, 2026 – Jun 30, 2027 (18 months)
+     Year 2: Jul 1, 2027 – Jun 30, 2028 (12 months)
+   Each district's budget line items (incl. indirect / 7000) are
+   carried as totals; renderBudget proportionally splits each line
+   across Y1 and Y2 by the y1/y2 funding ratio.
+   CCCCO disbursement starts at $0 / 0% (cycle hasn't begun).
+════════════════════════════════════════════════════════════════ */
+const districts = [
+
+      {
+    id:'ahc', name:'Allan Hancock Joint CCD', shortName:'Allan Hancock',
+    program:'AHC Professional Development and EEO Representative Programs',
+    tier:2, funding:100000, lift:false,
+    focus:['Diversity Resource Specialists','Faculty Mentorship','Inclusive Pedagogy','Equity in Hiring'],
+    outcomes:[
+      'Diversity Resource Specialists (DRS) Initiative: 20 classified staff trained over two years; DRS members serve on \u226540 hiring committees; pre/post bias surveys; comparative analysis of CSEA hiring data 2023\u20132025 vs 2025\u20132027 with focus on Hispanic representation',
+      'Faculty Mentorship Model: 4 faculty mentors trained and leading sessions; 8 faculty mentees complete the full training cycle with implementation; mentor-developed materials, individualized mentorship plans, and self-reflection portfolios produced',
+      'Cross-Functional Participation: \u226520% of staff and \u226510% of faculty participate in at least one PD workshop per semester (tracked via sign-in sheets and workshop evaluations)',
+      'Faculty Agency & Instructional Effectiveness: measurable growth across five inclusive-teaching domains \u2014 curriculum design, andragogy (API), classroom management (CMSEI), inclusion practices, reflective instruction (RPQ + IAT)',
+      'Student Success Impact: improved course success (A\u2013C), term-to-term persistence, and completion rates in mentee-taught courses, disaggregated by race, gender, and other demographics'
+    ],
+    contact:{name:'LeeAnne McNulty',role:'Project Lead Contact',email:'leeanne.mcnulty@hancockcollege.edu',phone:'(805) 922-6966 ext. 3450'},
+    altContact:{name:'Fernando Robles, M.A.',role:'Alternate Project Lead Contact',email:'fernando.roblesjr@hancockcollege.edu',phone:'(805) 922-6966 ext. 3959'},
+    fiscalReporter:{name:'Laura Becker',role:'Institution Project Fiscal Reporter',email:'laura.becker@hancockcollege.edu',phone:'(805) 922-6966 ext. 3268'},
+    planApprover:{name:'Craig Bach, Ph.D.',role:'Plan Approver',email:'craig.bach@hancockcollege.edu',phone:'(805) 346-1006 ext. 3755'},
+    additionalContacts:[
+      {name:'Mackenzi Greeley',role:'Alternate Project Lead Contact',email:'mackenzi.greeley1@hancockcollege.edu',phone:'(805) 922-6966 ext. 3369'},
+      {name:'Craig Bach, Ph.D.',role:'Project Lead Contact',email:'craig.bach@hancockcollege.edu',phone:'(805) 346-1006 ext. 3755'},
+      {name:'Erica Biely',role:'Alternate Project Lead Contact',email:'ebiely@hancockcollege.edu',phone:''}
+    ],
+    fundMonitor:{name:'Marrin Thuston',role:'Fund Monitor · CCCCO',email:'mthuston@cccco.edu',phone:''},
+    budgetHighlights:{'Instructional Salaries (1000)':46080,'Employee Benefits (3000)':9999,'Supplies and Materials (4000)':1159,'Other Operating Expenses and Services (5000)':38000,'Indirect Costs (7000)':4762},
+    yearlyBudget:{y1:62627,y2:37373},
+    fiscalYearBudget:{'2025-26':20348,'2026-27':42279,'2027-28':37373},
+    primaryFocus:'DRS for Classified Hiring & Faculty Mentorship',
+    submittedBy:'LeeAnne McNulty',
+    submittedAt:'Jul 21, 2025',
+    leadAddress:'800 S. College Drive, Santa Maria, CA 93454',
+    website:'https://www.hancockcollege.edu/caep/',
+    colleges:['Allan Hancock College'],
+    projectGoals:[
+      'Pilot a Diversity Resource Specialist (DRS) program for classified hiring — train classified staff to embed equity throughout the recruitment, screening, and selection process',
+      'Develop an Equity-Focused Faculty Mentorship Model — train 4 faculty mentors in culturally responsive teaching to support a pilot cohort of 8 mentees through a full training cycle'
+    ]
+  }
+];
+
+// CCCCO disbursement starts at zero — funding cycle hasn't begun
+districts.forEach(d => { d.cccoDisbursed = 0; d.cccoDisbursedRate = '0%'; });
+
+const fmt = v => '$' + Math.round(v).toLocaleString();
+
+/* ════════════════════════════════════════════════════════════════
+   TRANSLATIONS — 2-year cycle wording across en/es/vi/ar/tl
+════════════════════════════════════════════════════════════════ */
+const translations = {
+  en: {
+    nav_overview:'Overview', nav_funds:'Budget Allocation', nav_districts:'Project Profile',
+    nav_outcomes:'Outcomes', nav_budget:'Budget Breakdown', nav_timeline:'Timeline', nav_contacts:'Contacts', nav_spenddown:'Spend-Down Monitor',
+    topbar_title:'AHC Project',
+    overview_title:'Program Overview', overview_sub:'Allan Hancock College — Professional Development and EEO Representative Programs. Tier 2 ($100,000), 2026–2028 EEO IBP grant. Submitted by LeeAnne McNulty on Jul 21, 2025.',
+    meta_monitor:'Grant Monitor', meta_grantid:'Grant ID', meta_start:'Start', meta_duration:'Funding Cycle', meta_status:'Status',
+    kpi_total_funding:'Total Grant Funding', kpi_across:'VR Faculty Development & Peer Mentoring',
+    kpi_total_districts:'Total Districts', kpi_all_submitted:'All submitted',
+    kpi_tier1:'Tier 1 Districts', kpi_tier1_sub:'$150K each (avg)',
+    kpi_tier2:'Tier 2 Districts', kpi_tier2_sub:'$100K each',
+    kpi_lift:'LIFT Alliance', kpi_focus:'Focus Areas', kpi_focus_sub:'VR · Faculty Dev · Peer Mentoring · Inclusive Pedagogy',
+    lift_title:'LIFT Alliance — Leadership Institute for Tomorrow',
+    lift_desc:'Four of the Kern CCD — Antelope Valley CCD (Region 6), Citrus CCD (Region 8), Peralta CCD (Region 3), and West Valley-Mission CCD (Region 4) — are members of an unprecedented 10-college-10-region statewide alliance, implementing a shared Mentor & Match Professional Platform across California Community Colleges.',
+    chart_tier_dist:'Fund Allocation by Tier', chart_total_dist:'Total Distribution',
+    chart_focus_areas:'Program Focus Areas', chart_by_type:'By Initiative Type',
+    table_district_summary:'Project Summary',
+    th_district:'District', th_tier:'Tier', th_funding:'Funding', th_y1:'Year 1', th_y2:'Year 2', th_focus:'Primary Focus', th_total:'Total',
+    funds_title:'Budget Allocation', funds_sub:'Detailed allocation of Allan Hancock College\u2019s $100,000 Tier 2 award',
+    kpi_total_allocated:'Total Allocated', kpi_all_11:'Tier 1 award',
+    kpi_tier1_total:'Tier 1 Total', kpi_7dist:'7 districts',
+    kpi_tier2_total:'Tier 2 Total', kpi_4dist:'4 districts × $100K',
+    kpi_y1_total:'Year 1 Total', kpi_y1_sub:'Jan 2026 – Jun 2027',
+    chart_funding_district:'Funding by District', chart_direct:'Direct Allocation',
+    chart_tier_split:'Tier Split', chart_y1y2:'Year 1 vs. Year 2 Spend', chart_by_dist:'By District',
+    table_alloc_detail:'District-Level Allocation Detail',
+    districts_title:'Project Profile', districts_sub:'Kern Community College District',
+    filter_by:'Filter by:', filter_all:'All Districts', filter_tier1:'Tier 1', filter_tier2:'Tier 2', filter_lift:'LIFT Alliance',
+    outcomes_title:'Program Outcomes', outcomes_sub:"Measurable deliverables and targets from each district's proposal",
+    budget_title:'Budget Breakdown', budget_sub:'Object-code expenditures split across Year 1 (Jan 2026 – Jun 2027) and Year 2 (Jul 2027 – Jun 2028). Indirect costs are folded into each year proportionally.',
+    timeline_title:'Implementation Timeline', timeline_sub:'2-year funding cycle · Jan 1, 2026 → Jun 30, 2028',
+    chart_yearly:'Year-by-Year Spend Profile', chart_all_districts:'All Districts',
+    tl_y1:'Year 1 (Jan 2026 – Jun 2027)', tl_y2:'Year 2 (Jul 2027 – Jun 2028)',
+    contacts_title:'Project Contacts', contacts_sub:'Project leads, alternates, and fiscal reporters',
+    spend_title:'Spend-Down Monitor',
+    spend_sub:'Track grant expenditures across the 2-year funding cycle and flag districts at risk of underspending',
+    underspend_title:'⚠ Underspend Risk Alerts',
+    calculating:'Calculating...',
+    underspend_desc:'Districts get flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.',
+    spend_table_title:'District Spend-Down Detail',
+    spend_table_sub:'Allocations vs. Year-by-Year Spend · 2-Year Cycle',
+    th_total_grant:'Total Grant',
+    th_y1_budget:'Year 1 Budget',
+    th_y2_budget:'Year 2 Budget',
+    th_disbursed_pct:'Disbursed % of Total',
+    th_spend_pace:'Spend Pace',
+    th_status:'Status',
+    kpi_total_grant_label:'Total Grant',
+    kpi_y1_budget_label:'Year 1 Budget',
+    kpi_y2_budget_label:'Year 2 Budget',
+    kpi_all_11_districts:'Tier 1 award',
+    kpi_y1_window:'of grant · Jan 2026 – Jun 2027',
+    kpi_y2_window:'of grant · Jul 2027 – Jun 2028',
+    pace_slow:'Slow',
+    pace_moderate:'Moderate',
+    pace_fast:'Fast',
+    pace_underfunded:'Underfunded',
+    status_on:'On Track',
+    status_off:'Off Track',
+    th_direct_funding:'Total Funding',
+    th_pct_total:'% of Total',
+    th_cccco_disbursed:'CCCCO Disbursed',
+    th_cccco_disbursed_rate:'CCCCO Disbursed Rate',
+    all_districts_total:'Kern CCD · $150,000 Total',
+    role_project_lead:'Project Lead',
+    role_alt_project_lead:'Alternate Project Lead',
+    role_fiscal_reporter:'Fiscal Reporter',
+    role_plan_approver:'Plan Approver',
+    all_clear:'✓ All districts are on track — no underspend risks detected.',
+    flagged_one:'District Flagged',
+    flagged_many:'Districts Flagged',
+    tl_total:'Total',
+    tl_pace_label:'Pace:',
+    kpi_y1_total_label:'Year 1 Total',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'Tier 1 award',
+    sb_dashboard:'Dashboard',
+    sb_performance:'Performance',
+    sb_program:'Program',
+    sb_spend_monitor:'Spend Monitor',
+    select_language:'Select Language',
+    status_active:'Active',
+    y1_window_short:'Jan 2026 – Jun 2027',
+    y2_window_short:'Jul 2027 – Jun 2028'
+  ,
+    kpi_total_allocated_sub:'Tier 1 award',
+    kpi_direct_costs:'Direct Costs',
+    kpi_direct_costs_sub:'95% of total',
+    kpi_indirect_costs:'Indirect (5%)',
+    kpi_indirect_costs_sub:'Object code 7000',
+    kpi_y1y2_split:'Year 1 / Year 2',
+    kpi_y1y2_split_sub:'$122,638 / $27,362',
+    chart_funding_objcode:'Funding by Object Code',
+    chart_direct_indirect:'Direct vs. Indirect',
+    chart_by_objcode:'By Object Code',
+    table_alloc_sub:'Per the Kern CCD application — totals to $150,000',
+    th_period:'Period',
+    th_period_budget:'Period Budget',
+    th_share:'Share of Total',
+    th_project_year:'Project Year',
+    kpi_dr_target:'DRS Trained',
+    kpi_dr_target_sub:'Classified staff over two cohorts',
+    kpi_mentor_target:'Mentor Cohort',
+    kpi_mentor_target_sub:'4 faculty mentors · 8 mentees',},
+  es: {
+    nav_overview:'Resumen', nav_funds:'Asignaciones', nav_districts:'Perfil del Proyecto', nav_outcomes:'Resultados', nav_budget:'Presupuesto', nav_timeline:'Cronograma', nav_contacts:'Contactos', nav_spenddown:'Monitor de Gastos',
+    topbar_title:'Proyecto AHC',
+    overview_title:'Resumen del Programa', overview_sub:'Una visión estatal de la iniciativa de Subvención de Mejores Prácticas Innovadoras de Igualdad de Oportunidades de Empleo (EEO), que abarca 11 distritos de colegios comunitarios de California.',
+    meta_monitor:'Monitor de Subvención', meta_grantid:'ID de Subvención', meta_start:'Inicio', meta_duration:'Ciclo de Financiamiento', meta_status:'Estado',
+    kpi_total_funding:'Financiamiento Total', kpi_across:'Desarrollo Docente y Mentoría con RV',
+    kpi_total_districts:'Total Distritos', kpi_all_submitted:'Todos enviados',
+    kpi_tier1:'Distritos Nivel 1', kpi_tier1_sub:'$150K cada uno (promedio)',
+    kpi_tier2:'Distritos Nivel 2', kpi_tier2_sub:'$100K cada uno',
+    kpi_lift:'Alianza LIFT', kpi_focus:'Áreas de Enfoque', kpi_focus_sub:'RV · Desarrollo Docente · Mentoría · Pedagogía Inclusiva',
+    lift_title:'Alianza LIFT — Instituto de Liderazgo para el Mañana',
+    lift_desc:'Cuatro de los 11 distritos son miembros de una alianza estatal sin precedentes de 10 colegios y 10 regiones.',
+    chart_tier_dist:'Asignación por Nivel', chart_total_dist:'Distribución Total',
+    chart_focus_areas:'Áreas de Enfoque del Programa', chart_by_type:'Por Tipo de Iniciativa',
+    table_district_summary:'Resumen de Distritos',
+    th_district:'Distrito', th_tier:'Nivel', th_funding:'Financiamiento', th_y1:'Año 1', th_y2:'Año 2', th_focus:'Enfoque Principal', th_total:'Total',
+    funds_title:'Asignaciones de Fondos', funds_sub:'Desglose detallado del financiamiento en los 11 distritos',
+    kpi_total_allocated:'Total Asignado', kpi_all_11:'Los 11 distritos',
+    kpi_tier1_total:'Total Nivel 1', kpi_7dist:'7 distritos',
+    kpi_tier2_total:'Total Nivel 2', kpi_4dist:'4 distritos × $100K',
+    kpi_y1_total:'Total Año 1', kpi_y1_sub:'Ene 2026 – Jun 2027',
+    chart_funding_district:'Financiamiento por Distrito', chart_direct:'Asignación Directa',
+    chart_tier_split:'División por Nivel', chart_y1y2:'Año 1 vs. Año 2', chart_by_dist:'Por Distrito',
+    table_alloc_detail:'Detalle de Asignación por Distrito',
+    districts_title:'Perfiles de Distrito', districts_sub:'Los 11 distritos participantes',
+    filter_by:'Filtrar por:', filter_all:'Todos', filter_tier1:'Nivel 1', filter_tier2:'Nivel 2', filter_lift:'Alianza LIFT',
+    outcomes_title:'Resultados del Programa', outcomes_sub:'Entregables medibles de la propuesta de cada distrito',
+    budget_title:'Desglose Presupuestario', budget_sub:'Gastos por código de objeto, divididos entre Año 1 (Ene 2026 – Jun 2027) y Año 2 (Jul 2027 – Jun 2028). Costos indirectos integrados proporcionalmente en cada año.',
+    timeline_title:'Cronograma de Implementación', timeline_sub:'Ciclo de financiamiento de 2 años · 1 Ene 2026 → 30 Jun 2028',
+    chart_yearly:'Perfil de Gasto Año por Año', chart_all_districts:'Todos los Distritos',
+    tl_y1:'Año 1 (Ene 2026 – Jun 2027)', tl_y2:'Año 2 (Jul 2027 – Jun 2028)',
+    contacts_title:'Contactos de Distrito', contacts_sub:'Líderes de proyecto, alternos y reporteros fiscales',
+    spend_title:'Monitor de Gastos',
+    spend_sub:'Monitorear gastos de la subvención durante el ciclo de financiamiento de 2 años y marcar distritos con riesgo de subgasto',
+    underspend_title:'⚠ Alertas de Riesgo de Subgasto',
+    calculating:'Calculando...',
+    underspend_desc:'Los distritos se marcan cuando su ritmo de gasto es Lento, Rápido o Subfinanciado. Establezca el ritmo en Moderado en la tabla para quitar la marca.',
+    spend_table_title:'Detalle de Gastos por Distrito',
+    spend_table_sub:'Asignaciones vs. Gasto Anual · Ciclo de 2 Años',
+    th_total_grant:'Subvención Total',
+    th_y1_budget:'Presupuesto Año 1',
+    th_y2_budget:'Presupuesto Año 2',
+    th_disbursed_pct:'Desembolsado % del Total',
+    th_spend_pace:'Ritmo de Gasto',
+    th_status:'Estado',
+    kpi_total_grant_label:'Subvención Total',
+    kpi_y1_budget_label:'Presupuesto Año 1',
+    kpi_y2_budget_label:'Presupuesto Año 2',
+    kpi_all_11_districts:'Los 11 distritos',
+    kpi_y1_window:'del total · Ene 2026 – Jun 2027',
+    kpi_y2_window:'del total · Jul 2027 – Jun 2028',
+    pace_slow:'Lento',
+    pace_moderate:'Moderado',
+    pace_fast:'Rápido',
+    pace_underfunded:'Subfinanciado',
+    status_on:'En Camino',
+    status_off:'Desviado',
+    th_direct_funding:'Financiamiento Total',
+    th_pct_total:'% del Total',
+    th_cccco_disbursed:'CCCCO Desembolsado',
+    th_cccco_disbursed_rate:'Tasa de Desembolso CCCCO',
+    all_districts_total:'Los 11 Distritos · $150,000 Total',
+    role_project_lead:'Líder de Proyecto',
+    role_alt_project_lead:'Líder Alterno de Proyecto',
+    role_fiscal_reporter:'Reportero Fiscal',
+    role_plan_approver:'Aprobador del Plan',
+    all_clear:'✓ Todos los distritos están en camino — sin riesgos de subgasto.',
+    flagged_one:'Distrito Marcado',
+    flagged_many:'Distritos Marcados',
+    tl_total:'Total',
+    tl_pace_label:'Ritmo:',
+    kpi_y1_total_label:'Total Año 1',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'Los 11 distritos',
+    sb_dashboard:'Panel',
+    sb_performance:'Rendimiento',
+    sb_program:'Programa',
+    sb_spend_monitor:'Monitor de Gastos',
+    select_language:'Seleccionar Idioma',
+    status_active:'Activo',
+    y1_window_short:'Ene 2026 – Jun 2027',
+    y2_window_short:'Jul 2027 – Jun 2028',
+  
+    kpi_grant_tier:'Nivel de Subvención',
+    kpi_grant_tier_sub:'EEO IBP 2026–2028',
+    kpi_colleges:'Colegios Participantes',
+    kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
+    kpi_faculty_target:'Meta de Docentes',
+    kpi_faculty_target_sub:'Capacitados en el distrito al Año 2',},
+  vi: {
+    nav_overview:'Tổng quan', nav_funds:'Phân bổ vốn', nav_districts:'Hồ sơ Dự án', nav_outcomes:'Kết quả', nav_budget:'Ngân sách', nav_timeline:'Lịch trình', nav_contacts:'Liên lạc', nav_spenddown:'Theo dõi Chi tiêu',
+    topbar_title:'Dự án AHC',
+    overview_title:'Tổng quan Chương trình', overview_sub:'Tổng quan toàn tiểu bang về sáng kiến Tài trợ Thực hành Sáng tạo Tốt nhất về Cơ hội Bình đẳng trong Việc làm (EEO), bao gồm 11 quận trường cao đẳng cộng đồng California.',
+    meta_monitor:'Người giám sát', meta_grantid:'Mã tài trợ', meta_start:'Bắt đầu', meta_duration:'Chu kỳ tài trợ', meta_status:'Trạng thái',
+    kpi_total_funding:'Tổng tài trợ', kpi_across:'Phát triển GV bằng VR & Cố vấn đồng nghiệp',
+    kpi_total_districts:'Tổng số quận', kpi_all_submitted:'Tất cả đã nộp',
+    kpi_tier1:'Quận Cấp 1', kpi_tier1_sub:'$150K mỗi quận',
+    kpi_tier2:'Quận Cấp 2', kpi_tier2_sub:'$100K mỗi quận',
+    kpi_lift:'Liên minh LIFT', kpi_focus:'Trọng Tâm', kpi_focus_sub:'VR · Phát triển GV · Cố vấn đồng nghiệp · Sư phạm bao gồm',
+    lift_title:'Liên minh LIFT — Viện Lãnh đạo cho Tương lai',
+    lift_desc:'Bốn trong số 11 quận là thành viên của liên minh 10 trường cao đẳng-10 khu vực toàn tiểu bang.',
+    chart_tier_dist:'Phân bổ theo cấp', chart_total_dist:'Tổng phân phối',
+    chart_focus_areas:'Lĩnh vực trọng tâm', chart_by_type:'Theo loại sáng kiến',
+    table_district_summary:'Tóm tắt quận',
+    th_district:'Quận', th_tier:'Cấp', th_funding:'Tài trợ', th_y1:'Năm 1', th_y2:'Năm 2', th_focus:'Trọng tâm chính', th_total:'Tổng',
+    funds_title:'Phân bổ vốn', funds_sub:'Chi tiết phân bổ tài trợ cho cả 11 quận',
+    kpi_total_allocated:'Tổng phân bổ', kpi_all_11:'Tất cả 11 quận',
+    kpi_tier1_total:'Tổng Cấp 1', kpi_7dist:'7 quận',
+    kpi_tier2_total:'Tổng Cấp 2', kpi_4dist:'4 quận × $100K',
+    kpi_y1_total:'Tổng Năm 1', kpi_y1_sub:'Th1 2026 – Th6 2027',
+    chart_funding_district:'Tài trợ theo quận', chart_direct:'Phân bổ trực tiếp',
+    chart_tier_split:'Phân chia cấp', chart_y1y2:'Năm 1 vs. Năm 2', chart_by_dist:'Theo quận',
+    table_alloc_detail:'Chi tiết phân bổ theo quận',
+    districts_title:'Hồ sơ quận', districts_sub:'Tất cả 11 quận tham gia',
+    filter_by:'Lọc theo:', filter_all:'Tất cả', filter_tier1:'Cấp 1', filter_tier2:'Cấp 2', filter_lift:'Liên minh LIFT',
+    outcomes_title:'Kết quả chương trình', outcomes_sub:'Các kết quả đo lường được từ mỗi đề xuất quận',
+    budget_title:'Chi tiết ngân sách', budget_sub:'Chi phí theo mã đối tượng, chia giữa Năm 1 (Th1 2026 – Th6 2027) và Năm 2 (Th7 2027 – Th6 2028). Chi phí gián tiếp được phân bổ vào mỗi năm theo tỷ lệ.',
+    timeline_title:'Lịch trình thực hiện', timeline_sub:'Chu kỳ tài trợ 2 năm · 1/1/2026 → 30/6/2028',
+    chart_yearly:'Hồ sơ chi tiêu hàng năm', chart_all_districts:'Tất cả quận',
+    tl_y1:'Năm 1 (Th1 2026 – Th6 2027)', tl_y2:'Năm 2 (Th7 2027 – Th6 2028)',
+    contacts_title:'Liên hệ quận', contacts_sub:'Trưởng dự án, người thay thế và báo cáo tài chính',
+    spend_title:'Theo dõi Chi tiêu',
+    spend_sub:'Theo dõi chi tiêu trong chu kỳ tài trợ 2 năm và đánh dấu các quận có nguy cơ chi tiêu thiếu',
+    underspend_title:'⚠ Cảnh báo Rủi ro Chi tiêu Thiếu',
+    calculating:'Đang tính...',
+    underspend_desc:'Quận được đánh dấu khi tốc độ chi tiêu là Chậm, Nhanh hoặc Thiếu vốn. Đặt thành Vừa phải để gỡ cờ.',
+    spend_table_title:'Chi tiết Chi tiêu theo Quận',
+    spend_table_sub:'Phân bổ vs. Chi tiêu Hàng năm · Chu kỳ 2 Năm',
+    th_total_grant:'Tổng Tài trợ',
+    th_y1_budget:'Ngân sách Năm 1',
+    th_y2_budget:'Ngân sách Năm 2',
+    th_disbursed_pct:'Đã giải ngân % Tổng',
+    th_spend_pace:'Tốc độ Chi tiêu',
+    th_status:'Trạng thái',
+    kpi_total_grant_label:'Tổng Tài trợ',
+    kpi_y1_budget_label:'Ngân sách Năm 1',
+    kpi_y2_budget_label:'Ngân sách Năm 2',
+    kpi_all_11_districts:'Tất cả 11 quận',
+    kpi_y1_window:'của tổng · Th1 2026 – Th6 2027',
+    kpi_y2_window:'của tổng · Th7 2027 – Th6 2028',
+    pace_slow:'Chậm',
+    pace_moderate:'Vừa phải',
+    pace_fast:'Nhanh',
+    pace_underfunded:'Thiếu vốn',
+    status_on:'Đúng Tiến độ',
+    status_off:'Chệch Hướng',
+    th_direct_funding:'Tổng Tài trợ',
+    th_pct_total:'% Tổng',
+    th_cccco_disbursed:'CCCCO Đã Giải ngân',
+    th_cccco_disbursed_rate:'Tỷ lệ Giải ngân CCCCO',
+    all_districts_total:'Tất cả 11 Quận · $150,000 Tổng',
+    role_project_lead:'Trưởng Dự án',
+    role_alt_project_lead:'Trưởng Dự án Phụ',
+    role_fiscal_reporter:'Báo cáo Tài chính',
+    role_plan_approver:'Người Phê duyệt Kế hoạch',
+    all_clear:'✓ Tất cả quận đúng tiến độ — không có rủi ro chi tiêu thiếu.',
+    flagged_one:'Quận được Đánh dấu',
+    flagged_many:'Quận được Đánh dấu',
+    tl_total:'Tổng',
+    tl_pace_label:'Tốc độ:',
+    kpi_y1_total_label:'Tổng Năm 1',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'Tất cả 11 quận',
+    sb_dashboard:'Bảng điều khiển',
+    sb_performance:'Hiệu suất',
+    sb_program:'Chương trình',
+    sb_spend_monitor:'Giám sát Chi tiêu',
+    select_language:'Chọn Ngôn ngữ',
+    status_active:'Đang hoạt động',
+    y1_window_short:'Th1 2026 – Th6 2027',
+    y2_window_short:'Th7 2027 – Th6 2028',
+  
+    kpi_grant_tier:'Hạng Tài Trợ',
+    kpi_grant_tier_sub:'EEO IBP 2026–2028',
+    kpi_colleges:'Các Trường Tham Gia',
+    kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
+    kpi_faculty_target:'Mục Tiêu Giảng Viên',
+    kpi_faculty_target_sub:'Đào tạo trên toàn quận đến Năm 2',},
+  ar: {
+    nav_overview:'نظرة عامة', nav_funds:'التخصيصات', nav_districts:'ملف المشروع', nav_outcomes:'النتائج', nav_budget:'الميزانية', nav_timeline:'الجدول الزمني', nav_contacts:'جهات الاتصال', nav_spenddown:'مراقب الإنفاق',
+    topbar_title:'مشروع AHC',
+    overview_title:'نظرة عامة على البرنامج', overview_sub:'نظرة عامة على مستوى الولاية لمبادرة منحة الممارسات المبتكرة الأفضل لتكافؤ فرص العمل (EEO)، تشمل 11 مقاطعة كليات مجتمعية في كاليفورنيا.',
+    meta_monitor:'مراقب المنحة', meta_grantid:'معرّف المنحة', meta_start:'البداية', meta_duration:'دورة التمويل', meta_status:'الحالة',
+    kpi_total_funding:'إجمالي التمويل', kpi_across:'تطوير أعضاء هيئة التدريس بـ VR والإرشاد',
+    kpi_total_districts:'إجمالي المقاطعات', kpi_all_submitted:'جميعها مُقدَّمة',
+    kpi_tier1:'مقاطعات الفئة 1', kpi_tier1_sub:'$150K لكل منها',
+    kpi_tier2:'مقاطعات الفئة 2', kpi_tier2_sub:'$100K لكل منها',
+    kpi_lift:'تحالف LIFT', kpi_focus:'مجالات التركيز', kpi_focus_sub:'الواقع الافتراضي · تطوير الأساتذة · الإرشاد · التعليم الشامل',
+    lift_title:'تحالف LIFT — معهد القيادة من أجل الغد',
+    lift_desc:'أربع من بين 11 مقاطعة أعضاء في تحالف ولائي يضم 10 كليات و10 مناطق.',
+    chart_tier_dist:'توزيع الأموال حسب الفئة', chart_total_dist:'التوزيع الكلي',
+    chart_focus_areas:'مجالات تركيز البرنامج', chart_by_type:'حسب نوع المبادرة',
+    table_district_summary:'ملخص المقاطعات',
+    th_district:'المقاطعة', th_tier:'الفئة', th_funding:'التمويل', th_y1:'السنة 1', th_y2:'السنة 2', th_focus:'التركيز الرئيسي', th_total:'الإجمالي',
+    funds_title:'تخصيصات الأموال', funds_sub:'تفصيل تمويل المنحة عبر جميع المقاطعات الـ11',
+    kpi_total_allocated:'الإجمالي المخصص', kpi_all_11:'جميع المقاطعات الـ11',
+    kpi_tier1_total:'إجمالي الفئة 1', kpi_7dist:'7 مقاطعات',
+    kpi_tier2_total:'إجمالي الفئة 2', kpi_4dist:'4 مقاطعات × $100K',
+    kpi_y1_total:'إجمالي السنة 1', kpi_y1_sub:'يناير 2026 – يونيو 2027',
+    chart_funding_district:'التمويل حسب المقاطعة', chart_direct:'التخصيص المباشر',
+    chart_tier_split:'التقسيم حسب الفئة', chart_y1y2:'السنة 1 مقابل السنة 2', chart_by_dist:'حسب المقاطعة',
+    table_alloc_detail:'تفاصيل التخصيص على مستوى المقاطعة',
+    districts_title:'ملفات المقاطعات', districts_sub:'جميع المقاطعات الـ11 المشاركة',
+    filter_by:'تصفية حسب:', filter_all:'الجميع', filter_tier1:'الفئة 1', filter_tier2:'الفئة 2', filter_lift:'تحالف LIFT',
+    outcomes_title:'نتائج البرنامج', outcomes_sub:'المخرجات القابلة للقياس من كل مقترح مقاطعة',
+    budget_title:'تفصيل الميزانية', budget_sub:'النفقات مقسمة بين السنة 1 (يناير 2026 – يونيو 2027) والسنة 2 (يوليو 2027 – يونيو 2028). يتم توزيع التكاليف غير المباشرة بشكل تناسبي.',
+    timeline_title:'الجدول الزمني للتنفيذ', timeline_sub:'دورة تمويل لمدة سنتين · 1 يناير 2026 → 30 يونيو 2028',
+    chart_yearly:'ملف الإنفاق السنوي', chart_all_districts:'جميع المقاطعات',
+    tl_y1:'السنة 1 (يناير 2026 – يونيو 2027)', tl_y2:'السنة 2 (يوليو 2027 – يونيو 2028)',
+    contacts_title:'جهات اتصال المقاطعة', contacts_sub:'قادة المشروع والبدلاء ومراسلو الميزانية',
+    spend_title:'مراقب الإنفاق',
+    spend_sub:'تتبع نفقات المنحة خلال دورة التمويل لمدة سنتين وتمييز المقاطعات المعرضة لخطر الإنفاق الناقص',
+    underspend_title:'⚠ تنبيهات مخاطر الإنفاق الناقص',
+    calculating:'جارٍ الحساب...',
+    underspend_desc:'تُمَيَّز المقاطعات عندما تكون وتيرة الإنفاق بطيئة أو سريعة أو ناقصة التمويل. اضبط الوتيرة على معتدلة لإزالة العلامة.',
+    spend_table_title:'تفاصيل الإنفاق حسب المقاطعة',
+    spend_table_sub:'التخصيصات مقابل الإنفاق السنوي · دورة سنتين',
+    th_total_grant:'إجمالي المنحة',
+    th_y1_budget:'ميزانية السنة 1',
+    th_y2_budget:'ميزانية السنة 2',
+    th_disbursed_pct:'النسبة المصروفة من الإجمالي',
+    th_spend_pace:'وتيرة الإنفاق',
+    th_status:'الحالة',
+    kpi_total_grant_label:'إجمالي المنحة',
+    kpi_y1_budget_label:'ميزانية السنة 1',
+    kpi_y2_budget_label:'ميزانية السنة 2',
+    kpi_all_11_districts:'جميع المقاطعات الـ11',
+    kpi_y1_window:'من المنحة · يناير 2026 – يونيو 2027',
+    kpi_y2_window:'من المنحة · يوليو 2027 – يونيو 2028',
+    pace_slow:'بطيء',
+    pace_moderate:'معتدل',
+    pace_fast:'سريع',
+    pace_underfunded:'ناقص التمويل',
+    status_on:'على المسار',
+    status_off:'خارج المسار',
+    th_direct_funding:'إجمالي التمويل',
+    th_pct_total:'٪ من الإجمالي',
+    th_cccco_disbursed:'CCCCO المصروف',
+    th_cccco_disbursed_rate:'معدل صرف CCCCO',
+    all_districts_total:'المقاطعات الـ11 · $150,000 الإجمالي',
+    role_project_lead:'قائد المشروع',
+    role_alt_project_lead:'قائد بديل للمشروع',
+    role_fiscal_reporter:'مراسل الميزانية',
+    role_plan_approver:'معتمد الخطة',
+    all_clear:'✓ جميع المقاطعات على المسار — لا توجد مخاطر إنفاق ناقص.',
+    flagged_one:'مقاطعة مُمَيَّزة',
+    flagged_many:'مقاطعات مُمَيَّزة',
+    tl_total:'الإجمالي',
+    tl_pace_label:'الوتيرة:',
+    kpi_y1_total_label:'إجمالي السنة 1',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'جميع المقاطعات الـ11',
+    sb_dashboard:'لوحة التحكم',
+    sb_performance:'الأداء',
+    sb_program:'البرنامج',
+    sb_spend_monitor:'مراقب الإنفاق',
+    select_language:'اختر اللغة',
+    status_active:'نشط',
+    y1_window_short:'يناير 2026 – يونيو 2027',
+    y2_window_short:'يوليو 2027 – يونيو 2028',
+  
+    kpi_grant_tier:'فئة المنحة',
+    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_colleges:'الكليات المشاركة',
+    kpi_colleges_sub:'بيكرسفيلد · سيرو كوسو · بورترفيل',
+    kpi_faculty_target:'هدف أعضاء هيئة التدريس',
+    kpi_faculty_target_sub:'تدريب على مستوى المنطقة بنهاية السنة 2',},
+  tl: {
+    nav_overview:'Pangkalahatang-tanaw', nav_funds:'Pagbibigay-pondo', nav_districts:'Profile ng Proyekto', nav_outcomes:'Mga Resulta', nav_budget:'Badyet', nav_timeline:'Iskedyul', nav_contacts:'Mga Kontak', nav_spenddown:'Spend-Down Monitor',
+    topbar_title:'AHC Project',
+    overview_title:'Pangkalahatang-tanaw ng Programa', overview_sub:'Isang pangkalahatang-tanaw sa buong estado ng inisyatiba ng Equal Employment Opportunity (EEO) Innovative Best Practices grant, na sumasaklaw sa 11 distrito ng California community college.',
+    meta_monitor:'Grant Monitor', meta_grantid:'ID ng Grant', meta_start:'Simula', meta_duration:'Funding Cycle', meta_status:'Katayuan',
+    kpi_total_funding:'Kabuuang Pondo', kpi_across:'VR Faculty Development & Peer Mentoring',
+    kpi_total_districts:'Kabuuang Distrito', kpi_all_submitted:'Lahat naihain',
+    kpi_tier1:'Mga Distrito ng Tier 1', kpi_tier1_sub:'$150K bawat isa',
+    kpi_tier2:'Mga Distrito ng Tier 2', kpi_tier2_sub:'$100K bawat isa',
+    kpi_lift:'Alyansa ng LIFT', kpi_focus:'Mga Pokus', kpi_focus_sub:'VR · Faculty Dev · Peer Mentoring · Inclusive Pedagogy',
+    lift_title:'Alyansa ng LIFT — Leadership Institute for Tomorrow',
+    lift_desc:'Apat sa 11 distrito ang miyembro ng walang kapantay na 10-kolehiyo-10-rehiyon na alyansa.',
+    chart_tier_dist:'Paglalaan ng Pondo ayon sa Tier', chart_total_dist:'Kabuuang Pamamahagi',
+    chart_focus_areas:'Mga Larangan ng Pokus', chart_by_type:'Ayon sa Uri ng Inisyatibo',
+    table_district_summary:'Buod ng Distrito',
+    th_district:'Distrito', th_tier:'Tier', th_funding:'Pondo', th_y1:'Taon 1', th_y2:'Taon 2', th_focus:'Pangunahing Pokus', th_total:'Kabuuan',
+    funds_title:'Pagbibigay-pondo', funds_sub:'Detalyadong breakdown ng grant funding sa lahat ng 11 distrito',
+    kpi_total_allocated:'Kabuuang Inilaan', kpi_all_11:'Lahat ng 11 distrito',
+    kpi_tier1_total:'Kabuuan ng Tier 1', kpi_7dist:'7 distrito',
+    kpi_tier2_total:'Kabuuan ng Tier 2', kpi_4dist:'4 distrito × $100K',
+    kpi_y1_total:'Kabuuan ng Taon 1', kpi_y1_sub:'Ene 2026 – Hun 2027',
+    chart_funding_district:'Pondo ayon sa Distrito', chart_direct:'Direktang Paglalaan',
+    chart_tier_split:'Hatiin ng Tier', chart_y1y2:'Taon 1 vs. Taon 2', chart_by_dist:'Ayon sa Distrito',
+    table_alloc_detail:'Detalye ng Paglalaan sa Antas ng Distrito',
+    districts_title:'Mga Profil ng Distrito', districts_sub:'Lahat ng 11 kalahok na distrito',
+    filter_by:'I-filter ayon sa:', filter_all:'Lahat', filter_tier1:'Tier 1', filter_tier2:'Tier 2', filter_lift:'Alyansa ng LIFT',
+    outcomes_title:'Mga Resulta ng Programa', outcomes_sub:'Mga nasusukat na resulta mula sa bawat panukala',
+    budget_title:'Breakdown ng Badyet', budget_sub:'Mga gastusin sa object-code, hinati sa Taon 1 (Ene 2026 – Hun 2027) at Taon 2 (Hul 2027 – Hun 2028). Indirect costs ay tinitipon proporsyonal sa bawat taon.',
+    timeline_title:'Iskedyul ng Pagpapatupad', timeline_sub:'2-taong funding cycle · Ene 1, 2026 → Hun 30, 2028',
+    chart_yearly:'Profile ng Paggastos Taon-taon', chart_all_districts:'Lahat ng Distrito',
+    tl_y1:'Taon 1 (Ene 2026 – Hun 2027)', tl_y2:'Taon 2 (Hul 2027 – Hun 2028)',
+    contacts_title:'Mga Kontak ng Distrito', contacts_sub:'Mga lider ng proyekto, kapalit, at fiscal reporter',
+    spend_title:'Spend-Down Monitor',
+    spend_sub:'Subaybayan ang gastos ng grant sa loob ng 2-taong funding cycle at i-flag ang mga distritong nasa panganib ng underspending',
+    underspend_title:'⚠ Underspend Risk Alerts',
+    calculating:'Kinakalkula...',
+    underspend_desc:'Naka-flag ang mga distrito kapag ang Spend Pace ay nakatakda sa Slow, Fast, o Underfunded. Itakda sa Moderate sa table upang alisin ang flag.',
+    spend_table_title:'Detalye ng Spend-Down ng Distrito',
+    spend_table_sub:'Mga Paglalaan vs. Taon-taong Gastos · 2-Year Cycle',
+    th_total_grant:'Kabuuang Grant',
+    th_y1_budget:'Badyet Taon 1',
+    th_y2_budget:'Badyet Taon 2',
+    th_disbursed_pct:'Naipamahagi % ng Kabuuan',
+    th_spend_pace:'Spend Pace',
+    th_status:'Katayuan',
+    kpi_total_grant_label:'Kabuuang Grant',
+    kpi_y1_budget_label:'Badyet Taon 1',
+    kpi_y2_budget_label:'Badyet Taon 2',
+    kpi_all_11_districts:'Lahat ng 11 distrito',
+    kpi_y1_window:'ng grant · Ene 2026 – Hun 2027',
+    kpi_y2_window:'ng grant · Hul 2027 – Hun 2028',
+    pace_slow:'Mabagal',
+    pace_moderate:'Katamtaman',
+    pace_fast:'Mabilis',
+    pace_underfunded:'Kulang sa Pondo',
+    status_on:'On Track',
+    status_off:'Off Track',
+    th_direct_funding:'Kabuuang Pondo',
+    th_pct_total:'% ng Kabuuan',
+    th_cccco_disbursed:'CCCCO Disbursed',
+    th_cccco_disbursed_rate:'CCCCO Disbursed Rate',
+    all_districts_total:'Lahat ng 11 Distrito · $150,000 Kabuuan',
+    role_project_lead:'Lider ng Proyekto',
+    role_alt_project_lead:'Kapalit na Lider ng Proyekto',
+    role_fiscal_reporter:'Fiscal Reporter',
+    role_plan_approver:'Plan Approver',
+    all_clear:'✓ Lahat ng distrito ay nasa landas — walang underspend risk na natuklasan.',
+    flagged_one:'Distritong Naka-flag',
+    flagged_many:'Mga Distritong Naka-flag',
+    tl_total:'Kabuuan',
+    tl_pace_label:'Pace:',
+    kpi_y1_total_label:'Kabuuan ng Taon 1',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'Lahat ng 11 distrito',
+    sb_dashboard:'Dashboard',
+    sb_performance:'Performance',
+    sb_program:'Programa',
+    sb_spend_monitor:'Spend Monitor',
+    select_language:'Pumili ng Wika',
+    status_active:'Aktibo',
+    y1_window_short:'Ene 2026 – Hun 2027',
+    y2_window_short:'Hul 2027 – Hun 2028',
+  
+    kpi_grant_tier:'Tier ng Grant',
+    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_colleges:'Mga Kalahok na Kolehiyo',
+    kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
+    kpi_faculty_target:'Target na Faculty',
+    kpi_faculty_target_sub:'Sanay sa buong distrito sa Year 2',},
+  zh: {
+    nav_overview:'總覽', nav_funds:'資金分配', nav_districts:'計畫簡介', nav_outcomes:'成果', nav_budget:'預算明細', nav_timeline:'時間表', nav_contacts:'聯絡資訊', nav_spenddown:'支出進度監測',
+    topbar_title:'AHC 計畫',
+    overview_title:'計畫總覽',
+    overview_sub:'本州平等就業機會 (EEO) 創新最佳實踐補助計畫的全州概覽,涵蓋加州 11 個社區大學學區。',
+    meta_monitor:'計畫監督', meta_grantid:'補助編號', meta_start:'起始日期', meta_duration:'資助週期', meta_status:'狀態',
+    kpi_total_funding:'補助金總額', kpi_across:'VR 教職員發展與同儕輔導',
+    kpi_total_districts:'學區總數', kpi_all_submitted:'全部已提交',
+    kpi_tier1:'第 1 級學區', kpi_tier1_sub:'平均每區 $150K',
+    kpi_tier2:'第 2 級學區', kpi_tier2_sub:'每區 $100K',
+    kpi_lift:'LIFT 聯盟', kpi_focus:'重點領域', kpi_focus_sub:'VR · 教職發展 · 同儕輔導 · 包容教學',
+    lift_title:'LIFT 聯盟 — 明日領導力學院',
+    lift_desc:'11 個學區中的四個 — Antelope Valley CCD(第 6 區)、Citrus CCD(第 8 區)、Peralta CCD(第 3 區)和 West Valley-Mission CCD(第 4 區)— 是史無前例的 10 校 10 區全州聯盟成員,在加州社區大學系統中實施共享的「導師與配對專業平台」。',
+    chart_tier_dist:'按等級的資金分配', chart_total_dist:'總分配',
+    chart_focus_areas:'計畫重點領域', chart_by_type:'按計畫類型',
+    table_district_summary:'學區摘要',
+    th_district:'學區', th_tier:'等級', th_funding:'資金', th_y1:'第 1 年', th_y2:'第 2 年', th_focus:'主要重點', th_total:'總計',
+    funds_title:'資金分配', funds_sub:'全部 11 個學區的補助金分配詳細明細',
+    kpi_total_allocated:'已分配總額', kpi_all_11:'全部 11 個學區',
+    kpi_tier1_total:'第 1 級總計', kpi_7dist:'7 個學區',
+    kpi_tier2_total:'第 2 級總計', kpi_4dist:'4 個學區 × $100K',
+    kpi_y1_total:'第 1 年總計', kpi_y1_sub:'2026 年 1 月 – 2027 年 6 月',
+    chart_funding_district:'按學區的資金', chart_direct:'直接分配',
+    chart_tier_split:'等級分布', chart_y1y2:'第 1 年 vs. 第 2 年支出', chart_by_dist:'按學區',
+    table_alloc_detail:'學區層級分配詳情',
+    districts_title:'學區簡介', districts_sub:'全部 11 個參與的社區大學學區',
+    filter_by:'篩選依據:', filter_all:'所有學區', filter_tier1:'第 1 級', filter_tier2:'第 2 級', filter_lift:'LIFT 聯盟',
+    outcomes_title:'計畫成果', outcomes_sub:'每個學區提案中可衡量的成果與目標',
+    budget_title:'預算明細', budget_sub:'按物件代碼劃分的支出,分為第 1 年(2026 年 1 月 – 2027 年 6 月)和第 2 年(2027 年 7 月 – 2028 年 6 月)。間接成本按比例分攤至每年。',
+    timeline_title:'實施時間表', timeline_sub:'2 年資助週期 · 2026 年 1 月 1 日 → 2028 年 6 月 30 日',
+    chart_yearly:'逐年支出概況', chart_all_districts:'所有學區',
+    tl_y1:'第 1 年(2026 年 1 月 – 2027 年 6 月)', tl_y2:'第 2 年(2027 年 7 月 – 2028 年 6 月)',
+    contacts_title:'學區聯絡資訊', contacts_sub:'計畫負責人、副負責人和財務報告人',
+    spend_title:'支出進度監測',
+    spend_sub:'追蹤 2 年資助週期內的補助金支出,並標記有支出不足風險的學區',
+    underspend_title:'⚠ 支出不足風險警示',
+    calculating:'計算中...',
+    underspend_desc:'當學區的支出進度設定為「緩慢」、「快速」或「資金不足」時,該學區將被標記。在下方表格中將進度設為「中等」即可清除標記。',
+    spend_table_title:'學區支出進度詳情',
+    spend_table_sub:'分配 vs. 逐年支出 · 2 年週期',
+    th_total_grant:'補助金總額',
+    th_y1_budget:'第 1 年預算',
+    th_y2_budget:'第 2 年預算',
+    th_disbursed_pct:'已撥付佔總額百分比',
+    th_spend_pace:'支出進度',
+    th_status:'狀態',
+    kpi_total_grant_label:'補助金總額',
+    kpi_y1_budget_label:'第 1 年預算',
+    kpi_y2_budget_label:'第 2 年預算',
+    kpi_all_11_districts:'全部 11 個學區',
+    kpi_y1_window:'佔補助金 · 2026 年 1 月 – 2027 年 6 月',
+    kpi_y2_window:'佔補助金 · 2027 年 7 月 – 2028 年 6 月',
+    pace_slow:'緩慢', pace_moderate:'中等', pace_fast:'快速', pace_underfunded:'資金不足',
+    status_on:'進度正常', status_off:'進度落後',
+    th_direct_funding:'總資金',
+    th_pct_total:'佔總額 %',
+    th_cccco_disbursed:'CCCCO 已撥付',
+    th_cccco_disbursed_rate:'CCCCO 撥付率',
+    all_districts_total:'全部 11 個學區 · 總計 $150,000',
+    role_project_lead:'計畫負責人',
+    role_alt_project_lead:'計畫副負責人',
+    role_fiscal_reporter:'財務報告人',
+    role_plan_approver:'計畫核准人',
+    all_clear:'✓ 所有學區進度正常 — 未偵測到支出不足風險。',
+    flagged_one:'個學區已被標記',
+    flagged_many:'個學區已被標記',
+    tl_total:'總計', tl_pace_label:'進度:',
+    kpi_y1_total_label:'第 1 年總計',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'全部 11 個學區',
+    sb_dashboard:'儀表板',
+    sb_performance:'績效',
+    sb_program:'計畫',
+    sb_spend_monitor:'支出監測',
+    select_language:'選擇語言',
+    status_active:'進行中',
+    y1_window_short:'2026年1月–2027年6月',
+    y2_window_short:'2027年7月–2028年6月',
+  
+    kpi_grant_tier:'補助等級',
+    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_colleges:'參與學院',
+    kpi_colleges_sub:'貝克斯菲爾德 · 塞羅科索 · 波特維爾',
+    kpi_faculty_target:'教職員目標',
+    kpi_faculty_target_sub:'第二年前完成全區培訓',}
+};
+
+let currentLang = 'en';
+// Global translator — render functions call t(key) to fetch the active locale's string
+function t(key) {
+  const dict = translations[currentLang] || translations.en;
+  return (dict && dict[key]) || (translations.en && translations.en[key]) || key;
+}
+function applyTranslation(lang) {
+  const dict = translations[lang] || translations.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) el.textContent = dict[key];
+  });
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+}
+function setLang(lang) {
+  currentLang = lang;
+  applyTranslation(lang);
+  document.querySelectorAll('.lang-option').forEach(b => b.classList.remove('active'));
+  const chosen = document.querySelector(`.lang-option[onclick="setLang('${lang}')"]`);
+  if (chosen) chosen.classList.add('active');
+  const names = { en:'English', es:'Español', vi:'Tiếng Việt', ar:'العربية', tl:'Tagalog', zh:'繁體中文' };
+  document.getElementById('transLabel').textContent = lang === 'en' ? 'Translate' : names[lang];
+  const banner = document.getElementById('transBanner');
+  const fullNames = { en:'English', es:'Spanish (Español)', vi:'Vietnamese (Tiếng Việt)', ar:'Arabic (العربية)', tl:'Tagalog', zh:'Chinese Traditional (繁體中文)' };
+  if (lang !== 'en') { banner.classList.add('show'); document.getElementById('transLangName').textContent = fullNames[lang]; }
+  else banner.classList.remove('show');
+  toggleTranslate();
+  // Re-render dynamic content so JS-rendered tables, KPIs, and badges pick up the new locale
+  if (typeof renderAll === 'function') renderAll();
+}
+function resetLang() { setLang('en'); }
+function toggleTranslate() { document.getElementById('transDropdown').classList.toggle('open'); }
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('.translate-wrap');
+  if (wrap && !wrap.contains(e.target)) document.getElementById('transDropdown').classList.remove('open');
+});
+
+let isDark = false;
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  const btn = document.getElementById('themeBtn');
+  btn.innerHTML = isDark
+    ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+    : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  if (typeof initCharts === 'function') initCharts();
+}
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
+
+function showSection(id, clickedBtn, isMobile) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  if (!isMobile) {
+    document.querySelectorAll('.sidebar .nav-item').forEach(n => n.classList.remove('active'));
+    if (clickedBtn) clickedBtn.classList.add('active');
+  }
+  document.querySelectorAll('[data-mobile-nav]').forEach(n => n.classList.remove('active'));
+  if (isMobile && clickedBtn) clickedBtn.classList.add('active');
+  if (isMobile) closeSidebar();
+  if (isMobile) {
+    document.querySelectorAll('.sidebar .nav-item').forEach(n => {
+      const onclick = n.getAttribute('onclick') || '';
+      n.classList.toggle('active', onclick.includes("'" + id + "'"));
+    });
+  }
+}
+
+/* ════════════ OVERVIEW TABLE ════════════ */
+function renderOverviewTable() {
+  const tbody = document.getElementById('overview-table-body');
+  if (!tbody) return;
+  tbody.innerHTML = districts.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong><br><span style="font-size:11px;color:var(--text-muted)">${d.program.length > 50 ? d.program.slice(0,50) + '…' : d.program}</span></td>
+      <td><span class="tier-badge tier${d.tier}">Tier ${d.tier}${d.lift ? '<span class="lift-mark" title="LIFT Alliance">LIFT</span>' : ''}</span></td>
+      <td class="amount">${fmt(d.funding)}</td>
+      <td class="amount">${fmt(d.yearlyBudget.y1)}</td>
+      <td class="amount">${fmt(d.yearlyBudget.y2)}</td>
+      <td style="font-size:12.5px;color:var(--text-secondary)">${d.primaryFocus}</td>
+    </tr>`).join('');
+}
+
+/* ════════════ DISTRICT CARDS ════════════ */
+function renderDistrictCards(filter) {
+  const grid = document.getElementById('district-grid');
+  if (!grid) return;
+  const filtered = filter === 'all' ? districts
+    : filter === 'tier1' ? districts.filter(d => d.tier === 1 && !d.lift)
+    : filter === 'tier2' ? districts.filter(d => d.tier === 2)
+    : districts.filter(d => d.lift);
+  grid.innerHTML = filtered.map(d => `
+    <div class="district-card ${d.lift ? 'lift-card' : ''}">
+      <div class="district-card-top ${d.lift ? 'lift-card' : ''}">
+        ${d.lift ? '<span class="district-card-lift-tag">LIFT ✦ ' + d.liftRegion + '</span>' : ''}
+        <div class="district-card-name">${d.name}</div>
+        <div class="district-card-program">${d.program}</div>
+      </div>
+      <div class="district-card-body">
+        <div class="district-card-stats">
+          <div class="district-stat"><label>${t('th_tier')}</label><span>${d.tier}</span></div>
+          <div class="district-stat"><label>${t('th_y1')}</label><span>${fmt(d.yearlyBudget.y1)}</span></div>
+          <div class="district-stat"><label>${t('th_y2')}</label><span>${fmt(d.yearlyBudget.y2)}</span></div>
+        </div>
+        <div class="district-card-focus">${d.focus.map(f => '<span class="focus-tag">' + f + '</span>').join('')}</div>
+        <div class="district-card-contact">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          ${d.contact.name} · <a href="mailto:${d.contact.email}" style="color:var(--ccc-medium-blue)">${d.contact.email}</a>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function filterDistricts(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDistrictCards(filter);
+}
+
+/* ════════════ ALLOCATION TABLE ════════════ */
+function renderAllocationTable() {
+  const table = document.getElementById('allocation-table');
+  if (!table) return;
+  const total = districts.reduce((a, d) => a + d.funding, 0);
+  const totalY1 = districts.reduce((a, d) => a + d.yearlyBudget.y1, 0);
+  const totalY2 = districts.reduce((a, d) => a + d.yearlyBudget.y2, 0);
+  table.innerHTML = `
+    <thead><tr><th>${t('th_district')}</th><th>${t('th_tier')}</th><th>${t('th_direct_funding')}</th><th>${t('th_pct_total')}</th><th>${t('th_y1')}</th><th>${t('th_y2')}</th><th>${t('th_cccco_disbursed')}</th><th>${t('th_cccco_disbursed_rate')}</th></tr></thead>
+    <tbody>
+      ${districts.map(d => `
+        <tr>
+          <td><strong>${d.shortName}</strong></td>
+          <td><span class="tier-badge tier${d.tier}">${t('th_tier')} ${d.tier}${d.lift ? '<span class="lift-mark" title="LIFT Alliance">LIFT</span>' : ''}</span></td>
+          <td class="amount">${fmt(d.funding)}</td>
+          <td><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;font-weight:600;">${((d.funding/total)*100).toFixed(1)}%</span><div class="progress-bar-wrap" style="flex:1;min-width:60px;"><div class="progress-bar-fill" style="width:${((d.funding/total)*100).toFixed(1)}%"></div></div></div></td>
+          <td class="amount">${fmt(d.yearlyBudget.y1)}</td>
+          <td class="amount">${fmt(d.yearlyBudget.y2)}</td>
+          <td class="amount" style="color:var(--text-muted);">$0</td>
+          <td style="color:var(--text-muted);">0%</td>
+        </tr>`).join('')}
+      <tr style="background:var(--bg-surface-2);">
+        <td colspan="2"><strong>${t('th_total')}</strong></td>
+        <td class="amount"><strong>${fmt(total)}</strong></td>
+        <td><strong>100%</strong></td>
+        <td class="amount"><strong>${fmt(totalY1)}</strong></td>
+        <td class="amount"><strong>${fmt(totalY2)}</strong></td>
+        <td class="amount"><strong>$0</strong></td>
+        <td><strong>0%</strong></td>
+      </tr>
+    </tbody>`;
+  const kpiY1 = document.getElementById('kpi-y1-total');
+  if (kpiY1) kpiY1.textContent = fmt(totalY1);
+}
+
+/* ════════════ OUTCOMES ════════════ */
+function renderOutcomes() {
+  const grid = document.getElementById('outcomes-grid');
+  if (!grid) return;
+  grid.innerHTML = districts.map(d => `
+    <div class="outcome-card">
+      <div class="outcome-card-header">
+        <div class="outcome-card-name">${d.name}</div>
+        <span class="tier-badge tier${d.tier}" style="flex-shrink:0;">Tier ${d.tier}${d.lift ? '<span class="lift-mark" title="LIFT Alliance">LIFT</span>' : ''}</span>
+      </div>
+      <ul class="outcome-list">${d.outcomes.map(o => '<li>' + o + '</li>').join('')}</ul>
+    </div>`).join('');
+}
+
+/* ════════════ BUDGET — Year 1 / Year 2 totals at top, full line items (incl. Indirect) below ════════════ */
+function renderBudget() {
+  const grid = document.getElementById('budget-grid');
+  if (!grid) return;
+  grid.innerHTML = districts.map(d => {
+    const lines = Object.entries(d.budgetHighlights);
+    return `
+      <div class="budget-card">
+        <div class="budget-card-header">
+          <div class="budget-card-name">${d.shortName}</div>
+          <div class="budget-card-total">${fmt(d.funding)} total</div>
+        </div>
+        <div class="budget-year-summary">
+          <div class="budget-year-pill">
+            <div class="budget-year-pill-label">${t('th_y1')}</div>
+            <div class="budget-year-pill-dates">${t('y1_window_short')}</div>
+            <div class="budget-year-pill-amount">${fmt(d.yearlyBudget.y1)}</div>
+          </div>
+          <div class="budget-year-pill">
+            <div class="budget-year-pill-label">${t('th_y2')}</div>
+            <div class="budget-year-pill-dates">${t('y2_window_short')}</div>
+            <div class="budget-year-pill-amount">${fmt(d.yearlyBudget.y2)}</div>
+          </div>
+        </div>
+        <div class="budget-lines-wrap">
+          ${lines.map(([label, amt]) => {
+            const isIndirect = /\(7000\)|indirect/i.test(label);
+            const cls = isIndirect ? ' indirect-line' : '';
+            const pct = ((amt / d.funding) * 100).toFixed(1);
+            return `
+              <div class="budget-line${cls}"><span class="budget-line-label">${label}</span><span class="budget-line-amount">${fmt(amt)}</span></div>
+              <div class="budget-line-bar"><div class="budget-line-bar-fill" style="width:${pct}%;${isIndirect ? 'background:var(--ccc-dark-gold);' : ''}"></div></div>`;
+          }).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ════════════ TIMELINE — 2 years ════════════ */
+function renderTimeline() {
+  const container = document.getElementById('timeline-rows');
+  if (!container) return;
+  container.innerHTML = districts.map(d => {
+    const total = d.yearlyBudget.y1 + d.yearlyBudget.y2;
+    const pct = v => ((v / d.funding) * 100).toFixed(0);
+    return `
+      <div class="timeline-row">
+        <div class="timeline-label">${d.shortName}<small>${fmt(d.funding)}</small></div>
+        <div class="timeline-bars">
+          <div class="timeline-bar-wrap"><div class="timeline-bar-inner timeline-bar-bg"><div class="timeline-bar-fill y1" style="width:${pct(d.yearlyBudget.y1)}%"></div></div><div class="timeline-bar-label">${fmt(d.yearlyBudget.y1)}</div></div>
+          <div class="timeline-bar-wrap"><div class="timeline-bar-inner timeline-bar-bg"><div class="timeline-bar-fill y2" style="width:${pct(d.yearlyBudget.y2)}%"></div></div><div class="timeline-bar-label">${fmt(d.yearlyBudget.y2)}</div></div>
+        </div>
+        <div class="timeline-total">${fmt(total)}</div>
+      </div>`;
+  }).join('');
+}
+
+/* ════════════ CONTACTS ════════════ */
+// Map English role text in data → i18n key, so contact roles translate alongside the rest of the UI
+const ROLE_KEYS = {
+  'Project Lead': 'role_project_lead',
+  'Alternate Project Lead': 'role_alt_project_lead',
+  'Plan Approver': 'role_plan_approver',
+  'Fiscal Reporter': 'role_fiscal_reporter',
+};
+function translateRole(r) { return ROLE_KEYS[r] ? t(ROLE_KEYS[r]) : r; }
+
+function renderContacts() {
+  const grid = document.getElementById('contacts-grid');
+  if (!grid) return;
+  grid.innerHTML = districts.map(d => {
+    const people = [d.contact, d.altContact, d.fiscalReporter, d.planApprover].filter(Boolean);
+    const tierLabel = d.lift ? `${t('kpi_lift')} · ${d.liftRegion}` : `${t('th_tier')} ${d.tier}`;
+    return `
+      <div class="contact-card">
+        <div class="contact-card-header">
+          <div class="contact-card-district">${d.name}</div>
+          <div class="contact-card-region">${tierLabel}</div>
+          <div class="contact-card-address">${d.address || ''}</div>
+        </div>
+        <div class="contact-body">
+          ${people.map(p => `
+            <div class="contact-person">
+              <div class="contact-avatar">${p.name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase()}</div>
+              <div class="contact-info">
+                <div class="contact-name">${p.name}</div>
+                <div class="contact-role">${translateRole(p.role)}</div>
+                <a class="contact-email" href="mailto:${p.email}">${p.email}</a>
+                ${p.phone ? `<a class="contact-phone" href="tel:${p.phone.replace(/[^0-9+]/g,'')}">${p.phone}</a>` : ''}
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ════════════ CHARTS ════════════ */
+let chartInstances = {};
+function destroyCharts() { Object.values(chartInstances).forEach(c => { try { c.destroy(); } catch(e){} }); chartInstances = {}; }
+function getChartColors() {
+  return {
+    darkBlue:'#002F6D', medBlue:'#0066BA', lightBlue:'#40B4E5', gold:'#FFB600', darkGold:'#D18A00', darkGrey:'#555759',
+    grid: isDark ? 'rgba(64,180,229,0.1)' : 'rgba(0,47,109,0.08)',
+    text: isDark ? '#A8B4CC' : '#555759',
+    tick: isDark ? '#A8B4CC' : '#555759'
+  };
+}
+function initCharts() {
+  destroyCharts();
+  const C = getChartColors();
+  const baseOpts = { responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ color:C.text, font:{family:"'Source Sans 3', sans-serif", size:12}, padding:16 } } } };
+
+  const tc = document.getElementById('tierChart');
+  if (tc) chartInstances.tier = new Chart(tc, {
+    type:'doughnut',
+    data:{ labels:['Tier 1 (7 Districts)','Tier 2 / LIFT (4 Districts)'],
+      datasets:[{ data:[999997,400000], backgroundColor:[C.darkBlue,C.medBlue], borderColor:isDark?'#131D35':'#fff', borderWidth:3, hoverOffset:6 }] },
+    options:{ ...baseOpts, cutout:'65%',
+      plugins:{ ...baseOpts.plugins, tooltip:{ callbacks:{ label:ctx => ' ' + ctx.label + ': $' + ctx.raw.toLocaleString() } } } }
+  });
+
+  const fc = document.getElementById('focusChart');
+  if (fc) chartInstances.focus = new Chart(fc, {
+    type:'bar',
+    data:{ labels:['Mentorship','Training','Hiring Equity','Technology','Faculty Pipeline','Restorative Justice','ERGs','Data Analytics'],
+      datasets:[{ data:[8,7,4,4,2,1,1,2],
+        backgroundColor:[C.darkBlue,C.medBlue,C.darkGold,C.lightBlue,C.darkBlue+'cc',C.medBlue+'cc',C.gold,C.darkGrey],
+        borderRadius:4, borderSkipped:false }] },
+    options:{ ...baseOpts, indexAxis:'y',
+      plugins:{ ...baseOpts.plugins, legend:{display:false} },
+      scales:{ x:{ grid:{color:C.grid}, ticks:{color:C.tick}, border:{color:'transparent'} },
+               y:{ grid:{display:false}, ticks:{color:C.tick, font:{size:11}}, border:{color:'transparent'} } } }
+  });
+  const tsc = document.getElementById('tierSplitChart');
+  if (tsc) chartInstances.tierSplit = new Chart(tsc, {
+    type:'pie',
+    data:{ labels:['Tier 1 (~71.4%)','Tier 2 / LIFT (~28.6%)'],
+      datasets:[{ data:[999997,400000], backgroundColor:[C.darkBlue,C.lightBlue], borderColor:isDark?'#131D35':'#fff', borderWidth:3, hoverOffset:4 }] },
+    options:{ ...baseOpts, plugins:{ ...baseOpts.plugins, tooltip:{ callbacks:{ label:ctx => ' ' + ctx.label + ': $' + ctx.raw.toLocaleString() } } } }
+  });
+
+  const yyc = document.getElementById('y1y2Chart');
+  if (yyc) chartInstances.y1y2 = new Chart(yyc, {
+    type:'bar',
+    data:{ labels:districts.map(d => d.shortName),
+      datasets:[
+        { label:t('th_y1'), data:districts.map(d => d.yearlyBudget.y1), backgroundColor:C.medBlue, borderRadius:4, borderSkipped:false },
+        { label:t('th_y2'), data:districts.map(d => d.yearlyBudget.y2), backgroundColor:C.darkBlue, borderRadius:4, borderSkipped:false }
+      ] },
+    options:{ ...baseOpts,
+      plugins:{ ...baseOpts.plugins, tooltip:{ callbacks:{ label:ctx => ' ' + ctx.dataset.label + ': $' + ctx.raw.toLocaleString() } } },
+      scales:{ x:{ stacked:true, grid:{display:false}, ticks:{color:C.tick, font:{size:10}}, border:{color:'transparent'} },
+               y:{ stacked:true, grid:{color:C.grid}, ticks:{color:C.tick, callback:v => '$' + (v/1000) + 'K'}, border:{color:'transparent'} } } }
+  });
+
+  const yc = document.getElementById('yearlyChart');
+  if (yc) chartInstances.yearly = new Chart(yc, {
+    type:'bar',
+    data:{ labels:districts.map(d => d.shortName),
+      datasets:[
+        { label:t('tl_y1'), data:districts.map(d => d.yearlyBudget.y1), backgroundColor:C.medBlue, borderRadius:4, borderSkipped:false },
+        { label:t('tl_y2'), data:districts.map(d => d.yearlyBudget.y2), backgroundColor:C.darkBlue, borderRadius:4, borderSkipped:false }
+      ] },
+    options:{ ...baseOpts,
+      plugins:{ ...baseOpts.plugins, tooltip:{ callbacks:{ label:ctx => ' ' + ctx.dataset.label + ': $' + ctx.raw.toLocaleString() } } },
+      scales:{ x:{ grid:{display:false}, ticks:{color:C.tick, font:{size:11}}, border:{color:'transparent'} },
+               y:{ grid:{color:C.grid}, ticks:{color:C.tick, callback:v => '$' + (v/1000) + 'K'}, border:{color:'transparent'} } } }
+  });
+}
+
+/* ════════════ SPEND-DOWN MONITOR ════════════ */
+// ════════════ SPEND-DOWN MONITOR — Kern CCD by fiscal year ════════════
+// The Spend-Down Monitor breaks Kern CCD's $150,000 award into the three
+// fiscal-year periods stated in the application's budget narrative.
+// Each row has its own status (On/Off Track) and spend pace (Slow /
+// Moderate / Fast / Underfunded), persisted in localStorage. The
+// Underspend Risk Alert panel above the table is fed entirely from the
+// statuses/paces stored against these periods.
+
+const KERN_PERIODS = [
+  { id:'fy2526', label:'FY 2025-26', dates:'Jan – Jun 2026', budget:20348, role:'Framework development & first DRS training', year:'Year 1' },
+  { id:'fy2627', label:'FY 2026-27', dates:'Jul 2026 – Jun 2027', budget:42279, role:'Mentorship launch & DRS Cohort 1', year:'Year 1' },
+  { id:'fy2728', label:'FY 2027-28', dates:'Jul 2027 – Jun 2028', budget:37373, role:'Mentees training & final outcomes analysis', year:'Year 2' }
+];
+
+const periodStatuses = JSON.parse(localStorage.getItem('kernPeriodStatuses') || '{}');
+const periodPaces    = JSON.parse(localStorage.getItem('kernPeriodPaces')    || '{}');
+
+const PACE_CYCLE = ['slow','moderate','fast'];
+const PACE_COLOR = {
+  slow:     '#E0B500',
+  moderate: '#1a7a3c',
+  fast:     '#c53030'
+};
+const PACE_LABEL = { slow:'Slow', moderate:'Moderate', fast:'Fast' };
+
+function togglePeriodStatus(btn, id) {
+  const isNowOff = btn.dataset.on === '1';
+  periodStatuses[id] = isNowOff ? 'off' : 'on';
+  localStorage.setItem('kernPeriodStatuses', JSON.stringify(periodStatuses));
+  btn.dataset.on = isNowOff ? '0' : '1';
+  btn.style.background = isNowOff ? '#c53030' : '#1a7a3c';
+  btn.textContent = isNowOff ? t('status_off') : t('status_on');
+  renderUnderspendList();
+  renderUnderspendChart();
+}
+function togglePeriodPace(btn, id) {
+  const current = btn.dataset.pace || 'moderate';
+  const idx = PACE_CYCLE.indexOf(current);
+  const next = PACE_CYCLE[(idx + 1) % PACE_CYCLE.length];
+  periodPaces[id] = next;
+  localStorage.setItem('kernPeriodPaces', JSON.stringify(periodPaces));
+  btn.dataset.pace = next;
+  btn.style.background = PACE_COLOR[next];
+  btn.textContent = t('pace_' + next);
+  renderUnderspendList();
+  renderUnderspendChart();
+}
+
+function flaggedPeriods() {
+  return KERN_PERIODS.filter(p => {
+    const pace = periodPaces[p.id] || 'moderate';
+    const isPaceFlag = pace !== 'moderate';
+    const isStatusFlag = periodStatuses[p.id] === 'off';
+    return isPaceFlag || isStatusFlag;
+  });
+}
+
+let underspendChartInstance = null;
+function renderUnderspendChart() {
+  const wrap = document.getElementById('underspend-chart-wrap');
+  const canvas = document.getElementById('underspendChart');
+  if (!wrap || !canvas) return;
+  const flagged = flaggedPeriods();
+  if (underspendChartInstance) { try { underspendChartInstance.destroy(); } catch(e){} underspendChartInstance = null; }
+  if (flagged.length === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const C = getChartColors();
+  underspendChartInstance = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: flagged.map(p => p.label),
+      datasets: [{
+        label: 'Period Budget',
+        data: flagged.map(p => p.budget),
+        backgroundColor: flagged.map(p => {
+          const pace = periodPaces[p.id] || 'moderate';
+          if (pace === 'moderate' && periodStatuses[p.id] === 'off') return '#c53030';
+          return PACE_COLOR[pace] || '#c53030';
+        }),
+        borderRadius: 4,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          title: items => items[0].label,
+          label: ctx => {
+            const p = flagged[ctx.dataIndex];
+            const pace = periodPaces[p.id] || 'moderate';
+            const paceLabel = PACE_LABEL[pace];
+            const status = periodStatuses[p.id] === 'off' ? ' · Off Track' : '';
+            return ' Pace: ' + paceLabel + status + ' · ' + fmt(p.budget);
+          }
+        }}
+      },
+      scales: {
+        x: { grid:{color:C.grid}, ticks:{color:C.tick, callback:v => '$' + (v/1000) + 'K'}, border:{color:'transparent'} },
+        y: { grid:{display:false}, ticks:{color:C.tick, font:{size:11}}, border:{color:'transparent'} }
+      }
+    }
+  });
+}
+function renderUnderspendList() {
+  const flagged = flaggedPeriods();
+  const countEl = document.getElementById('underspend-count');
+  if (countEl) {
+    countEl.textContent = flagged.length + ' ' + (flagged.length === 1 ? t('flagged_one') : t('flagged_many'));
+    countEl.style.background = flagged.length === 0 ? '#1a7a3c' : '#c53030';
+    countEl.style.color = '#fff';
+    countEl.style.padding = '3px 10px';
+    countEl.style.borderRadius = '20px';
+    countEl.style.fontSize = '12px';
+    countEl.style.fontWeight = '700';
+  }
+  const listEl = document.getElementById('underspend-list');
+  if (listEl) {
+    if (flagged.length === 0) {
+      listEl.innerHTML = '<div style="padding:16px;color:var(--success);font-weight:600;">' + t('all_clear') + '</div>';
+    } else {
+      const totalBudget = KERN_PERIODS.reduce((a,p) => a + p.budget, 0);
+      listEl.innerHTML = flagged.map(p => {
+        const pct = ((p.budget/totalBudget)*100).toFixed(1);
+        const pace = periodPaces[p.id] || 'moderate';
+        const paceLabel = t('pace_' + pace);
+        const paceColor = PACE_COLOR[pace];
+        const isOffTrack = periodStatuses[p.id] === 'off';
+        const badges = [];
+        if (pace !== 'moderate') badges.push('<span style="background:' + paceColor + ';color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">' + paceLabel + '</span>');
+        if (isOffTrack) badges.push('<span style="background:#c53030;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">' + t('status_off') + '</span>');
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);">' +
+          '<div><strong>' + p.label + '</strong><br><span style="font-size:12px;color:var(--text-muted)">' + p.role + ' · ' + p.dates + '</span></div>' +
+          '<div style="text-align:right;min-width:200px;">' +
+            '<div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;">' + badges.join('') + '</div>' +
+            '<span style="font-size:12px;color:var(--text-muted);display:block;margin-top:4px;">Budget: ' + fmt(p.budget) + ' (' + pct + '% of total)</span>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+  }
+}
+
+function renderSpendDown() {
+  const totalGrant = KERN_PERIODS.reduce((a,p) => a + p.budget, 0);
+  const y1 = KERN_PERIODS.filter(p => p.year === 'Year 1').reduce((a,p) => a + p.budget, 0);
+  const y2 = KERN_PERIODS.filter(p => p.year === 'Year 2').reduce((a,p) => a + p.budget, 0);
+  const kpiRow = document.getElementById('spend-kpi-row');
+  if (kpiRow) {
+    kpiRow.innerHTML =
+      '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">' + t('kpi_total_grant_label') + '</div><div class="kpi-value blue">' + fmt(totalGrant) + '</div><div class="kpi-sub">Tier 1 award</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">' + t('kpi_y1_budget_label') + '</div><div class="kpi-value medium-blue">' + fmt(y1) + '</div><div class="kpi-sub">' + ((y1/totalGrant)*100).toFixed(1) + '% · Jan 2026 – Jun 2027</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">' + ((y2/totalGrant)*100).toFixed(1) + '% · Jul 2027 – Jun 2028</div></div>';
+  }
+
+  renderUnderspendList();
+  renderUnderspendChart();
+
+  const tbody = document.getElementById('spend-table-body');
+  if (tbody) {
+    tbody.innerHTML = KERN_PERIODS.map(p => {
+      const isOffTrack = periodStatuses[p.id] === 'off';
+      const statusColor = isOffTrack ? '#c53030' : '#1a7a3c';
+      const statusText = isOffTrack ? t('status_off') : t('status_on');
+      const pace = PACE_CYCLE.includes(periodPaces[p.id]) ? periodPaces[p.id] : 'moderate';
+      const paceColor = PACE_COLOR[pace];
+      const paceText  = t('pace_' + pace);
+      const pct = ((p.budget/totalGrant)*100).toFixed(1);
+      return '<tr>' +
+        '<td><strong>' + p.label + '</strong><br><span style="font-size:11px;color:var(--text-muted)">' + p.dates + ' · ' + p.role + '</span></td>' +
+        '<td class="amount">' + fmt(p.budget) + '</td>' +
+        '<td class="amount">' + pct + '% of total</td>' +
+        '<td><span style="font-size:11px;color:var(--text-muted);">' + (p.year) + '</span></td>' +
+        '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
+        '<td><button onclick="togglePeriodPace(this,\'' + p.id + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + paceText + '</button></td>' +
+        '<td><button onclick="togglePeriodStatus(this,\'' + p.id + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + statusText + '</button></td>' +
+      '</tr>';
+    }).join('');
+  }
+}
+
+/* ════════════ RE-RENDER ON LANGUAGE CHANGE ════════════ */
+function renderAll() {
+  renderOverviewTable();
+  // preserve current district filter via explicit data-filter
+  const activeFilter = document.querySelector('.filter-btn.active');
+  const filterKey = activeFilter ? (activeFilter.dataset.filter || 'all') : 'all';
+  renderDistrictCards(filterKey);
+  renderAllocationTable();
+  renderOutcomes();
+  renderBudget();
+  renderTimeline();
+  renderContacts();
+  renderSpendDown();
+  // Re-init charts so legend labels translate alongside the rest of the UI
+  if (typeof Chart !== 'undefined') initCharts();
+}
+
+/* ════════════ INIT ════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderAll();
+  requestAnimationFrame(() => initCharts());
+});
+</script>
+</body>
+</html>
+
+    kpi_grant_tier:'Grant Tier',
+    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_colleges:'Participating Colleges',
+    kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
+    kpi_faculty_target:'Faculty Target',
+    kpi_faculty_target_sub:'Trained across the district by Year 2',
