@@ -265,11 +265,23 @@
 
     /* BUDGET — Y1/Y2 totals at top, full line items below (Indirect kept as-is) */
     .budget-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
+    .budget-grid.budget-grid--2col { grid-template-columns:1fr 1fr; gap:18px; }
+    @media (max-width:880px) { .budget-grid.budget-grid--2col { grid-template-columns:1fr; } }
     .budget-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition); }
     .budget-card:hover { box-shadow:var(--shadow-md); }
     .budget-card-header { background:var(--ccc-darker-blue); padding:12px 16px; display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
     .budget-card-name { font-size:13px; font-weight:700; color:#fff; letter-spacing:-0.005em; }
     .budget-card-total { font-size:11px; color:var(--ccc-gold); font-weight:600; white-space:nowrap; }
+    /* ════════════ New Budget card style (Y1/Y2 cards in Budget Breakdown) ════════════ */
+    .budget-card-head { background:var(--bg-surface); padding:18px 22px 16px; display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--border); position:relative; }
+    .budget-card-head::before { content:''; position:absolute; left:0; top:0; height:3px; width:100%; background:var(--ccc-dark-blue); }
+    .budget-card-head.accent::before { background:var(--ccc-gold); }
+    .budget-card-head .budget-card-name { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--ccc-dark-blue); letter-spacing:-0.012em; }
+    [data-theme="dark"] .budget-card-head .budget-card-name { color:var(--accent-light); }
+    .budget-card-head .budget-card-dates { font-size:11.5px; color:var(--text-muted); margin-top:2px; letter-spacing:0.02em; }
+    .budget-card-head .budget-card-total { font-size:14px; color:var(--ccc-dark-blue); font-weight:700; white-space:nowrap; }
+    [data-theme="dark"] .budget-card-head .budget-card-total { color:var(--accent-light); }
+    .budget-note { padding:12px 22px 16px; font-size:12.5px; color:var(--text-muted); border-top:1px dashed var(--border); margin-top:8px; line-height:1.5; }
 
     .budget-year-summary { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); padding:1px 0; }
     .budget-year-pill { background:var(--bg-surface-2); padding:11px 14px; display:flex; flex-direction:column; gap:2px; }
@@ -791,8 +803,16 @@
 
       <!-- BUDGET -->
       <div id="section-budget" class="section">
-        <div class="page-header"><h2 data-i18n="budget_title">Budget Breakdown</h2><p data-i18n="budget_sub">Object-code expenditures split across Year 1 (Jan 2026 – Jun 2027) and Year 2 (Jul 2027 – Jun 2028). Indirect costs are folded into each year proportionally.</p></div>
-        <div class="budget-grid" id="budget-grid"></div>
+        <div class="page-header"><h2 data-i18n="budget_title">Budget Breakdown</h2><p data-i18n="budget_sub">Total award $100,000 split across two budget years. Indirect line ($4,762) is 5% of direct costs ($95,238).</p></div>
+
+        <div class="kpi-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Total Award</div><div class="kpi-value blue">$100,000</div><div class="kpi-sub">Tier 2 award</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Direct Costs</div><div class="kpi-value medium-blue">$95,238</div><div class="kpi-sub">95% of total</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Indirect (7000)</div><div class="kpi-value gold">$4,762</div><div class="kpi-sub">5% of direct</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label">Y1 / Y2 Split</div><div class="kpi-value grey">63% / 37%</div><div class="kpi-sub">$62,627 / $37,373</div></div>
+        </div>
+
+        <div class="budget-grid budget-grid--2col" id="budget-grid"></div>
       </div>
 
       <!-- TIMELINE -->
@@ -1653,42 +1673,49 @@ function renderOutcomes() {
     </div>`).join('');
 }
 
-/* ════════════ BUDGET — Year 1 / Year 2 totals at top, full line items (incl. Indirect) below ════════════ */
+/* ════════════ BUDGET — Year 1 / Year 2 cards with object-code lines, share bars, and a note ════════════ */
 function renderBudget() {
   const grid = document.getElementById('budget-grid');
   if (!grid) return;
-  grid.innerHTML = districts.map(d => {
-    const lines = Object.entries(d.budgetHighlights);
+  const d = districts[0];
+  // AHC budget line items per project year (Y1 = FY 2025-26 + FY 2026-27, Y2 = FY 2027-28)
+  const Y1 = [
+    { code:'1000', label:'1000 — Instructional Salaries',   amount: 30720 },
+    { code:'3000', label:'3000 — Employee Benefits',        amount:  6666 },
+    { code:'4000', label:'4000 — Supplies & Materials',     amount:   759 },
+    { code:'5000', label:'5000 — Other Operating & Services', amount: 21500 },
+    { code:'7000', label:'7000 — Indirect',                 amount:  2982 }
+  ];
+  const Y2 = [
+    { code:'1000', label:'1000 — Instructional Salaries',   amount: 15360 },
+    { code:'3000', label:'3000 — Employee Benefits',        amount:  3333 },
+    { code:'4000', label:'4000 — Supplies & Materials',     amount:   400 },
+    { code:'5000', label:'5000 — Other Operating & Services', amount: 16500 },
+    { code:'7000', label:'7000 — Indirect',                 amount:  1780 }
+  ];
+  const Y1_TOTAL = d.yearlyBudget.y1;
+  const Y2_TOTAL = d.yearlyBudget.y2;
+  const Y1_NOTE = 'Y1 (18 months) covers framework development, the first DRS training cohort, and the launch of the Faculty Mentorship Model. The 5000 line carries the mentorship-development and equity-specialist contracts.';
+  const Y2_NOTE = 'Y2 (12 months) emphasizes mentees in full training cycle, dissemination travel, and a second DRS cohort. The 5000 line stays heavy with the equity-specialist contract continuing through close-out.';
+  const renderLines = (rows, total) => rows.map(r => {
+    const isIndirect = r.code === '7000';
+    const cls = isIndirect ? ' indirect-line' : '';
+    const pct = total > 0 ? ((r.amount / total) * 100).toFixed(1) : 0;
     return `
-      <div class="budget-card">
-        <div class="budget-card-header">
-          <div class="budget-card-name">${d.shortName}</div>
-          <div class="budget-card-total">${fmt(d.funding)} total</div>
-        </div>
-        <div class="budget-year-summary">
-          <div class="budget-year-pill">
-            <div class="budget-year-pill-label">${t('th_y1')}</div>
-            <div class="budget-year-pill-dates">${t('y1_window_short')}</div>
-            <div class="budget-year-pill-amount">${fmt(d.yearlyBudget.y1)}</div>
-          </div>
-          <div class="budget-year-pill">
-            <div class="budget-year-pill-label">${t('th_y2')}</div>
-            <div class="budget-year-pill-dates">${t('y2_window_short')}</div>
-            <div class="budget-year-pill-amount">${fmt(d.yearlyBudget.y2)}</div>
-          </div>
-        </div>
-        <div class="budget-lines-wrap">
-          ${lines.map(([label, amt]) => {
-            const isIndirect = /\(7000\)|indirect/i.test(label);
-            const cls = isIndirect ? ' indirect-line' : '';
-            const pct = ((amt / d.funding) * 100).toFixed(1);
-            return `
-              <div class="budget-line${cls}"><span class="budget-line-label">${label}</span><span class="budget-line-amount">${fmt(amt)}</span></div>
-              <div class="budget-line-bar"><div class="budget-line-bar-fill" style="width:${pct}%;${isIndirect ? 'background:var(--ccc-dark-gold);' : ''}"></div></div>`;
-          }).join('')}
-        </div>
-      </div>`;
+      <div class="budget-line${cls}"><span class="budget-line-label">${r.label}</span><span class="budget-line-amount">${fmt(r.amount)}</span></div>
+      <div class="budget-line-bar"><div class="budget-line-bar-fill" style="width:${pct}%;${isIndirect ? 'background:var(--ccc-dark-gold);' : ''}"></div></div>`;
   }).join('');
+  grid.innerHTML = `
+    <div class="budget-card">
+      <div class="budget-card-head"><div><div class="budget-card-name">Year 1</div><div class="budget-card-dates">Jan 2026 – Jun 2027</div></div><div class="budget-card-total">${fmt(Y1_TOTAL)}</div></div>
+      <div class="budget-lines-wrap">${renderLines(Y1, Y1_TOTAL)}</div>
+      <div class="budget-note">${Y1_NOTE}</div>
+    </div>
+    <div class="budget-card">
+      <div class="budget-card-head accent"><div><div class="budget-card-name">Year 2</div><div class="budget-card-dates">Jul 2027 – Jun 2028</div></div><div class="budget-card-total">${fmt(Y2_TOTAL)}</div></div>
+      <div class="budget-lines-wrap">${renderLines(Y2, Y2_TOTAL)}</div>
+      <div class="budget-note">${Y2_NOTE}</div>
+    </div>`;
 }
 
 /* ════════════ TIMELINE — 2 years ════════════ */
