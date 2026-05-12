@@ -129,6 +129,17 @@
     .page-header h2 { font-family:var(--font-display); font-size:26px; font-weight:600; color:var(--ccc-dark-blue); line-height:1.2; margin-bottom:4px; }
     [data-theme="dark"] .page-header h2 { color:var(--accent-light); }
     .page-header p { font-size:14px; color:var(--text-muted); }
+
+    /* ════════════ HEADLINE TICKER under the IBP Grant Initiative Overview title ════════════ */
+    .overview-ticker { position:relative; overflow:hidden; margin:6px 0 4px; padding:2px 0; -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%); }
+    .overview-ticker-track { display:inline-flex; align-items:center; gap:80px; padding-right:80px; white-space:nowrap; animation:overview-ticker-scroll 38s linear infinite; will-change:transform; }
+    .overview-ticker:hover .overview-ticker-track,
+    .overview-ticker:focus-within .overview-ticker-track { animation-play-state:paused; }
+    .overview-ticker-item { font-size:14px; color:var(--text-muted); font-weight:500; letter-spacing:0.005em; }
+    .overview-ticker-item::before { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ccc-gold); margin-right:14px; transform:translateY(-2px); vertical-align:middle; }
+    @keyframes overview-ticker-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .overview-ticker-track { animation:none; } }
+
     .grant-meta { background:var(--ccc-dark-blue); border-radius:var(--radius-lg); padding:14px 20px; display:flex; flex-wrap:wrap; gap:24px; align-items:center; margin-bottom:24px; }
     .grant-meta-item { display:flex; flex-direction:column; gap:2px; }
     .grant-meta-item label { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.5); }
@@ -507,7 +518,12 @@
       <div id="section-overview" class="section active">
         <div class="page-header">
           <h2 data-i18n="overview_title">Program Overview</h2>
-          <p data-i18n="overview_sub">Allan Hancock Joint Community College District — Tier 2 grantee, Professional Development & EEO Representative Programs</p>
+          <div class="overview-ticker" aria-label="Program overview headline">
+            <div class="overview-ticker-track">
+              <span class="overview-ticker-item" data-i18n="overview_sub">Allan Hancock Joint Community College District — Tier 2 grantee, Professional Development & EEO Representative Programs</span>
+              <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Allan Hancock Joint Community College District — Tier 2 grantee, Professional Development & EEO Representative Programs</span>
+            </div>
+          </div>
         </div>
 
         <div class="grant-meta">
