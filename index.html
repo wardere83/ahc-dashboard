@@ -386,10 +386,11 @@
     .cccco-wordmark--white { filter:drop-shadow(0 1px 2px rgba(0,0,0,0.08)); }
     .logo-divider { height:1px; background:rgba(255,255,255,0.16); margin:14px 0 12px; }
     .logo-attribution { font-size:9.5px; color:rgba(255,255,255,0.55); letter-spacing:0.06em; text-transform:uppercase; margin-top:8px; line-height:1.5; }
-    .cccco-topbar-stamp { display:flex; align-items:center; gap:8px; padding:0 8px 0 4px; height:36px; border-radius:18px; border:1px solid var(--border); background:var(--bg-surface); }
-    .cccco-topbar-stamp img { height:24px; width:auto; display:block; }
-    .cccco-topbar-stamp .cccco-stamp-label { white-space:nowrap; padding-right:4px; font-size:11px; font-weight:600; letter-spacing:0.04em; color:var(--ccc-dark-blue); text-transform:uppercase; }
-    @media (max-width:760px) { .cccco-topbar-stamp .cccco-stamp-label { display:none; } }
+    .cccco-topbar-stamp { display:inline-flex; align-items:center; padding:6px 14px; height:44px; border-radius:22px; border:1px solid var(--border); background:var(--bg-surface); box-shadow:0 1px 2px rgba(0,47,109,0.04); transition:box-shadow .15s ease, border-color .15s ease; }
+    .cccco-topbar-stamp:hover { box-shadow:0 2px 6px rgba(0,47,109,0.08); border-color:rgba(0,47,109,0.2); }
+    .cccco-topbar-stamp img { height:30px; width:auto; display:block; object-fit:contain; }
+    .cccco-topbar-stamp .cccco-stamp-label { display:none; }
+    @media (max-width:760px) { .cccco-topbar-stamp { padding:5px 10px; height:38px; } .cccco-topbar-stamp img { height:24px; } }
   </style>
 </head>
 <body>
