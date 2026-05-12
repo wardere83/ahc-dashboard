@@ -140,12 +140,12 @@
     .page-header p { font-size:14px; color:var(--text-muted); }
 
     /* ════════════ HEADLINE TICKER under the IBP Grant Initiative Overview title ════════════ */
-    .overview-ticker { position:relative; overflow:hidden; margin:6px 0 4px; padding:2px 0; -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%); }
-    .overview-ticker-track { display:inline-flex; align-items:center; gap:80px; padding-right:80px; white-space:nowrap; animation:overview-ticker-scroll 38s linear infinite; will-change:transform; }
+    .overview-ticker { position:relative; overflow:hidden; margin-top:12px; padding:2px 0; -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%); }
+    .overview-ticker-track { display:inline-flex; align-items:center; gap:64px; padding-right:64px; white-space:nowrap; animation:overview-ticker-scroll 20s linear infinite; will-change:transform; }
     .overview-ticker:hover .overview-ticker-track,
     .overview-ticker:focus-within .overview-ticker-track { animation-play-state:paused; }
-    .overview-ticker-item { font-size:14px; color:var(--text-muted); font-weight:500; letter-spacing:0.005em; }
-    .overview-ticker-item::before { content:""; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ccc-gold); margin-right:14px; transform:translateY(-2px); vertical-align:middle; }
+    .overview-hero .overview-ticker-item { font-size:14.5px; color:rgba(255,255,255,0.92); font-weight:500; letter-spacing:0.005em; }
+    .overview-hero .overview-ticker-item::before { content:""; display:inline-block; width:7px; height:7px; border-radius:50%; background:#FFB600; margin-right:14px; transform:translateY(-2px); vertical-align:middle; box-shadow:0 0 0 3px rgba(255,182,0,0.16); }
     @keyframes overview-ticker-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
     @media (prefers-reduced-motion: reduce) { .overview-ticker-track { animation:none; } }
 
@@ -483,6 +483,16 @@
     .cccco-topbar-stamp img { height:26px; width:auto; display:block; object-fit:contain; }
     .cccco-topbar-stamp .cccco-stamp-label { display:none; }
     @media (max-width:760px) { .cccco-topbar-stamp { padding:4px 10px; height:34px; } .cccco-topbar-stamp img { height:20px; } } @media (max-width:520px) { .cccco-topbar-stamp { display:none; } }
+
+    /* Overview hero card — wraps title + ticker on dark slate */
+    .overview-hero { background:linear-gradient(135deg,#0F172A 0%,#1E293B 100%); border-radius:var(--radius-lg); padding:22px 26px 18px; margin-bottom:24px; box-shadow:0 8px 24px rgba(15,23,42,0.18),0 2px 6px rgba(15,23,42,0.10); border:1px solid rgba(255,255,255,0.06); }
+    .overview-hero h2 { font-family:var(--font-display); font-size:26px; font-weight:600; color:#FFFFFF; line-height:1.2; margin:0; letter-spacing:-0.02em; }
+    .overview-hero .overview-ticker { margin-top:12px; }
+    [data-theme="dark"] .overview-hero { background:linear-gradient(135deg,#0B1220 0%,#152033 100%); }
+    @media (max-width:760px) {
+      .overview-hero { padding:18px 18px 14px; }
+      .overview-hero h2 { font-size:22px; }
+    }
   </style>
 </head>
 <body>
@@ -593,11 +603,12 @@
 
       <!-- OVERVIEW -->
       <div id="section-overview" class="section active">
-        <div class="page-header">
+        <div class="overview-hero">
           <h2 data-i18n="overview_title">Program Overview</h2>
           <div class="overview-ticker" aria-label="Program overview headline">
             <div class="overview-ticker-track">
               <span class="overview-ticker-item" data-i18n="overview_sub">Allan Hancock Joint Community College District — Tier 2 grantee, Professional Development & EEO Representative Programs</span>
+              <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Allan Hancock Joint Community College District — Tier 2 grantee, Professional Development & EEO Representative Programs</span>
               <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Allan Hancock Joint Community College District — Tier 2 grantee, Professional Development & EEO Representative Programs</span>
             </div>
           </div>
