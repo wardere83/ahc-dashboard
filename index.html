@@ -1720,21 +1720,38 @@ function toggleSidebar() { document.getElementById('sidebar').classList.toggle('
 function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
 
 function showSection(id, clickedBtn, isMobile) {
+  const sectionEl = document.getElementById('section-' + id);
+  if (!sectionEl) return;
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById('section-' + id).classList.add('active');
-  if (!isMobile) {
-    document.querySelectorAll('.sidebar .nav-item').forEach(n => n.classList.remove('active'));
-    if (clickedBtn) clickedBtn.classList.add('active');
-  }
-  document.querySelectorAll('[data-mobile-nav]').forEach(n => n.classList.remove('active'));
-  if (isMobile && clickedBtn) clickedBtn.classList.add('active');
+  sectionEl.classList.add('active');
+  // Sync sidebar highlight to the section being shown — covers refresh / deep-link too
+  document.querySelectorAll('.sidebar .nav-item').forEach(n => {
+    const onclick = n.getAttribute('onclick') || '';
+    n.classList.toggle('active', onclick.includes("'" + id + "'"));
+  });
+  document.querySelectorAll('[data-mobile-nav]').forEach(n => {
+    const onclick = n.getAttribute('onclick') || '';
+    n.classList.toggle('active', onclick.includes("'" + id + "'"));
+  });
+  if (clickedBtn) clickedBtn.classList.add('active');
   if (isMobile) closeSidebar();
-  if (isMobile) {
-    document.querySelectorAll('.sidebar .nav-item').forEach(n => {
-      const onclick = n.getAttribute('onclick') || '';
-      n.classList.toggle('active', onclick.includes("'" + id + "'"));
-    });
-  }
+  // Persist current tab so refresh/back keeps the user where they were
+  try {
+    if (history && history.replaceState) history.replaceState(null, '', '#' + id);
+    else window.location.hash = '#' + id;
+    localStorage.setItem('ahcActiveSection', id);
+  } catch (e) { /* no-op */ }
+}
+
+// Pick the section to show on initial load: URL hash → localStorage → default
+function resolveInitialSection() {
+  try {
+    const hash = (window.location.hash || '').replace(/^#/, '').trim();
+    if (hash && document.getElementById('section-' + hash)) return hash;
+    const stored = localStorage.getItem('ahcActiveSection');
+    if (stored && document.getElementById('section-' + stored)) return stored;
+  } catch (e) { /* no-op */ }
+  return 'overview';
 }
 
 /* ════════════ OVERVIEW TABLE ════════════ */
@@ -2277,6 +2294,14 @@ function renderAll() {
 document.addEventListener('DOMContentLoaded', () => {
   renderAll();
   requestAnimationFrame(() => initCharts());
+  // Restore the user's last active tab from URL hash or localStorage
+  const initial = resolveInitialSection();
+  if (initial && initial !== 'overview') showSection(initial);
+  // React to manual hash changes (e.g. browser back/forward)
+  window.addEventListener('hashchange', () => {
+    const id = (window.location.hash || '').replace(/^#/, '').trim();
+    if (id && document.getElementById('section-' + id)) showSection(id);
+  });
 });
 </script>
 </body>
