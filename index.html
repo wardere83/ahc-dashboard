@@ -264,7 +264,48 @@
     .outcome-list li::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ccc-medium-blue); margin-top:6px; flex-shrink:0; }
 
     /* BUDGET — Y1/Y2 totals at top, full line items below (Indirect kept as-is) */
-    .budget-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
+
+    /* ════════════ GOALS & OBJECTIVES ════════════ */
+    .goals-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:24px; }
+    @media (max-width:1080px) { .goals-grid { grid-template-columns:1fr; } }
+    .goal-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; transition:box-shadow var(--transition),transform var(--transition); }
+    .goal-card:hover { box-shadow:var(--shadow-md); transform:translateY(-1px); }
+    .goal-card-head { position:relative; padding:20px 22px 18px; border-bottom:1px solid var(--border); background:var(--bg-surface); }
+    .goal-card-head::before { content:""; position:absolute; left:0; top:0; bottom:0; width:5px; }
+    .goal-card--g1 .goal-card-head::before { background:var(--ccc-dark-blue); }
+    .goal-card--g2 .goal-card-head::before { background:var(--ccc-gold); }
+    .goal-card-eyebrow { display:flex; align-items:center; gap:10px; font-size:11.5px; color:var(--text-muted); margin-bottom:10px; letter-spacing:0.04em; }
+    .goal-card-chip { display:inline-block; padding:3px 10px; border-radius:12px; color:#fff; font-size:10.5px; font-weight:700; letter-spacing:0.08em; }
+    .goal-card--g1 .goal-card-chip { background:var(--ccc-dark-blue); }
+    .goal-card--g2 .goal-card-chip { background:var(--ccc-dark-gold); }
+    .goal-card-title { font-family:var(--font-display); font-size:16.5px; line-height:1.35; font-weight:600; color:var(--ccc-dark-blue); margin:0; letter-spacing:-0.012em; }
+    [data-theme="dark"] .goal-card-title { color:var(--accent-light); }
+    .goal-card-body { padding:18px 22px 22px; display:flex; flex-direction:column; gap:18px; }
+    .goal-section { display:flex; flex-direction:column; gap:8px; }
+    .goal-section-title { font-size:11px; font-weight:700; color:var(--ccc-dark-blue); letter-spacing:0.08em; text-transform:uppercase; margin:0; padding-bottom:6px; border-bottom:1px dashed var(--border); }
+    [data-theme="dark"] .goal-section-title { color:var(--accent-light); }
+    .goal-list { margin:0; padding-left:18px; font-size:13px; line-height:1.55; color:var(--text-secondary); display:flex; flex-direction:column; gap:5px; }
+    .goal-list li::marker { color:var(--ccc-medium-blue); }
+    .goal-outcomes { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+    .goal-outcomes > li { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:10px 12px; }
+    .goal-outcome-head { display:flex; gap:10px; align-items:flex-start; }
+    .goal-outcome-num { flex-shrink:0; display:inline-flex; width:28px; height:28px; align-items:center; justify-content:center; border-radius:50%; font-size:11px; font-weight:700; color:#fff; letter-spacing:0.02em; }
+    .goal-card--g1 .goal-outcome-num { background:var(--ccc-medium-blue); }
+    .goal-card--g2 .goal-outcome-num { background:var(--ccc-dark-gold); }
+    .goal-outcome-text { font-size:13px; font-weight:600; color:var(--text-primary); line-height:1.45; }
+    .goal-outcome-method { margin-top:6px; padding-left:38px; font-size:12px; color:var(--text-muted); line-height:1.45; }
+    .goal-outcome-method-tag { display:inline-block; padding:1px 7px; border-radius:6px; background:rgba(0,47,109,0.08); color:var(--ccc-dark-blue); font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-right:8px; }
+    [data-theme="dark"] .goal-outcome-method-tag { background:rgba(64,180,229,0.16); color:var(--accent-light); }
+    .goal-timeline { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+    .goal-timeline > li { display:grid; grid-template-columns:170px 1fr; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+    .goal-timeline > li:last-child { border-bottom:none; }
+    .goal-timeline-when { font-size:11.5px; font-weight:700; color:var(--ccc-dark-blue); letter-spacing:0.04em; text-transform:uppercase; padding-top:2px; }
+    [data-theme="dark"] .goal-timeline-when { color:var(--accent-light); }
+    .goal-timeline-what { font-size:13px; color:var(--text-primary); line-height:1.5; }
+    .goal-timeline-who { font-size:12px; color:var(--text-muted); line-height:1.5; grid-column:2; padding-top:2px; }
+    @media (max-width:520px) { .goal-timeline > li { grid-template-columns:1fr; } .goal-timeline-who { grid-column:1; } }
+    .mt-24 { margin-top:24px; }
+        .budget-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
     .budget-grid.budget-grid--2col { grid-template-columns:1fr 1fr; gap:18px; }
     @media (max-width:880px) { .budget-grid.budget-grid--2col { grid-template-columns:1fr; } }
     .budget-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition); }
@@ -588,33 +629,136 @@
         </div>
       </div>
 
-      <!-- FUND ALLOCATIONS -->
-      <div id="section-fund-allocations" class="section">
+      <!-- GOALS & OBJECTIVES -->
+      <div id="section-goals" class="section">
         <div class="page-header">
-          <h2 data-i18n="funds_title">Budget Allocation</h2>
-          <p data-i18n="funds_sub">Detailed allocation of Allan Hancock College’s $100,000 Tier 2 award</p>
-        </div>
-        <div class="alloc-kpi-row">
-          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_total_allocated">Total Allocated</div><div class="kpi-value blue">$100,000</div><div class="kpi-sub" data-i18n="kpi_total_allocated_sub">Tier 2 award</div></div>
-          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_direct_costs">Direct Costs</div><div class="kpi-value medium-blue">$95,238</div><div class="kpi-sub" data-i18n="kpi_direct_costs_sub">95.24% of total</div></div>
-          <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label" data-i18n="kpi_indirect_costs">Indirect (4.76%)</div><div class="kpi-value gold">$4,762</div><div class="kpi-sub" data-i18n="kpi_indirect_costs_sub">Object code 7000</div></div>
-          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_y1y2_split">Year 1 / Year 2</div><div class="kpi-value blue">63% / 37%</div><div class="kpi-sub" data-i18n="kpi_y1y2_split_sub">$62,627 / $37,373</div></div>
+          <h2 data-i18n="goals_title">Goals &amp; Objectives</h2>
+          <p data-i18n="goals_sub">The two anchor goals from the AHC NOVA workplan (Section 2.1) — each with its activities, measurable outcomes, assessment plan, and responsible leadership.</p>
         </div>
 
-        <div class="chart-grid">
-          <div class="chart-card">
-            <div class="chart-header"><div class="chart-title" data-i18n="chart_direct_indirect">Direct vs. Indirect</div><div class="chart-label">% of Total</div></div>
-            <div class="chart-wrap"><canvas id="tierSplitChart"></canvas></div>
-          </div>
-          <div class="chart-card">
-            <div class="chart-header"><div class="chart-title" data-i18n="chart_y1y2">Year 1 vs. Year 2 Spend</div><div class="chart-label" data-i18n="chart_by_objcode">By Object Code</div></div>
-            <div class="chart-wrap"><canvas id="y1y2Chart"></canvas></div>
-          </div>
+        <div class="kpi-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Project Goals</div><div class="kpi-value blue">2</div><div class="kpi-sub">DRS + Faculty Mentorship</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">DRS Trained</div><div class="kpi-value medium-blue">20</div><div class="kpi-sub">Over two cohorts</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Mentor Cohort</div><div class="kpi-value gold">4 + 8</div><div class="kpi-sub">Mentors + mentees</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label">Measurable Outcomes</div><div class="kpi-value grey">8</div><div class="kpi-sub">4 per project goal</div></div>
         </div>
 
-        <div class="card">
-          <div class="card-header"><div class="card-title" data-i18n="table_alloc_detail">Line-Item Expenditure Detail</div><div class="chart-label" data-i18n="table_alloc_sub">Per the Allan Hancock CCD application — totals to $100,000</div></div>
-          <div class="data-table-wrap"><table class="data-table" id="allocation-table"></table></div>
+        <div class="goals-grid">
+
+          <!-- GOAL 1 -->
+          <article class="goal-card goal-card--g1">
+            <header class="goal-card-head">
+              <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 1</span><span>Classified Hiring Equity</span></div>
+              <h3 class="goal-card-title">Pilot a classified-staff Diversity Resource Specialist (DRS) program to increase equity in hiring and diversify classified hiring committee participation.</h3>
+            </header>
+            <div class="goal-card-body">
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Activities</h4>
+                <ul class="goal-list">
+                  <li>Develop a DRS training handbook and toolkit.</li>
+                  <li>Train <strong>10 classified staff annually</strong>, representing each classified group family (craft/services, technical, clerical, professional).</li>
+                  <li>Create sample one-pagers outlining equivalent skills for use in hiring committees.</li>
+                  <li>Assign each trained DRS to serve on <strong>two hiring committees per semester</strong>.</li>
+                  <li>Present training materials to DEIA/EEO Committee and CSEA for feedback.</li>
+                  <li>Conduct data collection and analysis on DRS impact and classified hiring diversity.</li>
+                </ul>
+              </section>
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Measurable Outcomes &amp; Assessment</h4>
+                <ol class="goal-outcomes">
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">01</span><div class="goal-outcome-text">20 classified staff trained over two years.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Sign-in sheets, training evaluations.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">02</span><div class="goal-outcome-text">DRS serve on at least 40 hiring committees.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Committee participation logs.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">03</span><div class="goal-outcome-text">Increased diversity awareness and reduced bias in hiring.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Pre/post surveys, review of interview questions, and applicant pool diversity.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">04</span><div class="goal-outcome-text">Improved representation in CSEA hires.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Compare 2023&ndash;25 vs. 2025&ndash;27 CSEA hiring data.</div>
+                  </li>
+                </ol>
+              </section>
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Timeline &amp; Responsible Persons</h4>
+                <ul class="goal-timeline">
+                  <li><span class="goal-timeline-when">Fall 2025 – Spring 2026</span><span class="goal-timeline-what">Develop training materials &amp; recruit participants.</span><span class="goal-timeline-who">Director and Assistant Director of HR</span></li>
+                  <li><span class="goal-timeline-when">Fall 2026 – Spring 2027</span><span class="goal-timeline-what">Deliver training, implement pilot, collect data.</span><span class="goal-timeline-who">Director and Assistant Director of HR</span></li>
+                  <li><span class="goal-timeline-when">Fall 2027 – Spring 2028</span><span class="goal-timeline-what">Evaluate outcomes, present findings.</span><span class="goal-timeline-who">Assistant Director, HR &amp; Labor Relations</span></li>
+                </ul>
+              </section>
+
+            </div>
+          </article>
+
+          <!-- GOAL 2 -->
+          <article class="goal-card goal-card--g2">
+            <header class="goal-card-head">
+              <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 2</span><span>Faculty Mentorship Model</span></div>
+              <h3 class="goal-card-title">Develop a faculty mentorship model to expand professional development and promote nontraditional career pathways.</h3>
+            </header>
+            <div class="goal-card-body">
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Activities</h4>
+                <ul class="goal-list">
+                  <li>Identify and train <strong>four faculty mentors</strong> in inclusive pedagogy and leadership.</li>
+                  <li>Design a mentorship program focused on andragogy, curriculum design, classroom management, and reflective instruction.</li>
+                  <li>Provide <strong>four training sessions</strong> for faculty mentees.</li>
+                  <li>Support mentors and mentees in analyzing student-success data and setting instructional goals.</li>
+                  <li>Offer cross-functional workshops for faculty, staff, and administrators.</li>
+                </ul>
+              </section>
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Measurable Outcomes &amp; Assessment</h4>
+                <ol class="goal-outcomes">
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">01</span><div class="goal-outcome-text">Four faculty mentors trained and leading sessions.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Training completion; mentor-developed materials.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">02</span><div class="goal-outcome-text">Eight faculty mentees complete training and implement changes.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Self-reflection portfolios, revised instructional plans.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">03</span><div class="goal-outcome-text">20% of staff and 10% of faculty participate in at least one PD workshop per semester.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Sign-in sheets, workshop evaluations.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">04</span><div class="goal-outcome-text">Improved student success in mentee courses.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Disaggregated student data (race / gender) before and after training.</div>
+                  </li>
+                </ol>
+              </section>
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Timeline &amp; Responsible Persons</h4>
+                <ul class="goal-timeline">
+                  <li><span class="goal-timeline-when">Spring 2026</span><span class="goal-timeline-what">Mentor training and program design.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
+                  <li><span class="goal-timeline-when">Summer 2026</span><span class="goal-timeline-what">Launch mentorship program.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
+                  <li><span class="goal-timeline-when">Fall 2026 – Spring 2028</span><span class="goal-timeline-what">Deliver training, monitor progress, analyze outcomes.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
+                </ul>
+              </section>
+
+            </div>
+          </article>
+
+        </div>
+
+        <div class="card mt-24">
+          <div class="card-header"><div class="card-title">How the goals connect</div><div class="chart-label">Application Narrative · Section 1.3</div></div>
+          <div class="card-body">
+            <p style="font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0;">Together, these two goals form a cohesive, research-supported approach to advancing equity at Allan Hancock College: equitable hiring practices for the most demographically representative employee group on campus (65% BIPOC, 48% Latinx classified staff), paired with equity-minded instruction that improves outcomes for a student body that is 70% Hispanic / Latino and 64% economically disadvantaged.</p>
+          </div>
         </div>
       </div>
 
@@ -960,9 +1104,10 @@ const fmt = v => '$' + Math.round(v).toLocaleString();
 ════════════════════════════════════════════════════════════════ */
 const translations = {
   en: {
-    nav_overview:'Overview', nav_funds:'Budget Allocation', nav_districts:'Project Profile',
+    nav_overview:'Overview', nav_goals:'Goals & Objectives', nav_districts:'Project Profile',
     nav_outcomes:'Outcomes', nav_budget:'Budget Breakdown', nav_timeline:'Timeline', nav_contacts:'Contacts', nav_spenddown:'Spend-Down Monitor',
     topbar_title:'AHC Project',
+    goals_title:'Goals & Objectives', goals_sub:'The two anchor goals from the AHC NOVA workplan (Section 2.1) — each with its activities, measurable outcomes, assessment plan, and responsible leadership.',
     overview_title:'Program Overview', overview_sub:'Allan Hancock Joint Community College District — Tier 2 grantee, Professional Development & EEO Representative Programs. $100,000 award from the 2026–2028 EEO IBP grant cycle.',
     meta_monitor:'Grant Monitor', meta_grantid:'Grant ID', meta_start:'Start', meta_duration:'Funding Cycle', meta_status:'Status',
     kpi_total_funding:'Total Grant Funding', kpi_across:'PD & EEO Representative Programs',
@@ -1063,7 +1208,7 @@ const translations = {
     kpi_mentor_target:'Mentor Cohort',
     kpi_mentor_target_sub:'4 faculty mentors · 8 mentees', kpi_grant_tier:'Grant Tier', kpi_grant_tier_sub:'2026–2028 EEO IBP', kpi_colleges:'Participating Colleges', kpi_colleges_sub:'Allan Hancock College · Santa Maria, CA', kpi_faculty_target:'Faculty Target', kpi_faculty_target_sub:'Trained across the district by Year 2',},
   es: {
-    nav_overview:'Resumen', nav_funds:'Asignaciones', nav_districts:'Perfil del Proyecto', nav_outcomes:'Resultados', nav_budget:'Presupuesto', nav_timeline:'Cronograma', nav_contacts:'Contactos', nav_spenddown:'Monitor de Gastos',
+    nav_overview:'Resumen', nav_goals:'Metas y Objetivos', nav_districts:'Perfil del Proyecto', nav_outcomes:'Resultados', nav_budget:'Presupuesto', nav_timeline:'Cronograma', nav_contacts:'Contactos', nav_spenddown:'Monitor de Gastos',
     topbar_title:'Proyecto AHC',
     overview_title:'Resumen del Programa', overview_sub:'Allan Hancock Joint Community College District — beneficiario de Nivel 2, Programas de Desarrollo Profesional y Representantes de EEO. Subvención de $100,000 del ciclo EEO IBP 2026–2028.',
     meta_monitor:'Monitor de Subvención', meta_grantid:'ID de Subvención', meta_start:'Inicio', meta_duration:'Ciclo de Financiamiento', meta_status:'Estado',
@@ -1152,7 +1297,7 @@ const translations = {
     kpi_faculty_target:'Meta de Docentes',
     kpi_faculty_target_sub:'Capacitados en el distrito al Año 2',},
   vi: {
-    nav_overview:'Tổng quan', nav_funds:'Phân bổ vốn', nav_districts:'Hồ sơ Dự án', nav_outcomes:'Kết quả', nav_budget:'Ngân sách', nav_timeline:'Lịch trình', nav_contacts:'Liên lạc', nav_spenddown:'Theo dõi Chi tiêu',
+    nav_overview:'Tổng quan', nav_goals:'Mục tiêu & Đối tượng', nav_districts:'Hồ sơ Dự án', nav_outcomes:'Kết quả', nav_budget:'Ngân sách', nav_timeline:'Lịch trình', nav_contacts:'Liên lạc', nav_spenddown:'Theo dõi Chi tiêu',
     topbar_title:'Dự án AHC',
     overview_title:'Tổng quan Chương trình', overview_sub:'Allan Hancock Joint Community College District — Người nhận Bậc 2, Chương trình Phát triển Chuyên môn và Đại diện EEO. Khoản tài trợ $100,000 từ chu kỳ EEO IBP 2026–2028.',
     meta_monitor:'Người giám sát', meta_grantid:'Mã tài trợ', meta_start:'Bắt đầu', meta_duration:'Chu kỳ tài trợ', meta_status:'Trạng thái',
@@ -1330,7 +1475,7 @@ const translations = {
     kpi_faculty_target:'هدف أعضاء هيئة التدريس',
     kpi_faculty_target_sub:'تدريب على مستوى المنطقة بنهاية السنة 2',},
   tl: {
-    nav_overview:'Pangkalahatang-tanaw', nav_funds:'Pagbibigay-pondo', nav_districts:'Profile ng Proyekto', nav_outcomes:'Mga Resulta', nav_budget:'Badyet', nav_timeline:'Iskedyul', nav_contacts:'Mga Kontak', nav_spenddown:'Spend-Down Monitor',
+    nav_overview:'Pangkalahatang-tanaw', nav_goals:'Mga Layunin at Mithiin', nav_districts:'Profile ng Proyekto', nav_outcomes:'Mga Resulta', nav_budget:'Badyet', nav_timeline:'Iskedyul', nav_contacts:'Mga Kontak', nav_spenddown:'Spend-Down Monitor',
     topbar_title:'AHC Project',
     overview_title:'Pangkalahatang-tanaw ng Programa', overview_sub:'Allan Hancock Joint Community College District — Tier 2 grantee, Professional Development at EEO Representative Programs. $100,000 grant mula sa 2026–2028 EEO IBP cycle.',
     meta_monitor:'Grant Monitor', meta_grantid:'ID ng Grant', meta_start:'Simula', meta_duration:'Funding Cycle', meta_status:'Katayuan',
@@ -1419,7 +1564,7 @@ const translations = {
     kpi_faculty_target:'Target na Faculty',
     kpi_faculty_target_sub:'Sanay sa buong distrito sa Year 2',},
   zh: {
-    nav_overview:'總覽', nav_funds:'資金分配', nav_districts:'計畫簡介', nav_outcomes:'成果', nav_budget:'預算明細', nav_timeline:'時間表', nav_contacts:'聯絡資訊', nav_spenddown:'支出進度監測',
+    nav_overview:'總覽', nav_goals:'目標與宗旨', nav_districts:'計畫簡介', nav_outcomes:'成果', nav_budget:'預算明細', nav_timeline:'時間表', nav_contacts:'聯絡資訊', nav_spenddown:'支出進度監測',
     topbar_title:'AHC 計畫',
     overview_title:'計畫總覽',
     overview_sub:'本州平等就業機會 (EEO) 創新最佳實踐補助計畫的全州概覽,涵蓋加州 11 個社區大學學區。',
