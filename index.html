@@ -265,6 +265,21 @@
 
     /* BUDGET — Y1/Y2 totals at top, full line items below (Indirect kept as-is) */
 
+    /* ════════════ Year-filter tabs (Underspend Risk Alerts) ════════════ */
+    .year-filter-tabs { display:inline-flex; gap:4px; padding:3px; background:var(--bg-surface-2); border:1px solid var(--border); border-radius:24px; margin:0 0 14px; }
+    .year-filter-tab { background:transparent; border:none; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; letter-spacing:0.02em; color:var(--text-muted); cursor:pointer; transition:background var(--transition), color var(--transition); }
+    .year-filter-tab:hover { color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .year-filter-tab:hover { color:var(--accent-light); }
+    .year-filter-tab.active { background:var(--ccc-dark-blue); color:#fff; box-shadow:0 1px 2px rgba(0,47,109,0.18); }
+    [data-theme="dark"] .year-filter-tab.active { background:var(--accent-light); color:var(--ccc-darker-blue); }
+    .year-filter-tab:focus-visible { outline:2px solid var(--ccc-gold); outline-offset:2px; }
+    /* When a filter is active, hide rows that don't match in the spend-down table */
+    .spend-year-row[data-year-key],
+    .spend-line-row[data-year-key] { display:table-row; }
+    body[data-year-filter="y1"] .spend-year-row[data-year-key="y2"],
+    body[data-year-filter="y1"] .spend-line-row[data-year-key="y2"] { display:none; }
+    body[data-year-filter="y2"] .spend-year-row[data-year-key="y1"],
+    body[data-year-filter="y2"] .spend-line-row[data-year-key="y1"] { display:none; }
     /* ════════════ SPEND-DOWN — line-item detail rows ════════════ */
     .spend-year-row td { background:rgba(0,47,109,0.04); padding-top:12px; padding-bottom:12px; }
     [data-theme="dark"] .spend-year-row td { background:rgba(64,180,229,0.06); }
@@ -997,7 +1012,12 @@
             <span id="underspend-count" class="risk-badge high" data-i18n="calculating">Calculating...</span>
           </div>
           <div class="card-body">
-            <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 14px;line-height:1.5;" data-i18n="underspend_desc">The project is flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.</p>
+            <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 12px;line-height:1.5;" data-i18n="underspend_desc">The project is flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.</p>
+            <div class="year-filter-tabs" id="year-filter-tabs" role="tablist" aria-label="Filter by project year">
+              <button type="button" class="year-filter-tab active" data-year-filter="all"   onclick="setYearFilter('all',this)"  role="tab" aria-selected="true"  data-i18n="filter_combined">Combined View</button>
+              <button type="button" class="year-filter-tab"        data-year-filter="y1"    onclick="setYearFilter('y1',this)"   role="tab" aria-selected="false" data-i18n="filter_y1">Year 1</button>
+              <button type="button" class="year-filter-tab"        data-year-filter="y2"    onclick="setYearFilter('y2',this)"   role="tab" aria-selected="false" data-i18n="filter_y2">Year 2</button>
+            </div>
             <div id="underspend-chart-wrap" style="position:relative;height:240px;margin-bottom:14px;display:none;">
               <canvas id="underspendChart"></canvas>
             </div>
@@ -1124,6 +1144,7 @@ const translations = {
     contacts_title:'Project Contacts', contacts_sub:'Project leads, alternates, and fiscal reporters',
     spend_title:'Spend-Down Monitor',
     spend_sub:'Track grant expenditures across the 2-year funding cycle and flag districts at risk of underspending',
+    filter_combined:'Combined View', filter_y1:'Year 1', filter_y2:'Year 2',
     underspend_title:'⚠ Underspend Risk Alerts',
     calculating:'Calculating...',
     underspend_desc:'Districts get flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.',
@@ -1226,6 +1247,7 @@ const translations = {
     contacts_title:'Contactos de Distrito', contacts_sub:'Líderes de proyecto, alternos y reporteros fiscales',
     spend_title:'Monitor de Gastos',
     spend_sub:'Monitorear gastos de la subvención durante el ciclo de financiamiento de 2 años y marcar distritos con riesgo de subgasto',
+    filter_combined:'Vista Combinada', filter_y1:'Año 1', filter_y2:'Año 2',
     underspend_title:'⚠ Alertas de Riesgo de Subgasto',
     calculating:'Calculando...',
     underspend_desc:'Los distritos se marcan cuando su ritmo de gasto es Lento, Rápido o Subfinanciado. Establezca el ritmo en Moderado en la tabla para quitar la marca.',
@@ -1315,6 +1337,7 @@ const translations = {
     contacts_title:'Liên hệ quận', contacts_sub:'Trưởng dự án, người thay thế và báo cáo tài chính',
     spend_title:'Theo dõi Chi tiêu',
     spend_sub:'Theo dõi chi tiêu trong chu kỳ tài trợ 2 năm và đánh dấu các quận có nguy cơ chi tiêu thiếu',
+    filter_combined:'Chế độ Kết hợp', filter_y1:'Năm 1', filter_y2:'Năm 2',
     underspend_title:'⚠ Cảnh báo Rủi ro Chi tiêu Thiếu',
     calculating:'Đang tính...',
     underspend_desc:'Quận được đánh dấu khi tốc độ chi tiêu là Chậm, Nhanh hoặc Thiếu vốn. Đặt thành Vừa phải để gỡ cờ.',
@@ -1493,6 +1516,7 @@ const translations = {
     contacts_title:'Mga Kontak ng Distrito', contacts_sub:'Mga lider ng proyekto, kapalit, at fiscal reporter',
     spend_title:'Spend-Down Monitor',
     spend_sub:'Subaybayan ang gastos ng grant sa loob ng 2-taong funding cycle at i-flag ang mga distritong nasa panganib ng underspending',
+    filter_combined:'Combined View', filter_y1:'Year 1', filter_y2:'Year 2',
     underspend_title:'⚠ Underspend Risk Alerts',
     calculating:'Kinakalkula...',
     underspend_desc:'Naka-flag ang mga distrito kapag ang Spend Pace ay nakatakda sa Slow, Fast, o Underfunded. Itakda sa Moderate sa table upang alisin ang flag.',
@@ -2052,6 +2076,24 @@ const PACE_COLOR = {
 };
 const PACE_LABEL = { slow:'Slow', moderate:'Moderate', fast:'Fast' };
 
+// Current year filter for the Underspend Risk Alerts ('all' | 'y1' | 'y2')
+let currentYearFilter = (function(){
+  try { return localStorage.getItem('ahcYearFilter') || 'all'; } catch(e){ return 'all'; }
+})();
+function setYearFilter(filter, btn) {
+  if (filter !== 'all' && filter !== 'y1' && filter !== 'y2') filter = 'all';
+  currentYearFilter = filter;
+  try { localStorage.setItem('ahcYearFilter', filter); } catch(e){}
+  document.body.setAttribute('data-year-filter', filter);
+  document.querySelectorAll('.year-filter-tab').forEach(t => {
+    const isActive = t.dataset.yearFilter === filter;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  renderUnderspendList();
+  renderUnderspendChart();
+}
+
 // Flat list of line items across periods, each with a unique persistent ID
 function getAllLineItems() {
   const out = [];
@@ -2091,6 +2133,8 @@ function togglePeriodPace(btn, id) {
 
 function flaggedLineItems() {
   return getAllLineItems().filter(li => {
+    if (currentYearFilter === 'y1' && li.periodId !== 'y1') return false;
+    if (currentYearFilter === 'y2' && li.periodId !== 'y2') return false;
     const pace = periodPaces[li.id] || 'moderate';
     const isPaceFlag = pace !== 'moderate';
     const isStatusFlag = periodStatuses[li.id] === 'off';
@@ -2207,7 +2251,7 @@ function renderSpendDown() {
       const yearBandColor = p.id === 'y1' ? 'var(--ccc-dark-blue)' : 'var(--ccc-dark-gold)';
       // Header summary row: read-only totals for the year, no buttons (only line items carry Pace/Status)
       const headerRow =
-        '<tr class="spend-year-row">' +
+        '<tr class="spend-year-row" data-year-key="' + p.id + '">' +
           '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:14px;"><strong style="font-size:14px;color:var(--ccc-dark-blue);">' + p.label + '</strong><br><span style="font-size:11px;color:var(--text-muted)">' + p.dates + ' · ' + p.role + '</span></td>' +
           '<td class="amount" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
           '<td class="amount" style="font-weight:700;">' + pct + '% of total</td>' +
@@ -2225,7 +2269,7 @@ function renderSpendDown() {
         const pace = PACE_CYCLE.includes(periodPaces[liId]) ? periodPaces[liId] : 'moderate';
         const paceColor = PACE_COLOR[pace];
         const paceText  = t('pace_' + pace);
-        return '<tr class="spend-line-row">' +
+        return '<tr class="spend-line-row" data-year-key="' + p.id + '">' +
           '<td style="padding-left:32px;border-left:4px solid ' + yearBandColor + ';opacity:0.95;"><span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;margin-right:8px;">' + li.fy + '</span>' + codeBadge + '<span style="font-size:12.5px;color:var(--text-primary);">' + li.label + '</span></td>' +
           '<td class="amount" style="font-size:12.5px;">' + fmt(li.amount) + '</td>' +
           '<td class="amount" style="font-size:11.5px;color:var(--text-muted);">' + liPct + '%</td>' +
@@ -2262,6 +2306,13 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAll();
   requestAnimationFrame(() => initCharts());
   // Restore the user's last active tab from URL hash or localStorage
+  // Restore current year filter for the Underspend Risk Alerts
+  try { document.body.setAttribute('data-year-filter', currentYearFilter); } catch(e){}
+  document.querySelectorAll('.year-filter-tab').forEach(t => {
+    const isActive = t.dataset.yearFilter === currentYearFilter;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
   const initial = resolveInitialSection();
   if (initial && initial !== 'overview') showSection(initial);
   // React to manual hash changes (e.g. browser back/forward)
