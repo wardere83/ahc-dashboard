@@ -2180,7 +2180,7 @@ function renderUnderspendChart() {
   });
 }
 function renderUnderspendList() {
-  const flagged = flaggedPeriods();
+  const flagged = flaggedLineItems();
   const countEl = document.getElementById('underspend-count');
   if (countEl) {
     countEl.textContent = flagged.length + ' ' + (flagged.length === 1 ? t('flagged_one') : t('flagged_many'));
