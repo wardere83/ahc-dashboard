@@ -44,24 +44,33 @@
     .chart-grid > .chart-card > .chart-wrap > canvas { width: 100% !important; height: 100% !important; }
 
     :root {
-      --ccc-dark-blue:#002F6D; --ccc-darker-blue:#002755; --ccc-medium-blue:#0066BA;
-      --ccc-light-blue:#40B4E5; --ccc-gold:#FFB600; --ccc-dark-gold:#D18A00;
-      --ccc-light-gold:#F6DC6B; --ccc-dark-grey:#555759; --ccc-medium-grey:#717271; --ccc-light-grey:#B2B3B2;
-      --bg:#F4F6FA; --bg-surface:#FFFFFF; --bg-surface-2:#F0F4FA; --bg-card:#FFFFFF;
-      --border:rgba(0,47,109,0.12); --border-strong:rgba(0,47,109,0.22);
-      --text-primary:#1A1F2E; --text-secondary:#555759; --text-muted:#717271; --text-on-dark:#FFFFFF; --text-on-gold:#002F6D;
-      --accent:#002F6D; --accent-hover:#002755; --accent-secondary:#0066BA; --accent-light:#40B4E5;
-      --accent-gold:#FFB600; --accent-dark-gold:#D18A00;
-      --tier1-color:#002F6D; --tier1-bg:rgba(0,47,109,0.08);
-      --tier2-color:#0066BA; --tier2-bg:rgba(0,102,186,0.08);
-      --lift-color:#D18A00; --lift-bg:rgba(255,182,0,0.12);
+      /* ════════════ ALLAN HANCOCK COLLEGE BRAND PALETTE ════════════
+         Per AHC Brand Standards Guide:
+           Hancock Midnight (primary anchor):  #003E5A
+           Hancock Midnight 82 (deeper):       #002A3A
+           Hancock Blue (supporting):          #0033A0
+           Hancock Yellow (supporting):        #FFCD00
+           Yellow 80 (deeper accent):          #E5B800
+         Variable names kept as --ccc-* to preserve the existing
+         component CSS; only the hex values shift to AHC brand. */
+      --ccc-dark-blue:#003E5A; --ccc-darker-blue:#002A3A; --ccc-medium-blue:#0033A0;
+      --ccc-light-blue:#3B7EB9; --ccc-gold:#FFCD00; --ccc-dark-gold:#E5B800;
+      --ccc-light-gold:#FFE680; --ccc-dark-grey:#555759; --ccc-medium-grey:#717271; --ccc-light-grey:#B2B3B2;
+      --bg:#F3F6F9; --bg-surface:#FFFFFF; --bg-surface-2:#EEF2F6; --bg-card:#FFFFFF;
+      --border:rgba(0,62,90,0.12); --border-strong:rgba(0,62,90,0.22);
+      --text-primary:#1A1F2E; --text-secondary:#555759; --text-muted:#717271; --text-on-dark:#FFFFFF; --text-on-gold:#003E5A;
+      --accent:#003E5A; --accent-hover:#002A3A; --accent-secondary:#0033A0; --accent-light:#3B7EB9;
+      --accent-gold:#FFCD00; --accent-dark-gold:#E5B800;
+      --tier1-color:#003E5A; --tier1-bg:rgba(0,62,90,0.08);
+      --tier2-color:#0033A0; --tier2-bg:rgba(0,51,160,0.08);
+      --lift-color:#E5B800; --lift-bg:rgba(255,205,0,0.12);
       --success:#1a7a3c; --success-bg:rgba(26,122,60,0.08);
       --font-display:'Crimson Text',Georgia,serif; --font-body:'Source Sans 3','Helvetica Neue',sans-serif;
       --sidebar-w:240px; --header-h:64px; --mobile-nav-h:60px; --content-max:1280px;
       --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:20px;
-      --shadow-sm:0 1px 3px rgba(0,47,109,0.08),0 1px 2px rgba(0,47,109,0.04);
-      --shadow-md:0 4px 12px rgba(0,47,109,0.10),0 2px 4px rgba(0,47,109,0.06);
-      --shadow-lg:0 12px 32px rgba(0,47,109,0.12),0 4px 8px rgba(0,47,109,0.06);
+      --shadow-sm:0 1px 3px rgba(0,62,90,0.08),0 1px 2px rgba(0,62,90,0.04);
+      --shadow-md:0 4px 12px rgba(0,62,90,0.10),0 2px 4px rgba(0,62,90,0.06);
+      --shadow-lg:0 12px 32px rgba(0,62,90,0.12),0 4px 8px rgba(0,62,90,0.06);
       --transition:180ms cubic-bezier(0.16,1,0.3,1);
     }
     [data-theme="dark"] {
@@ -71,7 +80,7 @@
       --accent:#40B4E5; --accent-hover:#5EC5F0; --accent-light:#40B4E5;
       --tier1-color:#40B4E5; --tier1-bg:rgba(64,180,229,0.12);
       --tier2-color:#5EC5F0; --tier2-bg:rgba(94,197,240,0.10);
-      --lift-color:#FFB600; --lift-bg:rgba(255,182,0,0.14);
+      --lift-color:#FFCD00; --lift-bg:rgba(255,205,0,0.14);
       --success:#4CAF72; --success-bg:rgba(76,175,114,0.12);
       --shadow-sm:0 1px 3px rgba(0,0,0,0.25); --shadow-md:0 4px 12px rgba(0,0,0,0.35); --shadow-lg:0 12px 32px rgba(0,0,0,0.45);
     }
@@ -94,7 +103,7 @@
     .sidebar-section-label { font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.4); padding:20px 20px 6px; }
     .nav-item { display:flex; align-items:center; gap:10px; padding:10px 20px; font-size:13.5px; font-weight:500; color:rgba(255,255,255,0.7); cursor:pointer; border-left:3px solid transparent; transition:all var(--transition); border:none; background:none; width:100%; text-align:left; }
     .nav-item:hover { background:rgba(255,255,255,0.07); color:#fff; }
-    .nav-item.active { background:rgba(255,182,0,0.15); color:var(--ccc-gold); border-left:3px solid var(--ccc-gold); }
+    .nav-item.active { background:rgba(255,205,0,0.15); color:var(--ccc-gold); border-left:3px solid var(--ccc-gold); }
     .nav-item svg { flex-shrink:0; opacity:0.8; }
     .nav-item.active svg { opacity:1; }
     .sidebar-footer { margin-top:auto; padding:16px 20px; border-top:1px solid rgba(255,255,255,0.1); }
@@ -239,7 +248,7 @@
     .district-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; transition:box-shadow var(--transition),transform var(--transition); cursor:pointer; }
     .district-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); }
     .district-card-top { padding:16px 18px 14px; background:var(--ccc-dark-blue); position:relative; }
-    .district-card-top.lift-card { background:linear-gradient(135deg,#002F6D 0%,#003F8A 100%); }
+    .district-card-top.lift-card { background:linear-gradient(135deg,#003E5A 0%,#003F8A 100%); }
     .district-card-name { font-family:var(--font-display); font-size:16px; font-weight:600; color:#fff; margin-bottom:4px; line-height:1.2; }
     .district-card-program { font-size:12px; color:rgba(255,255,255,0.7); line-height:1.4; }
     .district-card-lift-tag { position:absolute; top:12px; right:14px; background:var(--ccc-gold); color:var(--ccc-dark-blue); font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; letter-spacing:0.04em; }
@@ -270,7 +279,7 @@
     .year-filter-tab { background:transparent; border:none; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; letter-spacing:0.02em; color:var(--text-muted); cursor:pointer; transition:background var(--transition), color var(--transition); }
     .year-filter-tab:hover { color:var(--ccc-dark-blue); }
     [data-theme="dark"] .year-filter-tab:hover { color:var(--accent-light); }
-    .year-filter-tab.active { background:var(--ccc-dark-blue); color:#fff; box-shadow:0 1px 2px rgba(0,47,109,0.18); }
+    .year-filter-tab.active { background:var(--ccc-dark-blue); color:#fff; box-shadow:0 1px 2px rgba(0,62,90,0.18); }
     [data-theme="dark"] .year-filter-tab.active { background:var(--accent-light); color:var(--ccc-darker-blue); }
     .year-filter-tab:focus-visible { outline:2px solid var(--ccc-gold); outline-offset:2px; }
     /* When a filter is active, hide rows that don't match in the spend-down table */
@@ -281,7 +290,7 @@
     body[data-year-filter="y2"] .spend-year-row[data-year-key="y1"],
     body[data-year-filter="y2"] .spend-line-row[data-year-key="y1"] { display:none; }
     /* ════════════ SPEND-DOWN — line-item detail rows ════════════ */
-    .spend-year-row td { background:rgba(0,47,109,0.04); padding-top:12px; padding-bottom:12px; }
+    .spend-year-row td { background:rgba(0,62,90,0.04); padding-top:12px; padding-bottom:12px; }
     [data-theme="dark"] .spend-year-row td { background:rgba(64,180,229,0.06); }
     .spend-line-row td { padding-top:7px; padding-bottom:7px; background:var(--bg-card); border-bottom:1px solid var(--border); }
     .spend-line-row:hover td { background:var(--bg-surface); }
@@ -314,7 +323,7 @@
     .goal-card--g2 .goal-outcome-num { background:var(--ccc-dark-gold); }
     .goal-outcome-text { font-size:13px; font-weight:600; color:var(--text-primary); line-height:1.45; }
     .goal-outcome-method { margin-top:6px; padding-left:38px; font-size:12px; color:var(--text-muted); line-height:1.45; }
-    .goal-outcome-method-tag { display:inline-block; padding:1px 7px; border-radius:6px; background:rgba(0,47,109,0.08); color:var(--ccc-dark-blue); font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-right:8px; }
+    .goal-outcome-method-tag { display:inline-block; padding:1px 7px; border-radius:6px; background:rgba(0,62,90,0.08); color:var(--ccc-dark-blue); font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-right:8px; }
     [data-theme="dark"] .goal-outcome-method-tag { background:rgba(64,180,229,0.16); color:var(--accent-light); }
     .goal-timeline { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
     .goal-timeline > li { display:grid; grid-template-columns:170px 1fr; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
@@ -456,7 +465,7 @@
     .alloc-kpi-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; margin-bottom:24px; }
     .risk-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
     .risk-badge.high { background:rgba(229,62,62,0.15); color:#c53030; }
-    .translation-active-bar { display:none; align-items:center; gap:10px; padding:8px 16px; background:rgba(0,102,186,0.08); border-bottom:1px solid var(--border); font-size:12px; color:var(--text-secondary); }
+    .translation-active-bar { display:none; align-items:center; gap:10px; padding:8px 16px; background:rgba(0,51,160,0.08); border-bottom:1px solid var(--border); font-size:12px; color:var(--text-secondary); }
     .translation-active-bar.show { display:flex; }
     .translation-active-bar strong { color:var(--ccc-medium-blue); }
     .translation-dismiss { margin-left:auto; font-size:11px; color:var(--text-muted); cursor:pointer; padding:2px 6px; border-radius:4px; transition:background var(--transition); }
@@ -469,8 +478,8 @@
     .cccco-wordmark--white { filter:drop-shadow(0 1px 2px rgba(0,0,0,0.08)); }
     .logo-divider { height:1px; background:rgba(255,255,255,0.16); margin:14px 0 12px; }
     .logo-attribution { font-size:9.5px; color:rgba(255,255,255,0.55); letter-spacing:0.06em; text-transform:uppercase; margin-top:8px; line-height:1.5; }
-    .cccco-topbar-stamp { display:inline-flex; align-items:center; padding:6px 14px; height:44px; border-radius:22px; border:1px solid var(--border); background:var(--bg-surface); box-shadow:0 1px 2px rgba(0,47,109,0.04); transition:box-shadow .15s ease, border-color .15s ease; }
-    .cccco-topbar-stamp:hover { box-shadow:0 2px 6px rgba(0,47,109,0.08); border-color:rgba(0,47,109,0.2); }
+    .cccco-topbar-stamp { display:inline-flex; align-items:center; padding:6px 14px; height:44px; border-radius:22px; border:1px solid var(--border); background:var(--bg-surface); box-shadow:0 1px 2px rgba(0,62,90,0.04); transition:box-shadow .15s ease, border-color .15s ease; }
+    .cccco-topbar-stamp:hover { box-shadow:0 2px 6px rgba(0,62,90,0.08); border-color:rgba(0,62,90,0.2); }
     .cccco-topbar-stamp img { height:26px; width:auto; display:block; object-fit:contain; }
     .cccco-topbar-stamp .cccco-stamp-label { display:none; }
     @media (max-width:760px) { .cccco-topbar-stamp { padding:4px 10px; height:34px; } .cccco-topbar-stamp img { height:20px; } } @media (max-width:520px) { .cccco-topbar-stamp { display:none; } }
@@ -1954,8 +1963,8 @@ let chartInstances = {};
 function destroyCharts() { Object.values(chartInstances).forEach(c => { try { c.destroy(); } catch(e){} }); chartInstances = {}; }
 function getChartColors() {
   return {
-    darkBlue:'#002F6D', medBlue:'#0066BA', lightBlue:'#40B4E5', gold:'#FFB600', darkGold:'#D18A00', darkGrey:'#555759',
-    grid: isDark ? 'rgba(64,180,229,0.1)' : 'rgba(0,47,109,0.08)',
+    darkBlue:'#003E5A', medBlue:'#0033A0', lightBlue:'#40B4E5', gold:'#FFCD00', darkGold:'#E5B800', darkGrey:'#555759',
+    grid: isDark ? 'rgba(64,180,229,0.1)' : 'rgba(0,62,90,0.08)',
     text: isDark ? '#A8B4CC' : '#555759',
     tick: isDark ? '#A8B4CC' : '#555759'
   };
@@ -2264,7 +2273,7 @@ function renderSpendDown() {
         const liId = p.id + '-li' + idx;
         const liPct = ((li.amount/totalGrant)*100).toFixed(2);
         const isIndirect = li.code === '7000';
-        const codeBadge = '<span style="display:inline-block;padding:1px 7px;border-radius:6px;background:' + (isIndirect ? 'rgba(255,182,0,0.18)' : 'rgba(0,102,186,0.10)') + ';color:' + (isIndirect ? 'var(--ccc-dark-gold)' : 'var(--ccc-medium-blue)') + ';font-size:10px;font-weight:700;letter-spacing:0.04em;margin-right:8px;">' + li.code + '</span>';
+        const codeBadge = '<span style="display:inline-block;padding:1px 7px;border-radius:6px;background:' + (isIndirect ? 'rgba(255,205,0,0.18)' : 'rgba(0,51,160,0.10)') + ';color:' + (isIndirect ? 'var(--ccc-dark-gold)' : 'var(--ccc-medium-blue)') + ';font-size:10px;font-weight:700;letter-spacing:0.04em;margin-right:8px;">' + li.code + '</span>';
         const isOffTrack = periodStatuses[liId] === 'off';
         const statusColor = isOffTrack ? '#c53030' : '#1a7a3c';
         const statusText = isOffTrack ? t('status_off') : t('status_on');
