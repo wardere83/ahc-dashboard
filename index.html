@@ -501,11 +501,12 @@
       Budget Breakdown
     </button>
 
-    <div class="sidebar-section-label" data-i18n="sb_program">Program</div>
     <button class="nav-item" onclick="showSection('timeline',this)" data-i18n="nav_timeline">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Timeline
     </button>
+
+    <div class="sidebar-section-label" data-i18n="sb_program">Program</div>
     <button class="nav-item" onclick="showSection('contacts',this)" data-i18n="nav_contacts">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Contacts
@@ -688,15 +689,6 @@
                 </ol>
               </section>
 
-              <section class="goal-section">
-                <h4 class="goal-section-title">Timeline &amp; Responsible Persons</h4>
-                <ul class="goal-timeline">
-                  <li><span class="goal-timeline-when">Fall 2025 – Spring 2026</span><span class="goal-timeline-what">Develop training materials &amp; recruit participants.</span><span class="goal-timeline-who">Director and Assistant Director of HR</span></li>
-                  <li><span class="goal-timeline-when">Fall 2026 – Spring 2027</span><span class="goal-timeline-what">Deliver training, implement pilot, collect data.</span><span class="goal-timeline-who">Director and Assistant Director of HR</span></li>
-                  <li><span class="goal-timeline-when">Fall 2027 – Spring 2028</span><span class="goal-timeline-what">Evaluate outcomes, present findings.</span><span class="goal-timeline-who">Assistant Director, HR &amp; Labor Relations</span></li>
-                </ul>
-              </section>
-
             </div>
           </article>
 
@@ -739,15 +731,6 @@
                     <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Disaggregated student data (race / gender) before and after training.</div>
                   </li>
                 </ol>
-              </section>
-
-              <section class="goal-section">
-                <h4 class="goal-section-title">Timeline &amp; Responsible Persons</h4>
-                <ul class="goal-timeline">
-                  <li><span class="goal-timeline-when">Spring 2026</span><span class="goal-timeline-what">Mentor training and program design.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
-                  <li><span class="goal-timeline-when">Summer 2026</span><span class="goal-timeline-what">Launch mentorship program.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
-                  <li><span class="goal-timeline-when">Fall 2026 – Spring 2028</span><span class="goal-timeline-what">Deliver training, monitor progress, analyze outcomes.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
-                </ul>
               </section>
 
             </div>
@@ -962,12 +945,47 @@
 
       <!-- TIMELINE -->
       <div id="section-timeline" class="section">
-        <div class="page-header"><h2 data-i18n="timeline_title">Implementation Timeline</h2><p data-i18n="timeline_sub">2-year funding cycle · Jan 1, 2026 → Jun 30, 2028</p></div>
+        <div class="page-header">
+          <h2 data-i18n="timeline_title">Implementation Timeline</h2>
+          <p data-i18n="timeline_sub">2-year funding cycle · Jan 1, 2026 → Jun 30, 2028. Activities and responsible persons for both project goals, sourced from the NOVA workplan (Section 2.4).</p>
+        </div>
+
         <div class="chart-card-full">
           <div class="chart-header"><div class="chart-title" data-i18n="chart_yearly">Year-by-Year Spend Profile</div><div class="chart-label" data-i18n="chart_all_districts">Allan Hancock CCD · Year 1 vs. Year 2</div></div>
           <div class="chart-wrap-tall"><canvas id="yearlyChart"></canvas></div>
         </div>
-        <div class="timeline-card">
+
+        <div class="goals-grid mt-24">
+          <article class="goal-card goal-card--g1">
+            <header class="goal-card-head">
+              <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 1</span><span>DRS for Classified Hiring</span></div>
+              <h3 class="goal-card-title">Timeline &amp; Responsible Persons</h3>
+            </header>
+            <div class="goal-card-body">
+              <ul class="goal-timeline">
+                <li><span class="goal-timeline-when">Fall 2025 – Spring 2026</span><span class="goal-timeline-what">Develop training materials &amp; recruit participants.</span><span class="goal-timeline-who">Director and Assistant Director of HR</span></li>
+                <li><span class="goal-timeline-when">Fall 2026 – Spring 2027</span><span class="goal-timeline-what">Deliver training, implement pilot, collect data.</span><span class="goal-timeline-who">Director and Assistant Director of HR</span></li>
+                <li><span class="goal-timeline-when">Fall 2027 – Spring 2028</span><span class="goal-timeline-what">Evaluate outcomes, present findings.</span><span class="goal-timeline-who">Assistant Director, HR &amp; Labor Relations</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="goal-card goal-card--g2">
+            <header class="goal-card-head">
+              <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 2</span><span>Faculty Mentorship Model</span></div>
+              <h3 class="goal-card-title">Timeline &amp; Responsible Persons</h3>
+            </header>
+            <div class="goal-card-body">
+              <ul class="goal-timeline">
+                <li><span class="goal-timeline-when">Spring 2026</span><span class="goal-timeline-what">Mentor training and program design.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
+                <li><span class="goal-timeline-when">Summer 2026</span><span class="goal-timeline-what">Launch mentorship program.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
+                <li><span class="goal-timeline-when">Fall 2026 – Spring 2028</span><span class="goal-timeline-what">Deliver training, monitor progress, analyze outcomes.</span><span class="goal-timeline-who">Executive Director &amp; Senior Data Analyst, Institutional Effectiveness · oversight by DEIA/EEO Co-Chairs</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <div class="timeline-card mt-24">
           <div class="timeline-header-row">
             <div class="tl-hl" data-i18n="th_district">District</div>
             <div class="tl-hb">
