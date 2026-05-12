@@ -2050,6 +2050,20 @@ const PACE_COLOR = {
 };
 const PACE_LABEL = { slow:'Slow', moderate:'Moderate', fast:'Fast' };
 
+// Flat list of line items across periods, each with a unique persistent ID
+function getAllLineItems() {
+  const out = [];
+  AHC_PERIODS.forEach(p => (p.lineItems || []).forEach((li, idx) => {
+    out.push(Object.assign({}, li, {
+      id: p.id + '-li' + idx,
+      periodId: p.id,
+      periodLabel: p.label,
+      year: p.year
+    }));
+  }));
+  return out;
+}
+
 function togglePeriodStatus(btn, id) {
   const isNowOff = btn.dataset.on === '1';
   periodStatuses[id] = isNowOff ? 'off' : 'on';
@@ -2073,11 +2087,11 @@ function togglePeriodPace(btn, id) {
   renderUnderspendChart();
 }
 
-function flaggedPeriods() {
-  return AHC_PERIODS.filter(p => {
-    const pace = periodPaces[p.id] || 'moderate';
+function flaggedLineItems() {
+  return getAllLineItems().filter(li => {
+    const pace = periodPaces[li.id] || 'moderate';
     const isPaceFlag = pace !== 'moderate';
-    const isStatusFlag = periodStatuses[p.id] === 'off';
+    const isStatusFlag = periodStatuses[li.id] === 'off';
     return isPaceFlag || isStatusFlag;
   });
 }
@@ -2087,7 +2101,7 @@ function renderUnderspendChart() {
   const wrap = document.getElementById('underspend-chart-wrap');
   const canvas = document.getElementById('underspendChart');
   if (!wrap || !canvas) return;
-  const flagged = flaggedPeriods();
+  const flagged = flaggedLineItems();
   if (underspendChartInstance) { try { underspendChartInstance.destroy(); } catch(e){} underspendChartInstance = null; }
   if (flagged.length === 0) { wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
@@ -2095,13 +2109,13 @@ function renderUnderspendChart() {
   underspendChartInstance = new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: flagged.map(p => p.label),
+      labels: flagged.map(li => li.periodLabel + ' · ' + li.code),
       datasets: [{
-        label: 'Period Budget',
-        data: flagged.map(p => p.budget),
-        backgroundColor: flagged.map(p => {
-          const pace = periodPaces[p.id] || 'moderate';
-          if (pace === 'moderate' && periodStatuses[p.id] === 'off') return '#c53030';
+        label: 'Line-Item Budget',
+        data: flagged.map(li => li.amount),
+        backgroundColor: flagged.map(li => {
+          const pace = periodPaces[li.id] || 'moderate';
+          if (pace === 'moderate' && periodStatuses[li.id] === 'off') return '#c53030';
           return PACE_COLOR[pace] || '#c53030';
         }),
         borderRadius: 4,
@@ -2148,20 +2162,20 @@ function renderUnderspendList() {
       listEl.innerHTML = '<div style="padding:16px;color:var(--success);font-weight:600;">' + t('all_clear') + '</div>';
     } else {
       const totalBudget = AHC_PERIODS.reduce((a,p) => a + p.budget, 0);
-      listEl.innerHTML = flagged.map(p => {
-        const pct = ((p.budget/totalBudget)*100).toFixed(1);
-        const pace = periodPaces[p.id] || 'moderate';
+      listEl.innerHTML = flagged.map(li => {
+        const pct = ((li.amount/totalBudget)*100).toFixed(2);
+        const pace = periodPaces[li.id] || 'moderate';
         const paceLabel = t('pace_' + pace);
         const paceColor = PACE_COLOR[pace];
-        const isOffTrack = periodStatuses[p.id] === 'off';
+        const isOffTrack = periodStatuses[li.id] === 'off';
         const badges = [];
         if (pace !== 'moderate') badges.push('<span style="background:' + paceColor + ';color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">' + paceLabel + '</span>');
         if (isOffTrack) badges.push('<span style="background:#c53030;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">' + t('status_off') + '</span>');
         return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);">' +
-          '<div><strong>' + p.label + '</strong><br><span style="font-size:12px;color:var(--text-muted)">' + p.role + ' · ' + p.dates + '</span></div>' +
+          '<div><strong>' + li.periodLabel + ' &middot; ' + li.code + '</strong><br><span style="font-size:12px;color:var(--text-muted)">' + li.fy + ' &middot; ' + li.label + '</span></div>' +
           '<div style="text-align:right;min-width:200px;">' +
             '<div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;">' + badges.join('') + '</div>' +
-            '<span style="font-size:12px;color:var(--text-muted);display:block;margin-top:4px;">Budget: ' + fmt(p.budget) + ' (' + pct + '% of total)</span>' +
+            '<span style="font-size:12px;color:var(--text-muted);display:block;margin-top:4px;">Line-item: ' + fmt(li.amount) + ' (' + pct + '% of total)</span>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -2187,33 +2201,36 @@ function renderSpendDown() {
   const tbody = document.getElementById('spend-table-body');
   if (tbody) {
     tbody.innerHTML = AHC_PERIODS.map(p => {
-      const isOffTrack = periodStatuses[p.id] === 'off';
-      const statusColor = isOffTrack ? '#c53030' : '#1a7a3c';
-      const statusText = isOffTrack ? t('status_off') : t('status_on');
-      const pace = PACE_CYCLE.includes(periodPaces[p.id]) ? periodPaces[p.id] : 'moderate';
-      const paceColor = PACE_COLOR[pace];
-      const paceText  = t('pace_' + pace);
       const pct = ((p.budget/totalGrant)*100).toFixed(1);
       const yearBandColor = p.id === 'y1' ? 'var(--ccc-dark-blue)' : 'var(--ccc-dark-gold)';
+      // Header summary row: read-only totals for the year, no buttons (only line items carry Pace/Status)
       const headerRow =
         '<tr class="spend-year-row">' +
           '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:14px;"><strong style="font-size:14px;color:var(--ccc-dark-blue);">' + p.label + '</strong><br><span style="font-size:11px;color:var(--text-muted)">' + p.dates + ' · ' + p.role + '</span></td>' +
           '<td class="amount" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
           '<td class="amount" style="font-weight:700;">' + pct + '% of total</td>' +
-          '<td><span style="font-size:11px;color:var(--text-muted);font-weight:700;">' + (p.year) + '</span></td>' +
-          '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
-          '<td><button onclick="togglePeriodPace(this,\'' + p.id + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + paceText + '</button></td>' +
-          '<td><button onclick="togglePeriodStatus(this,\'' + p.id + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + statusText + '</button></td>' +
+          '<td><span style="font-size:11px;color:var(--text-muted);font-weight:700;">' + p.year + '</span></td>' +
+          '<td colspan="3" style="font-size:11px;color:var(--text-muted);"><em>Year-level summary &middot; line items below carry their own pace / status</em></td>' +
         '</tr>';
-      const lineRows = (p.lineItems || []).map(li => {
+      const lineRows = (p.lineItems || []).map((li, idx) => {
+        const liId = p.id + '-li' + idx;
         const liPct = ((li.amount/totalGrant)*100).toFixed(2);
         const isIndirect = li.code === '7000';
         const codeBadge = '<span style="display:inline-block;padding:1px 7px;border-radius:6px;background:' + (isIndirect ? 'rgba(255,182,0,0.18)' : 'rgba(0,102,186,0.10)') + ';color:' + (isIndirect ? 'var(--ccc-dark-gold)' : 'var(--ccc-medium-blue)') + ';font-size:10px;font-weight:700;letter-spacing:0.04em;margin-right:8px;">' + li.code + '</span>';
+        const isOffTrack = periodStatuses[liId] === 'off';
+        const statusColor = isOffTrack ? '#c53030' : '#1a7a3c';
+        const statusText = isOffTrack ? t('status_off') : t('status_on');
+        const pace = PACE_CYCLE.includes(periodPaces[liId]) ? periodPaces[liId] : 'moderate';
+        const paceColor = PACE_COLOR[pace];
+        const paceText  = t('pace_' + pace);
         return '<tr class="spend-line-row">' +
           '<td style="padding-left:32px;border-left:4px solid ' + yearBandColor + ';opacity:0.95;"><span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;margin-right:8px;">' + li.fy + '</span>' + codeBadge + '<span style="font-size:12.5px;color:var(--text-primary);">' + li.label + '</span></td>' +
           '<td class="amount" style="font-size:12.5px;">' + fmt(li.amount) + '</td>' +
           '<td class="amount" style="font-size:11.5px;color:var(--text-muted);">' + liPct + '%</td>' +
-          '<td colspan="4" style="font-size:11px;color:var(--text-muted);"><em>part of ' + p.label + '</em></td>' +
+          '<td><span style="font-size:11px;color:var(--text-muted);">part of ' + p.label + '</span></td>' +
+          '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
+          '<td><button onclick="togglePeriodPace(this,\'' + liId + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + paceText + '</button></td>' +
+          '<td><button onclick="togglePeriodStatus(this,\'' + liId + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + statusText + '</button></td>' +
         '</tr>';
       }).join('');
       return headerRow + lineRows;
