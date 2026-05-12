@@ -1012,20 +1012,22 @@
             <span id="underspend-count" class="risk-badge high" data-i18n="calculating">Calculating...</span>
           </div>
           <div class="card-body">
-            <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 12px;line-height:1.5;" data-i18n="underspend_desc">The project is flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.</p>
-            <div class="year-filter-tabs" id="year-filter-tabs" role="tablist" aria-label="Filter by project year">
-              <button type="button" class="year-filter-tab active" data-year-filter="all"   onclick="setYearFilter('all',this)"  role="tab" aria-selected="true"  data-i18n="filter_combined">Combined View</button>
-              <button type="button" class="year-filter-tab"        data-year-filter="y1"    onclick="setYearFilter('y1',this)"   role="tab" aria-selected="false" data-i18n="filter_y1">Year 1</button>
-              <button type="button" class="year-filter-tab"        data-year-filter="y2"    onclick="setYearFilter('y2',this)"   role="tab" aria-selected="false" data-i18n="filter_y2">Year 2</button>
-            </div>
+            <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 14px;line-height:1.5;" data-i18n="underspend_desc">The project is flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.</p>
             <div id="underspend-chart-wrap" style="position:relative;height:240px;margin-bottom:14px;display:none;">
               <canvas id="underspendChart"></canvas>
             </div>
             <div id="underspend-list"></div>
           </div>
         </div>
+
+        <div class="year-filter-tabs" id="year-filter-tabs" role="tablist" aria-label="Filter by project year" style="margin-bottom:14px;">
+          <button type="button" class="year-filter-tab active" data-year-filter="all" onclick="setYearFilter('all',this)" role="tab" aria-selected="true"  data-i18n="filter_combined">Combined View</button>
+          <button type="button" class="year-filter-tab"        data-year-filter="y1"  onclick="setYearFilter('y1',this)"  role="tab" aria-selected="false" data-i18n="filter_y1">Year 1</button>
+          <button type="button" class="year-filter-tab"        data-year-filter="y2"  onclick="setYearFilter('y2',this)"  role="tab" aria-selected="false" data-i18n="filter_y2">Year 2</button>
+        </div>
+
         <div class="card">
-          <div class="card-header"><div class="card-title" data-i18n="spend_table_title">Spend-Down Detail by Year</div><div class="chart-label" data-i18n="spend_table_sub">Allan Hancock CCD · Year-by-Year Allocation vs. Spend</div></div>
+          <div class="card-header"><div class="card-title" data-i18n="spend_table_title">Spend-Down Detail</div><div class="chart-label" data-i18n="spend_table_sub">Allan Hancock CCD · Year-by-Year Allocation vs. Spend</div></div>
           <div class="data-table-wrap">
             <table class="data-table" id="spend-table">
               <thead><tr><th data-i18n="th_period">Period</th><th data-i18n="th_period_budget">Period Budget</th><th data-i18n="th_share">Share of Total</th><th data-i18n="th_project_year">Project Year</th><th data-i18n="th_disbursed_pct">Spent So Far</th><th data-i18n="th_spend_pace">Spend Pace</th><th data-i18n="th_status">Status</th></tr></thead>
@@ -1148,7 +1150,7 @@ const translations = {
     underspend_title:'⚠ Underspend Risk Alerts',
     calculating:'Calculating...',
     underspend_desc:'Districts get flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.',
-    spend_table_title:'District Spend-Down Detail',
+    spend_table_title:'Spend-Down Detail',
     spend_table_sub:'Allocations vs. Year-by-Year Spend · 2-Year Cycle',
     th_total_grant:'Total Grant',
     th_y1_budget:'Year 1 Budget',
@@ -1251,7 +1253,7 @@ const translations = {
     underspend_title:'⚠ Alertas de Riesgo de Subgasto',
     calculating:'Calculando...',
     underspend_desc:'Los distritos se marcan cuando su ritmo de gasto es Lento, Rápido o Subfinanciado. Establezca el ritmo en Moderado en la tabla para quitar la marca.',
-    spend_table_title:'Detalle de Gastos por Distrito',
+    spend_table_title:'Detalle de Gastos',
     spend_table_sub:'Asignaciones vs. Gasto Anual · Ciclo de 2 Años',
     th_total_grant:'Subvención Total',
     th_y1_budget:'Presupuesto Año 1',
@@ -1341,7 +1343,7 @@ const translations = {
     underspend_title:'⚠ Cảnh báo Rủi ro Chi tiêu Thiếu',
     calculating:'Đang tính...',
     underspend_desc:'Quận được đánh dấu khi tốc độ chi tiêu là Chậm, Nhanh hoặc Thiếu vốn. Đặt thành Vừa phải để gỡ cờ.',
-    spend_table_title:'Chi tiết Chi tiêu theo Quận',
+    spend_table_title:'Chi tiết Chi tiêu',
     spend_table_sub:'Phân bổ vs. Chi tiêu Hàng năm · Chu kỳ 2 Năm',
     th_total_grant:'Tổng Tài trợ',
     th_y1_budget:'Ngân sách Năm 1',
@@ -1430,7 +1432,7 @@ const translations = {
     underspend_title:'⚠ تنبيهات مخاطر الإنفاق الناقص',
     calculating:'جارٍ الحساب...',
     underspend_desc:'تُمَيَّز المقاطعات عندما تكون وتيرة الإنفاق بطيئة أو سريعة أو ناقصة التمويل. اضبط الوتيرة على معتدلة لإزالة العلامة.',
-    spend_table_title:'تفاصيل الإنفاق حسب المقاطعة',
+    spend_table_title:'تفاصيل الإنفاق',
     spend_table_sub:'التخصيصات مقابل الإنفاق السنوي · دورة سنتين',
     th_total_grant:'إجمالي المنحة',
     th_y1_budget:'ميزانية السنة 1',
@@ -1520,7 +1522,7 @@ const translations = {
     underspend_title:'⚠ Underspend Risk Alerts',
     calculating:'Kinakalkula...',
     underspend_desc:'Naka-flag ang mga distrito kapag ang Spend Pace ay nakatakda sa Slow, Fast, o Underfunded. Itakda sa Moderate sa table upang alisin ang flag.',
-    spend_table_title:'Detalye ng Spend-Down ng Distrito',
+    spend_table_title:'Detalye ng Spend-Down',
     spend_table_sub:'Mga Paglalaan vs. Taon-taong Gastos · 2-Year Cycle',
     th_total_grant:'Kabuuang Grant',
     th_y1_budget:'Badyet Taon 1',
