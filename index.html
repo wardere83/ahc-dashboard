@@ -137,7 +137,7 @@
     .grant-meta-item span.gold { color:var(--ccc-gold); }
     .grant-meta-divider { width:1px; height:32px; background:rgba(255,255,255,0.15); }
     /* Overview KPIs — locked 5-up layout for the five tiles so they sit evenly in one row on desktop */
-    .kpi-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; margin-bottom:24px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-bottom:24px; }
     /* LIFT chip floats above the "4" number on Tier 2 Districts, like a trademark on a logo.
        Always visible — no hover or interaction needed. */
     .kpi-value-wrap { position:relative; display:inline-block; }
@@ -151,7 +151,7 @@
       letter-spacing:0.06em;
       box-shadow:0 1px 3px rgba(0,0,0,0.18);
     }
-    .kpi-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:18px 20px; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition),transform var(--transition); }
+    .kpi-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:16px 14px; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition),transform var(--transition); min-width:0; }
     .kpi-card:hover { box-shadow:var(--shadow-md); transform:translateY(-1px); }
     .kpi-label { font-size:11px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
     .kpi-value { font-family:var(--font-display); font-size:28px; font-weight:600; line-height:1; margin-bottom:4px; }
@@ -337,10 +337,10 @@
       .topbar { padding:0 16px; }
       .content { padding:16px; }
     }
-    @media (max-width:1180px) {
+    @media (max-width:880px) {
       .kpi-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
     }
-    @media (max-width:1024px) {
+    @media (max-width:640px) {
       .kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
     }
     @media (max-width:768px) {
