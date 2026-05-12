@@ -265,6 +265,11 @@
 
     /* BUDGET — Y1/Y2 totals at top, full line items below (Indirect kept as-is) */
 
+    /* ════════════ SPEND-DOWN — line-item detail rows ════════════ */
+    .spend-year-row td { background:rgba(0,47,109,0.04); padding-top:12px; padding-bottom:12px; }
+    [data-theme="dark"] .spend-year-row td { background:rgba(64,180,229,0.06); }
+    .spend-line-row td { padding-top:7px; padding-bottom:7px; background:var(--bg-card); border-bottom:1px solid var(--border); }
+    .spend-line-row:hover td { background:var(--bg-surface); }
     /* ════════════ GOALS & OBJECTIVES ════════════ */
     .goals-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:24px; }
     @media (max-width:1080px) { .goals-grid { grid-template-columns:1fr; } }
@@ -2006,9 +2011,37 @@ function initCharts() {
 // statuses/paces stored against these periods.
 
 const AHC_PERIODS = [
-  { id:'fy2526', label:'FY 2025-26', dates:'Jan – Jun 2026', budget:20348, role:'Framework development & first DRS training', year:'Year 1' },
-  { id:'fy2627', label:'FY 2026-27', dates:'Jul 2026 – Jun 2027', budget:42279, role:'Mentorship launch & DRS Cohort 1', year:'Year 1' },
-  { id:'fy2728', label:'FY 2027-28', dates:'Jul 2027 – Jun 2028', budget:37373, role:'Mentees training & final outcomes analysis', year:'Year 2' }
+  {
+    id:'y1', label:'Year 1', dates:'Jan 2026 – Jun 2027', budget:62627, year:'Year 1',
+    role:'Framework, first DRS cohort & mentorship launch (FY 2025-26 + FY 2026-27)',
+    lineItems:[
+      { fy:'FY 2025-26', code:'1000', label:'Instructional Salaries — mentor framework development', amount:11520 },
+      { fy:'FY 2026-27', code:'1000', label:'Instructional Salaries — mentor SMEs build training', amount:19200 },
+      { fy:'FY 2025-26', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:2500 },
+      { fy:'FY 2026-27', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:4166 },
+      { fy:'FY 2025-26', code:'4000', label:'Supplies & Materials — printing / operational', amount:359 },
+      { fy:'FY 2026-27', code:'4000', label:'Supplies & Materials — printing / operational', amount:400 },
+      { fy:'FY 2025-26', code:'5000', label:'Equity Specialist — independent contractor', amount:5000 },
+      { fy:'FY 2026-27', code:'5000', label:'Equity Specialist — independent contractor', amount:10000 },
+      { fy:'FY 2026-27', code:'5000', label:'Travel — PD & dissemination (2 people)', amount:2500 },
+      { fy:'FY 2026-27', code:'5000', label:'Mentorship development — independent contractor', amount:4000 },
+      { fy:'FY 2025-26', code:'7000', label:'Indirect costs — 5% of direct', amount:969 },
+      { fy:'FY 2026-27', code:'7000', label:'Indirect costs — 5% of direct', amount:2013 }
+    ]
+  },
+  {
+    id:'y2', label:'Year 2', dates:'Jul 2027 – Jun 2028', budget:37373, year:'Year 2',
+    role:'Mentees in full training cycle & final outcomes analysis (FY 2027-28)',
+    lineItems:[
+      { fy:'FY 2027-28', code:'1000', label:'Instructional Salaries — 8 mentees in training cycle', amount:15360 },
+      { fy:'FY 2027-28', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:3333 },
+      { fy:'FY 2027-28', code:'4000', label:'Supplies & Materials — printing / operational', amount:400 },
+      { fy:'FY 2027-28', code:'5000', label:'Equity Specialist — independent contractor', amount:10000 },
+      { fy:'FY 2027-28', code:'5000', label:'Travel — PD & dissemination (2 people)', amount:2500 },
+      { fy:'FY 2027-28', code:'5000', label:'Mentorship development — independent contractor', amount:4000 },
+      { fy:'FY 2027-28', code:'7000', label:'Indirect costs — 5% of direct', amount:1780 }
+    ]
+  }
 ];
 
 const periodStatuses = JSON.parse(localStorage.getItem('ahcPeriodStatuses') || '{}');
@@ -2166,15 +2199,29 @@ function renderSpendDown() {
       const paceColor = PACE_COLOR[pace];
       const paceText  = t('pace_' + pace);
       const pct = ((p.budget/totalGrant)*100).toFixed(1);
-      return '<tr>' +
-        '<td><strong>' + p.label + '</strong><br><span style="font-size:11px;color:var(--text-muted)">' + p.dates + ' · ' + p.role + '</span></td>' +
-        '<td class="amount">' + fmt(p.budget) + '</td>' +
-        '<td class="amount">' + pct + '% of total</td>' +
-        '<td><span style="font-size:11px;color:var(--text-muted);">' + (p.year) + '</span></td>' +
-        '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
-        '<td><button onclick="togglePeriodPace(this,\'' + p.id + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + paceText + '</button></td>' +
-        '<td><button onclick="togglePeriodStatus(this,\'' + p.id + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + statusText + '</button></td>' +
-      '</tr>';
+      const yearBandColor = p.id === 'y1' ? 'var(--ccc-dark-blue)' : 'var(--ccc-dark-gold)';
+      const headerRow =
+        '<tr class="spend-year-row">' +
+          '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:14px;"><strong style="font-size:14px;color:var(--ccc-dark-blue);">' + p.label + '</strong><br><span style="font-size:11px;color:var(--text-muted)">' + p.dates + ' · ' + p.role + '</span></td>' +
+          '<td class="amount" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
+          '<td class="amount" style="font-weight:700;">' + pct + '% of total</td>' +
+          '<td><span style="font-size:11px;color:var(--text-muted);font-weight:700;">' + (p.year) + '</span></td>' +
+          '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
+          '<td><button onclick="togglePeriodPace(this,\'' + p.id + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + paceText + '</button></td>' +
+          '<td><button onclick="togglePeriodStatus(this,\'' + p.id + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + statusText + '</button></td>' +
+        '</tr>';
+      const lineRows = (p.lineItems || []).map(li => {
+        const liPct = ((li.amount/totalGrant)*100).toFixed(2);
+        const isIndirect = li.code === '7000';
+        const codeBadge = '<span style="display:inline-block;padding:1px 7px;border-radius:6px;background:' + (isIndirect ? 'rgba(255,182,0,0.18)' : 'rgba(0,102,186,0.10)') + ';color:' + (isIndirect ? 'var(--ccc-dark-gold)' : 'var(--ccc-medium-blue)') + ';font-size:10px;font-weight:700;letter-spacing:0.04em;margin-right:8px;">' + li.code + '</span>';
+        return '<tr class="spend-line-row">' +
+          '<td style="padding-left:32px;border-left:4px solid ' + yearBandColor + ';opacity:0.95;"><span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;margin-right:8px;">' + li.fy + '</span>' + codeBadge + '<span style="font-size:12.5px;color:var(--text-primary);">' + li.label + '</span></td>' +
+          '<td class="amount" style="font-size:12.5px;">' + fmt(li.amount) + '</td>' +
+          '<td class="amount" style="font-size:11.5px;color:var(--text-muted);">' + liPct + '%</td>' +
+          '<td colspan="4" style="font-size:11px;color:var(--text-muted);"><em>part of ' + p.label + '</em></td>' +
+        '</tr>';
+      }).join('');
+      return headerRow + lineRows;
     }).join('');
   }
 }
