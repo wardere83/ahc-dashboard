@@ -1745,8 +1745,20 @@ function showSection(id, clickedBtn, isMobile) {
   if (isMobile) closeSidebar();
   // Persist current tab so refresh/back keeps the user where they were
   try {
-    if (history && history.replaceState) history.replaceState(null, '', '#' + id);
-    else window.location.hash = '#' + id;
+    try {
+      const currentHash = (window.location.hash || '').replace(/^#/, '');
+      if (currentHash !== id) {
+        if (history && history.pushState) history.pushState({section: id}, '', '#' + id);
+        else window.location.hash = '#' + id;
+      }
+    } catch (e) { window.location.hash = '#' + id; }
+    // Reflect current section in the browser tab title so the URL + title behave like a standalone page
+    try {
+      const baseTitle = (document.title || '').split(' · ')[0];
+      const navText = (document.querySelector('.sidebar .nav-item.active') || {}).textContent || '';
+      const label = navText.trim();
+      if (label) document.title = label + ' · ' + baseTitle;
+    } catch (e) {}
     localStorage.setItem('ahcActiveSection', id);
   } catch (e) { /* no-op */ }
 }
@@ -2336,6 +2348,10 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', () => {
     const id = (window.location.hash || '').replace(/^#/, '').trim();
     if (id && document.getElementById('section-' + id)) showSection(id);
+  });
+  window.addEventListener('popstate', (e) => {
+    const id = (e.state && e.state.section) || (window.location.hash || '').replace(/^#/, '').trim() || 'overview';
+    if (document.getElementById('section-' + id)) showSection(id);
   });
 });
 </script>
