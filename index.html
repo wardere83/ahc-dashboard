@@ -149,8 +149,8 @@
     @keyframes overview-ticker-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
     @media (prefers-reduced-motion: reduce) { .overview-ticker-track { animation:none; } }
 
-    .grant-meta { background:var(--ccc-dark-blue); border-radius:var(--radius-lg); padding:14px 20px; display:flex; flex-wrap:wrap; gap:24px; align-items:center; margin-bottom:24px; }
-    .grant-meta-item { display:flex; flex-direction:column; gap:2px; }
+    .grant-meta { background:var(--ccc-dark-blue); border-radius:var(--radius-lg); padding:16px 24px; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between; margin-bottom:24px; }
+    .grant-meta-item { display:flex; flex-direction:column; gap:2px; flex:1 1 auto; min-width:0; }
     .grant-meta-item label { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.5); }
     .grant-meta-item span { font-size:13px; font-weight:600; color:#fff; }
     .grant-meta-item span.gold { color:var(--ccc-gold); }
@@ -622,8 +622,6 @@
           <div class="grant-meta-item"><label data-i18n="meta_start">Start</label><span>Jan 1, 2026</span></div>
           <div class="grant-meta-divider"></div>
           <div class="grant-meta-item"><label data-i18n="meta_duration">Funding Cycle</label><span>Jan 2026 – Jun 2028</span></div>
-          <div class="grant-meta-divider"></div>
-          <div class="grant-meta-item"><label data-i18n="meta_status">Status</label><span class="gold">● <span data-i18n="status_active">Active</span></span></div>
         </div>
 
         <div class="kpi-grid">
