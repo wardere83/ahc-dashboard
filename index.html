@@ -542,9 +542,23 @@
     @keyframes a11ySlideIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
     /* User-preference overrides — scoped via data-attributes on <html>.
        These only kick in when the user opts in; the default look is unchanged. */
-    html[data-fs="sm"] { font-size:14px; }
-    html[data-fs="lg"] { font-size:17px; }
-    html[data-fs="xl"] { font-size:19px; line-height:1.7; }
+    /* Accessibility text-size — overrides body and main-content rules so the user choice wins */
+    html[data-fs="sm"] body, html[data-fs="sm"] .content, html[data-fs="sm"] .content * { font-size: 0.90em; }
+    html[data-fs="sm"] body { font-size:13.5px !important; }
+    html[data-fs="lg"] body { font-size:17.5px !important; }
+    html[data-fs="lg"] body * { line-height:1.65; }
+    html[data-fs="xl"] body { font-size:20px !important; line-height:1.75; }
+    html[data-fs="xl"] body *, html[data-fs="xl"] .content * { line-height:1.7; }
+    html[data-fs="sm"] .page-header h2 { font-size:22px !important; }
+    html[data-fs="lg"] .page-header h2 { font-size:30px !important; }
+    html[data-fs="xl"] .page-header h2 { font-size:34px !important; }
+    html[data-fs="lg"] .kpi-value, html[data-fs="xl"] .kpi-value { font-size:32px !important; }
+    html[data-fs="lg"] .kpi-label, html[data-fs="xl"] .kpi-label { font-size:12.5px !important; }
+    html[data-fs="lg"] .kpi-sub, html[data-fs="xl"] .kpi-sub { font-size:14px !important; }
+    html[data-fs="lg"] .topbar-title { font-size:22px !important; }
+    html[data-fs="xl"] .topbar-title { font-size:24px !important; }
+    html[data-fs="lg"] .card-title, html[data-fs="xl"] .card-title { font-size:18px !important; }
+    html[data-fs="lg"] .nav-item, html[data-fs="xl"] .nav-item { font-size:15px !important; }
     html[data-a11y-contrast="on"] {
       --text-primary:#000 !important; --text-secondary:#000 !important; --text-muted:#000 !important;
       --border:#000 !important; --border-strong:#000 !important;
