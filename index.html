@@ -17,6 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     /* ════════════ APPLE-INSPIRED POLISH ON CCCCO PALETTE ════════════
@@ -545,12 +546,18 @@
     html[data-fs="lg"] { font-size:17px; }
     html[data-fs="xl"] { font-size:19px; line-height:1.7; }
     html[data-a11y-contrast="on"] {
-      --text-primary:#000; --text-secondary:#0a0a0a; --text-muted:#1a1a1a;
-      --border:rgba(0,0,0,0.35); --border-strong:rgba(0,0,0,0.55);
-      --bg:#fff; --bg-surface:#fff; --bg-surface-2:#f0f0f0; --bg-card:#fff;
+      --text-primary:#000 !important; --text-secondary:#000 !important; --text-muted:#000 !important;
+      --border:#000 !important; --border-strong:#000 !important;
+      --bg:#fff !important; --bg-surface:#fff !important; --bg-surface-2:#fff !important; --bg-card:#fff !important;
     }
-    html[data-a11y-contrast="on"] .nav-item { color:#fff; }
-    html[data-a11y-contrast="on"] a, html[data-a11y-contrast="on"] a:visited { text-decoration:underline; }
+    html[data-a11y-contrast="on"] body { background:#fff !important; color:#000 !important; }
+    html[data-a11y-contrast="on"] .sidebar, html[data-a11y-contrast="on"] .topbar { background:#000 !important; color:#fff !important; border-color:#fff !important; }
+    html[data-a11y-contrast="on"] .nav-item, html[data-a11y-contrast="on"] .sidebar * { color:#fff !important; }
+    html[data-a11y-contrast="on"] .topbar-title, html[data-a11y-contrast="on"] .topbar * { color:#fff !important; }
+    html[data-a11y-contrast="on"] .a11y-stamp { color:#fff !important; background:#000 !important; border-color:#fff !important; }
+    html[data-a11y-contrast="on"] .card, html[data-a11y-contrast="on"] .kpi-card, html[data-a11y-contrast="on"] .chart-card, html[data-a11y-contrast="on"] .goal-card { background:#fff !important; color:#000 !important; border:2px solid #000 !important; box-shadow:none !important; }
+    html[data-a11y-contrast="on"] .data-table th, html[data-a11y-contrast="on"] .data-table td { color:#000 !important; border-color:#000 !important; }
+    html[data-a11y-contrast="on"] a, html[data-a11y-contrast="on"] a:visited { color:#0000ee !important; text-decoration:underline !important; }
     html[data-a11y-contrast="on"] :focus-visible { outline:3px solid #ff8a00 !important; outline-offset:2px; }
     html[data-a11y-dyslexia="on"] body, html[data-a11y-dyslexia="on"] * { font-family:'Atkinson Hyperlegible','Lexie Readable','OpenDyslexic',Verdana,sans-serif !important; letter-spacing:0.02em; }
     html[data-a11y-links="on"] a { text-decoration:underline !important; text-underline-offset:2px; }
@@ -2465,6 +2472,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <li><button type="button" class="a11y-opt" data-a11y="motion" onclick="a11yToggle('motion')" aria-pressed="false"><span class="a11y-opt-label">Reduce motion</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
       <li><button type="button" class="a11y-opt" data-a11y="spacing" onclick="a11yToggle('spacing')" aria-pressed="false"><span class="a11y-opt-label">Roomy line spacing</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
       <li><button type="button" class="a11y-opt" data-a11y="guide" onclick="a11yToggle('guide')" aria-pressed="false"><span class="a11y-opt-label">Reading guide</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
+      <li><button type="button" class="a11y-opt" data-a11y="audio" onclick="a11yAudioToggle()" aria-pressed="false"><span class="a11y-opt-label">Read page aloud</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
       <li class="a11y-row-size">
         <span class="a11y-opt-label">Text size</span>
         <div class="a11y-size-controls" role="radiogroup" aria-label="Text size">
@@ -2486,7 +2494,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ════════════ ACCESSIBILITY FEATURE (self-contained) ════════════ */
 (function() {
   const STORE_KEY = 'a11yPrefs';
-  const DEFAULT = { fs:'md', contrast:false, dyslexia:false, links:false, motion:false, spacing:false, guide:false };
+  const DEFAULT = { fs:'md', contrast:false, dyslexia:false, links:false, motion:false, spacing:false, guide:false, audio:false };
   let lastFocused = null;
   function load() {
     try { return Object.assign({}, DEFAULT, JSON.parse(localStorage.getItem(STORE_KEY) || '{}')); }
@@ -2496,7 +2504,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function apply(p) {
     const root = document.documentElement;
     root.setAttribute('data-fs', p.fs || 'md');
-    ['contrast','dyslexia','links','motion','spacing','guide'].forEach(k => {
+    // Audio is a one-shot — never persisted as 'on' across reloads
+    if (p.audio === true && !window._a11yJustToggled) { p.audio = false; save(p); }
+    ['contrast','dyslexia','links','motion','spacing','guide','audio'].forEach(k => {
       if (p[k]) root.setAttribute('data-a11y-' + k, 'on');
       else root.removeAttribute('data-a11y-' + k);
     });
