@@ -112,8 +112,8 @@
     .sidebar-footer-label { font-size:10px; color:rgba(255,255,255,0.35); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px; }
     .sidebar-footer-val { font-size:12px; color:rgba(255,255,255,0.6); }
     .main { margin-left:var(--sidebar-w); flex:1; min-width:0; display:flex; flex-direction:column; height:100dvh; overflow:hidden; }
-    .topbar { position:sticky; top:0; background:var(--bg-surface); border-bottom:1px solid var(--border); height:var(--header-h); display:flex; align-items:center; justify-content:space-between; padding:0 28px; z-index:150; gap:16px; box-shadow:var(--shadow-sm); flex-shrink:0; }
-    .topbar-left { display:flex; align-items:center; gap:12px; min-width:0; }
+    .topbar { position:sticky; top:0; background:var(--bg-surface); border-bottom:1px solid var(--border); min-height:var(--header-h);height:auto; display:flex; align-items:center; justify-content:space-between; padding:0 28px; z-index:150; gap:16px; box-shadow:var(--shadow-sm); flex-shrink:0; }
+    .topbar-left { display:flex; align-items:center; gap:10px; min-width:0; flex-wrap:wrap; row-gap:6px; }
     .topbar-title { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--ccc-dark-blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     [data-theme="dark"] .topbar-title { color:var(--accent-light); }
     .topbar-badge { background:var(--ccc-gold); color:var(--ccc-dark-blue); font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0; }
@@ -508,7 +508,7 @@
     .a11y-btn:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
     .a11y-btn svg { flex-shrink:0; }
     @media (max-width:760px) { .a11y-btn .a11y-btn-label { display:none; } .a11y-btn { padding:0 10px; } }
-    .a11y-panel { position:fixed; top:72px; right:24px; width:340px; max-width:calc(100vw - 24px); background:var(--bg-card); border:1px solid var(--border-strong); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); padding:18px 20px; z-index:1000; font-family:var(--font-body); }
+    .a11y-panel { position:fixed; top:72px; left:24px; width:340px; max-width:calc(100vw - 24px); background:var(--bg-card); border:1px solid var(--border-strong); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); padding:18px 20px; z-index:1000; font-family:var(--font-body); }
     .a11y-panel[hidden] { display:none; }
     .a11y-panel-head { display:flex; align-items:center; justify-content:space-between; padding-bottom:10px; border-bottom:1px solid var(--border); margin-bottom:14px; }
     .a11y-panel-head h3 { margin:0; font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--text-primary); }
@@ -626,14 +626,13 @@
         </button>
         <span class="topbar-title" data-i18n="topbar_title">AHC Project</span>
         <span class="topbar-badge">2026–2028 EEO IBP</span>
-      </div>
-      <div class="topbar-right">
-      <button class="a11y-btn" id="a11yBtn" onclick="toggleA11yPanel()" aria-haspopup="dialog" aria-expanded="false" aria-label="Open accessibility settings" title="Accessibility settings">
+        <button class="a11y-btn" id="a11yBtn" onclick="toggleA11yPanel()" aria-haspopup="dialog" aria-expanded="false" aria-label="Open accessibility settings" title="Accessibility settings">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><circle cx="12" cy="4.5" r="2.2"/><path d="M19 7.5h-4v3.4l1.4 9.4a1.3 1.3 0 0 1-2.6.4l-1.3-7H10.5l-1.3 7a1.3 1.3 0 0 1-2.6-.4L8 10.9V7.5H4a1.2 1.2 0 1 1 0-2.4h15a1.2 1.2 0 1 1 0 2.4z"/></svg>
         <span class="a11y-btn-label">Accessibility</span>
       </button>
-      
-        <div class="translate-wrap">
+      </div>
+      <div class="topbar-right">
+      <div class="translate-wrap">
           <button class="translate-btn" onclick="toggleTranslate()" id="transBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select language">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
             <span id="transLabel">Translate</span>
@@ -652,9 +651,6 @@
         <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Toggle light or dark theme">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
-        <div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--success);background:var(--success-bg);padding:4px 12px;border-radius:20px;">
-          <span style="width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block;"></span> Active
-        </div>
       </div>
     
     </div>
