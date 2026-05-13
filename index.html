@@ -499,10 +499,10 @@
     /* Accessibility feature — drop-in pill button + fixed-overlay modal.
        The button reuses .cccco-topbar-stamp sizing/borders so the topbar
        layout, alignment and structure are unchanged. */
-    .a11y-stamp { color:var(--ccc-dark-blue); cursor:pointer; padding:6px 14px; }
-    .a11y-stamp:hover { color:var(--ccc-medium-blue); }
+    .a11y-stamp { color:var(--ccc-dark-blue); cursor:pointer; padding:0 16px; font-family:var(--font-body),Inter,sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.02em; }
+    .a11y-stamp:hover { color:var(--ccc-medium-blue); border-color:var(--ccc-medium-blue); }
     .a11y-stamp:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
-    .a11y-stamp svg { display:block; }
+    .a11y-stamp-label { display:inline-block; line-height:1; }
     /* Modal overlay — strictly fixed-position so it doesn't shift any layout. */
     .a11y-modal { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px; }
     .a11y-modal[hidden] { display:none; }
@@ -636,9 +636,7 @@
         <span class="topbar-badge">2026–2028 EEO IBP</span>
       </div>
       <div class="topbar-right">
-      <button class="cccco-topbar-stamp a11y-stamp" id="a11yStamp" type="button" onclick="openA11yModal()" aria-haspopup="dialog" aria-controls="a11yModal" aria-label="Open accessibility options" title="Accessibility">
-        <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="4.2" r="2.2" fill="currentColor"/><path d="M19 7.5h-4v3.4l1.4 9.4a1.3 1.3 0 0 1-2.6.4l-1.3-7H10.5l-1.3 7a1.3 1.3 0 0 1-2.6-.4L8 10.9V7.5H4a1.2 1.2 0 1 1 0-2.4h15a1.2 1.2 0 1 1 0 2.4z" fill="currentColor"/></svg>
-      </button>
+      <button class="cccco-topbar-stamp a11y-stamp" id="a11yStamp" type="button" onclick="openA11yModal()" aria-haspopup="dialog" aria-controls="a11yModal" aria-label="Open accessibility options" title="Accessibility"><span class="a11y-stamp-label">Accessibility</span></button>
       
         <div class="translate-wrap">
           <button class="translate-btn" onclick="toggleTranslate()" id="transBtn">
