@@ -2472,7 +2472,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <li><button type="button" class="a11y-opt" data-a11y="motion" onclick="a11yToggle('motion')" aria-pressed="false"><span class="a11y-opt-label">Reduce motion</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
       <li><button type="button" class="a11y-opt" data-a11y="spacing" onclick="a11yToggle('spacing')" aria-pressed="false"><span class="a11y-opt-label">Roomy line spacing</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
       <li><button type="button" class="a11y-opt" data-a11y="guide" onclick="a11yToggle('guide')" aria-pressed="false"><span class="a11y-opt-label">Reading guide</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
-      <li><button type="button" class="a11y-opt" data-a11y="audio" onclick="a11yAudioToggle()" aria-pressed="false"><span class="a11y-opt-label">Read page aloud</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
       <li class="a11y-row-size">
         <span class="a11y-opt-label">Text size</span>
         <div class="a11y-size-controls" role="radiogroup" aria-label="Text size">
@@ -2494,7 +2493,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ════════════ ACCESSIBILITY FEATURE (self-contained) ════════════ */
 (function() {
   const STORE_KEY = 'a11yPrefs';
-  const DEFAULT = { fs:'md', contrast:false, dyslexia:false, links:false, motion:false, spacing:false, guide:false, audio:false };
+  const DEFAULT = { fs:'md', contrast:false, dyslexia:false, links:false, motion:false, spacing:false, guide:false };
   let lastFocused = null;
   function load() {
     try { return Object.assign({}, DEFAULT, JSON.parse(localStorage.getItem(STORE_KEY) || '{}')); }
@@ -2504,9 +2503,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function apply(p) {
     const root = document.documentElement;
     root.setAttribute('data-fs', p.fs || 'md');
-    // Audio is a one-shot — never persisted as 'on' across reloads
-    if (p.audio === true && !window._a11yJustToggled) { p.audio = false; save(p); }
-    ['contrast','dyslexia','links','motion','spacing','guide','audio'].forEach(k => {
+    ['contrast','dyslexia','links','motion','spacing','guide'].forEach(k => {
       if (p[k]) root.setAttribute('data-a11y-' + k, 'on');
       else root.removeAttribute('data-a11y-' + k);
     });
