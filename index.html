@@ -514,18 +514,23 @@
     .a11y-panel-head h3 { margin:0; font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--text-primary); }
     .a11y-close { width:28px; height:28px; border:none; background:transparent; color:var(--text-muted); font-size:20px; line-height:1; cursor:pointer; border-radius:6px; }
     .a11y-close:hover { background:var(--bg-surface-2); color:var(--text-primary); }
-    .a11y-row { margin-bottom:14px; }
-    .a11y-row-label { display:block; font-size:10.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-secondary); margin-bottom:6px; }
-    .a11y-row-controls { display:flex; flex-wrap:wrap; gap:6px; }
-    .a11y-pill, .a11y-toggle { padding:5px 10px; font-size:12px; font-weight:600; border:1px solid var(--border); background:var(--bg-surface); color:var(--text-secondary); border-radius:6px; cursor:pointer; transition:all 140ms ease; }
-    .a11y-pill:hover, .a11y-toggle:hover { border-color:var(--ccc-dark-blue); color:var(--ccc-dark-blue); }
-    .a11y-pill.active, .a11y-toggle[aria-pressed="true"] { background:var(--ccc-dark-blue); color:#fff; border-color:var(--ccc-dark-blue); }
-    .a11y-pill:focus-visible, .a11y-toggle:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
-    .a11y-foot { display:flex; align-items:center; justify-content:space-between; padding-top:12px; border-top:1px solid var(--border); margin-top:6px; }
-    .a11y-reset { padding:5px 12px; font-size:11.5px; font-weight:600; color:var(--text-secondary); background:transparent; border:1px solid var(--border); border-radius:6px; cursor:pointer; }
-    .a11y-reset:hover { color:var(--ccc-dark-blue); border-color:var(--ccc-dark-blue); }
-    .a11y-link { font-size:11px; color:var(--text-muted); text-decoration:none; }
-    .a11y-link:hover { color:var(--ccc-dark-blue); text-decoration:underline; }
+    .a11y-options { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
+    .a11y-options li { display:block; }
+    .a11y-option-divider { height:1px; background:var(--border); margin:6px 0; }
+    .a11y-option { display:block; width:100%; text-align:left; padding:10px 12px; font-size:13.5px; font-weight:500; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all 140ms ease; }
+    .a11y-option:hover { border-color:var(--ccc-dark-blue); background:var(--bg-surface-2); }
+    .a11y-option[aria-pressed="true"] { background:var(--ccc-dark-blue); color:#fff; border-color:var(--ccc-dark-blue); }
+    .a11y-option:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
+    .a11y-option-row { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; }
+    .a11y-option-label { font-size:13px; font-weight:500; color:var(--text-primary); }
+    .a11y-option-row-controls { display:inline-flex; gap:4px; }
+    .a11y-pill { padding:5px 10px; font-size:12px; font-weight:600; border:1px solid var(--border); background:var(--bg-surface); color:var(--text-secondary); border-radius:6px; cursor:pointer; transition:all 140ms ease; }
+    .a11y-pill:hover { border-color:var(--ccc-dark-blue); color:var(--ccc-dark-blue); }
+    .a11y-pill.active { background:var(--ccc-dark-blue); color:#fff; border-color:var(--ccc-dark-blue); }
+    .a11y-pill:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
+    .a11y-reset-row { display:block; width:100%; text-align:center; padding:8px 12px; font-size:12px; font-weight:500; color:var(--text-muted); background:transparent; border:1px dashed var(--border); border-radius:6px; cursor:pointer; transition:color 140ms ease, border-color 140ms ease; }
+    .a11y-reset-row:hover { color:var(--ccc-dark-blue); border-color:var(--ccc-dark-blue); }
+    .a11y-reset-row:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
 
     /* User-preference overrides — applied via data attributes on <html> */
     [data-fs="sm"] { font-size:14px; }
@@ -659,40 +664,26 @@
         <h3 id="a11yPanelTitle">Accessibility</h3>
         <button class="a11y-close" onclick="toggleA11yPanel()" aria-label="Close accessibility settings">×</button>
       </div>
-      <div class="a11y-row">
-        <span class="a11y-row-label">Text size</span>
-        <div class="a11y-row-controls" role="radiogroup" aria-label="Text size">
-          <button class="a11y-pill" data-fs="sm" onclick="setA11yFontSize('sm')" aria-label="Smaller text">A-</button>
-          <button class="a11y-pill active" data-fs="md" onclick="setA11yFontSize('md')" aria-label="Default text size">A</button>
-          <button class="a11y-pill" data-fs="lg" onclick="setA11yFontSize('lg')" aria-label="Larger text">A+</button>
-          <button class="a11y-pill" data-fs="xl" onclick="setA11yFontSize('xl')" aria-label="Extra large text">A++</button>
-        </div>
-      </div>
-      <div class="a11y-row">
-        <span class="a11y-row-label">Display</span>
-        <div class="a11y-row-controls">
-          <button class="a11y-toggle" data-a11y="contrast" onclick="toggleA11y('contrast')" aria-pressed="false">High contrast</button>
-          <button class="a11y-toggle" data-a11y="dyslexia" onclick="toggleA11y('dyslexia')" aria-pressed="false">Dyslexia-friendly font</button>
-          <button class="a11y-toggle" data-a11y="links" onclick="toggleA11y('links')" aria-pressed="false">Underline links</button>
-        </div>
-      </div>
-      <div class="a11y-row">
-        <span class="a11y-row-label">Motion</span>
-        <div class="a11y-row-controls">
-          <button class="a11y-toggle" data-a11y="motion" onclick="toggleA11y('motion')" aria-pressed="false">Reduce motion</button>
-        </div>
-      </div>
-      <div class="a11y-row">
-        <span class="a11y-row-label">Reading aids</span>
-        <div class="a11y-row-controls">
-          <button class="a11y-toggle" data-a11y="spacing" onclick="toggleA11y('spacing')" aria-pressed="false">Roomy line spacing</button>
-          <button class="a11y-toggle" data-a11y="guide" onclick="toggleA11y('guide')" aria-pressed="false">Reading guide</button>
-        </div>
-      </div>
-      <div class="a11y-foot">
-        <button class="a11y-reset" onclick="resetA11y()">Reset to defaults</button>
-        <a class="a11y-link" href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener">WCAG 2.1 AA reference</a>
-      </div>
+      <ul class="a11y-options" role="list">
+        <li><button class="a11y-option" data-a11y="contrast" onclick="toggleA11y('contrast')" aria-pressed="false">High contrast</button></li>
+        <li><button class="a11y-option" data-a11y="dyslexia" onclick="toggleA11y('dyslexia')" aria-pressed="false">Dyslexia-friendly font</button></li>
+        <li><button class="a11y-option" data-a11y="links" onclick="toggleA11y('links')" aria-pressed="false">Underline links</button></li>
+        <li><button class="a11y-option" data-a11y="motion" onclick="toggleA11y('motion')" aria-pressed="false">Reduce motion</button></li>
+        <li><button class="a11y-option" data-a11y="spacing" onclick="toggleA11y('spacing')" aria-pressed="false">Roomy line spacing</button></li>
+        <li><button class="a11y-option" data-a11y="guide" onclick="toggleA11y('guide')" aria-pressed="false">Reading guide</button></li>
+        <li class="a11y-option-divider" aria-hidden="true"></li>
+        <li class="a11y-option-row">
+          <span class="a11y-option-label">Text size</span>
+          <div class="a11y-option-row-controls" role="radiogroup" aria-label="Text size">
+            <button class="a11y-pill" data-fs="sm" onclick="setA11yFontSize('sm')" aria-label="Smaller text">A-</button>
+            <button class="a11y-pill active" data-fs="md" onclick="setA11yFontSize('md')" aria-label="Default text size">A</button>
+            <button class="a11y-pill" data-fs="lg" onclick="setA11yFontSize('lg')" aria-label="Larger text">A+</button>
+            <button class="a11y-pill" data-fs="xl" onclick="setA11yFontSize('xl')" aria-label="Extra large text">A++</button>
+          </div>
+        </li>
+        <li class="a11y-option-divider" aria-hidden="true"></li>
+        <li><button class="a11y-reset-row" onclick="resetA11y()">Reset to defaults</button></li>
+      </ul>
     </div>
     </header>
 
