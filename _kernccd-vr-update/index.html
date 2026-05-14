@@ -2,8 +2,8 @@
 <!--
   Kern CCD Project Dashboard
   Project dashboard for Kern CCD's VR EEO Faculty Development and Peer
-  Mentoring Program — a $150,000 Tier 1 award under the
-  2026–2028 EEO Innovative Best Practices grant initiative.
+  Mentoring Program - a $150,000 Tier 1 award under the
+  2026-2028 EEO Innovative Best Practices grant initiative.
   Data sourced directly from the grant application (submitted Jul 21, 2025).
 -->
 <html lang="en" data-theme="light">
@@ -13,7 +13,7 @@
   <meta name="referrer" content="no-referrer-when-downgrade" />
   <meta name="color-scheme" content="light dark" />
   <title>Kern CCD Project · VR EEO Faculty Development &amp; Peer Mentoring Program</title>
-  <meta name="description" content="Kern Community College District — VR EEO Faculty Development and Peer Mentoring Program dashboard. $150,000 Tier 1 award under the 2026–2028 EEO Innovative Best Practices initiative. Two-year, multi-college VR faculty development and peer mentoring across Bakersfield, Cerro Coso, and Porterville." />
+  <meta name="description" content="Kern Community College District - VR EEO Faculty Development and Peer Mentoring Program dashboard. $150,000 Tier 1 award under the 2026-2028 EEO Innovative Best Practices initiative. Two-year, multi-college VR faculty development and peer mentoring across Bakersfield, Cerro Coso, and Porterville." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -150,10 +150,10 @@
     .grant-meta-item span { font-size:13px; font-weight:600; color:#fff; }
     .grant-meta-item span.gold { color:#4ADE80; font-weight:600; }
     .grant-meta-divider { width:1px; height:32px; background:rgba(255,255,255,0.15); }
-    /* Overview KPIs — locked 5-up layout for the five tiles so they sit evenly in one row on desktop */
+    /* Overview KPIs - locked 5-up layout for the five tiles so they sit evenly in one row on desktop */
     .kpi-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-bottom:24px; }
     /* LIFT chip floats above the "4" number on Tier 1 Districts, like a trademark on a logo.
-       Always visible — no hover or interaction needed. */
+       Always visible - no hover or interaction needed. */
     .kpi-value-wrap { position:relative; display:inline-block; }
     .lift-mark-value {
       position:absolute;
@@ -214,7 +214,7 @@
     .tier-badge.tier1 { background:var(--tier1-bg); color:var(--tier1-color); }
     .tier-badge.tier2 { background:var(--tier2-bg); color:var(--tier2-color); }
     .tier-badge.lift { background:var(--lift-bg); color:var(--lift-color); }
-    /* LIFT mark — hovers above the Tier 2 badge corner like a ™ on a logo */
+    /* LIFT mark - hovers above the Tier 2 badge corner like a ™ on a logo */
     .lift-mark {
       position:absolute;
       top:-7px;
@@ -259,7 +259,7 @@
     .outcome-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
     .outcome-card-header { background:var(--ccc-dark-blue); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
     .outcome-card-name { font-size:13px; font-weight:700; color:#fff; }
-    /* Tier badge sitting on a dark header — flip to white on translucent so it stays legible */
+    /* Tier badge sitting on a dark header - flip to white on translucent so it stays legible */
     .outcome-card-header .tier-badge { background:rgba(255,255,255,0.18); color:#fff; }
     .outcome-card-header .lift-mark { background:var(--ccc-gold); color:var(--ccc-dark-blue); }
     .outcome-list { list-style:none; padding:12px 16px; }
@@ -267,7 +267,7 @@
     .outcome-list li:last-child { border-bottom:none; }
     .outcome-list li::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ccc-medium-blue); margin-top:6px; flex-shrink:0; }
 
-    /* BUDGET — Y1/Y2 totals at top, full line items below (Indirect kept as-is) */
+    /* BUDGET - Y1/Y2 totals at top, full line items below (Indirect kept as-is) */
 
     /* ════════════ Year-filter tabs (Underspend Risk Alerts) ════════════ */
     .year-filter-tabs { display:inline-flex; gap:4px; padding:3px; background:var(--bg-surface-2); border:1px solid var(--border); border-radius:24px; margin:0 0 14px; }
@@ -284,7 +284,7 @@
     body[data-year-filter="y1"] .spend-line-row[data-year-key="y2"] { display:none; }
     body[data-year-filter="y2"] .spend-year-row[data-year-key="y1"],
     body[data-year-filter="y2"] .spend-line-row[data-year-key="y1"] { display:none; }
-    /* ════════════ SPEND-DOWN — line-item detail rows ════════════ */
+    /* ════════════ SPEND-DOWN - line-item detail rows ════════════ */
     .spend-year-row td { background:rgba(0,47,109,0.04); padding-top:12px; padding-bottom:12px; }
     [data-theme="dark"] .spend-year-row td { background:rgba(64,180,229,0.06); }
     .spend-line-row td { padding-top:7px; padding-bottom:7px; background:var(--bg-card); border-bottom:1px solid var(--border); }
@@ -493,7 +493,7 @@
     .kccd-topbar-stamp .kccd-stamp-label { display:none; }
     @media (max-width:760px) { .kccd-topbar-stamp { padding:4px 10px; height:34px; } .kccd-topbar-stamp img { height:18px; } } @media (max-width:520px) { .kccd-topbar-stamp { display:none; } }
 
-    /* Overview hero card — wraps title + ticker on dark slate */
+    /* Overview hero card - wraps title + ticker on dark slate */
     .overview-hero { background:var(--bg-surface); border-radius:var(--radius-lg); padding:22px 26px 18px; margin-bottom:24px; box-shadow:var(--shadow-sm); border:1px solid var(--border); border-left:3px solid var(--kccd-red); }
     .overview-hero h2 { font-family:var(--font-display); font-size:26px; font-weight:600; color:var(--text-primary); line-height:1.2; margin:0; letter-spacing:-0.02em; }
     .overview-hero .overview-ticker { margin-top:12px; }
@@ -503,14 +503,14 @@
       .overview-hero h2 { font-size:22px; }
     }
 
-    /* Accessibility feature — drop-in pill button + fixed-overlay modal.
+    /* Accessibility feature - drop-in pill button + fixed-overlay modal.
        The button reuses .cccco-topbar-stamp sizing/borders so the topbar
        layout, alignment and structure are unchanged. */
     .a11y-stamp { color:var(--ccc-dark-blue); cursor:pointer; padding:0 16px; font-family:var(--font-body),Inter,sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.02em; }
     .a11y-stamp:hover { color:var(--ccc-medium-blue); border-color:var(--ccc-medium-blue); }
     .a11y-stamp:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
     .a11y-stamp-label { display:inline-block; line-height:1; }
-    /* Modal overlay — strictly fixed-position so it doesn't shift any layout. */
+    /* Modal overlay - strictly fixed-position so it doesn't shift any layout. */
     .a11y-modal { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px; }
     .a11y-modal[hidden] { display:none; }
     .a11y-modal-backdrop { position:absolute; inset:0; background:rgba(15,23,42,0.55); animation:a11yFadeIn 0.18s ease; }
@@ -546,9 +546,9 @@
     .a11y-done:focus-visible, .a11y-reset:focus-visible { outline:2px solid #0066BA; outline-offset:2px; }
     @keyframes a11yFadeIn { from { opacity:0; } to { opacity:1; } }
     @keyframes a11ySlideIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
-    /* User-preference overrides — scoped via data-attributes on <html>.
+    /* User-preference overrides - scoped via data-attributes on <html>.
        These only kick in when the user opts in; the default look is unchanged. */
-    /* Accessibility text-size — overrides body and main-content rules so the user choice wins */
+    /* Accessibility text-size - overrides body and main-content rules so the user choice wins */
     html[data-fs="sm"] body, html[data-fs="sm"] .content, html[data-fs="sm"] .content * { font-size: 0.90em; }
     html[data-fs="sm"] body { font-size:13.5px !important; }
     html[data-fs="lg"] body { font-size:17.5px !important; }
@@ -588,7 +588,7 @@
     html[data-a11y-guide="on"] .a11y-reading-guide { display:block; }
     .a11y-reading-guide { position:fixed; left:0; right:0; height:34px; background:rgba(255,221,0,0.20); border-top:1px solid rgba(255,180,0,0.5); border-bottom:1px solid rgba(255,180,0,0.5); pointer-events:none; z-index:998; display:none; }
 
-    /* Project Profile — condensed hero card with interactive VR avatar */
+    /* Project Profile - condensed hero card with interactive VR avatar */
     .project-hero-card { background:linear-gradient(135deg,var(--ccc-dark-blue) 0%,var(--ccc-darker-blue) 100%); color:#fff; border:none; }
     .project-hero-card .card-body { padding:22px 24px; }
     .project-hero-grid { display:grid; grid-template-columns:1fr auto; gap:24px; align-items:center; }
@@ -704,7 +704,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
         <span class="topbar-title" data-i18n="topbar_title">Kern CCD Project</span>
-        <span class="topbar-badge">2026–2028 EEO IBP</span>
+        <span class="topbar-badge">2026-2028 EEO IBP</span>
       </div>
       <div class="topbar-right">
       <button class="cccco-topbar-stamp a11y-stamp" id="a11yStamp" type="button" onclick="openA11yModal()" aria-haspopup="dialog" aria-controls="a11yModal" aria-label="Open accessibility options" title="Accessibility"><span class="a11y-stamp-label">Accessibility</span></button>
@@ -742,9 +742,9 @@
           <h2 data-i18n="overview_title">Program Overview</h2>
           <div class="overview-ticker" aria-label="Program overview headline">
             <div class="overview-ticker-track">
-              <span class="overview-ticker-item" data-i18n="overview_sub">Kern Community College District — Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
-              <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Kern Community College District — Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
-              <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Kern Community College District — Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
+              <span class="overview-ticker-item" data-i18n="overview_sub">Kern Community College District - Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
+              <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Kern Community College District - Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
+              <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Kern Community College District - Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
             </div>
           </div>
         </div>
@@ -756,12 +756,12 @@
           <div class="grant-meta-divider"></div>
           <div class="grant-meta-item"><label data-i18n="meta_start">Start</label><span>Jan 1, 2026</span></div>
           <div class="grant-meta-divider"></div>
-          <div class="grant-meta-item"><label data-i18n="meta_duration">Funding Cycle</label><span>Jan 2026 – Jun 2028</span></div>
+          <div class="grant-meta-item"><label data-i18n="meta_duration">Funding Cycle</label><span>Jan 2026 - Jun 2028</span></div>
         </div>
 
         <div class="kpi-grid">
           <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_total_funding">Total Grant Funding</div><div class="kpi-value blue">$150,000</div><div class="kpi-sub" data-i18n="kpi_across">VR Faculty Development &amp; Peer Mentoring</div></div>
-          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_grant_tier">Grant Tier</div><div class="kpi-value medium-blue">Tier 1</div><div class="kpi-sub" data-i18n="kpi_grant_tier_sub">2026&ndash;2028 EEO IBP</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_grant_tier">Grant Tier</div><div class="kpi-value medium-blue">Tier 1</div><div class="kpi-sub" data-i18n="kpi_grant_tier_sub">2026-2028 EEO IBP</div></div>
           <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_dr_target">Faculty Trained</div><div class="kpi-value blue">&ge; 30</div><div class="kpi-sub" data-i18n="kpi_dr_target_sub">Across all 3 Kern colleges</div></div>
           <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_mentor_target">Participating Colleges</div><div class="kpi-value medium-blue">3</div><div class="kpi-sub" data-i18n="kpi_mentor_target_sub">Bakersfield &middot; Cerro Coso &middot; Porterville</div></div>
           <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label" data-i18n="kpi_focus">Focus Areas</div><div class="kpi-value grey">4</div><div class="kpi-sub" data-i18n="kpi_focus_sub">VR Pedagogy &middot; Peer Mentoring &middot; Inclusive Design &middot; Leadership Pipeline</div></div>
@@ -770,8 +770,8 @@
         <div class="alliance-banner">
           <div class="alliance-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
           <div class="alliance-text">
-            <strong data-i18n="lift_title">Program Spotlight — DRS Hiring + Faculty Mentorship</strong>
-            <p data-i18n="lift_desc">Kern CCD is launching a two-year VR Faculty Development and Peer Mentoring Program across Bakersfield, Cerro Coso, and Porterville. The program pairs structured VR pedagogy training with peer mentorship and closes a post-hire gap in Kern&rsquo;s 2024&ndash;2027 EEO Plan by institutionalizing leadership and retention strategies.</p>
+            <strong data-i18n="lift_title">Program Spotlight - DRS Hiring + Faculty Mentorship</strong>
+            <p data-i18n="lift_desc">Kern CCD is launching a two-year VR Faculty Development and Peer Mentoring Program across Bakersfield, Cerro Coso, and Porterville. The program pairs structured VR pedagogy training with peer mentorship and closes a post-hire gap in Kern&rsquo;s 2024-2027 EEO Plan by institutionalizing leadership and retention strategies.</p>
           </div>
         </div>
 
@@ -801,7 +801,7 @@
       <div id="section-goals" class="section">
         <div class="page-header">
           <h2 data-i18n="goals_title">Goals &amp; Objectives</h2>
-          <p data-i18n="goals_sub">Project goals from the Kern CCD workplan (Section 2.1) — paired with the two-year activities, five measurable outcomes, and responsible leadership.</p>
+          <p data-i18n="goals_sub">Project goals from the Kern CCD workplan (Section 2.1) - paired with the two-year activities, five measurable outcomes, and responsible leadership.</p>
         </div>
 
         <div class="kpi-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
@@ -856,7 +856,7 @@
           <article class="goal-card goal-card--g2">
             <header class="goal-card-head">
               <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 2</span><span>Faculty Leadership Pipeline &amp; Post-Hire EEO</span></div>
-              <h3 class="goal-card-title">Build faculty leadership through inclusive VR pedagogy and address a critical gap in Kern CCD&rsquo;s 2024–2027 EEO Plan by adding sustained post-hire professional development and retention strategies.</h3>
+              <h3 class="goal-card-title">Build faculty leadership through inclusive VR pedagogy and address a critical gap in Kern CCD&rsquo;s 2024-2027 EEO Plan by adding sustained post-hire professional development and retention strategies.</h3>
             </header>
             <div class="goal-card-body">
 
@@ -914,10 +914,10 @@
                   <div class="project-hero-title">Kern CCD VR EEO Faculty Development &amp; Peer Mentoring Program</div>
                   <div class="project-hero-funding"><span>Funding</span>$150,000</div>
                 </div>
-                <p class="project-hero-desc">A two-year, multi-college VR faculty development and peer mentoring program across Bakersfield, Cerro Coso, and Porterville &mdash; building faculty competitiveness for tenure and leadership through immersive pedagogy and inclusive instructional design.</p>
+                <p class="project-hero-desc">A two-year, multi-college VR faculty development and peer mentoring program across Bakersfield, Cerro Coso, and Porterville - building faculty competitiveness for tenure and leadership through immersive pedagogy and inclusive instructional design.</p>
                 <div class="project-hero-pills">
                   <div class="meta-pill"><span>Submitted</span> &middot; <strong>Jul 21, 2025</strong></div>
-                  <div class="meta-pill"><span>Cycle</span> &middot; <strong>Jan 2026 &ndash; Jun 2028</strong></div>
+                  <div class="meta-pill"><span>Cycle</span> &middot; <strong>Jan 2026 - Jun 2028</strong></div>
                   <div class="meta-pill"><span>Website</span> &middot; <a href="https://www.kccd.edu/" target="_blank" rel="noopener"><strong>kccd.edu</strong></a></div>
                 </div>
               </div>
@@ -1007,7 +1007,7 @@
                   <span style="font-size:12px;color:var(--text-muted);">Faculty Leadership Pipeline &amp; Post-Hire EEO</span>
                 </div>
                 <div style="font-family:var(--font-display);font-weight:600;font-size:15px;margin-bottom:8px;">Build a districtwide leadership pipeline through VR pedagogy &amp; peer mentoring</div>
-                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0;">Train faculty in inclusive VR-based teaching, expand them into mentor and innovation roles in Year 2, and close the post-hire gap in Kern CCD&rsquo;s 2024&ndash;2027 EEO Plan.</p>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0;">Train faculty in inclusive VR-based teaching, expand them into mentor and innovation roles in Year 2, and close the post-hire gap in Kern CCD&rsquo;s 2024-2027 EEO Plan.</p>
               </div>
             </div>
           </div>
@@ -1020,7 +1020,7 @@
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
               <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                  <span style="background:var(--ccc-medium-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">YEAR 1 &middot; 2026&ndash;2027</span>
+                  <span style="background:var(--ccc-medium-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">YEAR 1 &middot; 2026-2027</span>
                 </div>
                 <ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:var(--text-secondary);">
                   <li><strong>VR training curriculum.</strong> Six 4-hour PD sessions in Fall 2026 covering VR hardware, pedagogy, collaborative curriculum design, and inclusive lesson planning.</li>
@@ -1031,7 +1031,7 @@
               </div>
               <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                  <span style="background:var(--ccc-dark-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">YEAR 2 &middot; 2027&ndash;2028</span>
+                  <span style="background:var(--ccc-dark-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">YEAR 2 &middot; 2027-2028</span>
                 </div>
                 <ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:var(--text-secondary);">
                   <li><strong>Mentor program expansion.</strong> New mentees plus returning participants advancing into mentor roles.</li>
@@ -1053,7 +1053,7 @@
                 <li><strong>Office of Planning &amp; Educational Technology.</strong> Owns VR hardware procurement, faculty cohort logistics, and the shared VR lesson catalog.</li>
                 <li><strong>Bakersfield College, Cerro Coso, &amp; Porterville College.</strong> Each campus contributes cohort seats proportional to FTES and hosts on-site VR sessions.</li>
                 <li><strong>Faculty leaders &amp; VR subject-matter experts.</strong> Anchor the peer mentorship model and deliver the six-session training series.</li>
-                <li><strong>District EEO Committee.</strong> Aligns the program with the 2024&ndash;2027 EEO Plan and shepherds the post-hire professional-development update.</li>
+                <li><strong>District EEO Committee.</strong> Aligns the program with the 2024-2027 EEO Plan and shepherds the post-hire professional-development update.</li>
                 <li><strong>Institutional Research / Office of Educational Technology.</strong> Data collection, disaggregated analysis, and lesson-catalog infrastructure.</li>
               </ul>
             </div>
@@ -1067,7 +1067,7 @@
                 <li>Best practices in VR pedagogy and immersive lesson design</li>
                 <li>Collaborative, cross-disciplinary curriculum development</li>
                 <li>Inclusive instructional design for diverse student populations</li>
-                <li>Faculty leadership growth &mdash; advancing into mentor and innovation roles</li>
+                <li>Faculty leadership growth - advancing into mentor and innovation roles</li>
               </ul>
             </div>
           </div>
@@ -1076,7 +1076,7 @@
 
       <!-- OUTCOMES -->
       <div id="section-outcomes" class="section">
-        <div class="page-header"><h2 data-i18n="outcomes_title">Program Outcomes</h2><p data-i18n="outcomes_sub">Five measurable outcomes for Kern CCD's VR Faculty Development & Peer Mentoring Program — sourced from the application workplan (Section 2.3)</p></div>
+        <div class="page-header"><h2 data-i18n="outcomes_title">Program Outcomes</h2><p data-i18n="outcomes_sub">Five measurable outcomes for Kern CCD's VR Faculty Development & Peer Mentoring Program - sourced from the application workplan (Section 2.3)</p></div>
         <div class="outcomes-grid" id="outcomes-grid"></div>
       </div>
 
@@ -1114,9 +1114,9 @@
             </header>
             <div class="goal-card-body">
               <ul class="goal-timeline">
-                <li><span class="goal-timeline-when">Jan – Apr 2026</span><span class="goal-timeline-what">Procure VR hardware and peripherals; distribute across Bakersfield, Cerro Coso, and Porterville.</span><span class="goal-timeline-who">AVC, Planning &amp; Educational Technology · Office of Educational Technology</span></li>
-                <li><span class="goal-timeline-when">Aug – Nov 2026</span><span class="goal-timeline-what">Cohort 1 VR training (six 4-hour sessions); peer mentor pairings established.</span><span class="goal-timeline-who">Faculty co-chair · Peer mentor leads at each college</span></li>
-                <li><span class="goal-timeline-when">Jan – Apr 2027</span><span class="goal-timeline-what">Classroom implementation of VR-enhanced lessons; ongoing mentor support.</span><span class="goal-timeline-who">Cohort faculty · Peer mentors</span></li>
+                <li><span class="goal-timeline-when">Jan - Apr 2026</span><span class="goal-timeline-what">Procure VR hardware and peripherals; distribute across Bakersfield, Cerro Coso, and Porterville.</span><span class="goal-timeline-who">AVC, Planning &amp; Educational Technology · Office of Educational Technology</span></li>
+                <li><span class="goal-timeline-when">Aug - Nov 2026</span><span class="goal-timeline-what">Cohort 1 VR training (six 4-hour sessions); peer mentor pairings established.</span><span class="goal-timeline-who">Faculty co-chair · Peer mentor leads at each college</span></li>
+                <li><span class="goal-timeline-when">Jan - Apr 2027</span><span class="goal-timeline-what">Classroom implementation of VR-enhanced lessons; ongoing mentor support.</span><span class="goal-timeline-who">Cohort faculty · Peer mentors</span></li>
                 <li><span class="goal-timeline-when">May 2027</span><span class="goal-timeline-what">End-of-year district showcase; standardized lesson documentation completed.</span><span class="goal-timeline-who">Project leadership team</span></li>
               </ul>
             </div>
@@ -1129,8 +1129,8 @@
             </header>
             <div class="goal-card-body">
               <ul class="goal-timeline">
-                <li><span class="goal-timeline-when">Aug – Nov 2027</span><span class="goal-timeline-what">Cohort 2 VR training begins; returning participants start VR content creation (e.g., Unity).</span><span class="goal-timeline-who">AVC, Planning &amp; Educational Technology · Faculty co-chair</span></li>
-                <li><span class="goal-timeline-when">Jan – Apr 2028</span><span class="goal-timeline-what">Advanced VR projects piloted in classrooms with Faculty Innovation Stipends; peer mentoring continues.</span><span class="goal-timeline-who">Cohort 2 faculty · Year-1 alumni now serving as mentors</span></li>
+                <li><span class="goal-timeline-when">Aug - Nov 2027</span><span class="goal-timeline-what">Cohort 2 VR training begins; returning participants start VR content creation (e.g., Unity).</span><span class="goal-timeline-who">AVC, Planning &amp; Educational Technology · Faculty co-chair</span></li>
+                <li><span class="goal-timeline-when">Jan - Apr 2028</span><span class="goal-timeline-what">Advanced VR projects piloted in classrooms with Faculty Innovation Stipends; peer mentoring continues.</span><span class="goal-timeline-who">Cohort 2 faculty · Year-1 alumni now serving as mentors</span></li>
                 <li><span class="goal-timeline-when">May 2028</span><span class="goal-timeline-what">Final showcase; documented lessons organized into a searchable districtwide repository.</span><span class="goal-timeline-who">Project leadership team · District EEO Committee</span></li>
               </ul>
             </div>
@@ -1141,8 +1141,8 @@
           <div class="timeline-header-row">
             <div class="tl-hl" data-i18n="th_district">District</div>
             <div class="tl-hb">
-              <div class="tl-hbi" data-i18n="tl_y1">Year 1 (Jan 2026 – Jun 2027)</div>
-              <div class="tl-hbi" data-i18n="tl_y2">Year 2 (Jul 2027 – Jun 2028)</div>
+              <div class="tl-hbi" data-i18n="tl_y1">Year 1 (Jan 2026 - Jun 2027)</div>
+              <div class="tl-hbi" data-i18n="tl_y2">Year 2 (Jul 2027 - Jun 2028)</div>
             </div>
             <div class="tl-ht" data-i18n="th_total">Total</div>
           </div>
@@ -1224,9 +1224,9 @@
 
 <script>
 /* ════════════════════════════════════════════════════════════════
-   2-YEAR FUNDING CYCLE: Jan 1 2026 – Jun 30 2028
-     Year 1: Jan 1, 2026 – Jun 30, 2027 (18 months)
-     Year 2: Jul 1, 2027 – Jun 30, 2028 (12 months)
+   2-YEAR FUNDING CYCLE: Jan 1 2026 - Jun 30 2028
+     Year 1: Jan 1, 2026 - Jun 30, 2027 (18 months)
+     Year 2: Jul 1, 2027 - Jun 30, 2028 (12 months)
    Each district's budget line items (incl. indirect / 7000) are
    carried as totals; renderBudget proportionally splits each line
    across Y1 and Y2 by the y1/y2 funding ratio.
@@ -1270,34 +1270,34 @@ const districts = [
       'Reduce instructional technology access gaps by ensuring faculty at smaller colleges (Cerro Coso and Porterville) have equal opportunity to experiment with and adopt immersive learning tools',
       'Promote inclusive and equity-focused teaching by equipping faculty with VR-based strategies that foster empathy, cultural understanding, and engagement among diverse student populations',
       'Increase faculty confidence and cross-disciplinary use of VR-based teaching methods at all three Kern CCD colleges',
-      'Address a critical gap in Kern CCD’s 2024–2027 EEO Plan by adding post-hire professional development and retention strategies'
+      'Address a critical gap in Kern CCD’s 2024-2027 EEO Plan by adding post-hire professional development and retention strategies'
     ]
   }
 ];
 
-// CCCCO disbursement starts at zero — funding cycle hasn't begun
+// CCCCO disbursement starts at zero - funding cycle hasn't begun
 districts.forEach(d => { d.cccoDisbursed = 0; d.cccoDisbursedRate = '0%'; });
 
 const fmt = v => '$' + Math.round(v).toLocaleString();
 
 /* ════════════════════════════════════════════════════════════════
-   TRANSLATIONS — 2-year cycle wording across en/es/vi/ar/tl
+   TRANSLATIONS - 2-year cycle wording across en/es/vi/ar/tl
 ════════════════════════════════════════════════════════════════ */
 const translations = {
   en: {
     nav_overview:'Overview', nav_goals:'Goals & Objectives', nav_districts:'Project Profile',
     nav_outcomes:'Outcomes', nav_budget:'Budget Breakdown', nav_timeline:'Timeline', nav_contacts:'Contacts', nav_spenddown:'Spend-Down Monitor',
     topbar_title:'Kern CCD Project',
-    goals_title:'Goals & Objectives', goals_sub:'Project goals from the Kern CCD workplan (Section 2.1) — paired with the two-year activities, five measurable outcomes, and responsible leadership.',
-    overview_title:'Program Overview', overview_sub:'Kern Community College District — Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program. $150,000 award from the 2026–2028 EEO IBP grant cycle, across Bakersfield, Cerro Coso, and Porterville colleges.',
+    goals_title:'Goals & Objectives', goals_sub:'Project goals from the Kern CCD workplan (Section 2.1) - paired with the two-year activities, five measurable outcomes, and responsible leadership.',
+    overview_title:'Program Overview', overview_sub:'Kern Community College District - Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program. $150,000 award from the 2026-2028 EEO IBP grant cycle, across Bakersfield, Cerro Coso, and Porterville colleges.',
     meta_monitor:'Grant Monitor', meta_grantid:'Grant ID', meta_start:'Start', meta_duration:'Funding Cycle', meta_status:'Status',
     kpi_total_funding:'Total Grant Funding', kpi_across:'VR Faculty Development &amp; Peer Mentoring',
     kpi_total_districts:'Total Districts', kpi_all_submitted:'All submitted',
     kpi_tier1:'Tier 1 Districts', kpi_tier1_sub:'$150K each (avg)',
     kpi_tier2:'Tier 2 Districts', kpi_tier2_sub:'$100K each',
     kpi_lift:'LIFT Alliance', kpi_focus:'Focus Areas', kpi_focus_sub:'Equity in Hiring · Inclusive Pedagogy · Mentorship · Reflective Practice',
-    lift_title:'Program Spotlight — DRS Hiring + Faculty Mentorship',
-    lift_desc:'Kern CCD is launching a two-year VR Faculty Development and Peer Mentoring Program across Bakersfield, Cerro Coso, and Porterville — pairing structured VR pedagogy training with peer mentorship to build faculty leadership and close a post-hire gap in the 2024–2027 EEO Plan.',
+    lift_title:'Program Spotlight - DRS Hiring + Faculty Mentorship',
+    lift_desc:'Kern CCD is launching a two-year VR Faculty Development and Peer Mentoring Program across Bakersfield, Cerro Coso, and Porterville - pairing structured VR pedagogy training with peer mentorship to build faculty leadership and close a post-hire gap in the 2024-2027 EEO Plan.',
     chart_tier_dist:'Fund Allocation by Tier', chart_total_dist:'Total Distribution',
     chart_focus_areas:'Program Focus Areas', chart_by_type:'By Initiative Type',
     table_district_summary:'Project Summary',
@@ -1306,17 +1306,17 @@ const translations = {
     kpi_total_allocated:'Total Allocated', kpi_all_11:'Tier 1 award',
     kpi_tier1_total:'Tier 1 Total', kpi_7dist:'7 districts',
     kpi_tier2_total:'Tier 2 Total', kpi_4dist:'4 districts × $100K',
-    kpi_y1_total:'Year 1 Total', kpi_y1_sub:'Jan 2026 – Jun 2027',
+    kpi_y1_total:'Year 1 Total', kpi_y1_sub:'Jan 2026 - Jun 2027',
     chart_funding_district:'Funding by District', chart_direct:'Direct Allocation',
     chart_tier_split:'Tier Split', chart_y1y2:'Year 1 vs. Year 2 Spend', chart_by_dist:'By District',
     table_alloc_detail:'District-Level Allocation Detail',
     districts_title:'Project Profile', districts_sub:'Kern Community College District',
     filter_by:'Filter by:', filter_all:'All Districts', filter_tier1:'Tier 1', filter_tier2:'Tier 2', filter_lift:'LIFT Alliance',
     outcomes_title:'Program Outcomes', outcomes_sub:"Measurable deliverables and targets from each district's proposal",
-    budget_title:'Budget Breakdown', budget_sub:'Object-code expenditures split across Year 1 (Jan 2026 – Jun 2027) and Year 2 (Jul 2027 – Jun 2028). VR hardware purchases drive Y1; services and Faculty Innovation Stipends drive Y2.',
+    budget_title:'Budget Breakdown', budget_sub:'Object-code expenditures split across Year 1 (Jan 2026 - Jun 2027) and Year 2 (Jul 2027 - Jun 2028). VR hardware purchases drive Y1; services and Faculty Innovation Stipends drive Y2.',
     timeline_title:'Implementation Timeline', timeline_sub:'2-year funding cycle · Jan 1, 2026 → Jun 30, 2028',
     chart_yearly:'Year-by-Year Spend Profile', chart_all_districts:'All Districts',
-    tl_y1:'Year 1 (Jan 2026 – Jun 2027)', tl_y2:'Year 2 (Jul 2027 – Jun 2028)',
+    tl_y1:'Year 1 (Jan 2026 - Jun 2027)', tl_y2:'Year 2 (Jul 2027 - Jun 2028)',
     contacts_title:'Project Contacts', contacts_sub:'Project leads, alternates, and fiscal reporters',
     spend_title:'Spend-Down Monitor',
     spend_sub:'Track grant expenditures across the 2-year funding cycle and flag districts at risk of underspending',
@@ -1336,8 +1336,8 @@ const translations = {
     kpi_y1_budget_label:'Year 1 Budget',
     kpi_y2_budget_label:'Year 2 Budget',
     kpi_all_11_districts:'Tier 1 award',
-    kpi_y1_window:'of grant · Jan 2026 – Jun 2027',
-    kpi_y2_window:'of grant · Jul 2027 – Jun 2028',
+    kpi_y1_window:'of grant · Jan 2026 - Jun 2027',
+    kpi_y2_window:'of grant · Jul 2027 - Jun 2028',
     pace_slow:'Slow',
     pace_moderate:'Moderate',
     pace_fast:'Fast',
@@ -1353,7 +1353,7 @@ const translations = {
     role_alt_project_lead:'Alternate Project Lead',
     role_fiscal_reporter:'Fiscal Reporter',
     role_plan_approver:'Plan Approver',
-    all_clear:'✓ Kern CCD is on track — no underspend risks detected.',
+    all_clear:'✓ Kern CCD is on track - no underspend risks detected.',
     flagged_one:'Budget Detail Flagged',
     flagged_many:'Budget Details Flagged',
     tl_total:'Total',
@@ -1367,8 +1367,8 @@ const translations = {
     sb_spend_monitor:'Spend Monitor',
     select_language:'Select Language',
     status_active:'Active',
-    y1_window_short:'Jan 2026 – Jun 2027',
-    y2_window_short:'Jul 2027 – Jun 2028'
+    y1_window_short:'Jan 2026 - Jun 2027',
+    y2_window_short:'Jul 2027 - Jun 2028'
   ,
     kpi_total_allocated_sub:'Tier 1 award',
     kpi_direct_costs:'Direct Costs',
@@ -1380,7 +1380,7 @@ const translations = {
     chart_funding_objcode:'Funding by Object Code',
     chart_direct_indirect:'Direct vs. Indirect',
     chart_by_objcode:'By Object Code',
-    table_alloc_sub:'Per the Kern CCD application — totals to $150,000',
+    table_alloc_sub:'Per the Kern CCD application - totals to $150,000',
     th_period:'Period',
     th_period_budget:'Period Budget',
     th_share:'Share of Total',
@@ -1388,19 +1388,19 @@ const translations = {
     kpi_dr_target:'DRS Trained',
     kpi_dr_target_sub:'Classified staff over two cohorts',
     kpi_mentor_target:'Mentor Cohort',
-    kpi_mentor_target_sub:'4 faculty mentors · 8 mentees', kpi_grant_tier:'Grant Tier', kpi_grant_tier_sub:'2026–2028 EEO IBP', kpi_colleges:'Participating Colleges', kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville', kpi_faculty_target:'Faculty Target', kpi_faculty_target_sub:'Trained across the district by Year 2',},
+    kpi_mentor_target_sub:'4 faculty mentors · 8 mentees', kpi_grant_tier:'Grant Tier', kpi_grant_tier_sub:'2026-2028 EEO IBP', kpi_colleges:'Participating Colleges', kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville', kpi_faculty_target:'Faculty Target', kpi_faculty_target_sub:'Trained across the district by Year 2',},
   es: {
     nav_overview:'Resumen', nav_goals:'Metas y Objetivos', nav_districts:'Perfil del Proyecto', nav_outcomes:'Resultados', nav_budget:'Presupuesto', nav_timeline:'Cronograma', nav_contacts:'Contactos', nav_spenddown:'Monitor de Gastos',
     topbar_title:'Proyecto Kern CCD',
-    overview_title:'Resumen del Programa', overview_sub:'Kern Community College District — beneficiario de Nivel 2, Programas de Desarrollo Profesional y Representantes de EEO. Subvención de $100,000 del ciclo EEO IBP 2026–2028.',
+    overview_title:'Resumen del Programa', overview_sub:'Kern Community College District - beneficiario de Nivel 2, Programas de Desarrollo Profesional y Representantes de EEO. Subvención de $100,000 del ciclo EEO IBP 2026-2028.',
     meta_monitor:'Monitor de Subvención', meta_grantid:'ID de Subvención', meta_start:'Inicio', meta_duration:'Ciclo de Financiamiento', meta_status:'Estado',
     kpi_total_funding:'Financiamiento Total', kpi_across:'Desarrollo Docente y Mentoría con RV',
     kpi_total_districts:'Total Distritos', kpi_all_submitted:'Todos enviados',
     kpi_tier1:'Distritos Nivel 1', kpi_tier1_sub:'$150K cada uno (promedio)',
     kpi_tier2:'Distritos Nivel 2', kpi_tier2_sub:'$100K cada uno',
     kpi_lift:'Alianza LIFT', kpi_focus:'Áreas de Enfoque', kpi_focus_sub:'RV · Desarrollo Docente · Mentoría · Pedagogía Inclusiva',
-    lift_title:'Alianza LIFT — Instituto de Liderazgo para el Mañana',
-    lift_desc:'Kern CCD está lanzando un programa bienal de Desarrollo Docente con VR y Mentoría entre Pares en Bakersfield, Cerro Coso y Porterville — combinando capacitación en pedagogía VR con mentoría entre pares para desarrollar el liderazgo docente y cerrar una brecha post-contratación en el Plan EEO 2024–2027.',
+    lift_title:'Alianza LIFT - Instituto de Liderazgo para el Mañana',
+    lift_desc:'Kern CCD está lanzando un programa bienal de Desarrollo Docente con VR y Mentoría entre Pares en Bakersfield, Cerro Coso y Porterville - combinando capacitación en pedagogía VR con mentoría entre pares para desarrollar el liderazgo docente y cerrar una brecha post-contratación en el Plan EEO 2024-2027.',
     chart_tier_dist:'Asignación por Nivel', chart_total_dist:'Distribución Total',
     chart_focus_areas:'Áreas de Enfoque del Programa', chart_by_type:'Por Tipo de Iniciativa',
     table_district_summary:'Resumen de Distritos',
@@ -1409,17 +1409,17 @@ const translations = {
     kpi_total_allocated:'Total Asignado', kpi_all_11:'Los 11 distritos',
     kpi_tier1_total:'Total Nivel 1', kpi_7dist:'7 distritos',
     kpi_tier2_total:'Total Nivel 2', kpi_4dist:'4 distritos × $100K',
-    kpi_y1_total:'Total Año 1', kpi_y1_sub:'Ene 2026 – Jun 2027',
+    kpi_y1_total:'Total Año 1', kpi_y1_sub:'Ene 2026 - Jun 2027',
     chart_funding_district:'Financiamiento por Distrito', chart_direct:'Asignación Directa',
     chart_tier_split:'División por Nivel', chart_y1y2:'Año 1 vs. Año 2', chart_by_dist:'Por Distrito',
     table_alloc_detail:'Detalle de Asignación por Distrito',
     districts_title:'Perfiles de Distrito', districts_sub:'Los 11 distritos participantes',
     filter_by:'Filtrar por:', filter_all:'Todos', filter_tier1:'Nivel 1', filter_tier2:'Nivel 2', filter_lift:'Alianza LIFT',
     outcomes_title:'Resultados del Programa', outcomes_sub:'Entregables medibles de la propuesta de cada distrito',
-    budget_title:'Desglose Presupuestario', budget_sub:'Gastos por código de objeto, divididos entre Año 1 (Ene 2026 – Jun 2027) y Año 2 (Jul 2027 – Jun 2028). Costos indirectos integrados proporcionalmente en cada año.',
+    budget_title:'Desglose Presupuestario', budget_sub:'Gastos por código de objeto, divididos entre Año 1 (Ene 2026 - Jun 2027) y Año 2 (Jul 2027 - Jun 2028). Costos indirectos integrados proporcionalmente en cada año.',
     timeline_title:'Cronograma de Implementación', timeline_sub:'Ciclo de financiamiento de 2 años · 1 Ene 2026 → 30 Jun 2028',
     chart_yearly:'Perfil de Gasto Año por Año', chart_all_districts:'Todos los Distritos',
-    tl_y1:'Año 1 (Ene 2026 – Jun 2027)', tl_y2:'Año 2 (Jul 2027 – Jun 2028)',
+    tl_y1:'Año 1 (Ene 2026 - Jun 2027)', tl_y2:'Año 2 (Jul 2027 - Jun 2028)',
     contacts_title:'Contactos de Distrito', contacts_sub:'Líderes de proyecto, alternos y reporteros fiscales',
     spend_title:'Monitor de Gastos',
     spend_sub:'Monitorear gastos de la subvención durante el ciclo de financiamiento de 2 años y marcar distritos con riesgo de subgasto',
@@ -1439,8 +1439,8 @@ const translations = {
     kpi_y1_budget_label:'Presupuesto Año 1',
     kpi_y2_budget_label:'Presupuesto Año 2',
     kpi_all_11_districts:'Los 11 distritos',
-    kpi_y1_window:'del total · Ene 2026 – Jun 2027',
-    kpi_y2_window:'del total · Jul 2027 – Jun 2028',
+    kpi_y1_window:'del total · Ene 2026 - Jun 2027',
+    kpi_y2_window:'del total · Jul 2027 - Jun 2028',
     pace_slow:'Lento',
     pace_moderate:'Moderado',
     pace_fast:'Rápido',
@@ -1456,7 +1456,7 @@ const translations = {
     role_alt_project_lead:'Líder Alterno de Proyecto',
     role_fiscal_reporter:'Reportero Fiscal',
     role_plan_approver:'Aprobador del Plan',
-    all_clear:'✓ Kern CCD está en buen camino — sin riesgos de subgasto detectados.',
+    all_clear:'✓ Kern CCD está en buen camino - sin riesgos de subgasto detectados.',
     flagged_one:'Detalle de Presupuesto Marcado',
     flagged_many:'Detalles de Presupuesto Marcados',
     tl_total:'Total',
@@ -1470,11 +1470,11 @@ const translations = {
     sb_spend_monitor:'Monitor de Gastos',
     select_language:'Seleccionar Idioma',
     status_active:'Activo',
-    y1_window_short:'Ene 2026 – Jun 2027',
-    y2_window_short:'Jul 2027 – Jun 2028',
+    y1_window_short:'Ene 2026 - Jun 2027',
+    y2_window_short:'Jul 2027 - Jun 2028',
   
     kpi_grant_tier:'Nivel de Subvención',
-    kpi_grant_tier_sub:'EEO IBP 2026–2028',
+    kpi_grant_tier_sub:'EEO IBP 2026-2028',
     kpi_colleges:'Colegios Participantes',
     kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
     kpi_faculty_target:'Meta de Docentes',
@@ -1482,15 +1482,15 @@ const translations = {
   vi: {
     nav_overview:'Tổng quan', nav_goals:'Mục tiêu & Đối tượng', nav_districts:'Hồ sơ Dự án', nav_outcomes:'Kết quả', nav_budget:'Ngân sách', nav_timeline:'Lịch trình', nav_contacts:'Liên lạc', nav_spenddown:'Theo dõi Chi tiêu',
     topbar_title:'Dự án Kern CCD',
-    overview_title:'Tổng quan Chương trình', overview_sub:'Kern Community College District — Người nhận Bậc 2, Chương trình Phát triển Chuyên môn và Đại diện EEO. Khoản tài trợ $100,000 từ chu kỳ EEO IBP 2026–2028.',
+    overview_title:'Tổng quan Chương trình', overview_sub:'Kern Community College District - Người nhận Bậc 2, Chương trình Phát triển Chuyên môn và Đại diện EEO. Khoản tài trợ $100,000 từ chu kỳ EEO IBP 2026-2028.',
     meta_monitor:'Người giám sát', meta_grantid:'Mã tài trợ', meta_start:'Bắt đầu', meta_duration:'Chu kỳ tài trợ', meta_status:'Trạng thái',
     kpi_total_funding:'Tổng tài trợ', kpi_across:'Phát triển GV bằng VR & Cố vấn đồng nghiệp',
     kpi_total_districts:'Tổng số quận', kpi_all_submitted:'Tất cả đã nộp',
     kpi_tier1:'Quận Cấp 1', kpi_tier1_sub:'$150K mỗi quận',
     kpi_tier2:'Quận Cấp 2', kpi_tier2_sub:'$100K mỗi quận',
     kpi_lift:'Liên minh LIFT', kpi_focus:'Trọng Tâm', kpi_focus_sub:'VR · Phát triển GV · Cố vấn đồng nghiệp · Sư phạm bao gồm',
-    lift_title:'Liên minh LIFT — Viện Lãnh đạo cho Tương lai',
-    lift_desc:'Kern CCD đang triển khai chương trình hai năm Phát triển Giảng viên VR & Cố vấn Đồng nghiệp tại Bakersfield, Cerro Coso và Porterville — kết hợp đào tạo sư phạm VR có cấu trúc với cố vấn đồng nghiệp để xây dựng lãnh đạo giảng viên và lấp khoảng cách sau tuyển dụng trong Kế hoạch EEO 2024–2027.',
+    lift_title:'Liên minh LIFT - Viện Lãnh đạo cho Tương lai',
+    lift_desc:'Kern CCD đang triển khai chương trình hai năm Phát triển Giảng viên VR & Cố vấn Đồng nghiệp tại Bakersfield, Cerro Coso và Porterville - kết hợp đào tạo sư phạm VR có cấu trúc với cố vấn đồng nghiệp để xây dựng lãnh đạo giảng viên và lấp khoảng cách sau tuyển dụng trong Kế hoạch EEO 2024-2027.',
     chart_tier_dist:'Phân bổ theo cấp', chart_total_dist:'Tổng phân phối',
     chart_focus_areas:'Lĩnh vực trọng tâm', chart_by_type:'Theo loại sáng kiến',
     table_district_summary:'Tóm tắt quận',
@@ -1499,17 +1499,17 @@ const translations = {
     kpi_total_allocated:'Tổng phân bổ', kpi_all_11:'Tất cả 11 quận',
     kpi_tier1_total:'Tổng Cấp 1', kpi_7dist:'7 quận',
     kpi_tier2_total:'Tổng Cấp 2', kpi_4dist:'4 quận × $100K',
-    kpi_y1_total:'Tổng Năm 1', kpi_y1_sub:'Th1 2026 – Th6 2027',
+    kpi_y1_total:'Tổng Năm 1', kpi_y1_sub:'Th1 2026 - Th6 2027',
     chart_funding_district:'Tài trợ theo quận', chart_direct:'Phân bổ trực tiếp',
     chart_tier_split:'Phân chia cấp', chart_y1y2:'Năm 1 vs. Năm 2', chart_by_dist:'Theo quận',
     table_alloc_detail:'Chi tiết phân bổ theo quận',
     districts_title:'Hồ sơ quận', districts_sub:'Tất cả 11 quận tham gia',
     filter_by:'Lọc theo:', filter_all:'Tất cả', filter_tier1:'Cấp 1', filter_tier2:'Cấp 2', filter_lift:'Liên minh LIFT',
     outcomes_title:'Kết quả chương trình', outcomes_sub:'Các kết quả đo lường được từ mỗi đề xuất quận',
-    budget_title:'Chi tiết ngân sách', budget_sub:'Chi phí theo mã đối tượng, chia giữa Năm 1 (Th1 2026 – Th6 2027) và Năm 2 (Th7 2027 – Th6 2028). Chi phí gián tiếp được phân bổ vào mỗi năm theo tỷ lệ.',
+    budget_title:'Chi tiết ngân sách', budget_sub:'Chi phí theo mã đối tượng, chia giữa Năm 1 (Th1 2026 - Th6 2027) và Năm 2 (Th7 2027 - Th6 2028). Chi phí gián tiếp được phân bổ vào mỗi năm theo tỷ lệ.',
     timeline_title:'Lịch trình thực hiện', timeline_sub:'Chu kỳ tài trợ 2 năm · 1/1/2026 → 30/6/2028',
     chart_yearly:'Hồ sơ chi tiêu hàng năm', chart_all_districts:'Tất cả quận',
-    tl_y1:'Năm 1 (Th1 2026 – Th6 2027)', tl_y2:'Năm 2 (Th7 2027 – Th6 2028)',
+    tl_y1:'Năm 1 (Th1 2026 - Th6 2027)', tl_y2:'Năm 2 (Th7 2027 - Th6 2028)',
     contacts_title:'Liên hệ quận', contacts_sub:'Trưởng dự án, người thay thế và báo cáo tài chính',
     spend_title:'Theo dõi Chi tiêu',
     spend_sub:'Theo dõi chi tiêu trong chu kỳ tài trợ 2 năm và đánh dấu các quận có nguy cơ chi tiêu thiếu',
@@ -1529,8 +1529,8 @@ const translations = {
     kpi_y1_budget_label:'Ngân sách Năm 1',
     kpi_y2_budget_label:'Ngân sách Năm 2',
     kpi_all_11_districts:'Tất cả 11 quận',
-    kpi_y1_window:'của tổng · Th1 2026 – Th6 2027',
-    kpi_y2_window:'của tổng · Th7 2027 – Th6 2028',
+    kpi_y1_window:'của tổng · Th1 2026 - Th6 2027',
+    kpi_y2_window:'của tổng · Th7 2027 - Th6 2028',
     pace_slow:'Chậm',
     pace_moderate:'Vừa phải',
     pace_fast:'Nhanh',
@@ -1546,7 +1546,7 @@ const translations = {
     role_alt_project_lead:'Trưởng Dự án Phụ',
     role_fiscal_reporter:'Báo cáo Tài chính',
     role_plan_approver:'Người Phê duyệt Kế hoạch',
-    all_clear:'✓ Kern CCD đúng tiến độ — không phát hiện rủi ro chi tiêu thiếu.',
+    all_clear:'✓ Kern CCD đúng tiến độ - không phát hiện rủi ro chi tiêu thiếu.',
     flagged_one:'Chi tiết Ngân sách Được Đánh dấu',
     flagged_many:'Chi tiết Ngân sách Được Đánh dấu',
     tl_total:'Tổng',
@@ -1560,11 +1560,11 @@ const translations = {
     sb_spend_monitor:'Giám sát Chi tiêu',
     select_language:'Chọn Ngôn ngữ',
     status_active:'Đang hoạt động',
-    y1_window_short:'Th1 2026 – Th6 2027',
-    y2_window_short:'Th7 2027 – Th6 2028',
+    y1_window_short:'Th1 2026 - Th6 2027',
+    y2_window_short:'Th7 2027 - Th6 2028',
   
     kpi_grant_tier:'Hạng Tài Trợ',
-    kpi_grant_tier_sub:'EEO IBP 2026–2028',
+    kpi_grant_tier_sub:'EEO IBP 2026-2028',
     kpi_colleges:'Các Trường Tham Gia',
     kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
     kpi_faculty_target:'Mục Tiêu Giảng Viên',
@@ -1579,7 +1579,7 @@ const translations = {
     kpi_tier1:'مقاطعات الفئة 1', kpi_tier1_sub:'$150K لكل منها',
     kpi_tier2:'مقاطعات الفئة 2', kpi_tier2_sub:'$100K لكل منها',
     kpi_lift:'تحالف LIFT', kpi_focus:'مجالات التركيز', kpi_focus_sub:'الواقع الافتراضي · تطوير الأساتذة · الإرشاد · التعليم الشامل',
-    lift_title:'تحالف LIFT — معهد القيادة من أجل الغد',
+    lift_title:'تحالف LIFT - معهد القيادة من أجل الغد',
     lift_desc:'أربع من بين 11 مقاطعة أعضاء في تحالف ولائي يضم 10 كليات و10 مناطق.',
     chart_tier_dist:'توزيع الأموال حسب الفئة', chart_total_dist:'التوزيع الكلي',
     chart_focus_areas:'مجالات تركيز البرنامج', chart_by_type:'حسب نوع المبادرة',
@@ -1589,17 +1589,17 @@ const translations = {
     kpi_total_allocated:'الإجمالي المخصص', kpi_all_11:'جميع المقاطعات الـ11',
     kpi_tier1_total:'إجمالي الفئة 1', kpi_7dist:'7 مقاطعات',
     kpi_tier2_total:'إجمالي الفئة 2', kpi_4dist:'4 مقاطعات × $100K',
-    kpi_y1_total:'إجمالي السنة 1', kpi_y1_sub:'يناير 2026 – يونيو 2027',
+    kpi_y1_total:'إجمالي السنة 1', kpi_y1_sub:'يناير 2026 - يونيو 2027',
     chart_funding_district:'التمويل حسب المقاطعة', chart_direct:'التخصيص المباشر',
     chart_tier_split:'التقسيم حسب الفئة', chart_y1y2:'السنة 1 مقابل السنة 2', chart_by_dist:'حسب المقاطعة',
     table_alloc_detail:'تفاصيل التخصيص على مستوى المقاطعة',
     districts_title:'ملفات المقاطعات', districts_sub:'جميع المقاطعات الـ11 المشاركة',
     filter_by:'تصفية حسب:', filter_all:'الجميع', filter_tier1:'الفئة 1', filter_tier2:'الفئة 2', filter_lift:'تحالف LIFT',
     outcomes_title:'نتائج البرنامج', outcomes_sub:'المخرجات القابلة للقياس من كل مقترح مقاطعة',
-    budget_title:'تفصيل الميزانية', budget_sub:'النفقات مقسمة بين السنة 1 (يناير 2026 – يونيو 2027) والسنة 2 (يوليو 2027 – يونيو 2028). يتم توزيع التكاليف غير المباشرة بشكل تناسبي.',
+    budget_title:'تفصيل الميزانية', budget_sub:'النفقات مقسمة بين السنة 1 (يناير 2026 - يونيو 2027) والسنة 2 (يوليو 2027 - يونيو 2028). يتم توزيع التكاليف غير المباشرة بشكل تناسبي.',
     timeline_title:'الجدول الزمني للتنفيذ', timeline_sub:'دورة تمويل لمدة سنتين · 1 يناير 2026 → 30 يونيو 2028',
     chart_yearly:'ملف الإنفاق السنوي', chart_all_districts:'جميع المقاطعات',
-    tl_y1:'السنة 1 (يناير 2026 – يونيو 2027)', tl_y2:'السنة 2 (يوليو 2027 – يونيو 2028)',
+    tl_y1:'السنة 1 (يناير 2026 - يونيو 2027)', tl_y2:'السنة 2 (يوليو 2027 - يونيو 2028)',
     contacts_title:'جهات اتصال المقاطعة', contacts_sub:'قادة المشروع والبدلاء ومراسلو الميزانية',
     spend_title:'مراقب الإنفاق',
     spend_sub:'تتبع نفقات المنحة خلال دورة التمويل لمدة سنتين وتمييز المقاطعات المعرضة لخطر الإنفاق الناقص',
@@ -1618,8 +1618,8 @@ const translations = {
     kpi_y1_budget_label:'ميزانية السنة 1',
     kpi_y2_budget_label:'ميزانية السنة 2',
     kpi_all_11_districts:'جميع المقاطعات الـ11',
-    kpi_y1_window:'من المنحة · يناير 2026 – يونيو 2027',
-    kpi_y2_window:'من المنحة · يوليو 2027 – يونيو 2028',
+    kpi_y1_window:'من المنحة · يناير 2026 - يونيو 2027',
+    kpi_y2_window:'من المنحة · يوليو 2027 - يونيو 2028',
     pace_slow:'بطيء',
     pace_moderate:'معتدل',
     pace_fast:'سريع',
@@ -1635,7 +1635,7 @@ const translations = {
     role_alt_project_lead:'قائد بديل للمشروع',
     role_fiscal_reporter:'مراسل الميزانية',
     role_plan_approver:'معتمد الخطة',
-    all_clear:'✓ Kern CCD على المسار — لم يُكتشف أي خطر إنفاق ناقص.',
+    all_clear:'✓ Kern CCD على المسار - لم يُكتشف أي خطر إنفاق ناقص.',
     flagged_one:'بند ميزانية مُمَيَّز',
     flagged_many:'بنود ميزانية مُمَيَّزة',
     tl_total:'الإجمالي',
@@ -1649,11 +1649,11 @@ const translations = {
     sb_spend_monitor:'مراقب الإنفاق',
     select_language:'اختر اللغة',
     status_active:'نشط',
-    y1_window_short:'يناير 2026 – يونيو 2027',
-    y2_window_short:'يوليو 2027 – يونيو 2028',
+    y1_window_short:'يناير 2026 - يونيو 2027',
+    y2_window_short:'يوليو 2027 - يونيو 2028',
   
     kpi_grant_tier:'فئة المنحة',
-    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_grant_tier_sub:'2026-2028 EEO IBP',
     kpi_colleges:'الكليات المشاركة',
     kpi_colleges_sub:'بيكرسفيلد · سيرو كوسو · بورترفيل',
     kpi_faculty_target:'هدف أعضاء هيئة التدريس',
@@ -1661,15 +1661,15 @@ const translations = {
   tl: {
     nav_overview:'Pangkalahatang-tanaw', nav_goals:'Mga Layunin at Mithiin', nav_districts:'Profile ng Proyekto', nav_outcomes:'Mga Resulta', nav_budget:'Badyet', nav_timeline:'Iskedyul', nav_contacts:'Mga Kontak', nav_spenddown:'Spend-Down Monitor',
     topbar_title:'Kern CCD Project',
-    overview_title:'Pangkalahatang-tanaw ng Programa', overview_sub:'Kern Community College District — Tier 2 grantee, Professional Development at EEO Representative Programs. $100,000 grant mula sa 2026–2028 EEO IBP cycle.',
+    overview_title:'Pangkalahatang-tanaw ng Programa', overview_sub:'Kern Community College District - Tier 2 grantee, Professional Development at EEO Representative Programs. $100,000 grant mula sa 2026-2028 EEO IBP cycle.',
     meta_monitor:'Grant Monitor', meta_grantid:'ID ng Grant', meta_start:'Simula', meta_duration:'Funding Cycle', meta_status:'Katayuan',
     kpi_total_funding:'Kabuuang Pondo', kpi_across:'VR Faculty Development &amp; Peer Mentoring',
     kpi_total_districts:'Kabuuang Distrito', kpi_all_submitted:'Lahat naihain',
     kpi_tier1:'Mga Distrito ng Tier 1', kpi_tier1_sub:'$150K bawat isa',
     kpi_tier2:'Mga Distrito ng Tier 2', kpi_tier2_sub:'$100K bawat isa',
     kpi_lift:'Alyansa ng LIFT', kpi_focus:'Mga Pokus', kpi_focus_sub:'Equity in Hiring · Inclusive Pedagogy · Mentorship · Reflective Practice',
-    lift_title:'Alyansa ng LIFT — Leadership Institute for Tomorrow',
-    lift_desc:'Inilulunsad ng Kern CCD ang dalawang-taong VR Faculty Development at Peer Mentoring Program sa Bakersfield, Cerro Coso, at Porterville — kaagapay ng peer mentorship upang palakasin ang pamumuno ng faculty at tugunan ang post-hire gap sa 2024–2027 EEO Plan.',
+    lift_title:'Alyansa ng LIFT - Leadership Institute for Tomorrow',
+    lift_desc:'Inilulunsad ng Kern CCD ang dalawang-taong VR Faculty Development at Peer Mentoring Program sa Bakersfield, Cerro Coso, at Porterville - kaagapay ng peer mentorship upang palakasin ang pamumuno ng faculty at tugunan ang post-hire gap sa 2024-2027 EEO Plan.',
     chart_tier_dist:'Paglalaan ng Pondo ayon sa Tier', chart_total_dist:'Kabuuang Pamamahagi',
     chart_focus_areas:'Mga Larangan ng Pokus', chart_by_type:'Ayon sa Uri ng Inisyatibo',
     table_district_summary:'Buod ng Distrito',
@@ -1678,17 +1678,17 @@ const translations = {
     kpi_total_allocated:'Kabuuang Inilaan', kpi_all_11:'Lahat ng 11 distrito',
     kpi_tier1_total:'Kabuuan ng Tier 1', kpi_7dist:'7 distrito',
     kpi_tier2_total:'Kabuuan ng Tier 2', kpi_4dist:'4 distrito × $100K',
-    kpi_y1_total:'Kabuuan ng Taon 1', kpi_y1_sub:'Ene 2026 – Hun 2027',
+    kpi_y1_total:'Kabuuan ng Taon 1', kpi_y1_sub:'Ene 2026 - Hun 2027',
     chart_funding_district:'Pondo ayon sa Distrito', chart_direct:'Direktang Paglalaan',
     chart_tier_split:'Hatiin ng Tier', chart_y1y2:'Taon 1 vs. Taon 2', chart_by_dist:'Ayon sa Distrito',
     table_alloc_detail:'Detalye ng Paglalaan sa Antas ng Distrito',
     districts_title:'Mga Profil ng Distrito', districts_sub:'Lahat ng 11 kalahok na distrito',
     filter_by:'I-filter ayon sa:', filter_all:'Lahat', filter_tier1:'Tier 1', filter_tier2:'Tier 2', filter_lift:'Alyansa ng LIFT',
     outcomes_title:'Mga Resulta ng Programa', outcomes_sub:'Mga nasusukat na resulta mula sa bawat panukala',
-    budget_title:'Breakdown ng Badyet', budget_sub:'Mga gastusin sa object-code, hinati sa Taon 1 (Ene 2026 – Hun 2027) at Taon 2 (Hul 2027 – Hun 2028). Indirect costs ay tinitipon proporsyonal sa bawat taon.',
+    budget_title:'Breakdown ng Badyet', budget_sub:'Mga gastusin sa object-code, hinati sa Taon 1 (Ene 2026 - Hun 2027) at Taon 2 (Hul 2027 - Hun 2028). Indirect costs ay tinitipon proporsyonal sa bawat taon.',
     timeline_title:'Iskedyul ng Pagpapatupad', timeline_sub:'2-taong funding cycle · Ene 1, 2026 → Hun 30, 2028',
     chart_yearly:'Profile ng Paggastos Taon-taon', chart_all_districts:'Lahat ng Distrito',
-    tl_y1:'Taon 1 (Ene 2026 – Hun 2027)', tl_y2:'Taon 2 (Hul 2027 – Hun 2028)',
+    tl_y1:'Taon 1 (Ene 2026 - Hun 2027)', tl_y2:'Taon 2 (Hul 2027 - Hun 2028)',
     contacts_title:'Mga Kontak ng Distrito', contacts_sub:'Mga lider ng proyekto, kapalit, at fiscal reporter',
     spend_title:'Spend-Down Monitor',
     spend_sub:'Subaybayan ang gastos ng grant sa loob ng 2-taong funding cycle at i-flag ang mga distritong nasa panganib ng underspending',
@@ -1708,8 +1708,8 @@ const translations = {
     kpi_y1_budget_label:'Badyet Taon 1',
     kpi_y2_budget_label:'Badyet Taon 2',
     kpi_all_11_districts:'Lahat ng 11 distrito',
-    kpi_y1_window:'ng grant · Ene 2026 – Hun 2027',
-    kpi_y2_window:'ng grant · Hul 2027 – Hun 2028',
+    kpi_y1_window:'ng grant · Ene 2026 - Hun 2027',
+    kpi_y2_window:'ng grant · Hul 2027 - Hun 2028',
     pace_slow:'Mabagal',
     pace_moderate:'Katamtaman',
     pace_fast:'Mabilis',
@@ -1725,7 +1725,7 @@ const translations = {
     role_alt_project_lead:'Kapalit na Lider ng Proyekto',
     role_fiscal_reporter:'Fiscal Reporter',
     role_plan_approver:'Plan Approver',
-    all_clear:'✓ Kern CCD ay nasa tamang landas — walang underspend risk na natuklasan.',
+    all_clear:'✓ Kern CCD ay nasa tamang landas - walang underspend risk na natuklasan.',
     flagged_one:'Detalye ng Badyet na Naka-flag',
     flagged_many:'Mga Detalye ng Badyet na Naka-flag',
     tl_total:'Kabuuan',
@@ -1739,11 +1739,11 @@ const translations = {
     sb_spend_monitor:'Spend Monitor',
     select_language:'Pumili ng Wika',
     status_active:'Aktibo',
-    y1_window_short:'Ene 2026 – Hun 2027',
-    y2_window_short:'Hul 2027 – Hun 2028',
+    y1_window_short:'Ene 2026 - Hun 2027',
+    y2_window_short:'Hul 2027 - Hun 2028',
   
     kpi_grant_tier:'Tier ng Grant',
-    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_grant_tier_sub:'2026-2028 EEO IBP',
     kpi_colleges:'Mga Kalahok na Kolehiyo',
     kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
     kpi_faculty_target:'Target na Faculty',
@@ -1759,8 +1759,8 @@ const translations = {
     kpi_tier1:'第 1 級學區', kpi_tier1_sub:'平均每區 $150K',
     kpi_tier2:'第 2 級學區', kpi_tier2_sub:'每區 $100K',
     kpi_lift:'LIFT 聯盟', kpi_focus:'重點領域', kpi_focus_sub:'VR · 教職發展 · 同儕輔導 · 包容教學',
-    lift_title:'LIFT 聯盟 — 明日領導力學院',
-    lift_desc:'Kern CCD 正在 Bakersfield、Cerro Coso 和 Porterville 三所學院推行為期兩年的 VR 教職員發展與同儕導師計畫 — 將結構化的 VR 教學法培訓與同儕導師結合,以培養教職員領導力,並彌補 2024–2027 EEO 計畫中的招聘後缺口。',
+    lift_title:'LIFT 聯盟 - 明日領導力學院',
+    lift_desc:'Kern CCD 正在 Bakersfield、Cerro Coso 和 Porterville 三所學院推行為期兩年的 VR 教職員發展與同儕導師計畫 - 將結構化的 VR 教學法培訓與同儕導師結合,以培養教職員領導力,並彌補 2024-2027 EEO 計畫中的招聘後缺口。',
     chart_tier_dist:'按等級的資金分配', chart_total_dist:'總分配',
     chart_focus_areas:'計畫重點領域', chart_by_type:'按計畫類型',
     table_district_summary:'學區摘要',
@@ -1769,17 +1769,17 @@ const translations = {
     kpi_total_allocated:'已分配總額', kpi_all_11:'全部 11 個學區',
     kpi_tier1_total:'第 1 級總計', kpi_7dist:'7 個學區',
     kpi_tier2_total:'第 2 級總計', kpi_4dist:'4 個學區 × $100K',
-    kpi_y1_total:'第 1 年總計', kpi_y1_sub:'2026 年 1 月 – 2027 年 6 月',
+    kpi_y1_total:'第 1 年總計', kpi_y1_sub:'2026 年 1 月 - 2027 年 6 月',
     chart_funding_district:'按學區的資金', chart_direct:'直接分配',
     chart_tier_split:'等級分布', chart_y1y2:'第 1 年 vs. 第 2 年支出', chart_by_dist:'按學區',
     table_alloc_detail:'學區層級分配詳情',
     districts_title:'學區簡介', districts_sub:'全部 11 個參與的社區大學學區',
     filter_by:'篩選依據:', filter_all:'所有學區', filter_tier1:'第 1 級', filter_tier2:'第 2 級', filter_lift:'LIFT 聯盟',
     outcomes_title:'計畫成果', outcomes_sub:'每個學區提案中可衡量的成果與目標',
-    budget_title:'預算明細', budget_sub:'按物件代碼劃分的支出,分為第 1 年(2026 年 1 月 – 2027 年 6 月)和第 2 年(2027 年 7 月 – 2028 年 6 月)。間接成本按比例分攤至每年。',
+    budget_title:'預算明細', budget_sub:'按物件代碼劃分的支出,分為第 1 年(2026 年 1 月 - 2027 年 6 月)和第 2 年(2027 年 7 月 - 2028 年 6 月)。間接成本按比例分攤至每年。',
     timeline_title:'實施時間表', timeline_sub:'2 年資助週期 · 2026 年 1 月 1 日 → 2028 年 6 月 30 日',
     chart_yearly:'逐年支出概況', chart_all_districts:'所有學區',
-    tl_y1:'第 1 年(2026 年 1 月 – 2027 年 6 月)', tl_y2:'第 2 年(2027 年 7 月 – 2028 年 6 月)',
+    tl_y1:'第 1 年(2026 年 1 月 - 2027 年 6 月)', tl_y2:'第 2 年(2027 年 7 月 - 2028 年 6 月)',
     contacts_title:'學區聯絡資訊', contacts_sub:'計畫負責人、副負責人和財務報告人',
     spend_title:'支出進度監測',
     spend_sub:'追蹤 2 年資助週期內的補助金支出,並標記有支出不足風險的學區',
@@ -1798,8 +1798,8 @@ const translations = {
     kpi_y1_budget_label:'第 1 年預算',
     kpi_y2_budget_label:'第 2 年預算',
     kpi_all_11_districts:'全部 11 個學區',
-    kpi_y1_window:'佔補助金 · 2026 年 1 月 – 2027 年 6 月',
-    kpi_y2_window:'佔補助金 · 2027 年 7 月 – 2028 年 6 月',
+    kpi_y1_window:'佔補助金 · 2026 年 1 月 - 2027 年 6 月',
+    kpi_y2_window:'佔補助金 · 2027 年 7 月 - 2028 年 6 月',
     pace_slow:'緩慢', pace_moderate:'中等', pace_fast:'快速', pace_underfunded:'資金不足',
     status_on:'進度正常', status_off:'進度落後',
     th_direct_funding:'總資金',
@@ -1811,7 +1811,7 @@ const translations = {
     role_alt_project_lead:'計畫副負責人',
     role_fiscal_reporter:'財務報告人',
     role_plan_approver:'計畫核准人',
-    all_clear:'✓ Kern CCD 進度正常 — 未偵測到支出不足風險。',
+    all_clear:'✓ Kern CCD 進度正常 - 未偵測到支出不足風險。',
     flagged_one:'項預算明細已被標記',
     flagged_many:'項預算明細已被標記',
     tl_total:'總計', tl_pace_label:'進度:',
@@ -1824,11 +1824,11 @@ const translations = {
     sb_spend_monitor:'支出監測',
     select_language:'選擇語言',
     status_active:'進行中',
-    y1_window_short:'2026年1月–2027年6月',
-    y2_window_short:'2027年7月–2028年6月',
+    y1_window_short:'2026年1月-2027年6月',
+    y2_window_short:'2027年7月-2028年6月',
   
     kpi_grant_tier:'補助等級',
-    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_grant_tier_sub:'2026-2028 EEO IBP',
     kpi_colleges:'參與學院',
     kpi_colleges_sub:'貝克斯菲爾德 · 塞羅科索 · 波特維爾',
     kpi_faculty_target:'教職員目標',
@@ -1836,7 +1836,7 @@ const translations = {
 };
 
 let currentLang = 'en';
-// Global translator — render functions call t(key) to fetch the active locale's string
+// Global translator - render functions call t(key) to fetch the active locale's string
 function t(key) {
   const dict = translations[currentLang] || translations.en;
   return (dict && dict[key]) || (translations.en && translations.en[key]) || key;
@@ -1891,7 +1891,7 @@ function showSection(id, clickedBtn, isMobile) {
   if (!sectionEl) return;
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   sectionEl.classList.add('active');
-  // Sync sidebar highlight to the section being shown — covers refresh / deep-link too
+  // Sync sidebar highlight to the section being shown - covers refresh / deep-link too
   document.querySelectorAll('.sidebar .nav-item').forEach(n => {
     const onclick = n.getAttribute('onclick') || '';
     n.classList.toggle('active', onclick.includes("'" + id + "'"));
@@ -2032,25 +2032,25 @@ function renderOutcomes() {
     </div>`).join('');
 }
 
-/* ════════════ BUDGET — Year 1 / Year 2 cards with object-code lines, share bars, and a note ════════════ */
+/* ════════════ BUDGET - Year 1 / Year 2 cards with object-code lines, share bars, and a note ════════════ */
 function renderBudget() {
   const grid = document.getElementById('budget-grid');
   if (!grid) return;
   const d = districts[0];
   // Kern CCD budget line items per project year (Y1 = FY 2025-26 + FY 2026-27, Y2 = FY 2027-28)
   const Y1 = [
-    { code:'1000', label:'1000 — Instructional Salaries',     amount:  26128 },
-    { code:'3000', label:'3000 — Employee Benefits',          amount:   5659 },
-    { code:'4000', label:'4000 — Supplies & Materials (VR hardware-heavy)', amount: 75000 },
-    { code:'5000', label:'5000 — Other Operating & Services', amount:   9613 },
-    { code:'7000', label:'7000 — Indirect',                   amount:   6238 }
+    { code:'1000', label:'1000 - Instructional Salaries',     amount:  26128 },
+    { code:'3000', label:'3000 - Employee Benefits',          amount:   5659 },
+    { code:'4000', label:'4000 - Supplies & Materials (VR hardware-heavy)', amount: 75000 },
+    { code:'5000', label:'5000 - Other Operating & Services', amount:   9613 },
+    { code:'7000', label:'7000 - Indirect',                   amount:   6238 }
   ];
   const Y2 = [
-    { code:'1000', label:'1000 — Instructional Salaries',     amount:   6532 },
-    { code:'3000', label:'3000 — Employee Benefits',          amount:   1415 },
-    { code:'4000', label:'4000 — Supplies & Materials',       amount:  15750 },
-    { code:'5000', label:'5000 — Other Operating & Services', amount:   2407 },
-    { code:'7000', label:'7000 — Indirect',                   amount:   1258 }
+    { code:'1000', label:'1000 - Instructional Salaries',     amount:   6532 },
+    { code:'3000', label:'3000 - Employee Benefits',          amount:   1415 },
+    { code:'4000', label:'4000 - Supplies & Materials',       amount:  15750 },
+    { code:'5000', label:'5000 - Other Operating & Services', amount:   2407 },
+    { code:'7000', label:'7000 - Indirect',                   amount:   1258 }
   ];
   const Y1_TOTAL = d.yearlyBudget.y1;
   const Y2_TOTAL = d.yearlyBudget.y2;
@@ -2066,18 +2066,18 @@ function renderBudget() {
   }).join('');
   grid.innerHTML = `
     <div class="budget-card">
-      <div class="budget-card-head"><div><div class="budget-card-name">Year 1</div><div class="budget-card-dates">Jan 2026 – Jun 2027</div></div><div class="budget-card-total">${fmt(Y1_TOTAL)}</div></div>
+      <div class="budget-card-head"><div><div class="budget-card-name">Year 1</div><div class="budget-card-dates">Jan 2026 - Jun 2027</div></div><div class="budget-card-total">${fmt(Y1_TOTAL)}</div></div>
       <div class="budget-lines-wrap">${renderLines(Y1, Y1_TOTAL)}</div>
       <div class="budget-note">${Y1_NOTE}</div>
     </div>
     <div class="budget-card">
-      <div class="budget-card-head accent"><div><div class="budget-card-name">Year 2</div><div class="budget-card-dates">Jul 2027 – Jun 2028</div></div><div class="budget-card-total">${fmt(Y2_TOTAL)}</div></div>
+      <div class="budget-card-head accent"><div><div class="budget-card-name">Year 2</div><div class="budget-card-dates">Jul 2027 - Jun 2028</div></div><div class="budget-card-total">${fmt(Y2_TOTAL)}</div></div>
       <div class="budget-lines-wrap">${renderLines(Y2, Y2_TOTAL)}</div>
       <div class="budget-note">${Y2_NOTE}</div>
     </div>`;
 }
 
-/* ════════════ TIMELINE — 2 years ════════════ */
+/* ════════════ TIMELINE - 2 years ════════════ */
 function renderTimeline() {
   const container = document.getElementById('timeline-rows');
   if (!container) return;
@@ -2211,7 +2211,7 @@ function initCharts() {
 }
 
 /* ════════════ SPEND-DOWN MONITOR ════════════ */
-// ════════════ SPEND-DOWN MONITOR — Kern CCD by fiscal year ════════════
+// ════════════ SPEND-DOWN MONITOR - Kern CCD by fiscal year ════════════
 // The Spend-Down Monitor breaks Kern CCD's $150,000 award into the two project years and
 // fiscal-year periods stated in the application's budget narrative.
 // Each row has its own status (On/Off Track) and spend pace (Slow /
@@ -2221,28 +2221,28 @@ function initCharts() {
 
 const KERN_PERIODS = [
   {
-    id:'y1', label:'Year 1', dates:'Jan 2026 – Jun 2027', budget:122638, year:'Year 1',
+    id:'y1', label:'Year 1', dates:'Jan 2026 - Jun 2027', budget:122638, year:'Year 1',
     role:'Setup, VR hardware purchases, training cohort 1 & mentorship launch (FY 2025-26 + FY 2026-27)',
     lineItems:[
-      { fy:'FY 2025-26', code:'4000', label:'Supplies & Materials — VR hardware (Oculus Quest 3 cohort)', amount:45000 },
-      { fy:'FY 2025-26', code:'7000', label:'Indirect costs — 5% of direct', amount:2238 },
-      { fy:'FY 2025-26', code:'5000', label:'Other Operating & Services — VR licensing & onboarding', amount:3497 },
-      { fy:'FY 2026-27', code:'1000', label:'Instructional Salaries — faculty stipends across 3 colleges', amount:26128 },
-      { fy:'FY 2026-27', code:'3000', label:'Employee Benefits — 21.7% fringe', amount:5659 },
-      { fy:'FY 2026-27', code:'4000', label:'Supplies & Materials — VR peripherals & lesson assets', amount:30000 },
-      { fy:'FY 2026-27', code:'5000', label:'Other Operating & Services — training facilitation & showcase', amount:6116 },
-      { fy:'FY 2026-27', code:'7000', label:'Indirect costs — 5% of direct', amount:4000 }
+      { fy:'FY 2025-26', code:'4000', label:'Supplies & Materials - VR hardware (Oculus Quest 3 cohort)', amount:45000 },
+      { fy:'FY 2025-26', code:'7000', label:'Indirect costs - 5% of direct', amount:2238 },
+      { fy:'FY 2025-26', code:'5000', label:'Other Operating & Services - VR licensing & onboarding', amount:3497 },
+      { fy:'FY 2026-27', code:'1000', label:'Instructional Salaries - faculty stipends across 3 colleges', amount:26128 },
+      { fy:'FY 2026-27', code:'3000', label:'Employee Benefits - 21.7% fringe', amount:5659 },
+      { fy:'FY 2026-27', code:'4000', label:'Supplies & Materials - VR peripherals & lesson assets', amount:30000 },
+      { fy:'FY 2026-27', code:'5000', label:'Other Operating & Services - training facilitation & showcase', amount:6116 },
+      { fy:'FY 2026-27', code:'7000', label:'Indirect costs - 5% of direct', amount:4000 }
     ]
   },
   {
-    id:'y2', label:'Year 2', dates:'Jul 2027 – Jun 2028', budget:27362, year:'Year 2',
+    id:'y2', label:'Year 2', dates:'Jul 2027 - Jun 2028', budget:27362, year:'Year 2',
     role:'Cohort 2 expansion, Unity / VR creation training & final showcase (FY 2027-28)',
     lineItems:[
-      { fy:'FY 2027-28', code:'1000', label:'Instructional Salaries — mentor & innovation stipends', amount:6532 },
-      { fy:'FY 2027-28', code:'3000', label:'Employee Benefits — 21.7% fringe', amount:1415 },
-      { fy:'FY 2027-28', code:'4000', label:'Supplies & Materials — VR content creation tools (Unity)', amount:15750 },
-      { fy:'FY 2027-28', code:'5000', label:'Other Operating & Services — final showcase & dissemination', amount:2407 },
-      { fy:'FY 2027-28', code:'7000', label:'Indirect costs — 5% of direct', amount:1258 }
+      { fy:'FY 2027-28', code:'1000', label:'Instructional Salaries - mentor & innovation stipends', amount:6532 },
+      { fy:'FY 2027-28', code:'3000', label:'Employee Benefits - 21.7% fringe', amount:1415 },
+      { fy:'FY 2027-28', code:'4000', label:'Supplies & Materials - VR content creation tools (Unity)', amount:15750 },
+      { fy:'FY 2027-28', code:'5000', label:'Other Operating & Services - final showcase & dissemination', amount:2407 },
+      { fy:'FY 2027-28', code:'7000', label:'Indirect costs - 5% of direct', amount:1258 }
     ]
   }
 ];
@@ -2419,8 +2419,8 @@ function renderSpendDown() {
   if (kpiRow) {
     kpiRow.innerHTML =
       '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">' + t('kpi_total_grant_label') + '</div><div class="kpi-value blue">' + fmt(totalGrant) + '</div><div class="kpi-sub">Tier 1 award</div></div>' +
-      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">' + t('kpi_y1_budget_label') + '</div><div class="kpi-value medium-blue">' + fmt(y1) + '</div><div class="kpi-sub">' + ((y1/totalGrant)*100).toFixed(1) + '% · Jan 2026 – Jun 2027</div></div>' +
-      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">' + ((y2/totalGrant)*100).toFixed(1) + '% · Jul 2027 – Jun 2028</div></div>';
+      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">' + t('kpi_y1_budget_label') + '</div><div class="kpi-value medium-blue">' + fmt(y1) + '</div><div class="kpi-sub">' + ((y1/totalGrant)*100).toFixed(1) + '% · Jan 2026 - Jun 2027</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">' + ((y2/totalGrant)*100).toFixed(1) + '% · Jul 2027 - Jun 2028</div></div>';
   }
 
   renderUnderspendList();
@@ -2535,7 +2535,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Announce the initial section once the page settles
   setTimeout(() => postSectionChange(resolveInitialSection()), 100);
 
-  // VR avatar — track cursor while hovered so the head looks toward the pointer
+  // VR avatar - track cursor while hovered so the head looks toward the pointer
   (function initVrAvatar(){
     const wrap = document.getElementById('vrAvatarWrap');
     if (!wrap) return;
