@@ -1,0 +1,2681 @@
+<!DOCTYPE html>  
+<!--
+  Kern CCD Project Dashboard
+  Project dashboard for Kern CCD's VR EEO Faculty Development and Peer
+  Mentoring Program — a $150,000 Tier 1 award under the
+  2026–2028 EEO Innovative Best Practices grant initiative.
+  Data sourced directly from the grant application (submitted Jul 21, 2025).
+-->
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="no-referrer-when-downgrade" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Kern CCD Project · VR EEO Faculty Development &amp; Peer Mentoring Program</title>
+  <meta name="description" content="Kern Community College District — VR EEO Faculty Development and Peer Mentoring Program dashboard. $150,000 Tier 1 award under the 2026–2028 EEO Innovative Best Practices initiative. Two-year, multi-college VR faculty development and peer mentoring across Bakersfield, Cerro Coso, and Porterville." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ════════════ MINIMALIST POLISH ON KERN CCD PALETTE ════════════
+       Clean typography (Inter + Oswald), generous whitespace, subtle
+       layered shadows. KCCD slate-charcoal primary with Bakersfield
+       Blue accents; KCCD red used sparingly for status/highlights.
+    */
+    .page-header h2 { letter-spacing:-0.025em; font-weight:600; }
+    .topbar-title { letter-spacing:-0.018em; }
+    .kpi-value { letter-spacing:-0.025em; }
+    .kpi-label { letter-spacing:0.08em; }
+    .card-title, .chart-title { letter-spacing:-0.012em; }
+    .budget-card { transition:box-shadow 200ms cubic-bezier(0.16,1,0.3,1), transform 200ms cubic-bezier(0.16,1,0.3,1); }
+    .budget-card:hover { transform:translateY(-1px); }
+    .data-table th { font-weight:600; }
+    .data-table tbody tr { transition:background 140ms ease; }
+    .filter-btn, .nav-item, .icon-btn, .translate-btn { transition:all 180ms cubic-bezier(0.16,1,0.3,1); }
+    .nav-item:focus-visible, .filter-btn:focus-visible, .icon-btn:focus-visible { outline:2px solid var(--ccc-gold); outline-offset:2px; }
+    .topbar-badge { background:var(--bg-surface-2); color:var(--ccc-dark-blue); font-size:11px; font-weight:600; padding:3px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0; border:1px solid var(--border); letter-spacing:0.04em; }
+    .grant-meta-item label { font-weight:600; }
+    button { -webkit-tap-highlight-color:transparent; }
+
+    /* Chart grid alignment */
+    .chart-grid { align-items: stretch; }
+    .chart-grid > .chart-card { display: flex; flex-direction: column; }
+    .chart-grid > .chart-card > .chart-wrap { flex: 1 1 auto; min-height: 320px; position: relative; }
+    .chart-grid > .chart-card > .chart-wrap > canvas { width: 100% !important; height: 100% !important; }
+
+    :root {
+      --ccc-dark-blue:#1F2937; --ccc-darker-blue:#111827; --ccc-medium-blue:#357CAC;
+      --ccc-light-blue:#7BA7C8; --ccc-gold:#4B5563; --ccc-dark-gold:#374151;
+      --ccc-light-gold:#9CA3AF; --ccc-dark-grey:#4B5563; --ccc-medium-grey:#6B7280; --ccc-light-grey:#D1D5DB;
+      --kccd-red:#B10B2D; --kccd-red-dark:#8A0822;
+      --bg:#F4F6FA; --bg-surface:#FFFFFF; --bg-surface-2:#F3F4F6; --bg-card:#FFFFFF;
+      --border:rgba(31,41,55,0.12); --border-strong:rgba(31,41,55,0.22);
+      --text-primary:#111827; --text-secondary:#374151; --text-muted:#4B5563; --text-on-dark:#FFFFFF; --text-on-gold:#FFFFFF;
+      --accent:#1F2937; --accent-hover:#111827; --accent-secondary:#357CAC; --accent-light:#7BA7C8;
+      --accent-gold:#4B5563; --accent-dark-gold:#374151;
+      --tier1-color:#1F2937; --tier1-bg:rgba(31,41,55,0.08);
+      --tier2-color:#357CAC; --tier2-bg:rgba(53,124,172,0.08);
+      --lift-color:#B10B2D; --lift-bg:rgba(177,11,45,0.08);
+      --success:#1a7a3c; --success-bg:rgba(26,122,60,0.08);
+      --font-display:'Oswald','Helvetica Neue',sans-serif; --font-body:'Inter','Helvetica Neue',sans-serif;
+      --sidebar-w:240px; --header-h:64px; --mobile-nav-h:60px; --content-max:1280px;
+      --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:20px;
+      --shadow-sm:0 1px 3px rgba(15,23,42,0.08),0 1px 2px rgba(15,23,42,0.04);
+      --shadow-md:0 4px 12px rgba(15,23,42,0.10),0 2px 4px rgba(15,23,42,0.06);
+      --shadow-lg:0 12px 32px rgba(15,23,42,0.12),0 4px 8px rgba(15,23,42,0.06);
+      --transition:180ms cubic-bezier(0.16,1,0.3,1);
+    }
+    [data-theme="dark"] {
+      --bg:#0F172A; --bg-surface:#1E293B; --bg-surface-2:#293548; --bg-card:#1E293B;
+      --border:rgba(64,180,229,0.15); --border-strong:rgba(64,180,229,0.28);
+      --text-primary:#F3F4F6; --text-secondary:#CBD5E1; --text-muted:#94A3B8; --text-on-dark:#FFFFFF;
+      --accent:#40B4E5; --accent-hover:#5EC5F0; --accent-light:#40B4E5;
+      --tier1-color:#40B4E5; --tier1-bg:rgba(64,180,229,0.12);
+      --tier2-color:#5EC5F0; --tier2-bg:rgba(94,197,240,0.10);
+      --lift-color:#FFB600; --lift-bg:rgba(255,182,0,0.14);
+      --success:#4CAF72; --success-bg:rgba(76,175,114,0.12);
+      --shadow-sm:0 1px 3px rgba(0,0,0,0.25); --shadow-md:0 4px 12px rgba(0,0,0,0.35); --shadow-lg:0 12px 32px rgba(0,0,0,0.45);
+    }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; -webkit-text-size-adjust:none; text-size-adjust:none; }
+    body { font-family:var(--font-body); background:var(--bg); color:var(--text-primary); min-height:100dvh; font-size:15.5px; line-height:1.6; -webkit-font-smoothing:antialiased; transition:background var(--transition),color var(--transition); }
+    img,svg { display:block; max-width:100%; }
+    button { cursor:pointer; background:none; border:none; font:inherit; color:inherit; }
+    a { color:inherit; text-decoration:none; }
+    table { border-collapse:collapse; width:100%; }
+    .app { display:flex; min-height:100dvh; }
+    .sidebar { position:fixed; left:0; top:0; height:100dvh; width:var(--sidebar-w); background:var(--ccc-dark-blue); color:#fff; display:flex; flex-direction:column; z-index:200; overflow-y:auto; overflow-x:hidden; transition:transform var(--transition); scrollbar-width:none; will-change:transform; }
+    .sidebar::-webkit-scrollbar { display:none; }
+    .sidebar-logo { padding:24px 22px 18px; border-bottom:1px solid rgba(255,255,255,0.10); }
+    .logo-mark { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .logo-icon-wrap { width:36px; height:36px; background:var(--ccc-gold); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .logo-icon-wrap svg { color:var(--ccc-dark-blue); }
+    .logo-title { font-family:var(--font-display); font-size:17px; font-weight:600; color:#fff; line-height:1.2; }
+    .logo-sub { font-size:12px; color:rgba(255,255,255,0.92); font-weight:500; line-height:1.45; margin:0; letter-spacing:0.005em; }
+    .sidebar-section-label { font-size:10.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.65); padding:20px 20px 6px; }
+    .nav-item { display:flex; align-items:center; gap:10px; padding:10px 20px; font-size:13.5px; font-weight:500; color:rgba(255,255,255,0.85); cursor:pointer; border-left:3px solid transparent; transition:all var(--transition); border:none; background:none; width:100%; text-align:left; }
+    .nav-item:hover { background:rgba(255,255,255,0.07); color:#fff; }
+    .nav-item.active { background:rgba(255,255,255,0.06); color:#fff; border-left:3px solid var(--kccd-red); }
+    .nav-item svg { flex-shrink:0; opacity:0.8; }
+    .nav-item.active svg { opacity:1; }
+    .sidebar-footer { margin-top:auto; padding:16px 20px; border-top:1px solid rgba(255,255,255,0.1); }
+    .sidebar-footer-label { font-size:10.5px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.08em; font-weight:600; margin-bottom:4px; }
+    .sidebar-footer-val { font-size:12.5px; color:rgba(255,255,255,0.92); font-weight:500; }
+    .main { margin-left:var(--sidebar-w); flex:1; min-width:0; display:flex; flex-direction:column; height:100dvh; overflow:hidden; }
+    .topbar { position:sticky; top:0; background:var(--bg-surface); border-bottom:1px solid var(--border); height:var(--header-h); display:flex; align-items:center; justify-content:space-between; padding:0 28px; z-index:150; gap:16px; box-shadow:var(--shadow-sm); flex-shrink:0; }
+    .topbar-left { display:flex; align-items:center; gap:12px; min-width:0; }
+    .topbar-title { font-family:var(--font-display); font-size:20px; font-weight:600; color:var(--ccc-dark-blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    [data-theme="dark"] .topbar-title { color:var(--accent-light); }
+    .topbar-badge { background:var(--ccc-gold); color:var(--ccc-dark-blue); font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0; }
+    .topbar-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .icon-btn { width:38px; height:38px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; color:var(--text-secondary); transition:all var(--transition); border:1px solid var(--border); background:var(--bg-surface); }
+    .icon-btn:hover { background:var(--bg-surface-2); color:var(--accent); border-color:var(--border-strong); }
+    .translate-wrap { position:relative; }
+    .translate-btn { display:flex; align-items:center; gap:6px; padding:0 12px; height:38px; border-radius:var(--radius-md); border:1px solid var(--border); background:var(--bg-surface); font-size:12.5px; font-weight:500; color:var(--text-secondary); cursor:pointer; transition:all var(--transition); white-space:nowrap; }
+    .translate-btn:hover { background:var(--bg-surface-2); border-color:var(--border-strong); color:var(--accent); }
+    .translate-btn svg { flex-shrink:0; }
+    .translate-dropdown { position:absolute; top:calc(100% + 6px); right:0; background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:var(--radius-md); box-shadow:var(--shadow-lg); min-width:180px; overflow:hidden; z-index:500; display:none; }
+    .translate-dropdown.open { display:block; }
+    .translate-dropdown-header { padding:10px 14px 6px; font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-muted); border-bottom:1px solid var(--border); }
+    .lang-option { display:flex; align-items:center; gap:10px; padding:10px 14px; font-size:13px; color:var(--text-primary); cursor:pointer; transition:background var(--transition); border:none; background:none; width:100%; text-align:left; }
+    .lang-option:hover { background:var(--bg-surface-2); }
+    .lang-option.active { color:var(--ccc-medium-blue); font-weight:600; }
+    .lang-flag { font-size:18px; line-height:1; }
+    .lang-name { flex:1; }
+    .lang-native { font-size:11px; color:var(--text-muted); }
+    .content { flex:1; padding:28px; max-width:var(--content-max); width:100%; overflow-y:auto; overflow-x:hidden; }
+    .section { display:none; }
+    .section.active { display:block; }
+    .page-header { margin-bottom:24px; }
+    .page-header h2 { font-family:var(--font-display); font-size:26px; font-weight:600; color:var(--ccc-dark-blue); line-height:1.2; margin-bottom:4px; }
+    [data-theme="dark"] .page-header h2 { color:var(--accent-light); }
+    .page-header p { font-size:14.5px; color:var(--text-secondary); line-height:1.5; }
+
+    /* ════════════ HEADLINE TICKER under the IBP Grant Initiative Overview title ════════════ */
+    .overview-ticker { position:relative; overflow:hidden; margin-top:12px; padding:2px 0; -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 36px,#000 calc(100% - 36px),transparent 100%); }
+    .overview-ticker-track { display:inline-flex; align-items:center; gap:64px; padding-right:64px; white-space:nowrap; animation:overview-ticker-scroll 20s linear infinite; will-change:transform; }
+    .overview-ticker:hover .overview-ticker-track,
+    .overview-ticker:focus-within .overview-ticker-track { animation-play-state:paused; }
+    .overview-hero .overview-ticker-item { font-size:14.5px; color:var(--text-secondary); font-weight:500; letter-spacing:0.005em; }
+    .overview-hero .overview-ticker-item::before { content:""; display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--ccc-medium-grey); margin-right:14px; transform:translateY(-1px); vertical-align:middle; }
+    @keyframes overview-ticker-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .overview-ticker-track { animation:none; } }
+
+    .grant-meta { background:var(--ccc-dark-blue); border-radius:var(--radius-lg); padding:16px 24px; display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between; margin-bottom:24px; }
+    .grant-meta-item { display:flex; flex-direction:column; gap:2px; flex:1 1 auto; min-width:0; }
+    .grant-meta-item label { font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.78); margin-bottom:2px; }
+    .grant-meta-item span { font-size:13px; font-weight:600; color:#fff; }
+    .grant-meta-item span.gold { color:#4ADE80; font-weight:600; }
+    .grant-meta-divider { width:1px; height:32px; background:rgba(255,255,255,0.15); }
+    /* Overview KPIs — locked 5-up layout for the five tiles so they sit evenly in one row on desktop */
+    .kpi-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; margin-bottom:24px; }
+    /* LIFT chip floats above the "4" number on Tier 1 Districts, like a trademark on a logo.
+       Always visible — no hover or interaction needed. */
+    .kpi-value-wrap { position:relative; display:inline-block; }
+    .lift-mark-value {
+      position:absolute;
+      top:-8px;
+      right:-22px;
+      padding:2px 6px;
+      font-size:9px;
+      line-height:1.1;
+      letter-spacing:0.06em;
+      box-shadow:0 1px 3px rgba(0,0,0,0.18);
+    }
+    .kpi-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:16px 14px; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition),transform var(--transition); min-width:0; }
+    .kpi-card:hover { box-shadow:var(--shadow-md); transform:translateY(-1px); }
+    .kpi-label { font-size:11px; font-weight:700; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-secondary); margin-bottom:8px; }
+    .kpi-value { font-family:var(--font-display); font-size:28px; font-weight:600; line-height:1; margin-bottom:4px; }
+    .kpi-value.blue { color:var(--ccc-dark-blue); }
+    .kpi-value.medium-blue { color:var(--ccc-medium-blue); }
+    .kpi-value.gold { color:var(--ccc-dark-blue); }
+    .kpi-value.grey { color:var(--ccc-dark-grey); }
+    .kpi-value.green { color:var(--success); }
+    [data-theme="dark"] .kpi-value.blue { color:var(--accent-light); }
+    [data-theme="dark"] .kpi-value.medium-blue { color:#5EC5F0; }
+    [data-theme="dark"] .kpi-value.gold { color:var(--accent-light); }
+    .kpi-sub { font-size:12.5px; color:var(--text-secondary); line-height:1.45; font-weight:500; }
+    .kpi-accent-bar { height:3px; border-radius:2px; margin-bottom:10px; }
+    .kpi-accent-bar.blue { background:var(--ccc-dark-blue); }
+    .kpi-accent-bar.medium-blue { background:var(--ccc-medium-blue); }
+    .kpi-accent-bar.gold { background:var(--ccc-gold); }
+    .kpi-accent-bar.grey { background:var(--ccc-dark-grey); }
+    .kpi-accent-bar.green { background:var(--success); }
+    .chart-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:24px; }
+    .chart-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); }
+    .chart-card-full { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; box-shadow:var(--shadow-sm); margin-bottom:24px; }
+    .chart-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:8px; }
+    .chart-title { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--text-primary); }
+    .chart-label { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-secondary); }
+    .chart-wrap { position:relative; height:220px; }
+    .chart-wrap-tall { position:relative; height:280px; }
+    .chart-wrap-bar { position:relative; height:260px; }
+    .alliance-banner { background:linear-gradient(135deg,var(--ccc-dark-blue) 0%,var(--ccc-medium-blue) 100%); border-radius:var(--radius-lg); padding:18px 22px; display:flex; align-items:flex-start; gap:14px; margin-bottom:24px; }
+    .alliance-icon { width:40px; height:40px; background:var(--ccc-gold); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .alliance-icon svg { color:var(--ccc-dark-blue); }
+    .alliance-text strong { display:block; font-size:14.5px; font-weight:700; color:#FFFFFF; margin-bottom:6px; letter-spacing:0.01em; }
+    .alliance-text p { font-size:13.5px; color:rgba(255,255,255,0.95); line-height:1.6; }
+    .card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
+    .card-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:8px; background:var(--bg-surface-2); }
+    .card-title { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--text-primary); }
+    .card-body { padding:20px; }
+    .data-table-wrap { overflow-x:auto; }
+    .data-table { width:100%; font-size:13px; }
+    .data-table th { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-secondary); padding:11px 16px; text-align:left; border-bottom:2px solid var(--border); white-space:nowrap; background:var(--bg-surface-2); }
+    .data-table td { padding:11px 16px; border-bottom:1px solid var(--border); vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:var(--bg-surface-2); }
+    .data-table .amount { font-family:var(--font-body); font-weight:600; font-size:13px; color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .data-table .amount { color:var(--accent-light); }
+    .tier-badge { position:relative; display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .tier-badge.tier1 { background:var(--tier1-bg); color:var(--tier1-color); }
+    .tier-badge.tier2 { background:var(--tier2-bg); color:var(--tier2-color); }
+    .tier-badge.lift { background:var(--lift-bg); color:var(--lift-color); }
+    /* LIFT mark — hovers above the Tier 2 badge corner like a ™ on a logo */
+    .lift-mark {
+      position:absolute;
+      top:-7px;
+      right:-14px;
+      font-size:8px;
+      font-weight:800;
+      letter-spacing:0.05em;
+      color:#fff;
+      background:var(--ccc-dark-gold);
+      padding:1px 4px;
+      border-radius:4px;
+      line-height:1.1;
+      cursor:help;
+      white-space:nowrap;
+      box-shadow:0 1px 2px rgba(0,0,0,0.12);
+      z-index:1;
+    }
+    [data-theme="dark"] .lift-mark { background:var(--ccc-gold); color:var(--ccc-dark-blue); }
+    .filter-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; align-items:center; }
+    .filter-label { font-size:12px; font-weight:600; color:var(--text-muted); margin-right:4px; }
+    .filter-btn { padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; border:1.5px solid var(--border-strong); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all var(--transition); }
+    .filter-btn:hover { border-color:var(--ccc-medium-blue); color:var(--ccc-medium-blue); }
+    .filter-btn.active { background:var(--ccc-dark-blue); color:#fff; border-color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .filter-btn.active { background:var(--accent-light); color:var(--ccc-dark-blue); border-color:var(--accent-light); }
+    .district-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:18px; }
+    .district-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; transition:box-shadow var(--transition),transform var(--transition); cursor:pointer; }
+    .district-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); }
+    .district-card-top { padding:16px 18px 14px; background:var(--ccc-dark-blue); position:relative; }
+    .district-card-top.lift-card { background:linear-gradient(135deg,#002F6D 0%,#003F8A 100%); }
+    .district-card-name { font-family:var(--font-display); font-size:16px; font-weight:600; color:#fff; margin-bottom:4px; line-height:1.2; }
+    .district-card-program { font-size:12.5px; color:rgba(255,255,255,0.88); line-height:1.5; }
+    .district-card-lift-tag { position:absolute; top:12px; right:14px; background:var(--ccc-gold); color:var(--ccc-dark-blue); font-size:10px; font-weight:800; padding:2px 8px; border-radius:12px; letter-spacing:0.04em; }
+    .district-card-body { padding:14px 18px; }
+    .district-card-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:14px; }
+    .district-stat label { font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); display:block; margin-bottom:2px; }
+    .district-stat span { font-size:14px; font-weight:700; color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .district-stat span { color:var(--accent-light); }
+    .district-card-focus { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px; }
+    .focus-tag { background:var(--tier1-bg); color:var(--tier1-color); font-size:11px; font-weight:600; padding:3px 8px; border-radius:12px; }
+    .district-card-contact { font-size:12px; color:var(--text-muted); padding-top:10px; border-top:1px solid var(--border); display:flex; align-items:center; gap:6px; }
+    .outcomes-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .outcome-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); }
+    .outcome-card-header { background:var(--ccc-dark-blue); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .outcome-card-name { font-size:13px; font-weight:700; color:#fff; }
+    /* Tier badge sitting on a dark header — flip to white on translucent so it stays legible */
+    .outcome-card-header .tier-badge { background:rgba(255,255,255,0.18); color:#fff; }
+    .outcome-card-header .lift-mark { background:var(--ccc-gold); color:var(--ccc-dark-blue); }
+    .outcome-list { list-style:none; padding:12px 16px; }
+    .outcome-list li { font-size:13px; color:var(--text-secondary); padding:6px 0; border-bottom:1px solid var(--border); display:flex; align-items:flex-start; gap:8px; line-height:1.4; }
+    .outcome-list li:last-child { border-bottom:none; }
+    .outcome-list li::before { content:''; display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--ccc-medium-blue); margin-top:6px; flex-shrink:0; }
+
+    /* BUDGET — Y1/Y2 totals at top, full line items below (Indirect kept as-is) */
+
+    /* ════════════ Year-filter tabs (Underspend Risk Alerts) ════════════ */
+    .year-filter-tabs { display:inline-flex; gap:4px; padding:3px; background:var(--bg-surface-2); border:1px solid var(--border); border-radius:24px; margin:0 0 14px; }
+    .year-filter-tab { background:transparent; border:none; padding:6px 14px; border-radius:20px; font-size:12px; font-weight:600; letter-spacing:0.02em; color:var(--text-muted); cursor:pointer; transition:background var(--transition), color var(--transition); }
+    .year-filter-tab:hover { color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .year-filter-tab:hover { color:var(--accent-light); }
+    .year-filter-tab.active { background:var(--ccc-dark-blue); color:#fff; box-shadow:0 1px 2px rgba(0,47,109,0.18); }
+    [data-theme="dark"] .year-filter-tab.active { background:var(--accent-light); color:var(--ccc-darker-blue); }
+    .year-filter-tab:focus-visible { outline:2px solid var(--ccc-gold); outline-offset:2px; }
+    /* When a filter is active, hide rows that don't match in the spend-down table */
+    .spend-year-row[data-year-key],
+    .spend-line-row[data-year-key] { display:table-row; }
+    body[data-year-filter="y1"] .spend-year-row[data-year-key="y2"],
+    body[data-year-filter="y1"] .spend-line-row[data-year-key="y2"] { display:none; }
+    body[data-year-filter="y2"] .spend-year-row[data-year-key="y1"],
+    body[data-year-filter="y2"] .spend-line-row[data-year-key="y1"] { display:none; }
+    /* ════════════ SPEND-DOWN — line-item detail rows ════════════ */
+    .spend-year-row td { background:rgba(0,47,109,0.04); padding-top:12px; padding-bottom:12px; }
+    [data-theme="dark"] .spend-year-row td { background:rgba(64,180,229,0.06); }
+    .spend-line-row td { padding-top:7px; padding-bottom:7px; background:var(--bg-card); border-bottom:1px solid var(--border); }
+    .spend-line-row:hover td { background:var(--bg-surface); }
+    /* ════════════ GOALS & OBJECTIVES ════════════ */
+    .goals-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:24px; }
+    @media (max-width:1080px) { .goals-grid { grid-template-columns:1fr; } }
+    .goal-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; transition:box-shadow var(--transition),transform var(--transition); }
+    .goal-card:hover { box-shadow:var(--shadow-md); transform:translateY(-1px); }
+    .goal-card-head { position:relative; padding:20px 22px 18px; border-bottom:1px solid var(--border); background:var(--bg-surface); }
+    .goal-card-head::before { content:""; position:absolute; left:0; top:0; bottom:0; width:5px; }
+    .goal-card--g1 .goal-card-head::before { background:var(--ccc-dark-blue); }
+    .goal-card--g2 .goal-card-head::before { background:var(--ccc-gold); }
+    .goal-card-eyebrow { display:flex; align-items:center; gap:10px; font-size:11.5px; color:var(--text-muted); margin-bottom:10px; letter-spacing:0.04em; }
+    .goal-card-chip { display:inline-block; padding:3px 10px; border-radius:12px; color:#fff; font-size:10.5px; font-weight:700; letter-spacing:0.08em; }
+    .goal-card--g1 .goal-card-chip { background:var(--ccc-dark-blue); }
+    .goal-card--g2 .goal-card-chip { background:var(--ccc-dark-gold); }
+    .goal-card-title { font-family:var(--font-display); font-size:16.5px; line-height:1.35; font-weight:600; color:var(--ccc-dark-blue); margin:0; letter-spacing:-0.012em; }
+    [data-theme="dark"] .goal-card-title { color:var(--accent-light); }
+    .goal-card-body { padding:18px 22px 22px; display:flex; flex-direction:column; gap:18px; }
+    .goal-section { display:flex; flex-direction:column; gap:8px; }
+    .goal-section-title { font-size:11px; font-weight:700; color:var(--ccc-dark-blue); letter-spacing:0.08em; text-transform:uppercase; margin:0; padding-bottom:6px; border-bottom:1px dashed var(--border); }
+    [data-theme="dark"] .goal-section-title { color:var(--accent-light); }
+    .goal-list { margin:0; padding-left:18px; font-size:13px; line-height:1.55; color:var(--text-secondary); display:flex; flex-direction:column; gap:5px; }
+    .goal-list li::marker { color:var(--ccc-medium-blue); }
+    .goal-outcomes { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+    .goal-outcomes > li { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:10px 12px; }
+    .goal-outcome-head { display:flex; gap:10px; align-items:flex-start; }
+    .goal-outcome-num { flex-shrink:0; display:inline-flex; width:28px; height:28px; align-items:center; justify-content:center; border-radius:50%; font-size:11px; font-weight:700; color:#fff; letter-spacing:0.02em; }
+    .goal-card--g1 .goal-outcome-num { background:var(--ccc-medium-blue); }
+    .goal-card--g2 .goal-outcome-num { background:var(--ccc-dark-gold); }
+    .goal-outcome-text { font-size:13px; font-weight:600; color:var(--text-primary); line-height:1.45; }
+    .goal-outcome-method { margin-top:6px; padding-left:38px; font-size:12px; color:var(--text-muted); line-height:1.45; }
+    .goal-outcome-method-tag { display:inline-block; padding:1px 7px; border-radius:6px; background:rgba(0,47,109,0.08); color:var(--ccc-dark-blue); font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; margin-right:8px; }
+    [data-theme="dark"] .goal-outcome-method-tag { background:rgba(64,180,229,0.16); color:var(--accent-light); }
+    .goal-timeline { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+    .goal-timeline > li { display:grid; grid-template-columns:170px 1fr; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+    .goal-timeline > li:last-child { border-bottom:none; }
+    .goal-timeline-when { font-size:11.5px; font-weight:700; color:var(--ccc-dark-blue); letter-spacing:0.04em; text-transform:uppercase; padding-top:2px; }
+    [data-theme="dark"] .goal-timeline-when { color:var(--accent-light); }
+    .goal-timeline-what { font-size:13px; color:var(--text-primary); line-height:1.5; }
+    .goal-timeline-who { font-size:12px; color:var(--text-muted); line-height:1.5; grid-column:2; padding-top:2px; }
+    @media (max-width:520px) { .goal-timeline > li { grid-template-columns:1fr; } .goal-timeline-who { grid-column:1; } }
+    .mt-24 { margin-top:24px; }
+        .budget-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:16px; }
+    .budget-grid.budget-grid--2col { grid-template-columns:1fr 1fr; gap:18px; }
+    @media (max-width:880px) { .budget-grid.budget-grid--2col { grid-template-columns:1fr; } }
+    .budget-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition); }
+    .budget-card:hover { box-shadow:var(--shadow-md); }
+    .budget-card-header { background:var(--ccc-darker-blue); padding:12px 16px; display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+    .budget-card-name { font-size:13px; font-weight:700; color:#fff; letter-spacing:-0.005em; }
+    .budget-card-total { font-size:11.5px; color:var(--ccc-dark-blue); font-weight:700; white-space:nowrap; }
+    /* ════════════ New Budget card style (Y1/Y2 cards in Budget Breakdown) ════════════ */
+    .budget-card-head { background:var(--bg-surface); padding:18px 22px 16px; display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--border); position:relative; }
+    .budget-card-head::before { content:''; position:absolute; left:0; top:0; height:3px; width:100%; background:var(--ccc-dark-blue); }
+    .budget-card-head.accent::before { background:var(--ccc-gold); }
+    .budget-card-head .budget-card-name { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--ccc-dark-blue); letter-spacing:-0.012em; }
+    [data-theme="dark"] .budget-card-head .budget-card-name { color:var(--accent-light); }
+    .budget-card-head .budget-card-dates { font-size:11.5px; color:var(--text-muted); margin-top:2px; letter-spacing:0.02em; }
+    .budget-card-head .budget-card-total { font-size:14px; color:var(--ccc-dark-blue); font-weight:700; white-space:nowrap; }
+    [data-theme="dark"] .budget-card-head .budget-card-total { color:var(--accent-light); }
+    .budget-note { padding:12px 22px 16px; font-size:12.5px; color:var(--text-muted); border-top:1px dashed var(--border); margin-top:8px; line-height:1.5; }
+
+    .budget-year-summary { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); padding:1px 0; }
+    .budget-year-pill { background:var(--bg-surface-2); padding:11px 14px; display:flex; flex-direction:column; gap:2px; }
+    .budget-year-pill-label { font-size:10.5px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--ccc-medium-blue); }
+    [data-theme="dark"] .budget-year-pill-label { color:var(--accent-light); }
+    .budget-year-pill-dates { font-size:10.5px; color:var(--text-muted); font-weight:500; }
+    .budget-year-pill-amount { font-family:var(--font-display); font-size:18px; font-weight:600; color:var(--ccc-dark-blue); margin-top:2px; line-height:1; }
+    [data-theme="dark"] .budget-year-pill-amount { color:var(--accent-light); }
+
+    .budget-lines-wrap { padding:6px 0 4px; }
+    .budget-line { display:flex; justify-content:space-between; align-items:center; padding:7px 16px 4px; font-size:12.5px; gap:8px; }
+    .budget-line-label { color:var(--text-secondary); flex:1; }
+    .budget-line-amount { font-weight:600; color:var(--ccc-dark-blue); white-space:nowrap; }
+    [data-theme="dark"] .budget-line-amount { color:var(--accent-light); }
+    .budget-line-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; margin:0 16px 8px; }
+    .budget-line-bar-fill { height:100%; background:var(--ccc-medium-blue); border-radius:2px; transition:width 0.6s ease; }
+    .budget-line.indirect-line .budget-line-label { color:var(--ccc-dark-gold); font-weight:700; }
+    .budget-line.indirect-line .budget-line-amount { color:var(--ccc-dark-gold); }
+
+    .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
+    .timeline-row { display:flex; align-items:center; padding:10px 20px; border-bottom:1px solid var(--border); gap:12px; }
+    .timeline-row:last-child { border-bottom:none; }
+    .timeline-label { width:160px; flex-shrink:0; font-size:12.5px; font-weight:600; color:var(--text-primary); }
+    .timeline-label small { display:block; font-size:11px; font-weight:400; color:var(--text-muted); margin-top:1px; }
+    .timeline-bars { flex:1; display:flex; gap:4px; }
+    .timeline-bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; }
+    .timeline-bar-inner { width:100%; height:20px; border-radius:4px; position:relative; overflow:hidden; }
+    .timeline-bar-fill { position:absolute; left:0; top:0; bottom:0; border-radius:4px; transition:width 0.8s ease; }
+    .timeline-bar-fill.y1 { background:var(--ccc-medium-blue); }
+    .timeline-bar-fill.y2 { background:var(--ccc-dark-blue); }
+    .timeline-bar-bg { background:var(--bg-surface-2); width:100%; }
+    .timeline-bar-label { font-size:10px; color:var(--text-muted); font-weight:600; }
+    .timeline-total { width:80px; flex-shrink:0; text-align:right; font-size:13px; font-weight:700; color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .timeline-total { color:var(--accent-light); }
+    .timeline-header-row { display:flex; align-items:center; padding:8px 20px; background:var(--bg-surface-2); border-bottom:2px solid var(--border); gap:12px; font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); }
+    .tl-hl { width:160px; flex-shrink:0; }
+    .tl-hb { flex:1; display:flex; gap:4px; }
+    .tl-hbi { flex:1; text-align:center; }
+    .tl-ht { width:80px; flex-shrink:0; text-align:right; }
+
+    .contacts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+    .contact-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition); }
+    .contact-card:hover { box-shadow:var(--shadow-md); }
+    .contact-card-header { background:var(--ccc-dark-blue); padding:12px 16px; }
+    .contact-card-district { font-size:13px; font-weight:700; color:#fff; }
+    .contact-card-region { font-size:11.5px; color:rgba(255,255,255,0.82); font-weight:500; }
+    .contact-card-address { font-size:11.5px; color:rgba(255,255,255,0.78); margin-top:4px; line-height:1.4; }
+    .contact-phone { display:block; font-size:11.5px; color:var(--text-secondary); margin-top:1px; text-decoration:none; }
+    .contact-phone:hover { color:var(--ccc-medium-blue); }
+    [data-theme="dark"] .contact-phone:hover { color:var(--accent-light); }
+    .contact-body { padding:14px 16px; }
+    .contact-person { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+    .contact-person:last-child { border-bottom:none; }
+    .contact-avatar { width:32px; height:32px; border-radius:50%; background:var(--tier1-bg); color:var(--tier1-color); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+    .contact-info { flex:1; min-width:0; }
+    .contact-name { font-size:13px; font-weight:600; color:var(--text-primary); }
+    .contact-role { font-size:11px; color:var(--text-muted); margin-bottom:2px; }
+    .contact-email { font-size:11.5px; color:var(--ccc-medium-blue); word-break:break-all; }
+    [data-theme="dark"] .contact-email { color:var(--accent-light); }
+
+    .mobile-nav { display:none; position:fixed; bottom:0; left:0; right:0; height:var(--mobile-nav-h); background:var(--ccc-dark-blue); border-top:1px solid rgba(255,255,255,0.1); z-index:300; padding:0 4px; }
+    .mobile-nav-inner { display:flex; height:100%; }
+    .mobile-nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:rgba(255,255,255,0.78); font-size:10px; font-weight:600; letter-spacing:0.03em; cursor:pointer; border-radius:8px; transition:all var(--transition); padding:6px 2px; border:none; background:none; }
+    .mobile-nav-btn.active { color:#fff; }
+    .mobile-nav-btn svg { flex-shrink:0; }
+    .hamburger-btn { display:none; width:38px; height:38px; border-radius:var(--radius-md); align-items:center; justify-content:center; color:var(--text-secondary); border:1px solid var(--border); background:var(--bg-surface); cursor:pointer; transition:all var(--transition); }
+    .hamburger-btn:hover { background:var(--bg-surface-2); }
+    .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:150; }
+    @media (max-width:900px) {
+      .sidebar { transform:translateX(-100%); }
+      .sidebar.open { transform:translateX(0); box-shadow:var(--shadow-lg); }
+      .sidebar-overlay.open { display:block; }
+      .hamburger-btn { display:flex; }
+      .main { margin-left:0; height:auto; }
+      .topbar { padding:0 16px; }
+      .content { padding:16px; }
+    }
+    @media (max-width:880px) {
+      .kpi-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    }
+    @media (max-width:640px) {
+      .kpi-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width:768px) {
+      .chart-grid { grid-template-columns:1fr; }
+      .outcomes-grid { grid-template-columns:1fr; }
+      .mobile-nav { display:flex; }
+      .main { padding-bottom:var(--mobile-nav-h); height:auto; }
+      .district-grid,.contacts-grid,.budget-grid { grid-template-columns:1fr; }
+      .grant-meta { gap:14px; }
+      .grant-meta-divider { display:none; }
+      .topbar-title { font-size:16px; }
+      .timeline-label { width:120px; }
+      .timeline-total { width:64px; font-size:12px; }
+    }
+    @media (max-width:480px) {
+      .kpi-grid { grid-template-columns:1fr 1fr; }
+      .kpi-value { font-size:22px; }
+      .topbar-badge { display:none; }
+    }
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--border-strong); border-radius:3px; }
+    ::-webkit-scrollbar-thumb:hover { background:var(--ccc-medium-blue); }
+    @keyframes fadeSlideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .section.active { animation:fadeSlideIn 0.25s ease; }
+    .text-muted { color:var(--text-muted); }
+    .mb-24 { margin-bottom:24px; }
+    .progress-bar-wrap { background:var(--border); border-radius:3px; height:6px; overflow:hidden; margin-top:6px; }
+    .progress-bar-fill { height:100%; border-radius:3px; background:var(--ccc-medium-blue); transition:width 0.6s ease; }
+    .alloc-kpi-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; margin-bottom:24px; }
+    .risk-badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:700; white-space:nowrap; }
+    .risk-badge.high { background:rgba(229,62,62,0.15); color:#c53030; }
+    .translation-active-bar { display:none; align-items:center; gap:10px; padding:8px 16px; background:rgba(0,102,186,0.08); border-bottom:1px solid var(--border); font-size:12px; color:var(--text-secondary); }
+    .translation-active-bar.show { display:flex; }
+    .translation-active-bar strong { color:var(--ccc-medium-blue); }
+    .translation-dismiss { margin-left:auto; font-size:11px; color:var(--text-muted); cursor:pointer; padding:2px 6px; border-radius:4px; transition:background var(--transition); }
+    .translation-dismiss:hover { background:var(--border); }
+  
+    /* Branding stamps (KCCD + legacy CCCCO) */
+    .cccco-logo-link { display:block; text-decoration:none; margin-bottom:4px; }
+    .cccco-logo-link:focus-visible { outline:2px solid var(--ccc-gold); outline-offset:4px; border-radius:6px; }
+    .cccco-wordmark { display:block; width:100%; max-width:220px; height:auto; }
+    .cccco-wordmark--white { filter:drop-shadow(0 1px 2px rgba(0,0,0,0.08)); }
+    .kern-logo-link { display:block; text-decoration:none; margin:0 0 12px; line-height:0; }
+    .kern-logo-link:focus-visible { outline:2px solid var(--kccd-red); outline-offset:6px; border-radius:6px; }
+    .kern-logo-mark { display:block; width:auto; max-width:100%; height:32px; }
+    .logo-divider { height:1px; background:rgba(255,255,255,0.16); margin:14px 0 12px; }
+    .logo-attribution { font-size:11px; color:rgba(255,255,255,0.65); letter-spacing:0.02em; margin-top:6px; line-height:1.4; }
+    .cccco-topbar-stamp { display:inline-flex; align-items:center; padding:6px 14px; height:44px; border-radius:22px; border:1px solid var(--border); background:var(--bg-surface); box-shadow:0 1px 2px rgba(0,47,109,0.04); transition:box-shadow .15s ease, border-color .15s ease; }
+    .cccco-topbar-stamp:hover { box-shadow:0 2px 6px rgba(0,47,109,0.08); border-color:rgba(0,47,109,0.2); }
+    .cccco-topbar-stamp img { height:26px; width:auto; display:block; object-fit:contain; }
+    .cccco-topbar-stamp .cccco-stamp-label { display:none; }
+    @media (max-width:760px) { .cccco-topbar-stamp { padding:4px 10px; height:34px; } .cccco-topbar-stamp img { height:20px; } } @media (max-width:520px) { .cccco-topbar-stamp { display:none; } }
+
+    /* Kern CCD branding */
+    .kccd-logo-link { display:block; text-decoration:none; margin-bottom:4px; }
+    .kccd-logo-link:focus-visible { outline:2px solid var(--kccd-red); outline-offset:4px; border-radius:6px; }
+    .kccd-logo-card { display:block; background:#fff; padding:9px 14px; border-radius:8px; box-shadow:0 1px 2px rgba(0,0,0,0.10); }
+    .kccd-wordmark { display:block; width:100%; max-width:180px; height:auto; }
+    .kccd-topbar-stamp { display:inline-flex; align-items:center; padding:6px 14px; height:44px; border-radius:22px; border:1px solid var(--border); background:var(--bg-surface); box-shadow:0 1px 2px rgba(15,23,42,0.04); transition:box-shadow .15s ease, border-color .15s ease; }
+    .kccd-topbar-stamp:hover { box-shadow:0 2px 6px rgba(15,23,42,0.08); border-color:rgba(31,41,55,0.2); }
+    .kccd-topbar-stamp img { height:22px; width:auto; display:block; object-fit:contain; }
+    .kccd-topbar-stamp .kccd-stamp-label { display:none; }
+    @media (max-width:760px) { .kccd-topbar-stamp { padding:4px 10px; height:34px; } .kccd-topbar-stamp img { height:18px; } } @media (max-width:520px) { .kccd-topbar-stamp { display:none; } }
+
+    /* Overview hero card — wraps title + ticker on dark slate */
+    .overview-hero { background:var(--bg-surface); border-radius:var(--radius-lg); padding:22px 26px 18px; margin-bottom:24px; box-shadow:var(--shadow-sm); border:1px solid var(--border); border-left:3px solid var(--kccd-red); }
+    .overview-hero h2 { font-family:var(--font-display); font-size:26px; font-weight:600; color:var(--text-primary); line-height:1.2; margin:0; letter-spacing:-0.02em; }
+    .overview-hero .overview-ticker { margin-top:12px; }
+    [data-theme="dark"] .overview-hero { background:var(--bg-card); border-left-color:var(--kccd-red); }
+    @media (max-width:760px) {
+      .overview-hero { padding:18px 18px 14px; }
+      .overview-hero h2 { font-size:22px; }
+    }
+
+    /* Accessibility feature — drop-in pill button + fixed-overlay modal.
+       The button reuses .cccco-topbar-stamp sizing/borders so the topbar
+       layout, alignment and structure are unchanged. */
+    .a11y-stamp { color:var(--ccc-dark-blue); cursor:pointer; padding:0 16px; font-family:var(--font-body),Inter,sans-serif; font-size:12.5px; font-weight:600; letter-spacing:0.02em; }
+    .a11y-stamp:hover { color:var(--ccc-medium-blue); border-color:var(--ccc-medium-blue); }
+    .a11y-stamp:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
+    .a11y-stamp-label { display:inline-block; line-height:1; }
+    /* Modal overlay — strictly fixed-position so it doesn't shift any layout. */
+    .a11y-modal { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px; }
+    .a11y-modal[hidden] { display:none; }
+    .a11y-modal-backdrop { position:absolute; inset:0; background:rgba(15,23,42,0.55); animation:a11yFadeIn 0.18s ease; }
+    .a11y-modal-card { position:relative; width:100%; max-width:420px; max-height:calc(100vh - 48px); overflow-y:auto; background:#fff; color:#0f172a; border-radius:14px; box-shadow:0 24px 64px rgba(15,23,42,0.32),0 4px 12px rgba(15,23,42,0.18); padding:22px 22px 18px; animation:a11ySlideIn 0.22s cubic-bezier(0.16,1,0.3,1); font-family:var(--font-body),Inter,sans-serif; }
+    .a11y-modal-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:4px; }
+    .a11y-modal-title { font-family:var(--font-display),Oswald,sans-serif; font-size:20px; font-weight:600; color:#0f172a; margin:0; letter-spacing:-0.01em; }
+    .a11y-modal-close { width:32px; height:32px; padding:0; display:inline-flex; align-items:center; justify-content:center; background:transparent; border:none; color:#475569; cursor:pointer; border-radius:6px; }
+    .a11y-modal-close:hover { background:#f1f5f9; color:#0f172a; }
+    .a11y-modal-close:focus-visible { outline:2px solid #0066BA; outline-offset:2px; }
+    .a11y-modal-sub { font-size:13px; color:#475569; margin:0 0 14px; line-height:1.45; }
+    .a11y-modal-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px; }
+    .a11y-modal-list li { margin:0; }
+    .a11y-opt { display:flex; width:100%; align-items:center; justify-content:space-between; gap:12px; padding:11px 14px; text-align:left; font-size:14px; font-weight:500; color:#0f172a; background:#fff; border:1px solid #e2e8f0; border-radius:9px; cursor:pointer; transition:border-color 140ms ease, background 140ms ease, color 140ms ease; }
+    .a11y-opt:hover { border-color:#94a3b8; background:#f8fafc; }
+    .a11y-opt[aria-pressed="true"] { background:#0f172a; border-color:#0f172a; color:#fff; }
+    .a11y-opt[aria-pressed="true"] .a11y-opt-state { color:#fff; }
+    .a11y-opt:focus-visible { outline:2px solid #0066BA; outline-offset:2px; }
+    .a11y-opt-state { font-size:11.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:#94a3b8; }
+    .a11y-opt[aria-pressed="true"] .a11y-opt-state::after { content:"On"; }
+    .a11y-opt:not([aria-pressed="true"]) .a11y-opt-state::after { content:""; }
+    .a11y-opt[aria-pressed="false"] .a11y-opt-state { color:#94a3b8; }
+    .a11y-row-size { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 14px; border:1px solid #e2e8f0; border-radius:9px; background:#fff; }
+    .a11y-size-controls { display:inline-flex; gap:4px; }
+    .a11y-size { padding:5px 11px; font-size:12px; font-weight:600; border:1px solid #e2e8f0; background:#fff; color:#475569; border-radius:6px; cursor:pointer; }
+    .a11y-size:hover { border-color:#94a3b8; color:#0f172a; }
+    .a11y-size.active { background:#0f172a; color:#fff; border-color:#0f172a; }
+    .a11y-size:focus-visible { outline:2px solid #0066BA; outline-offset:2px; }
+    .a11y-modal-foot { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; padding-top:14px; border-top:1px solid #e2e8f0; }
+    .a11y-reset { padding:6px 12px; font-size:12px; font-weight:600; color:#475569; background:transparent; border:1px solid #e2e8f0; border-radius:7px; cursor:pointer; }
+    .a11y-reset:hover { color:#0f172a; border-color:#94a3b8; }
+    .a11y-done { padding:8px 18px; font-size:13px; font-weight:600; color:#fff; background:#0f172a; border:1px solid #0f172a; border-radius:7px; cursor:pointer; }
+    .a11y-done:hover { background:#1e293b; }
+    .a11y-done:focus-visible, .a11y-reset:focus-visible { outline:2px solid #0066BA; outline-offset:2px; }
+    @keyframes a11yFadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes a11ySlideIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    /* User-preference overrides — scoped via data-attributes on <html>.
+       These only kick in when the user opts in; the default look is unchanged. */
+    /* Accessibility text-size — overrides body and main-content rules so the user choice wins */
+    html[data-fs="sm"] body, html[data-fs="sm"] .content, html[data-fs="sm"] .content * { font-size: 0.90em; }
+    html[data-fs="sm"] body { font-size:13.5px !important; }
+    html[data-fs="lg"] body { font-size:17.5px !important; }
+    html[data-fs="lg"] body * { line-height:1.65; }
+    html[data-fs="xl"] body { font-size:20px !important; line-height:1.75; }
+    html[data-fs="xl"] body *, html[data-fs="xl"] .content * { line-height:1.7; }
+    html[data-fs="sm"] .page-header h2 { font-size:22px !important; }
+    html[data-fs="lg"] .page-header h2 { font-size:30px !important; }
+    html[data-fs="xl"] .page-header h2 { font-size:34px !important; }
+    html[data-fs="lg"] .kpi-value, html[data-fs="xl"] .kpi-value { font-size:32px !important; }
+    html[data-fs="lg"] .kpi-label, html[data-fs="xl"] .kpi-label { font-size:12.5px !important; }
+    html[data-fs="lg"] .kpi-sub, html[data-fs="xl"] .kpi-sub { font-size:14px !important; }
+    html[data-fs="lg"] .topbar-title { font-size:22px !important; }
+    html[data-fs="xl"] .topbar-title { font-size:24px !important; }
+    html[data-fs="lg"] .card-title, html[data-fs="xl"] .card-title { font-size:18px !important; }
+    html[data-fs="lg"] .nav-item, html[data-fs="xl"] .nav-item { font-size:15px !important; }
+    html[data-a11y-contrast="on"] {
+      --text-primary:#000 !important; --text-secondary:#000 !important; --text-muted:#000 !important;
+      --border:#000 !important; --border-strong:#000 !important;
+      --bg:#fff !important; --bg-surface:#fff !important; --bg-surface-2:#fff !important; --bg-card:#fff !important;
+    }
+    html[data-a11y-contrast="on"] body { background:#fff !important; color:#000 !important; }
+    html[data-a11y-contrast="on"] .sidebar, html[data-a11y-contrast="on"] .topbar { background:#000 !important; color:#fff !important; border-color:#fff !important; }
+    html[data-a11y-contrast="on"] .nav-item, html[data-a11y-contrast="on"] .sidebar * { color:#fff !important; }
+    html[data-a11y-contrast="on"] .topbar-title, html[data-a11y-contrast="on"] .topbar * { color:#fff !important; }
+    html[data-a11y-contrast="on"] .a11y-stamp { color:#fff !important; background:#000 !important; border-color:#fff !important; }
+    html[data-a11y-contrast="on"] .card, html[data-a11y-contrast="on"] .kpi-card, html[data-a11y-contrast="on"] .chart-card, html[data-a11y-contrast="on"] .goal-card { background:#fff !important; color:#000 !important; border:2px solid #000 !important; box-shadow:none !important; }
+    html[data-a11y-contrast="on"] .data-table th, html[data-a11y-contrast="on"] .data-table td { color:#000 !important; border-color:#000 !important; }
+    html[data-a11y-contrast="on"] a, html[data-a11y-contrast="on"] a:visited { color:#0000ee !important; text-decoration:underline !important; }
+    html[data-a11y-contrast="on"] :focus-visible { outline:3px solid #ff8a00 !important; outline-offset:2px; }
+    html[data-a11y-dyslexia="on"] body, html[data-a11y-dyslexia="on"] * { font-family:'Atkinson Hyperlegible','Lexie Readable','OpenDyslexic',Verdana,sans-serif !important; letter-spacing:0.02em; }
+    html[data-a11y-links="on"] a { text-decoration:underline !important; text-underline-offset:2px; }
+    html[data-a11y-motion="on"] *, html[data-a11y-motion="on"] *::before, html[data-a11y-motion="on"] *::after {
+      animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;
+    }
+    html[data-a11y-spacing="on"] body { line-height:1.85; letter-spacing:0.02em; word-spacing:0.06em; }
+    html[data-a11y-guide="on"] .a11y-reading-guide { display:block; }
+    .a11y-reading-guide { position:fixed; left:0; right:0; height:34px; background:rgba(255,221,0,0.20); border-top:1px solid rgba(255,180,0,0.5); border-bottom:1px solid rgba(255,180,0,0.5); pointer-events:none; z-index:998; display:none; }
+
+    /* Project Profile — condensed hero card with interactive VR avatar */
+    .project-hero-card { background:linear-gradient(135deg,var(--ccc-dark-blue) 0%,var(--ccc-darker-blue) 100%); color:#fff; border:none; }
+    .project-hero-card .card-body { padding:22px 24px; }
+    .project-hero-grid { display:grid; grid-template-columns:1fr auto; gap:24px; align-items:center; }
+    .project-hero-info { min-width:0; }
+    .project-hero-headrow { display:flex; align-items:baseline; flex-wrap:wrap; gap:10px 16px; margin-bottom:6px; }
+    .project-hero-title { font-family:var(--font-display); font-size:17px; font-weight:600; line-height:1.3; letter-spacing:-0.01em; color:#fff; }
+    .project-hero-funding { font-family:var(--font-display); font-size:18px; font-weight:600; line-height:1; color:rgba(255,255,255,0.95); white-space:nowrap; }
+    .project-hero-funding span { font-size:10.5px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-right:6px; vertical-align:middle; }
+    .project-hero-desc { font-size:13px; line-height:1.55; color:rgba(255,255,255,0.85); margin:6px 0 14px; }
+    .project-hero-pills { display:flex; flex-wrap:wrap; gap:10px; }
+    .project-hero-pills .meta-pill { background:rgba(255,255,255,0.08); padding:6px 12px; border-radius:8px; font-size:12px; }
+    .project-hero-pills .meta-pill span { color:rgba(255,255,255,0.6); }
+    .project-hero-pills .meta-pill a { color:#7BA7C8; text-decoration:none; font-weight:600; }
+    .project-hero-pills .meta-pill a:hover { text-decoration:underline; }
+
+    /* Interactive VR avatar */
+    .vr-avatar-wrap { width:130px; height:130px; flex-shrink:0; display:flex; align-items:center; justify-content:center; perspective:600px; }
+    .vr-avatar { width:100%; height:100%; display:block; cursor:pointer; }
+    .vr-avatar .vr-head-group { transform-origin:70px 78px; animation:vr-look-around 7s ease-in-out infinite; transition:transform 0.35s ease-out; }
+    .vr-avatar:hover .vr-head-group { animation-play-state:paused; }
+    .vr-avatar .vr-lens-glow { animation:vr-lens-pulse 2.6s ease-in-out infinite; transform-origin:center; }
+    @keyframes vr-look-around {
+      0%   { transform:rotate(-12deg) translateY(0); }
+      18%  { transform:rotate(-12deg) translateY(-4px); }
+      35%  { transform:rotate(0deg) translateY(2px); }
+      52%  { transform:rotate(0deg) translateY(-3px); }
+      70%  { transform:rotate(12deg) translateY(-4px); }
+      88%  { transform:rotate(12deg) translateY(2px); }
+      100% { transform:rotate(-12deg) translateY(0); }
+    }
+    @keyframes vr-lens-pulse {
+      0%, 100% { opacity:0.85; }
+      50%      { opacity:1; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .vr-avatar .vr-head-group, .vr-avatar .vr-lens-glow { animation:none; }
+    }
+    html[data-a11y-motion="on"] .vr-avatar .vr-head-group,
+    html[data-a11y-motion="on"] .vr-avatar .vr-lens-glow { animation:none !important; }
+    @media (max-width:720px) {
+      .project-hero-grid { grid-template-columns:1fr; }
+      .vr-avatar-wrap { width:110px; height:110px; margin:0 auto; }
+      .project-hero-title { font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="translation-active-bar" id="transBanner">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+  Viewing in: <strong id="transLangName">English</strong>
+  <span class="translation-dismiss" onclick="resetLang()">✕ Reset to English</span>
+</div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <a class="kern-logo-link" href="https://www.kccd.edu" target="_blank" rel="noopener noreferrer" aria-label="Kern Community College District"><img class="kern-logo-mark" src="Kern_small_logo.png" alt="Kern CCD" /></a>
+      <div class="logo-sub">VR EEO Faculty Development &amp; Peer Mentoring</div>
+      <div class="logo-attribution">Bakersfield &middot; Cerro Coso &middot; Porterville</div>
+    </div>
+
+    <div class="sidebar-section-label" data-i18n="sb_dashboard">Dashboard</div>
+    <button class="nav-item active" onclick="showSection('overview',this)" data-i18n="nav_overview">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </button>
+    <button class="nav-item" onclick="showSection('districts',this)" data-i18n="nav_districts">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      Project Profile
+    </button>
+
+    <div class="sidebar-section-label" data-i18n="sb_performance">Performance</div>
+    <button class="nav-item" onclick="showSection('goals',this)" data-i18n="nav_goals">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      Goals &amp; Objectives
+    </button>
+    <button class="nav-item" onclick="showSection('budget',this)" data-i18n="nav_budget">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      Budget Breakdown
+    </button>
+
+    <button class="nav-item" onclick="showSection('timeline',this)" data-i18n="nav_timeline">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Timeline
+    </button>
+
+    <div class="sidebar-section-label" data-i18n="sb_program">Team</div>
+    <button class="nav-item" onclick="showSection('contacts',this)" data-i18n="nav_contacts">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Contacts
+    </button>
+
+    <div class="sidebar-section-label" data-i18n="sb_spend_monitor">Spend Monitor</div>
+    <button class="nav-item" onclick="showSection('spenddown',this)" data-i18n="nav_spenddown">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Spend-Down Monitor
+    </button>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-label" data-i18n="meta_monitor">Grant Monitor</div>
+      <div class="sidebar-footer-val">Bulle Consulting</div>
+      <div class="sidebar-footer-val" style="color:rgba(255,255,255,0.35);font-size:11px;margin-top:2px;">admin@bulleconsulting.com</div>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger-btn" onclick="toggleSidebar()" aria-label="Open menu">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <span class="topbar-title" data-i18n="topbar_title">Kern CCD Project</span>
+        <span class="topbar-badge">2026–2028 EEO IBP</span>
+      </div>
+      <div class="topbar-right">
+      <button class="cccco-topbar-stamp a11y-stamp" id="a11yStamp" type="button" onclick="openA11yModal()" aria-haspopup="dialog" aria-controls="a11yModal" aria-label="Open accessibility options" title="Accessibility"><span class="a11y-stamp-label">Accessibility</span></button>
+      
+        <div class="translate-wrap">
+          <button class="translate-btn" onclick="toggleTranslate()" id="transBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+            <span id="transLabel">Translate</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="translate-dropdown" id="transDropdown">
+            <div class="translate-dropdown-header" data-i18n="select_language">Select Language</div>
+            <button class="lang-option active" onclick="setLang('en')"><span class="lang-flag">🇺🇸</span><span class="lang-name">English</span><span class="lang-native">English</span></button>
+            <button class="lang-option" onclick="setLang('es')"><span class="lang-flag">🇲🇽</span><span class="lang-name">Spanish</span><span class="lang-native">Español</span></button>
+            <button class="lang-option" onclick="setLang('vi')"><span class="lang-flag">🇻🇳</span><span class="lang-name">Vietnamese</span><span class="lang-native">Tiếng Việt</span></button>
+            <button class="lang-option" onclick="setLang('ar')"><span class="lang-flag">🇸🇦</span><span class="lang-name">Arabic</span><span class="lang-native">العربية</span></button>
+            <button class="lang-option" onclick="setLang('tl')"><span class="lang-flag">🇵🇭</span><span class="lang-name">Tagalog</span><span class="lang-native">Tagalog</span></button>
+            <button class="lang-option" onclick="setLang('zh')"><span class="lang-flag">🇹🇼</span><span class="lang-name">Chinese (Traditional)</span><span class="lang-native">繁體中文</span></button>
+          </div>
+        </div>
+        <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--success);background:var(--success-bg);padding:4px 12px;border-radius:20px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block;"></span> Active
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- OVERVIEW -->
+      <div id="section-overview" class="section active">
+        <div class="overview-hero">
+          <h2 data-i18n="overview_title">Program Overview</h2>
+          <div class="overview-ticker" aria-label="Program overview headline">
+            <div class="overview-ticker-track">
+              <span class="overview-ticker-item" data-i18n="overview_sub">Kern Community College District — Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
+              <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Kern Community College District — Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
+              <span class="overview-ticker-item" data-i18n="overview_sub" aria-hidden="true">Kern Community College District — Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grant-meta">
+          <div class="grant-meta-item"><label data-i18n="meta_monitor">Grant Monitor</label><span>Bulle Consulting</span></div>
+          <div class="grant-meta-divider"></div>
+          <div class="grant-meta-item"><label data-i18n="meta_grantid">Grant ID</label><span>2026-2028 EEO IBP</span></div>
+          <div class="grant-meta-divider"></div>
+          <div class="grant-meta-item"><label data-i18n="meta_start">Start</label><span>Jan 1, 2026</span></div>
+          <div class="grant-meta-divider"></div>
+          <div class="grant-meta-item"><label data-i18n="meta_duration">Funding Cycle</label><span>Jan 2026 – Jun 2028</span></div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_total_funding">Total Grant Funding</div><div class="kpi-value blue">$150,000</div><div class="kpi-sub" data-i18n="kpi_across">VR Faculty Development &amp; Peer Mentoring</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_grant_tier">Grant Tier</div><div class="kpi-value medium-blue">Tier 1</div><div class="kpi-sub" data-i18n="kpi_grant_tier_sub">2026&ndash;2028 EEO IBP</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label" data-i18n="kpi_dr_target">Faculty Trained</div><div class="kpi-value blue">&ge; 30</div><div class="kpi-sub" data-i18n="kpi_dr_target_sub">Across all 3 Kern colleges</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label" data-i18n="kpi_mentor_target">Participating Colleges</div><div class="kpi-value medium-blue">3</div><div class="kpi-sub" data-i18n="kpi_mentor_target_sub">Bakersfield &middot; Cerro Coso &middot; Porterville</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label" data-i18n="kpi_focus">Focus Areas</div><div class="kpi-value grey">4</div><div class="kpi-sub" data-i18n="kpi_focus_sub">VR Pedagogy &middot; Peer Mentoring &middot; Inclusive Design &middot; Leadership Pipeline</div></div>
+        </div>
+
+        <div class="alliance-banner">
+          <div class="alliance-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="alliance-text">
+            <strong data-i18n="lift_title">Program Spotlight — DRS Hiring + Faculty Mentorship</strong>
+            <p data-i18n="lift_desc">Kern CCD is launching a two-year VR Faculty Development and Peer Mentoring Program across Bakersfield, Cerro Coso, and Porterville. The program pairs structured VR pedagogy training with peer mentorship and closes a post-hire gap in Kern&rsquo;s 2024&ndash;2027 EEO Plan by institutionalizing leadership and retention strategies.</p>
+          </div>
+        </div>
+
+        <div class="chart-grid">
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title" data-i18n="chart_tier_dist">Fund Allocation by Tier</div><div class="chart-label" data-i18n="chart_total_dist">Total Distribution</div></div>
+            <div class="chart-wrap"><canvas id="tierChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title" data-i18n="chart_focus_areas">Program Focus Areas</div><div class="chart-label" data-i18n="chart_by_type">By Initiative Type</div></div>
+            <div class="chart-wrap"><canvas id="focusChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title" data-i18n="table_district_summary">Project Summary</div><div class="chart-label" data-i18n="all_districts_total">Kern CCD · $150,000 Total</div></div>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th data-i18n="th_period">Period</th><th data-i18n="th_tier">Tier</th><th data-i18n="th_funding">Funding</th><th data-i18n="th_y1">Year 1</th><th data-i18n="th_y2">Year 2</th><th data-i18n="th_focus">Primary Focus</th></tr></thead>
+              <tbody id="overview-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOALS & OBJECTIVES -->
+      <div id="section-goals" class="section">
+        <div class="page-header">
+          <h2 data-i18n="goals_title">Goals &amp; Objectives</h2>
+          <p data-i18n="goals_sub">Project goals from the Kern CCD workplan (Section 2.1) — paired with the two-year activities, five measurable outcomes, and responsible leadership.</p>
+        </div>
+
+        <div class="kpi-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Project Goals</div><div class="kpi-value blue">4</div><div class="kpi-sub">Equity, access, leadership &amp; EEO Plan gaps</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Faculty Trained</div><div class="kpi-value medium-blue">≥ 30</div><div class="kpi-sub">Across all 3 Kern colleges</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Non-STEM Reach</div><div class="kpi-value gold">≥ 35%</div><div class="kpi-sub">Cross-disciplinary access</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label">Measurable Outcomes</div><div class="kpi-value grey">5</div><div class="kpi-sub">Equity, PD effectiveness, knowledge sharing, leadership, student engagement</div></div>
+        </div>
+
+        <div class="goals-grid">
+
+          <!-- GOAL 1 -->
+          <article class="goal-card goal-card--g1">
+            <header class="goal-card-head">
+              <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 1</span><span>Instructional Tech Access Across Colleges</span></div>
+              <h3 class="goal-card-title">Reduce instructional technology access gaps by ensuring faculty at smaller colleges (Cerro Coso &amp; Porterville) have equal opportunity to experiment with and adopt immersive learning tools.</h3>
+            </header>
+            <div class="goal-card-body">
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Activities</h4>
+                <ul class="goal-list">
+                  <li>Stand up a districtwide cohort with seats proportional to each campus&rsquo;s FTES so Cerro Coso and Porterville faculty have equal access to VR hardware and training.</li>
+                  <li>Provision Oculus Quest 3 headsets and peripherals at all three colleges; share a common VR lesson catalog so material developed at one campus is usable at another.</li>
+                  <li>Deliver six 4-hour VR pedagogy sessions in Fall 2026 covering hardware, best practices, inclusive lesson design, and collaborative curriculum development.</li>
+                  <li>Pilot VR-enhanced lessons in Spring 2027 and present results at a districtwide end-of-year showcase.</li>
+                </ul>
+              </section>
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Measurable Outcomes &amp; Assessment</h4>
+                <ol class="goal-outcomes">
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">01</span><div class="goal-outcome-text">At least 30 faculty trained across the three colleges, with participation proportional to each campus&rsquo;s FTES (±5%).</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Sign-in sheets, cohort rosters disaggregated by campus.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">02</span><div class="goal-outcome-text">≥ 35% of participants represent non-STEM disciplines.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Cohort discipline tagging at enrollment.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">03</span><div class="goal-outcome-text">Searchable repository of ≥ 35 documented VR lessons, with ≥ 30% adopted across campuses (developed at one college, implemented at another).</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Standardized lesson template completion logs &amp; cross-campus adoption tracking.</div>
+                  </li>
+                </ol>
+              </section>
+
+            </div>
+          </article>
+
+          <!-- GOAL 2 -->
+          <article class="goal-card goal-card--g2">
+            <header class="goal-card-head">
+              <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 2</span><span>Faculty Leadership Pipeline &amp; Post-Hire EEO</span></div>
+              <h3 class="goal-card-title">Build faculty leadership through inclusive VR pedagogy and address a critical gap in Kern CCD&rsquo;s 2024–2027 EEO Plan by adding sustained post-hire professional development and retention strategies.</h3>
+            </header>
+            <div class="goal-card-body">
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Activities</h4>
+                <ul class="goal-list">
+                  <li>Pair every cohort participant with a trained peer mentor for individualized guidance and troubleshooting.</li>
+                  <li>Promote Year-1 participants into mentor roles in Year 2; introduce a VR creation track (Unity) and Faculty Innovation Stipends for larger-scale projects.</li>
+                  <li>Equip faculty with VR-based strategies that foster empathy, cultural understanding, and engagement among diverse student populations.</li>
+                  <li>Document leadership growth in participant portfolios (committee roles, coordinator duties, presentations) and feed results into Kern CCD&rsquo;s EEO Plan refresh.</li>
+                </ul>
+              </section>
+
+              <section class="goal-section">
+                <h4 class="goal-section-title">Measurable Outcomes &amp; Assessment</h4>
+                <ol class="goal-outcomes">
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">01</span><div class="goal-outcome-text">≥ 75% of participants report increased confidence using VR; ≥ 60% implement at least one VR-enhanced lesson within the grant year.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Pre/post participant surveys, lesson implementation logs.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">02</span><div class="goal-outcome-text">≥ 40% of Year-1 participants advance to mentor roles in Year 2; ≥ 25% of alumni document new leadership/service.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Mentor program rosters, professional-portfolio audits.</div>
+                  </li>
+                  <li>
+                    <div class="goal-outcome-head"><span class="goal-outcome-num">03</span><div class="goal-outcome-text">In participating sections, ≥ 70% of students report increased engagement, with no engagement gap &gt; 10 percentage points between student demographic groups.</div></div>
+                    <div class="goal-outcome-method"><span class="goal-outcome-method-tag">Assessment</span>Post-lesson student pulse surveys disaggregated by race / gender.</div>
+                  </li>
+                </ol>
+              </section>
+
+            </div>
+          </article>
+
+        </div>
+
+        <div class="card mt-24">
+          <div class="card-header"><div class="card-title">How the goals connect</div><div class="chart-label">Application Narrative · Section 1.3</div></div>
+          <div class="card-body">
+            <p style="font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0;">Together, these goals form a single districtwide approach: equitable access to immersive instructional technology paired with a leadership pipeline that institutionalizes post-hire professional development. The program is anchored at Bakersfield College and replicated at Cerro Coso and Porterville so faculty growth no longer depends on campus assignment.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- DISTRICTS -->
+      <div id="section-districts" class="section">
+        <div class="page-header"><h2 data-i18n="districts_title">Project Profile</h2><p data-i18n="districts_sub">Kern Community College District &middot; VR EEO Faculty Development and Peer Mentoring Program</p></div>
+
+        <!-- Hero summary card -->
+        <div class="card mb-24 project-hero-card">
+          <div class="card-body">
+            <div class="project-hero-grid">
+              <div class="project-hero-info">
+                <div class="project-hero-headrow">
+                  <div class="project-hero-title">Kern CCD VR EEO Faculty Development &amp; Peer Mentoring Program</div>
+                  <div class="project-hero-funding"><span>Funding</span>$150,000</div>
+                </div>
+                <p class="project-hero-desc">A two-year, multi-college VR faculty development and peer mentoring program across Bakersfield, Cerro Coso, and Porterville &mdash; building faculty competitiveness for tenure and leadership through immersive pedagogy and inclusive instructional design.</p>
+                <div class="project-hero-pills">
+                  <div class="meta-pill"><span>Submitted</span> &middot; <strong>Jul 21, 2025</strong></div>
+                  <div class="meta-pill"><span>Cycle</span> &middot; <strong>Jan 2026 &ndash; Jun 2028</strong></div>
+                  <div class="meta-pill"><span>Website</span> &middot; <a href="https://www.kccd.edu/" target="_blank" rel="noopener"><strong>kccd.edu</strong></a></div>
+                </div>
+              </div>
+              <div class="vr-avatar-wrap" id="vrAvatarWrap" role="img" aria-label="Animated avatar wearing a VR headset, looking around">
+                <svg viewBox="0 0 140 140" class="vr-avatar" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="vrHeadsetGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#2A3A55"/>
+                      <stop offset="100%" stop-color="#0E1A2E"/>
+                    </linearGradient>
+                    <linearGradient id="vrLensGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#7BC8E8"/>
+                      <stop offset="55%" stop-color="#357CAC"/>
+                      <stop offset="100%" stop-color="#1B3F5E"/>
+                    </linearGradient>
+                    <radialGradient id="vrFaceGrad" cx="0.5" cy="0.45" r="0.6">
+                      <stop offset="0%" stop-color="#F6DCC1"/>
+                      <stop offset="100%" stop-color="#E2B68F"/>
+                    </radialGradient>
+                  </defs>
+
+                  <g class="vr-head-group">
+                    <!-- Neck -->
+                    <path d="M58,108 Q58,118 60,124 L80,124 Q82,118 82,108 Z" fill="#E2B68F"/>
+                    <path d="M58,108 Q58,114 60,118 L80,118 Q82,114 82,108 Z" fill="rgba(0,0,0,0.12)"/>
+
+                    <!-- Head -->
+                    <ellipse cx="70" cy="68" rx="32" ry="38" fill="url(#vrFaceGrad)"/>
+
+                    <!-- Ears -->
+                    <ellipse cx="38" cy="72" rx="5" ry="8" fill="#E2B68F"/>
+                    <ellipse cx="102" cy="72" rx="5" ry="8" fill="#E2B68F"/>
+
+                    <!-- Hair -->
+                    <path d="M40,46 Q56,28 70,30 Q92,28 100,50 Q100,56 96,58 Q86,42 70,42 Q52,42 44,58 Q40,55 40,46 Z" fill="#2E2218"/>
+
+                    <!-- Headset strap (back) -->
+                    <path d="M34,68 Q22,72 22,82 Q22,92 34,94" fill="none" stroke="#1A2535" stroke-width="5" stroke-linecap="round"/>
+                    <path d="M106,68 Q118,72 118,82 Q118,92 106,94" fill="none" stroke="#1A2535" stroke-width="5" stroke-linecap="round"/>
+
+                    <!-- VR Headset body -->
+                    <rect x="32" y="56" width="76" height="30" rx="8" fill="url(#vrHeadsetGrad)"/>
+                    <rect x="34" y="58" width="72" height="6" rx="3" fill="rgba(255,255,255,0.07)"/>
+
+                    <!-- Headset face plate -->
+                    <rect x="36" y="62" width="68" height="20" rx="5" fill="#0A1525"/>
+
+                    <!-- Lens housings -->
+                    <ellipse class="vr-lens-glow" cx="55" cy="72" rx="11" ry="7" fill="url(#vrLensGrad)"/>
+                    <ellipse class="vr-lens-glow" cx="85" cy="72" rx="11" ry="7" fill="url(#vrLensGrad)"/>
+
+                    <!-- Lens highlights -->
+                    <ellipse cx="52" cy="70" rx="3.5" ry="2" fill="#FFFFFF" opacity="0.75"/>
+                    <ellipse cx="82" cy="70" rx="3.5" ry="2" fill="#FFFFFF" opacity="0.75"/>
+
+                    <!-- Center brand light -->
+                    <circle cx="70" cy="72" r="1.6" fill="#7BC8E8"/>
+
+                    <!-- Bottom headset shadow on face -->
+                    <rect x="38" y="82" width="64" height="3" rx="1.5" fill="rgba(0,0,0,0.25)"/>
+
+                    <!-- Smile -->
+                    <path d="M60,96 Q70,103 80,96" fill="none" stroke="#5A3A2A" stroke-width="2" stroke-linecap="round"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Project Goals -->
+        <div class="card mb-24">
+          <div class="card-header"><div class="card-title">Two Project Goals</div><div class="chart-label">From the application workplan, Section 2.1</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px;">
+              <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                  <span style="background:var(--ccc-medium-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">GOAL 1</span>
+                  <span style="font-size:12px;color:var(--text-muted);">Instructional Tech Access Across Colleges</span>
+                </div>
+                <div style="font-family:var(--font-display);font-weight:600;font-size:15px;margin-bottom:8px;">Close instructional technology access gaps across the three Kern colleges</div>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0;">Provision VR hardware and a shared lesson catalog at Bakersfield, Cerro Coso, and Porterville so faculty at smaller campuses have equal opportunity to adopt immersive learning tools.</p>
+              </div>
+              <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                  <span style="background:var(--ccc-dark-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">GOAL 2</span>
+                  <span style="font-size:12px;color:var(--text-muted);">Faculty Leadership Pipeline &amp; Post-Hire EEO</span>
+                </div>
+                <div style="font-family:var(--font-display);font-weight:600;font-size:15px;margin-bottom:8px;">Build a districtwide leadership pipeline through VR pedagogy &amp; peer mentoring</div>
+                <p style="font-size:13.5px;color:var(--text-secondary);line-height:1.55;margin:0;">Train faculty in inclusive VR-based teaching, expand them into mentor and innovation roles in Year 2, and close the post-hire gap in Kern CCD&rsquo;s 2024&ndash;2027 EEO Plan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workplan Activities -->
+        <div class="card mb-24">
+          <div class="card-header"><div class="card-title">Workplan Activities</div><div class="chart-label">By project year &middot; from Section 2.2</div></div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+              <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                  <span style="background:var(--ccc-medium-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">YEAR 1 &middot; 2026&ndash;2027</span>
+                </div>
+                <ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:var(--text-secondary);">
+                  <li><strong>VR training curriculum.</strong> Six 4-hour PD sessions in Fall 2026 covering VR hardware, pedagogy, collaborative curriculum design, and inclusive lesson planning.</li>
+                  <li><strong>Peer mentoring pairs.</strong> Each participant pairs with a trained peer mentor for individualized application of VR strategies.</li>
+                  <li><strong>Classroom implementation.</strong> Spring 2027 pilot of VR-enhanced lessons across the three colleges.</li>
+                  <li><strong>End-of-year showcase.</strong> Districtwide internal conference; standardized lesson documentation captured for the shared catalog.</li>
+                </ul>
+              </div>
+              <div style="padding:18px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-surface);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                  <span style="background:var(--ccc-dark-blue);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;letter-spacing:0.04em;">YEAR 2 &middot; 2027&ndash;2028</span>
+                </div>
+                <ul style="margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:var(--text-secondary);">
+                  <li><strong>Mentor program expansion.</strong> New mentees plus returning participants advancing into mentor roles.</li>
+                  <li><strong>Advanced VR design.</strong> Returning faculty explore content creation tools (e.g., Unity) and pilot interactive experiences in Spring 2028.</li>
+                  <li><strong>Faculty Innovation Stipends.</strong> Larger-scale VR projects supported by stipends drawn from a dedicated pool.</li>
+                  <li><strong>Final showcase &amp; living catalog.</strong> Districtwide presentation; documented lessons organized into a searchable, continuously updated repository across all three colleges.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Institutional resources + Faculty Focus Areas -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Institutional Resources Used</div></div>
+            <div class="card-body">
+              <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--text-secondary);">
+                <li><strong>Office of Planning &amp; Educational Technology.</strong> Owns VR hardware procurement, faculty cohort logistics, and the shared VR lesson catalog.</li>
+                <li><strong>Bakersfield College, Cerro Coso, &amp; Porterville College.</strong> Each campus contributes cohort seats proportional to FTES and hosts on-site VR sessions.</li>
+                <li><strong>Faculty leaders &amp; VR subject-matter experts.</strong> Anchor the peer mentorship model and deliver the six-session training series.</li>
+                <li><strong>District EEO Committee.</strong> Aligns the program with the 2024&ndash;2027 EEO Plan and shepherds the post-hire professional-development update.</li>
+                <li><strong>Institutional Research / Office of Educational Technology.</strong> Data collection, disaggregated analysis, and lesson-catalog infrastructure.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Five VR Faculty Focus Areas</div></div>
+            <div class="card-body">
+              <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 10px;line-height:1.5;">The training curriculum is structured around five domains drawn from the project workplan and CCCCO 2022 EEO/Diversity Best Practices Handbook:</p>
+              <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6;color:var(--text-secondary);">
+                <li>VR hardware fluency (Oculus Quest 3) and classroom logistics</li>
+                <li>Best practices in VR pedagogy and immersive lesson design</li>
+                <li>Collaborative, cross-disciplinary curriculum development</li>
+                <li>Inclusive instructional design for diverse student populations</li>
+                <li>Faculty leadership growth &mdash; advancing into mentor and innovation roles</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTCOMES -->
+      <div id="section-outcomes" class="section">
+        <div class="page-header"><h2 data-i18n="outcomes_title">Program Outcomes</h2><p data-i18n="outcomes_sub">Five measurable outcomes for Kern CCD's VR Faculty Development & Peer Mentoring Program — sourced from the application workplan (Section 2.3)</p></div>
+        <div class="outcomes-grid" id="outcomes-grid"></div>
+      </div>
+
+      <!-- BUDGET -->
+      <div id="section-budget" class="section">
+        <div class="page-header"><h2 data-i18n="budget_title">Budget Breakdown</h2><p data-i18n="budget_sub">Total award $150,000 split across two budget years. Indirect line ($7,496) is 5% of direct costs ($142,504).</p></div>
+
+        <div class="kpi-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Total Award</div><div class="kpi-value blue">$150,000</div><div class="kpi-sub">Tier 1 award</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Direct Costs</div><div class="kpi-value medium-blue">$142,504</div><div class="kpi-sub">95% of total</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Indirect (7000)</div><div class="kpi-value gold">$7,496</div><div class="kpi-sub">5% of direct</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label">Y1 / Y2 Split</div><div class="kpi-value grey">82% / 18%</div><div class="kpi-sub">$122,638 / $27,362</div></div>
+        </div>
+
+        <div class="budget-grid budget-grid--2col" id="budget-grid"></div>
+      </div>
+
+      <!-- TIMELINE -->
+      <div id="section-timeline" class="section">
+        <div class="page-header">
+          <h2 data-i18n="timeline_title">Implementation Timeline</h2>
+          <p data-i18n="timeline_sub">2-year funding cycle · Jan 1, 2026 → Jun 30, 2028. Districtwide rollout across Bakersfield, Cerro Coso, and Porterville. Activities, responsible persons, and milestones sourced from the grant workplan (Section 2.4).</p>
+        </div>
+
+        <div class="chart-card-full">
+          <div class="chart-header"><div class="chart-title" data-i18n="chart_yearly">Year-by-Year Spend Profile</div><div class="chart-label" data-i18n="chart_all_districts">Kern CCD · Year 1 vs. Year 2</div></div>
+          <div class="chart-wrap-tall"><canvas id="yearlyChart"></canvas></div>
+        </div>
+
+        <div class="goals-grid mt-24">
+          <article class="goal-card goal-card--g1">
+            <header class="goal-card-head">
+              <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 1</span><span>Instructional Tech Access Across Colleges</span></div>
+              <h3 class="goal-card-title">Timeline &amp; Responsible Persons</h3>
+            </header>
+            <div class="goal-card-body">
+              <ul class="goal-timeline">
+                <li><span class="goal-timeline-when">Jan – Apr 2026</span><span class="goal-timeline-what">Procure VR hardware and peripherals; distribute across Bakersfield, Cerro Coso, and Porterville.</span><span class="goal-timeline-who">AVC, Planning &amp; Educational Technology · Office of Educational Technology</span></li>
+                <li><span class="goal-timeline-when">Aug – Nov 2026</span><span class="goal-timeline-what">Cohort 1 VR training (six 4-hour sessions); peer mentor pairings established.</span><span class="goal-timeline-who">Faculty co-chair · Peer mentor leads at each college</span></li>
+                <li><span class="goal-timeline-when">Jan – Apr 2027</span><span class="goal-timeline-what">Classroom implementation of VR-enhanced lessons; ongoing mentor support.</span><span class="goal-timeline-who">Cohort faculty · Peer mentors</span></li>
+                <li><span class="goal-timeline-when">May 2027</span><span class="goal-timeline-what">End-of-year district showcase; standardized lesson documentation completed.</span><span class="goal-timeline-who">Project leadership team</span></li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="goal-card goal-card--g2">
+            <header class="goal-card-head">
+              <div class="goal-card-eyebrow"><span class="goal-card-chip">GOAL 2</span><span>Faculty Leadership Pipeline &amp; Post-Hire EEO</span></div>
+              <h3 class="goal-card-title">Timeline &amp; Responsible Persons</h3>
+            </header>
+            <div class="goal-card-body">
+              <ul class="goal-timeline">
+                <li><span class="goal-timeline-when">Aug – Nov 2027</span><span class="goal-timeline-what">Cohort 2 VR training begins; returning participants start VR content creation (e.g., Unity).</span><span class="goal-timeline-who">AVC, Planning &amp; Educational Technology · Faculty co-chair</span></li>
+                <li><span class="goal-timeline-when">Jan – Apr 2028</span><span class="goal-timeline-what">Advanced VR projects piloted in classrooms with Faculty Innovation Stipends; peer mentoring continues.</span><span class="goal-timeline-who">Cohort 2 faculty · Year-1 alumni now serving as mentors</span></li>
+                <li><span class="goal-timeline-when">May 2028</span><span class="goal-timeline-what">Final showcase; documented lessons organized into a searchable districtwide repository.</span><span class="goal-timeline-who">Project leadership team · District EEO Committee</span></li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <div class="timeline-card mt-24">
+          <div class="timeline-header-row">
+            <div class="tl-hl" data-i18n="th_district">District</div>
+            <div class="tl-hb">
+              <div class="tl-hbi" data-i18n="tl_y1">Year 1 (Jan 2026 – Jun 2027)</div>
+              <div class="tl-hbi" data-i18n="tl_y2">Year 2 (Jul 2027 – Jun 2028)</div>
+            </div>
+            <div class="tl-ht" data-i18n="th_total">Total</div>
+          </div>
+          <div id="timeline-rows"></div>
+        </div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div id="section-contacts" class="section">
+        <div class="page-header"><h2 data-i18n="contacts_title">Project Contacts</h2><p data-i18n="contacts_sub">Project leads, alternates, and fiscal reporters</p></div>
+        <div class="card mb-24">
+          <div class="card-header" style="background:var(--ccc-dark-blue);">
+            <div class="card-title" style="color:#fff;" data-i18n="meta_monitor">Grant Monitor</div>
+            <img src="Bulle Cloud Logo-white.png" alt="Bulle Cloud" style="height:72px;width:auto;display:block;opacity:1;" />
+          </div>
+          <div class="card-body">
+            <div class="contact-person" style="border:none;padding:0;">
+              <div class="contact-info">
+                <div class="contact-name">Bulle Consulting</div>
+                <div class="contact-role">Grant Monitor</div>
+                <div class="contact-email"><a href="mailto:admin@bulleconsulting.com">admin@bulleconsulting.com</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contacts-grid" id="contacts-grid"></div>
+      </div>
+
+      <!-- SPEND-DOWN MONITOR -->
+      <div id="section-spenddown" class="section">
+        <div class="page-header"><h2 data-i18n="spend_title">Spend-Down Monitor</h2><p data-i18n="spend_sub">Track Kern CCD's spend pace across the funding cycle and flag the project if Year 1 or Year 2 is at risk of underspending</p></div>
+        <div class="alloc-kpi-row" id="spend-kpi-row"></div>
+        <div class="card mb-24" id="underspend-alert-card">
+          <div class="card-header" style="background:rgba(229,62,62,0.08);border-bottom:2px solid rgba(229,62,62,0.25);">
+            <div class="card-title" style="color:#c53030;display:flex;align-items:center;gap:8px;"><span data-i18n="underspend_title">⚠ Underspend Risk Alerts</span></div>
+            <span id="underspend-count" class="risk-badge high" data-i18n="calculating">Calculating...</span>
+          </div>
+          <div class="card-body">
+            <p style="font-size:12.5px;color:var(--text-muted);margin:0 0 14px;line-height:1.5;" data-i18n="underspend_desc">The project is flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.</p>
+            <div id="underspend-chart-wrap" style="position:relative;height:240px;margin-bottom:14px;display:none;">
+              <canvas id="underspendChart"></canvas>
+            </div>
+            <div id="underspend-list"></div>
+          </div>
+        </div>
+
+        <div class="year-filter-tabs" id="year-filter-tabs" role="tablist" aria-label="Filter by project year" style="margin-bottom:14px;">
+          <button type="button" class="year-filter-tab active" data-year-filter="all" onclick="setYearFilter('all',this)" role="tab" aria-selected="true"  data-i18n="filter_combined">Combined View</button>
+          <button type="button" class="year-filter-tab"        data-year-filter="y1"  onclick="setYearFilter('y1',this)"  role="tab" aria-selected="false" data-i18n="filter_y1">Year 1</button>
+          <button type="button" class="year-filter-tab"        data-year-filter="y2"  onclick="setYearFilter('y2',this)"  role="tab" aria-selected="false" data-i18n="filter_y2">Year 2</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title" data-i18n="spend_table_title">Spend-Down Detail</div><div class="chart-label" data-i18n="spend_table_sub">Kern CCD · Year-by-Year Allocation vs. Spend</div></div>
+          <div class="data-table-wrap">
+            <table class="data-table" id="spend-table">
+              <thead><tr><th data-i18n="th_period">Period</th><th data-i18n="th_period_budget">Period Budget</th><th data-i18n="th_share">Share of Total</th><th data-i18n="th_project_year">Project Year</th><th data-i18n="th_disbursed_pct">Spent So Far</th><th data-i18n="th_spend_pace">Spend Pace</th><th data-i18n="th_status">Status</th></tr></thead>
+              <tbody id="spend-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <nav class="mobile-nav">
+    <div class="mobile-nav-inner">
+      <button class="mobile-nav-btn active" onclick="showSection('overview',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg><span data-i18n="nav_overview">Overview</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('goals',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span data-i18n="nav_goals">Goals</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('districts',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><span data-i18n="nav_districts">Project Profile</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('budget',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span data-i18n="nav_budget">Budget</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('timeline',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="nav_timeline">Timeline</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('contacts',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-i18n="nav_contacts">Contacts</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('spenddown',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-i18n="nav_spenddown">Spend</span></button>
+    </div>
+  </nav>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   2-YEAR FUNDING CYCLE: Jan 1 2026 – Jun 30 2028
+     Year 1: Jan 1, 2026 – Jun 30, 2027 (18 months)
+     Year 2: Jul 1, 2027 – Jun 30, 2028 (12 months)
+   Each district's budget line items (incl. indirect / 7000) are
+   carried as totals; renderBudget proportionally splits each line
+   across Y1 and Y2 by the y1/y2 funding ratio.
+   CCCCO disbursement starts at $0 / 0% (cycle hasn't begun).
+════════════════════════════════════════════════════════════════ */
+const districts = [
+
+    {
+    id:'kern', name:'Kern Community College District', shortName:'Kern CCD',
+    program:'VR EEO Faculty Development and Peer Mentoring Program',
+    tier:1, funding:150000, lift:false,
+    focus:['Virtual Reality','Faculty Development','Peer Mentoring','Inclusive Pedagogy'],
+    outcomes:[
+      'Access & Equity Across Colleges/Disciplines: ≥30 faculty trained across all three colleges, with participation proportional to each campus’s FTES (±5%) and ≥35% non-STEM representation',
+      'Professional Development Effectiveness: ≥75% of participants report increased confidence using VR (pre/post survey) and ≥60% implement at least one VR-enhanced lesson within the grant year',
+      'Implementation & Knowledge Sharing: Searchable repository of ≥35 documented VR lessons, with ≥30% of lessons adopted across campuses (developed at one college, implemented at another)',
+      'Leadership Pipeline Development: ≥40% of Year-1 participants advance to mentor roles in Year-2 and ≥25% of alumni document new leadership/service in professional portfolios',
+      'Student Engagement & Equity: In participating sections, ≥70% of students report increased engagement/interest (post-lesson survey), with no engagement gap >10 percentage points between student demographic groups'
+    ],
+    contact:{name:'Bobby Becka',role:'Project Lead Contact',email:'bobby.becka@kccd.edu',phone:'(661) 395-4102'},
+    altContact:{name:'Dr. Bonita Steele',role:'Alternate Project Lead Contact',email:'bsteele@kccd.edu',phone:'(661) 336-5046'},
+    fiscalReporter:{name:'Cathi Jacob',role:'Institution Project Fiscal Reporter',email:'cjacob@kccd.edu',phone:'(661) 336-5105'},
+    planApprover:{name:'Melissa Thornsberry',role:'Plan Approver',email:'melissa.thornsberry@kccd.edu',phone:'(661) 336-5142'},
+    additionalContacts:[
+      {name:'Rachel Tatro-Duarte',role:'Project Lead Contact (Porterville)',email:'rachel.tatroduarte@portervillecollege.edu',phone:''},
+      {name:'Todd Coston',role:'Project Lead Contact · AVC Planning & Educational Technology',email:'tcoston@kccd.edu',phone:'(661) 336-5078'},
+      {name:'Jonathan Kim',role:'Institution Project Fiscal Reporter',email:'jonathan.kim@kccd.edu',phone:'(661) 336-5109'},
+      {name:'Bryan Lainez',role:'Institution Project Fiscal Reporter',email:'bryan.lainez@kccd.edu',phone:''},
+      {name:'Marisol Cuevas',role:'Institution Project Fiscal Reporter',email:'marisol.cuevas@kccd.edu',phone:'(661) 336-5110'}
+    ],
+    fundMonitor:{name:'Bulle Consulting',role:'Grant Monitor',email:'admin@bulleconsulting.com',phone:''},
+    budgetHighlights:{'Instructional Salaries (1000)':32660,'Employee Benefits (3000)':7074,'Supplies and Materials (4000)':90750,'Other Operating Expenses and Services (5000)':12020,'Indirect Costs (7000)':7496},
+    yearlyBudget:{y1:122638,y2:27362},
+    fiscalYearBudget:{'2025-26':50735,'2026-27':71903,'2027-28':27362},
+    primaryFocus:'VR Faculty Development & Peer Mentoring',
+    leadAddress:'2100 Chester Avenue, Bakersfield, CA 93301',
+    website:'https://www.kccd.edu/',
+    colleges:['Bakersfield College','Cerro Coso Community College','Porterville College'],
+    executiveSponsor:'Chancellor Steven Bloomberg',
+    projectGoals:[
+      'Reduce instructional technology access gaps by ensuring faculty at smaller colleges (Cerro Coso and Porterville) have equal opportunity to experiment with and adopt immersive learning tools',
+      'Promote inclusive and equity-focused teaching by equipping faculty with VR-based strategies that foster empathy, cultural understanding, and engagement among diverse student populations',
+      'Increase faculty confidence and cross-disciplinary use of VR-based teaching methods at all three Kern CCD colleges',
+      'Address a critical gap in Kern CCD’s 2024–2027 EEO Plan by adding post-hire professional development and retention strategies'
+    ]
+  }
+];
+
+// CCCCO disbursement starts at zero — funding cycle hasn't begun
+districts.forEach(d => { d.cccoDisbursed = 0; d.cccoDisbursedRate = '0%'; });
+
+const fmt = v => '$' + Math.round(v).toLocaleString();
+
+/* ════════════════════════════════════════════════════════════════
+   TRANSLATIONS — 2-year cycle wording across en/es/vi/ar/tl
+════════════════════════════════════════════════════════════════ */
+const translations = {
+  en: {
+    nav_overview:'Overview', nav_goals:'Goals & Objectives', nav_districts:'Project Profile',
+    nav_outcomes:'Outcomes', nav_budget:'Budget Breakdown', nav_timeline:'Timeline', nav_contacts:'Contacts', nav_spenddown:'Spend-Down Monitor',
+    topbar_title:'Kern CCD Project',
+    goals_title:'Goals & Objectives', goals_sub:'Project goals from the Kern CCD workplan (Section 2.1) — paired with the two-year activities, five measurable outcomes, and responsible leadership.',
+    overview_title:'Program Overview', overview_sub:'Kern Community College District — Tier 1 grantee, VR EEO Faculty Development and Peer Mentoring Program. $150,000 award from the 2026–2028 EEO IBP grant cycle, across Bakersfield, Cerro Coso, and Porterville colleges.',
+    meta_monitor:'Grant Monitor', meta_grantid:'Grant ID', meta_start:'Start', meta_duration:'Funding Cycle', meta_status:'Status',
+    kpi_total_funding:'Total Grant Funding', kpi_across:'VR Faculty Development &amp; Peer Mentoring',
+    kpi_total_districts:'Total Districts', kpi_all_submitted:'All submitted',
+    kpi_tier1:'Tier 1 Districts', kpi_tier1_sub:'$150K each (avg)',
+    kpi_tier2:'Tier 2 Districts', kpi_tier2_sub:'$100K each',
+    kpi_lift:'LIFT Alliance', kpi_focus:'Focus Areas', kpi_focus_sub:'Equity in Hiring · Inclusive Pedagogy · Mentorship · Reflective Practice',
+    lift_title:'Program Spotlight — DRS Hiring + Faculty Mentorship',
+    lift_desc:'Kern CCD is launching a two-year VR Faculty Development and Peer Mentoring Program across Bakersfield, Cerro Coso, and Porterville — pairing structured VR pedagogy training with peer mentorship to build faculty leadership and close a post-hire gap in the 2024–2027 EEO Plan.',
+    chart_tier_dist:'Fund Allocation by Tier', chart_total_dist:'Total Distribution',
+    chart_focus_areas:'Program Focus Areas', chart_by_type:'By Initiative Type',
+    table_district_summary:'Project Summary',
+    th_district:'District', th_tier:'Tier', th_funding:'Funding', th_y1:'Year 1', th_y2:'Year 2', th_focus:'Primary Focus', th_total:'Total',
+    funds_title:'Goals & Objectives', funds_sub:'Kern CCD project goals and outcomes',
+    kpi_total_allocated:'Total Allocated', kpi_all_11:'Tier 1 award',
+    kpi_tier1_total:'Tier 1 Total', kpi_7dist:'7 districts',
+    kpi_tier2_total:'Tier 2 Total', kpi_4dist:'4 districts × $100K',
+    kpi_y1_total:'Year 1 Total', kpi_y1_sub:'Jan 2026 – Jun 2027',
+    chart_funding_district:'Funding by District', chart_direct:'Direct Allocation',
+    chart_tier_split:'Tier Split', chart_y1y2:'Year 1 vs. Year 2 Spend', chart_by_dist:'By District',
+    table_alloc_detail:'District-Level Allocation Detail',
+    districts_title:'Project Profile', districts_sub:'Kern Community College District',
+    filter_by:'Filter by:', filter_all:'All Districts', filter_tier1:'Tier 1', filter_tier2:'Tier 2', filter_lift:'LIFT Alliance',
+    outcomes_title:'Program Outcomes', outcomes_sub:"Measurable deliverables and targets from each district's proposal",
+    budget_title:'Budget Breakdown', budget_sub:'Object-code expenditures split across Year 1 (Jan 2026 – Jun 2027) and Year 2 (Jul 2027 – Jun 2028). VR hardware purchases drive Y1; services and Faculty Innovation Stipends drive Y2.',
+    timeline_title:'Implementation Timeline', timeline_sub:'2-year funding cycle · Jan 1, 2026 → Jun 30, 2028',
+    chart_yearly:'Year-by-Year Spend Profile', chart_all_districts:'All Districts',
+    tl_y1:'Year 1 (Jan 2026 – Jun 2027)', tl_y2:'Year 2 (Jul 2027 – Jun 2028)',
+    contacts_title:'Project Contacts', contacts_sub:'Project leads, alternates, and fiscal reporters',
+    spend_title:'Spend-Down Monitor',
+    spend_sub:'Track grant expenditures across the 2-year funding cycle and flag districts at risk of underspending',
+    filter_combined:'Combined View', filter_y1:'Year 1', filter_y2:'Year 2',
+    underspend_title:'⚠ Underspend Risk Alerts',
+    calculating:'Calculating...',
+    underspend_desc:'Districts get flagged when its spend pace is set to Slow or Fast. Set the pace to Moderate in the table below to clear the flag.',
+    spend_table_title:'Spend-Down Detail',
+    spend_table_sub:'Allocations vs. Year-by-Year Spend · 2-Year Cycle',
+    th_total_grant:'Total Grant',
+    th_y1_budget:'Year 1 Budget',
+    th_y2_budget:'Year 2 Budget',
+    th_disbursed_pct:'Disbursed % of Total',
+    th_spend_pace:'Spend Pace',
+    th_status:'Status',
+    kpi_total_grant_label:'Total Grant',
+    kpi_y1_budget_label:'Year 1 Budget',
+    kpi_y2_budget_label:'Year 2 Budget',
+    kpi_all_11_districts:'Tier 1 award',
+    kpi_y1_window:'of grant · Jan 2026 – Jun 2027',
+    kpi_y2_window:'of grant · Jul 2027 – Jun 2028',
+    pace_slow:'Slow',
+    pace_moderate:'Moderate',
+    pace_fast:'Fast',
+    pace_underfunded:'Underfunded',
+    status_on:'On Track',
+    status_off:'Off Track',
+    th_direct_funding:'Total Funding',
+    th_pct_total:'% of Total',
+    th_cccco_disbursed:'District Disbursed',
+    th_cccco_disbursed_rate:'District Disbursed Rate',
+    all_districts_total:'Kern CCD · $150,000 Total',
+    role_project_lead:'Project Lead',
+    role_alt_project_lead:'Alternate Project Lead',
+    role_fiscal_reporter:'Fiscal Reporter',
+    role_plan_approver:'Plan Approver',
+    all_clear:'✓ Kern CCD is on track — no underspend risks detected.',
+    flagged_one:'Budget Detail Flagged',
+    flagged_many:'Budget Details Flagged',
+    tl_total:'Total',
+    tl_pace_label:'Pace:',
+    kpi_y1_total_label:'Year 1 Total',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'Tier 1 award',
+    sb_dashboard:'Dashboard',
+    sb_performance:'Performance',
+    sb_program:'Team',
+    sb_spend_monitor:'Spend Monitor',
+    select_language:'Select Language',
+    status_active:'Active',
+    y1_window_short:'Jan 2026 – Jun 2027',
+    y2_window_short:'Jul 2027 – Jun 2028'
+  ,
+    kpi_total_allocated_sub:'Tier 1 award',
+    kpi_direct_costs:'Direct Costs',
+    kpi_direct_costs_sub:'95% of total',
+    kpi_indirect_costs:'Indirect (5%)',
+    kpi_indirect_costs_sub:'Object code 7000',
+    kpi_y1y2_split:'Year 1 / Year 2',
+    kpi_y1y2_split_sub:'$122,638 / $27,362',
+    chart_funding_objcode:'Funding by Object Code',
+    chart_direct_indirect:'Direct vs. Indirect',
+    chart_by_objcode:'By Object Code',
+    table_alloc_sub:'Per the Kern CCD application — totals to $150,000',
+    th_period:'Period',
+    th_period_budget:'Period Budget',
+    th_share:'Share of Total',
+    th_project_year:'Project Year',
+    kpi_dr_target:'DRS Trained',
+    kpi_dr_target_sub:'Classified staff over two cohorts',
+    kpi_mentor_target:'Mentor Cohort',
+    kpi_mentor_target_sub:'4 faculty mentors · 8 mentees', kpi_grant_tier:'Grant Tier', kpi_grant_tier_sub:'2026–2028 EEO IBP', kpi_colleges:'Participating Colleges', kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville', kpi_faculty_target:'Faculty Target', kpi_faculty_target_sub:'Trained across the district by Year 2',},
+  es: {
+    nav_overview:'Resumen', nav_goals:'Metas y Objetivos', nav_districts:'Perfil del Proyecto', nav_outcomes:'Resultados', nav_budget:'Presupuesto', nav_timeline:'Cronograma', nav_contacts:'Contactos', nav_spenddown:'Monitor de Gastos',
+    topbar_title:'Proyecto Kern CCD',
+    overview_title:'Resumen del Programa', overview_sub:'Kern Community College District — beneficiario de Nivel 2, Programas de Desarrollo Profesional y Representantes de EEO. Subvención de $100,000 del ciclo EEO IBP 2026–2028.',
+    meta_monitor:'Monitor de Subvención', meta_grantid:'ID de Subvención', meta_start:'Inicio', meta_duration:'Ciclo de Financiamiento', meta_status:'Estado',
+    kpi_total_funding:'Financiamiento Total', kpi_across:'Desarrollo Docente y Mentoría con RV',
+    kpi_total_districts:'Total Distritos', kpi_all_submitted:'Todos enviados',
+    kpi_tier1:'Distritos Nivel 1', kpi_tier1_sub:'$150K cada uno (promedio)',
+    kpi_tier2:'Distritos Nivel 2', kpi_tier2_sub:'$100K cada uno',
+    kpi_lift:'Alianza LIFT', kpi_focus:'Áreas de Enfoque', kpi_focus_sub:'RV · Desarrollo Docente · Mentoría · Pedagogía Inclusiva',
+    lift_title:'Alianza LIFT — Instituto de Liderazgo para el Mañana',
+    lift_desc:'Kern CCD está lanzando un programa bienal de Desarrollo Docente con VR y Mentoría entre Pares en Bakersfield, Cerro Coso y Porterville — combinando capacitación en pedagogía VR con mentoría entre pares para desarrollar el liderazgo docente y cerrar una brecha post-contratación en el Plan EEO 2024–2027.',
+    chart_tier_dist:'Asignación por Nivel', chart_total_dist:'Distribución Total',
+    chart_focus_areas:'Áreas de Enfoque del Programa', chart_by_type:'Por Tipo de Iniciativa',
+    table_district_summary:'Resumen de Distritos',
+    th_district:'Distrito', th_tier:'Nivel', th_funding:'Financiamiento', th_y1:'Año 1', th_y2:'Año 2', th_focus:'Enfoque Principal', th_total:'Total',
+    funds_title:'Asignaciones de Fondos', funds_sub:'Desglose detallado del financiamiento en los 11 distritos',
+    kpi_total_allocated:'Total Asignado', kpi_all_11:'Los 11 distritos',
+    kpi_tier1_total:'Total Nivel 1', kpi_7dist:'7 distritos',
+    kpi_tier2_total:'Total Nivel 2', kpi_4dist:'4 distritos × $100K',
+    kpi_y1_total:'Total Año 1', kpi_y1_sub:'Ene 2026 – Jun 2027',
+    chart_funding_district:'Financiamiento por Distrito', chart_direct:'Asignación Directa',
+    chart_tier_split:'División por Nivel', chart_y1y2:'Año 1 vs. Año 2', chart_by_dist:'Por Distrito',
+    table_alloc_detail:'Detalle de Asignación por Distrito',
+    districts_title:'Perfiles de Distrito', districts_sub:'Los 11 distritos participantes',
+    filter_by:'Filtrar por:', filter_all:'Todos', filter_tier1:'Nivel 1', filter_tier2:'Nivel 2', filter_lift:'Alianza LIFT',
+    outcomes_title:'Resultados del Programa', outcomes_sub:'Entregables medibles de la propuesta de cada distrito',
+    budget_title:'Desglose Presupuestario', budget_sub:'Gastos por código de objeto, divididos entre Año 1 (Ene 2026 – Jun 2027) y Año 2 (Jul 2027 – Jun 2028). Costos indirectos integrados proporcionalmente en cada año.',
+    timeline_title:'Cronograma de Implementación', timeline_sub:'Ciclo de financiamiento de 2 años · 1 Ene 2026 → 30 Jun 2028',
+    chart_yearly:'Perfil de Gasto Año por Año', chart_all_districts:'Todos los Distritos',
+    tl_y1:'Año 1 (Ene 2026 – Jun 2027)', tl_y2:'Año 2 (Jul 2027 – Jun 2028)',
+    contacts_title:'Contactos de Distrito', contacts_sub:'Líderes de proyecto, alternos y reporteros fiscales',
+    spend_title:'Monitor de Gastos',
+    spend_sub:'Monitorear gastos de la subvención durante el ciclo de financiamiento de 2 años y marcar distritos con riesgo de subgasto',
+    filter_combined:'Vista Combinada', filter_y1:'Año 1', filter_y2:'Año 2',
+    underspend_title:'⚠ Alertas de Riesgo de Subgasto',
+    calculating:'Calculando...',
+    underspend_desc:'Los distritos se marcan cuando su ritmo de gasto es Lento, Rápido o Subfinanciado. Establezca el ritmo en Moderado en la tabla para quitar la marca.',
+    spend_table_title:'Detalle de Gastos',
+    spend_table_sub:'Asignaciones vs. Gasto Anual · Ciclo de 2 Años',
+    th_total_grant:'Subvención Total',
+    th_y1_budget:'Presupuesto Año 1',
+    th_y2_budget:'Presupuesto Año 2',
+    th_disbursed_pct:'Desembolsado % del Total',
+    th_spend_pace:'Ritmo de Gasto',
+    th_status:'Estado',
+    kpi_total_grant_label:'Subvención Total',
+    kpi_y1_budget_label:'Presupuesto Año 1',
+    kpi_y2_budget_label:'Presupuesto Año 2',
+    kpi_all_11_districts:'Los 11 distritos',
+    kpi_y1_window:'del total · Ene 2026 – Jun 2027',
+    kpi_y2_window:'del total · Jul 2027 – Jun 2028',
+    pace_slow:'Lento',
+    pace_moderate:'Moderado',
+    pace_fast:'Rápido',
+    pace_underfunded:'Subfinanciado',
+    status_on:'En Camino',
+    status_off:'Desviado',
+    th_direct_funding:'Financiamiento Total',
+    th_pct_total:'% del Total',
+    th_cccco_disbursed:'Distrito Desembolsado',
+    th_cccco_disbursed_rate:'Tasa de Desembolso del Distrito',
+    all_districts_total:'Kern CCD · $150,000 Total',
+    role_project_lead:'Líder de Proyecto',
+    role_alt_project_lead:'Líder Alterno de Proyecto',
+    role_fiscal_reporter:'Reportero Fiscal',
+    role_plan_approver:'Aprobador del Plan',
+    all_clear:'✓ Kern CCD está en buen camino — sin riesgos de subgasto detectados.',
+    flagged_one:'Detalle de Presupuesto Marcado',
+    flagged_many:'Detalles de Presupuesto Marcados',
+    tl_total:'Total',
+    tl_pace_label:'Ritmo:',
+    kpi_y1_total_label:'Total Año 1',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'Los 11 distritos',
+    sb_dashboard:'Panel',
+    sb_performance:'Rendimiento',
+    sb_program:'Equipo',
+    sb_spend_monitor:'Monitor de Gastos',
+    select_language:'Seleccionar Idioma',
+    status_active:'Activo',
+    y1_window_short:'Ene 2026 – Jun 2027',
+    y2_window_short:'Jul 2027 – Jun 2028',
+  
+    kpi_grant_tier:'Nivel de Subvención',
+    kpi_grant_tier_sub:'EEO IBP 2026–2028',
+    kpi_colleges:'Colegios Participantes',
+    kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
+    kpi_faculty_target:'Meta de Docentes',
+    kpi_faculty_target_sub:'Capacitados en el distrito al Año 2',},
+  vi: {
+    nav_overview:'Tổng quan', nav_goals:'Mục tiêu & Đối tượng', nav_districts:'Hồ sơ Dự án', nav_outcomes:'Kết quả', nav_budget:'Ngân sách', nav_timeline:'Lịch trình', nav_contacts:'Liên lạc', nav_spenddown:'Theo dõi Chi tiêu',
+    topbar_title:'Dự án Kern CCD',
+    overview_title:'Tổng quan Chương trình', overview_sub:'Kern Community College District — Người nhận Bậc 2, Chương trình Phát triển Chuyên môn và Đại diện EEO. Khoản tài trợ $100,000 từ chu kỳ EEO IBP 2026–2028.',
+    meta_monitor:'Người giám sát', meta_grantid:'Mã tài trợ', meta_start:'Bắt đầu', meta_duration:'Chu kỳ tài trợ', meta_status:'Trạng thái',
+    kpi_total_funding:'Tổng tài trợ', kpi_across:'Phát triển GV bằng VR & Cố vấn đồng nghiệp',
+    kpi_total_districts:'Tổng số quận', kpi_all_submitted:'Tất cả đã nộp',
+    kpi_tier1:'Quận Cấp 1', kpi_tier1_sub:'$150K mỗi quận',
+    kpi_tier2:'Quận Cấp 2', kpi_tier2_sub:'$100K mỗi quận',
+    kpi_lift:'Liên minh LIFT', kpi_focus:'Trọng Tâm', kpi_focus_sub:'VR · Phát triển GV · Cố vấn đồng nghiệp · Sư phạm bao gồm',
+    lift_title:'Liên minh LIFT — Viện Lãnh đạo cho Tương lai',
+    lift_desc:'Kern CCD đang triển khai chương trình hai năm Phát triển Giảng viên VR & Cố vấn Đồng nghiệp tại Bakersfield, Cerro Coso và Porterville — kết hợp đào tạo sư phạm VR có cấu trúc với cố vấn đồng nghiệp để xây dựng lãnh đạo giảng viên và lấp khoảng cách sau tuyển dụng trong Kế hoạch EEO 2024–2027.',
+    chart_tier_dist:'Phân bổ theo cấp', chart_total_dist:'Tổng phân phối',
+    chart_focus_areas:'Lĩnh vực trọng tâm', chart_by_type:'Theo loại sáng kiến',
+    table_district_summary:'Tóm tắt quận',
+    th_district:'Quận', th_tier:'Cấp', th_funding:'Tài trợ', th_y1:'Năm 1', th_y2:'Năm 2', th_focus:'Trọng tâm chính', th_total:'Tổng',
+    funds_title:'Phân bổ vốn', funds_sub:'Chi tiết phân bổ tài trợ cho cả 11 quận',
+    kpi_total_allocated:'Tổng phân bổ', kpi_all_11:'Tất cả 11 quận',
+    kpi_tier1_total:'Tổng Cấp 1', kpi_7dist:'7 quận',
+    kpi_tier2_total:'Tổng Cấp 2', kpi_4dist:'4 quận × $100K',
+    kpi_y1_total:'Tổng Năm 1', kpi_y1_sub:'Th1 2026 – Th6 2027',
+    chart_funding_district:'Tài trợ theo quận', chart_direct:'Phân bổ trực tiếp',
+    chart_tier_split:'Phân chia cấp', chart_y1y2:'Năm 1 vs. Năm 2', chart_by_dist:'Theo quận',
+    table_alloc_detail:'Chi tiết phân bổ theo quận',
+    districts_title:'Hồ sơ quận', districts_sub:'Tất cả 11 quận tham gia',
+    filter_by:'Lọc theo:', filter_all:'Tất cả', filter_tier1:'Cấp 1', filter_tier2:'Cấp 2', filter_lift:'Liên minh LIFT',
+    outcomes_title:'Kết quả chương trình', outcomes_sub:'Các kết quả đo lường được từ mỗi đề xuất quận',
+    budget_title:'Chi tiết ngân sách', budget_sub:'Chi phí theo mã đối tượng, chia giữa Năm 1 (Th1 2026 – Th6 2027) và Năm 2 (Th7 2027 – Th6 2028). Chi phí gián tiếp được phân bổ vào mỗi năm theo tỷ lệ.',
+    timeline_title:'Lịch trình thực hiện', timeline_sub:'Chu kỳ tài trợ 2 năm · 1/1/2026 → 30/6/2028',
+    chart_yearly:'Hồ sơ chi tiêu hàng năm', chart_all_districts:'Tất cả quận',
+    tl_y1:'Năm 1 (Th1 2026 – Th6 2027)', tl_y2:'Năm 2 (Th7 2027 – Th6 2028)',
+    contacts_title:'Liên hệ quận', contacts_sub:'Trưởng dự án, người thay thế và báo cáo tài chính',
+    spend_title:'Theo dõi Chi tiêu',
+    spend_sub:'Theo dõi chi tiêu trong chu kỳ tài trợ 2 năm và đánh dấu các quận có nguy cơ chi tiêu thiếu',
+    filter_combined:'Chế độ Kết hợp', filter_y1:'Năm 1', filter_y2:'Năm 2',
+    underspend_title:'⚠ Cảnh báo Rủi ro Chi tiêu Thiếu',
+    calculating:'Đang tính...',
+    underspend_desc:'Quận được đánh dấu khi tốc độ chi tiêu là Chậm, Nhanh hoặc Thiếu vốn. Đặt thành Vừa phải để gỡ cờ.',
+    spend_table_title:'Chi tiết Chi tiêu',
+    spend_table_sub:'Phân bổ vs. Chi tiêu Hàng năm · Chu kỳ 2 Năm',
+    th_total_grant:'Tổng Tài trợ',
+    th_y1_budget:'Ngân sách Năm 1',
+    th_y2_budget:'Ngân sách Năm 2',
+    th_disbursed_pct:'Đã giải ngân % Tổng',
+    th_spend_pace:'Tốc độ Chi tiêu',
+    th_status:'Trạng thái',
+    kpi_total_grant_label:'Tổng Tài trợ',
+    kpi_y1_budget_label:'Ngân sách Năm 1',
+    kpi_y2_budget_label:'Ngân sách Năm 2',
+    kpi_all_11_districts:'Tất cả 11 quận',
+    kpi_y1_window:'của tổng · Th1 2026 – Th6 2027',
+    kpi_y2_window:'của tổng · Th7 2027 – Th6 2028',
+    pace_slow:'Chậm',
+    pace_moderate:'Vừa phải',
+    pace_fast:'Nhanh',
+    pace_underfunded:'Thiếu vốn',
+    status_on:'Đúng Tiến độ',
+    status_off:'Chệch Hướng',
+    th_direct_funding:'Tổng Tài trợ',
+    th_pct_total:'% Tổng',
+    th_cccco_disbursed:'Khu đại học Đã Giải ngân',
+    th_cccco_disbursed_rate:'Tỷ lệ Giải ngân Khu đại học',
+    all_districts_total:'Kern CCD · $150,000 Tổng',
+    role_project_lead:'Trưởng Dự án',
+    role_alt_project_lead:'Trưởng Dự án Phụ',
+    role_fiscal_reporter:'Báo cáo Tài chính',
+    role_plan_approver:'Người Phê duyệt Kế hoạch',
+    all_clear:'✓ Kern CCD đúng tiến độ — không phát hiện rủi ro chi tiêu thiếu.',
+    flagged_one:'Chi tiết Ngân sách Được Đánh dấu',
+    flagged_many:'Chi tiết Ngân sách Được Đánh dấu',
+    tl_total:'Tổng',
+    tl_pace_label:'Tốc độ:',
+    kpi_y1_total_label:'Tổng Năm 1',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'Tất cả 11 quận',
+    sb_dashboard:'Bảng điều khiển',
+    sb_performance:'Hiệu suất',
+    sb_program:'Nhóm',
+    sb_spend_monitor:'Giám sát Chi tiêu',
+    select_language:'Chọn Ngôn ngữ',
+    status_active:'Đang hoạt động',
+    y1_window_short:'Th1 2026 – Th6 2027',
+    y2_window_short:'Th7 2027 – Th6 2028',
+  
+    kpi_grant_tier:'Hạng Tài Trợ',
+    kpi_grant_tier_sub:'EEO IBP 2026–2028',
+    kpi_colleges:'Các Trường Tham Gia',
+    kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
+    kpi_faculty_target:'Mục Tiêu Giảng Viên',
+    kpi_faculty_target_sub:'Đào tạo trên toàn quận đến Năm 2',},
+  ar: {
+    nav_overview:'نظرة عامة', nav_funds:'التخصيصات', nav_districts:'ملف المشروع', nav_outcomes:'النتائج', nav_budget:'الميزانية', nav_timeline:'الجدول الزمني', nav_contacts:'جهات الاتصال', nav_spenddown:'مراقب الإنفاق',
+    topbar_title:'مشروع Kern CCD',
+    overview_title:'نظرة عامة على البرنامج', overview_sub:'نظرة عامة على مستوى الولاية لمبادرة منحة الممارسات المبتكرة الأفضل لتكافؤ فرص العمل (EEO)، تشمل 11 مقاطعة كليات مجتمعية في كاليفورنيا.',
+    meta_monitor:'مراقب المنحة', meta_grantid:'معرّف المنحة', meta_start:'البداية', meta_duration:'دورة التمويل', meta_status:'الحالة',
+    kpi_total_funding:'إجمالي التمويل', kpi_across:'تطوير أعضاء هيئة التدريس بـ VR والإرشاد',
+    kpi_total_districts:'إجمالي المقاطعات', kpi_all_submitted:'جميعها مُقدَّمة',
+    kpi_tier1:'مقاطعات الفئة 1', kpi_tier1_sub:'$150K لكل منها',
+    kpi_tier2:'مقاطعات الفئة 2', kpi_tier2_sub:'$100K لكل منها',
+    kpi_lift:'تحالف LIFT', kpi_focus:'مجالات التركيز', kpi_focus_sub:'الواقع الافتراضي · تطوير الأساتذة · الإرشاد · التعليم الشامل',
+    lift_title:'تحالف LIFT — معهد القيادة من أجل الغد',
+    lift_desc:'أربع من بين 11 مقاطعة أعضاء في تحالف ولائي يضم 10 كليات و10 مناطق.',
+    chart_tier_dist:'توزيع الأموال حسب الفئة', chart_total_dist:'التوزيع الكلي',
+    chart_focus_areas:'مجالات تركيز البرنامج', chart_by_type:'حسب نوع المبادرة',
+    table_district_summary:'ملخص المقاطعات',
+    th_district:'المقاطعة', th_tier:'الفئة', th_funding:'التمويل', th_y1:'السنة 1', th_y2:'السنة 2', th_focus:'التركيز الرئيسي', th_total:'الإجمالي',
+    funds_title:'تخصيصات الأموال', funds_sub:'تفصيل تمويل المنحة عبر جميع المقاطعات الـ11',
+    kpi_total_allocated:'الإجمالي المخصص', kpi_all_11:'جميع المقاطعات الـ11',
+    kpi_tier1_total:'إجمالي الفئة 1', kpi_7dist:'7 مقاطعات',
+    kpi_tier2_total:'إجمالي الفئة 2', kpi_4dist:'4 مقاطعات × $100K',
+    kpi_y1_total:'إجمالي السنة 1', kpi_y1_sub:'يناير 2026 – يونيو 2027',
+    chart_funding_district:'التمويل حسب المقاطعة', chart_direct:'التخصيص المباشر',
+    chart_tier_split:'التقسيم حسب الفئة', chart_y1y2:'السنة 1 مقابل السنة 2', chart_by_dist:'حسب المقاطعة',
+    table_alloc_detail:'تفاصيل التخصيص على مستوى المقاطعة',
+    districts_title:'ملفات المقاطعات', districts_sub:'جميع المقاطعات الـ11 المشاركة',
+    filter_by:'تصفية حسب:', filter_all:'الجميع', filter_tier1:'الفئة 1', filter_tier2:'الفئة 2', filter_lift:'تحالف LIFT',
+    outcomes_title:'نتائج البرنامج', outcomes_sub:'المخرجات القابلة للقياس من كل مقترح مقاطعة',
+    budget_title:'تفصيل الميزانية', budget_sub:'النفقات مقسمة بين السنة 1 (يناير 2026 – يونيو 2027) والسنة 2 (يوليو 2027 – يونيو 2028). يتم توزيع التكاليف غير المباشرة بشكل تناسبي.',
+    timeline_title:'الجدول الزمني للتنفيذ', timeline_sub:'دورة تمويل لمدة سنتين · 1 يناير 2026 → 30 يونيو 2028',
+    chart_yearly:'ملف الإنفاق السنوي', chart_all_districts:'جميع المقاطعات',
+    tl_y1:'السنة 1 (يناير 2026 – يونيو 2027)', tl_y2:'السنة 2 (يوليو 2027 – يونيو 2028)',
+    contacts_title:'جهات اتصال المقاطعة', contacts_sub:'قادة المشروع والبدلاء ومراسلو الميزانية',
+    spend_title:'مراقب الإنفاق',
+    spend_sub:'تتبع نفقات المنحة خلال دورة التمويل لمدة سنتين وتمييز المقاطعات المعرضة لخطر الإنفاق الناقص',
+    underspend_title:'⚠ تنبيهات مخاطر الإنفاق الناقص',
+    calculating:'جارٍ الحساب...',
+    underspend_desc:'تُمَيَّز المقاطعات عندما تكون وتيرة الإنفاق بطيئة أو سريعة أو ناقصة التمويل. اضبط الوتيرة على معتدلة لإزالة العلامة.',
+    spend_table_title:'تفاصيل الإنفاق',
+    spend_table_sub:'التخصيصات مقابل الإنفاق السنوي · دورة سنتين',
+    th_total_grant:'إجمالي المنحة',
+    th_y1_budget:'ميزانية السنة 1',
+    th_y2_budget:'ميزانية السنة 2',
+    th_disbursed_pct:'النسبة المصروفة من الإجمالي',
+    th_spend_pace:'وتيرة الإنفاق',
+    th_status:'الحالة',
+    kpi_total_grant_label:'إجمالي المنحة',
+    kpi_y1_budget_label:'ميزانية السنة 1',
+    kpi_y2_budget_label:'ميزانية السنة 2',
+    kpi_all_11_districts:'جميع المقاطعات الـ11',
+    kpi_y1_window:'من المنحة · يناير 2026 – يونيو 2027',
+    kpi_y2_window:'من المنحة · يوليو 2027 – يونيو 2028',
+    pace_slow:'بطيء',
+    pace_moderate:'معتدل',
+    pace_fast:'سريع',
+    pace_underfunded:'ناقص التمويل',
+    status_on:'على المسار',
+    status_off:'خارج المسار',
+    th_direct_funding:'إجمالي التمويل',
+    th_pct_total:'٪ من الإجمالي',
+    th_cccco_disbursed:'المنطقة المصروفة',
+    th_cccco_disbursed_rate:'معدل صرف المنطقة',
+    all_districts_total:'Kern CCD · $150,000 الإجمالي',
+    role_project_lead:'قائد المشروع',
+    role_alt_project_lead:'قائد بديل للمشروع',
+    role_fiscal_reporter:'مراسل الميزانية',
+    role_plan_approver:'معتمد الخطة',
+    all_clear:'✓ Kern CCD على المسار — لم يُكتشف أي خطر إنفاق ناقص.',
+    flagged_one:'بند ميزانية مُمَيَّز',
+    flagged_many:'بنود ميزانية مُمَيَّزة',
+    tl_total:'الإجمالي',
+    tl_pace_label:'الوتيرة:',
+    kpi_y1_total_label:'إجمالي السنة 1',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'جميع المقاطعات الـ11',
+    sb_dashboard:'لوحة التحكم',
+    sb_performance:'الأداء',
+    sb_program:'الفريق',
+    sb_spend_monitor:'مراقب الإنفاق',
+    select_language:'اختر اللغة',
+    status_active:'نشط',
+    y1_window_short:'يناير 2026 – يونيو 2027',
+    y2_window_short:'يوليو 2027 – يونيو 2028',
+  
+    kpi_grant_tier:'فئة المنحة',
+    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_colleges:'الكليات المشاركة',
+    kpi_colleges_sub:'بيكرسفيلد · سيرو كوسو · بورترفيل',
+    kpi_faculty_target:'هدف أعضاء هيئة التدريس',
+    kpi_faculty_target_sub:'تدريب على مستوى المنطقة بنهاية السنة 2',},
+  tl: {
+    nav_overview:'Pangkalahatang-tanaw', nav_goals:'Mga Layunin at Mithiin', nav_districts:'Profile ng Proyekto', nav_outcomes:'Mga Resulta', nav_budget:'Badyet', nav_timeline:'Iskedyul', nav_contacts:'Mga Kontak', nav_spenddown:'Spend-Down Monitor',
+    topbar_title:'Kern CCD Project',
+    overview_title:'Pangkalahatang-tanaw ng Programa', overview_sub:'Kern Community College District — Tier 2 grantee, Professional Development at EEO Representative Programs. $100,000 grant mula sa 2026–2028 EEO IBP cycle.',
+    meta_monitor:'Grant Monitor', meta_grantid:'ID ng Grant', meta_start:'Simula', meta_duration:'Funding Cycle', meta_status:'Katayuan',
+    kpi_total_funding:'Kabuuang Pondo', kpi_across:'VR Faculty Development &amp; Peer Mentoring',
+    kpi_total_districts:'Kabuuang Distrito', kpi_all_submitted:'Lahat naihain',
+    kpi_tier1:'Mga Distrito ng Tier 1', kpi_tier1_sub:'$150K bawat isa',
+    kpi_tier2:'Mga Distrito ng Tier 2', kpi_tier2_sub:'$100K bawat isa',
+    kpi_lift:'Alyansa ng LIFT', kpi_focus:'Mga Pokus', kpi_focus_sub:'Equity in Hiring · Inclusive Pedagogy · Mentorship · Reflective Practice',
+    lift_title:'Alyansa ng LIFT — Leadership Institute for Tomorrow',
+    lift_desc:'Inilulunsad ng Kern CCD ang dalawang-taong VR Faculty Development at Peer Mentoring Program sa Bakersfield, Cerro Coso, at Porterville — kaagapay ng peer mentorship upang palakasin ang pamumuno ng faculty at tugunan ang post-hire gap sa 2024–2027 EEO Plan.',
+    chart_tier_dist:'Paglalaan ng Pondo ayon sa Tier', chart_total_dist:'Kabuuang Pamamahagi',
+    chart_focus_areas:'Mga Larangan ng Pokus', chart_by_type:'Ayon sa Uri ng Inisyatibo',
+    table_district_summary:'Buod ng Distrito',
+    th_district:'Distrito', th_tier:'Tier', th_funding:'Pondo', th_y1:'Taon 1', th_y2:'Taon 2', th_focus:'Pangunahing Pokus', th_total:'Kabuuan',
+    funds_title:'Pagbibigay-pondo', funds_sub:'Detalyadong breakdown ng grant funding sa lahat ng 11 distrito',
+    kpi_total_allocated:'Kabuuang Inilaan', kpi_all_11:'Lahat ng 11 distrito',
+    kpi_tier1_total:'Kabuuan ng Tier 1', kpi_7dist:'7 distrito',
+    kpi_tier2_total:'Kabuuan ng Tier 2', kpi_4dist:'4 distrito × $100K',
+    kpi_y1_total:'Kabuuan ng Taon 1', kpi_y1_sub:'Ene 2026 – Hun 2027',
+    chart_funding_district:'Pondo ayon sa Distrito', chart_direct:'Direktang Paglalaan',
+    chart_tier_split:'Hatiin ng Tier', chart_y1y2:'Taon 1 vs. Taon 2', chart_by_dist:'Ayon sa Distrito',
+    table_alloc_detail:'Detalye ng Paglalaan sa Antas ng Distrito',
+    districts_title:'Mga Profil ng Distrito', districts_sub:'Lahat ng 11 kalahok na distrito',
+    filter_by:'I-filter ayon sa:', filter_all:'Lahat', filter_tier1:'Tier 1', filter_tier2:'Tier 2', filter_lift:'Alyansa ng LIFT',
+    outcomes_title:'Mga Resulta ng Programa', outcomes_sub:'Mga nasusukat na resulta mula sa bawat panukala',
+    budget_title:'Breakdown ng Badyet', budget_sub:'Mga gastusin sa object-code, hinati sa Taon 1 (Ene 2026 – Hun 2027) at Taon 2 (Hul 2027 – Hun 2028). Indirect costs ay tinitipon proporsyonal sa bawat taon.',
+    timeline_title:'Iskedyul ng Pagpapatupad', timeline_sub:'2-taong funding cycle · Ene 1, 2026 → Hun 30, 2028',
+    chart_yearly:'Profile ng Paggastos Taon-taon', chart_all_districts:'Lahat ng Distrito',
+    tl_y1:'Taon 1 (Ene 2026 – Hun 2027)', tl_y2:'Taon 2 (Hul 2027 – Hun 2028)',
+    contacts_title:'Mga Kontak ng Distrito', contacts_sub:'Mga lider ng proyekto, kapalit, at fiscal reporter',
+    spend_title:'Spend-Down Monitor',
+    spend_sub:'Subaybayan ang gastos ng grant sa loob ng 2-taong funding cycle at i-flag ang mga distritong nasa panganib ng underspending',
+    filter_combined:'Combined View', filter_y1:'Year 1', filter_y2:'Year 2',
+    underspend_title:'⚠ Underspend Risk Alerts',
+    calculating:'Kinakalkula...',
+    underspend_desc:'Naka-flag ang mga distrito kapag ang Spend Pace ay nakatakda sa Slow, Fast, o Underfunded. Itakda sa Moderate sa table upang alisin ang flag.',
+    spend_table_title:'Detalye ng Spend-Down',
+    spend_table_sub:'Mga Paglalaan vs. Taon-taong Gastos · 2-Year Cycle',
+    th_total_grant:'Kabuuang Grant',
+    th_y1_budget:'Badyet Taon 1',
+    th_y2_budget:'Badyet Taon 2',
+    th_disbursed_pct:'Naipamahagi % ng Kabuuan',
+    th_spend_pace:'Spend Pace',
+    th_status:'Katayuan',
+    kpi_total_grant_label:'Kabuuang Grant',
+    kpi_y1_budget_label:'Badyet Taon 1',
+    kpi_y2_budget_label:'Badyet Taon 2',
+    kpi_all_11_districts:'Lahat ng 11 distrito',
+    kpi_y1_window:'ng grant · Ene 2026 – Hun 2027',
+    kpi_y2_window:'ng grant · Hul 2027 – Hun 2028',
+    pace_slow:'Mabagal',
+    pace_moderate:'Katamtaman',
+    pace_fast:'Mabilis',
+    pace_underfunded:'Kulang sa Pondo',
+    status_on:'On Track',
+    status_off:'Off Track',
+    th_direct_funding:'Kabuuang Pondo',
+    th_pct_total:'% ng Kabuuan',
+    th_cccco_disbursed:'District Disbursed',
+    th_cccco_disbursed_rate:'District Disbursed Rate',
+    all_districts_total:'Kern CCD · $150,000 Kabuuan',
+    role_project_lead:'Lider ng Proyekto',
+    role_alt_project_lead:'Kapalit na Lider ng Proyekto',
+    role_fiscal_reporter:'Fiscal Reporter',
+    role_plan_approver:'Plan Approver',
+    all_clear:'✓ Kern CCD ay nasa tamang landas — walang underspend risk na natuklasan.',
+    flagged_one:'Detalye ng Badyet na Naka-flag',
+    flagged_many:'Mga Detalye ng Badyet na Naka-flag',
+    tl_total:'Kabuuan',
+    tl_pace_label:'Pace:',
+    kpi_y1_total_label:'Kabuuan ng Taon 1',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'Lahat ng 11 distrito',
+    sb_dashboard:'Dashboard',
+    sb_performance:'Performance',
+    sb_program:'Equipo',
+    sb_spend_monitor:'Spend Monitor',
+    select_language:'Pumili ng Wika',
+    status_active:'Aktibo',
+    y1_window_short:'Ene 2026 – Hun 2027',
+    y2_window_short:'Hul 2027 – Hun 2028',
+  
+    kpi_grant_tier:'Tier ng Grant',
+    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_colleges:'Mga Kalahok na Kolehiyo',
+    kpi_colleges_sub:'Bakersfield · Cerro Coso · Porterville',
+    kpi_faculty_target:'Target na Faculty',
+    kpi_faculty_target_sub:'Sanay sa buong distrito sa Year 2',},
+  zh: {
+    nav_overview:'總覽', nav_goals:'目標與宗旨', nav_districts:'計畫簡介', nav_outcomes:'成果', nav_budget:'預算明細', nav_timeline:'時間表', nav_contacts:'聯絡資訊', nav_spenddown:'支出進度監測',
+    topbar_title:'Kern CCD 計畫',
+    overview_title:'計畫總覽',
+    overview_sub:'本州平等就業機會 (EEO) 創新最佳實踐補助計畫的全州概覽,涵蓋加州 11 個社區大學學區。',
+    meta_monitor:'計畫監督', meta_grantid:'補助編號', meta_start:'起始日期', meta_duration:'資助週期', meta_status:'狀態',
+    kpi_total_funding:'補助金總額', kpi_across:'VR 教職員發展與同儕輔導',
+    kpi_total_districts:'學區總數', kpi_all_submitted:'全部已提交',
+    kpi_tier1:'第 1 級學區', kpi_tier1_sub:'平均每區 $150K',
+    kpi_tier2:'第 2 級學區', kpi_tier2_sub:'每區 $100K',
+    kpi_lift:'LIFT 聯盟', kpi_focus:'重點領域', kpi_focus_sub:'VR · 教職發展 · 同儕輔導 · 包容教學',
+    lift_title:'LIFT 聯盟 — 明日領導力學院',
+    lift_desc:'Kern CCD 正在 Bakersfield、Cerro Coso 和 Porterville 三所學院推行為期兩年的 VR 教職員發展與同儕導師計畫 — 將結構化的 VR 教學法培訓與同儕導師結合,以培養教職員領導力,並彌補 2024–2027 EEO 計畫中的招聘後缺口。',
+    chart_tier_dist:'按等級的資金分配', chart_total_dist:'總分配',
+    chart_focus_areas:'計畫重點領域', chart_by_type:'按計畫類型',
+    table_district_summary:'學區摘要',
+    th_district:'學區', th_tier:'等級', th_funding:'資金', th_y1:'第 1 年', th_y2:'第 2 年', th_focus:'主要重點', th_total:'總計',
+    funds_title:'資金分配', funds_sub:'全部 11 個學區的補助金分配詳細明細',
+    kpi_total_allocated:'已分配總額', kpi_all_11:'全部 11 個學區',
+    kpi_tier1_total:'第 1 級總計', kpi_7dist:'7 個學區',
+    kpi_tier2_total:'第 2 級總計', kpi_4dist:'4 個學區 × $100K',
+    kpi_y1_total:'第 1 年總計', kpi_y1_sub:'2026 年 1 月 – 2027 年 6 月',
+    chart_funding_district:'按學區的資金', chart_direct:'直接分配',
+    chart_tier_split:'等級分布', chart_y1y2:'第 1 年 vs. 第 2 年支出', chart_by_dist:'按學區',
+    table_alloc_detail:'學區層級分配詳情',
+    districts_title:'學區簡介', districts_sub:'全部 11 個參與的社區大學學區',
+    filter_by:'篩選依據:', filter_all:'所有學區', filter_tier1:'第 1 級', filter_tier2:'第 2 級', filter_lift:'LIFT 聯盟',
+    outcomes_title:'計畫成果', outcomes_sub:'每個學區提案中可衡量的成果與目標',
+    budget_title:'預算明細', budget_sub:'按物件代碼劃分的支出,分為第 1 年(2026 年 1 月 – 2027 年 6 月)和第 2 年(2027 年 7 月 – 2028 年 6 月)。間接成本按比例分攤至每年。',
+    timeline_title:'實施時間表', timeline_sub:'2 年資助週期 · 2026 年 1 月 1 日 → 2028 年 6 月 30 日',
+    chart_yearly:'逐年支出概況', chart_all_districts:'所有學區',
+    tl_y1:'第 1 年(2026 年 1 月 – 2027 年 6 月)', tl_y2:'第 2 年(2027 年 7 月 – 2028 年 6 月)',
+    contacts_title:'學區聯絡資訊', contacts_sub:'計畫負責人、副負責人和財務報告人',
+    spend_title:'支出進度監測',
+    spend_sub:'追蹤 2 年資助週期內的補助金支出,並標記有支出不足風險的學區',
+    underspend_title:'⚠ 支出不足風險警示',
+    calculating:'計算中...',
+    underspend_desc:'當學區的支出進度設定為「緩慢」、「快速」或「資金不足」時,該學區將被標記。在下方表格中將進度設為「中等」即可清除標記。',
+    spend_table_title:'學區支出進度詳情',
+    spend_table_sub:'分配 vs. 逐年支出 · 2 年週期',
+    th_total_grant:'補助金總額',
+    th_y1_budget:'第 1 年預算',
+    th_y2_budget:'第 2 年預算',
+    th_disbursed_pct:'已撥付佔總額百分比',
+    th_spend_pace:'支出進度',
+    th_status:'狀態',
+    kpi_total_grant_label:'補助金總額',
+    kpi_y1_budget_label:'第 1 年預算',
+    kpi_y2_budget_label:'第 2 年預算',
+    kpi_all_11_districts:'全部 11 個學區',
+    kpi_y1_window:'佔補助金 · 2026 年 1 月 – 2027 年 6 月',
+    kpi_y2_window:'佔補助金 · 2027 年 7 月 – 2028 年 6 月',
+    pace_slow:'緩慢', pace_moderate:'中等', pace_fast:'快速', pace_underfunded:'資金不足',
+    status_on:'進度正常', status_off:'進度落後',
+    th_direct_funding:'總資金',
+    th_pct_total:'佔總額 %',
+    th_cccco_disbursed:'CCCCO 已撥付',
+    th_cccco_disbursed_rate:'CCCCO 撥付率',
+    all_districts_total:'Kern CCD · 總計 $150,000',
+    role_project_lead:'計畫負責人',
+    role_alt_project_lead:'計畫副負責人',
+    role_fiscal_reporter:'財務報告人',
+    role_plan_approver:'計畫核准人',
+    all_clear:'✓ Kern CCD 進度正常 — 未偵測到支出不足風險。',
+    flagged_one:'項預算明細已被標記',
+    flagged_many:'項預算明細已被標記',
+    tl_total:'總計', tl_pace_label:'進度:',
+    kpi_y1_total_label:'第 1 年總計',
+    overview_lift_sub:'AVC · Citrus · Peralta · WVM',
+    spend_for_grant_total:'全部 11 個學區',
+    sb_dashboard:'儀表板',
+    sb_performance:'績效',
+    sb_program:'團隊',
+    sb_spend_monitor:'支出監測',
+    select_language:'選擇語言',
+    status_active:'進行中',
+    y1_window_short:'2026年1月–2027年6月',
+    y2_window_short:'2027年7月–2028年6月',
+  
+    kpi_grant_tier:'補助等級',
+    kpi_grant_tier_sub:'2026–2028 EEO IBP',
+    kpi_colleges:'參與學院',
+    kpi_colleges_sub:'貝克斯菲爾德 · 塞羅科索 · 波特維爾',
+    kpi_faculty_target:'教職員目標',
+    kpi_faculty_target_sub:'第二年前完成全區培訓',}
+};
+
+let currentLang = 'en';
+// Global translator — render functions call t(key) to fetch the active locale's string
+function t(key) {
+  const dict = translations[currentLang] || translations.en;
+  return (dict && dict[key]) || (translations.en && translations.en[key]) || key;
+}
+function applyTranslation(lang) {
+  const dict = translations[lang] || translations.en;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) el.textContent = dict[key];
+  });
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+}
+function setLang(lang) {
+  currentLang = lang;
+  applyTranslation(lang);
+  document.querySelectorAll('.lang-option').forEach(b => b.classList.remove('active'));
+  const chosen = document.querySelector(`.lang-option[onclick="setLang('${lang}')"]`);
+  if (chosen) chosen.classList.add('active');
+  const names = { en:'English', es:'Español', vi:'Tiếng Việt', ar:'العربية', tl:'Tagalog', zh:'繁體中文' };
+  document.getElementById('transLabel').textContent = lang === 'en' ? 'Translate' : names[lang];
+  const banner = document.getElementById('transBanner');
+  const fullNames = { en:'English', es:'Spanish (Español)', vi:'Vietnamese (Tiếng Việt)', ar:'Arabic (العربية)', tl:'Tagalog', zh:'Chinese Traditional (繁體中文)' };
+  if (lang !== 'en') { banner.classList.add('show'); document.getElementById('transLangName').textContent = fullNames[lang]; }
+  else banner.classList.remove('show');
+  toggleTranslate();
+  // Re-render dynamic content so JS-rendered tables, KPIs, and badges pick up the new locale
+  if (typeof renderAll === 'function') renderAll();
+}
+function resetLang() { setLang('en'); }
+function toggleTranslate() { document.getElementById('transDropdown').classList.toggle('open'); }
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('.translate-wrap');
+  if (wrap && !wrap.contains(e.target)) document.getElementById('transDropdown').classList.remove('open');
+});
+
+let isDark = false;
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  const btn = document.getElementById('themeBtn');
+  btn.innerHTML = isDark
+    ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+    : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  if (typeof initCharts === 'function') initCharts();
+}
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sidebarOverlay').classList.toggle('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('open'); }
+
+function showSection(id, clickedBtn, isMobile) {
+  const sectionEl = document.getElementById('section-' + id);
+  if (!sectionEl) return;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  sectionEl.classList.add('active');
+  // Sync sidebar highlight to the section being shown — covers refresh / deep-link too
+  document.querySelectorAll('.sidebar .nav-item').forEach(n => {
+    const onclick = n.getAttribute('onclick') || '';
+    n.classList.toggle('active', onclick.includes("'" + id + "'"));
+  });
+  document.querySelectorAll('[data-mobile-nav]').forEach(n => {
+    const onclick = n.getAttribute('onclick') || '';
+    n.classList.toggle('active', onclick.includes("'" + id + "'"));
+  });
+  if (clickedBtn) clickedBtn.classList.add('active');
+  if (isMobile) closeSidebar();
+  // Persist current tab so refresh/back keeps the user where they were
+  try {
+    try {
+      const currentHash = (window.location.hash || '').replace(/^#/, '');
+      if (currentHash !== id) {
+        if (history && history.pushState) history.pushState({section: id}, '', '#' + id);
+        else window.location.hash = '#' + id;
+      }
+    } catch (e) { window.location.hash = '#' + id; }
+    // Reflect current section in the browser tab title so the URL + title behave like a standalone page
+    try {
+      const baseTitle = (document.title || '').split(' · ')[0];
+      const navText = (document.querySelector('.sidebar .nav-item.active') || {}).textContent || '';
+      const label = navText.trim();
+      if (label) document.title = label + ' · ' + baseTitle;
+    } catch (e) {}
+    localStorage.setItem('kernActiveSection', id);
+  } catch (e) { /* no-op */ }
+}
+
+// Pick the section to show on initial load: URL hash → localStorage → default
+function resolveInitialSection() {
+  try {
+    const hash = (window.location.hash || '').replace(/^#/, '').trim();
+    if (hash && document.getElementById('section-' + hash)) return hash;
+    const stored = localStorage.getItem('kernActiveSection');
+    if (stored && document.getElementById('section-' + stored)) return stored;
+  } catch (e) { /* no-op */ }
+  return 'overview';
+}
+
+/* ════════════ OVERVIEW TABLE ════════════ */
+function renderOverviewTable() {
+  const tbody = document.getElementById('overview-table-body');
+  if (!tbody) return;
+  tbody.innerHTML = districts.map(d => `
+    <tr>
+      <td><strong>${d.name}</strong><br><span style="font-size:11px;color:var(--text-muted)">${d.program.length > 50 ? d.program.slice(0,50) + '…' : d.program}</span></td>
+      <td><span class="tier-badge tier${d.tier}">Tier ${d.tier}${d.lift ? '<span class="lift-mark" title="LIFT Alliance">LIFT</span>' : ''}</span></td>
+      <td class="amount">${fmt(d.funding)}</td>
+      <td class="amount">${fmt(d.yearlyBudget.y1)}</td>
+      <td class="amount">${fmt(d.yearlyBudget.y2)}</td>
+      <td style="font-size:12.5px;color:var(--text-secondary)">${d.primaryFocus}</td>
+    </tr>`).join('');
+}
+
+/* ════════════ DISTRICT CARDS ════════════ */
+function renderDistrictCards(filter) {
+  const grid = document.getElementById('district-grid');
+  if (!grid) return;
+  const filtered = filter === 'all' ? districts
+    : filter === 'tier1' ? districts.filter(d => d.tier === 1 && !d.lift)
+    : filter === 'tier2' ? districts.filter(d => d.tier === 2)
+    : districts.filter(d => d.lift);
+  grid.innerHTML = filtered.map(d => `
+    <div class="district-card ${d.lift ? 'lift-card' : ''}">
+      <div class="district-card-top ${d.lift ? 'lift-card' : ''}">
+        ${d.lift ? '<span class="district-card-lift-tag">LIFT ✦ ' + d.liftRegion + '</span>' : ''}
+        <div class="district-card-name">${d.name}</div>
+        <div class="district-card-program">${d.program}</div>
+      </div>
+      <div class="district-card-body">
+        <div class="district-card-stats">
+          <div class="district-stat"><label>${t('th_tier')}</label><span>${d.tier}</span></div>
+          <div class="district-stat"><label>${t('th_y1')}</label><span>${fmt(d.yearlyBudget.y1)}</span></div>
+          <div class="district-stat"><label>${t('th_y2')}</label><span>${fmt(d.yearlyBudget.y2)}</span></div>
+        </div>
+        <div class="district-card-focus">${d.focus.map(f => '<span class="focus-tag">' + f + '</span>').join('')}</div>
+        <div class="district-card-contact">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          ${d.contact.name} · <a href="mailto:${d.contact.email}" style="color:var(--ccc-medium-blue)">${d.contact.email}</a>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function filterDistricts(filter, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDistrictCards(filter);
+}
+
+/* ════════════ ALLOCATION TABLE ════════════ */
+function renderAllocationTable() {
+  const table = document.getElementById('allocation-table');
+  if (!table) return;
+  const total = districts.reduce((a, d) => a + d.funding, 0);
+  const totalY1 = districts.reduce((a, d) => a + d.yearlyBudget.y1, 0);
+  const totalY2 = districts.reduce((a, d) => a + d.yearlyBudget.y2, 0);
+  table.innerHTML = `
+    <thead><tr><th>${t('th_district')}</th><th>${t('th_tier')}</th><th>${t('th_direct_funding')}</th><th>${t('th_pct_total')}</th><th>${t('th_y1')}</th><th>${t('th_y2')}</th><th>${t('th_cccco_disbursed')}</th><th>${t('th_cccco_disbursed_rate')}</th></tr></thead>
+    <tbody>
+      ${districts.map(d => `
+        <tr>
+          <td><strong>${d.shortName}</strong></td>
+          <td><span class="tier-badge tier${d.tier}">${t('th_tier')} ${d.tier}${d.lift ? '<span class="lift-mark" title="LIFT Alliance">LIFT</span>' : ''}</span></td>
+          <td class="amount">${fmt(d.funding)}</td>
+          <td><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:13px;font-weight:600;">${((d.funding/total)*100).toFixed(1)}%</span><div class="progress-bar-wrap" style="flex:1;min-width:60px;"><div class="progress-bar-fill" style="width:${((d.funding/total)*100).toFixed(1)}%"></div></div></div></td>
+          <td class="amount">${fmt(d.yearlyBudget.y1)}</td>
+          <td class="amount">${fmt(d.yearlyBudget.y2)}</td>
+          <td class="amount" style="color:var(--text-muted);">$0</td>
+          <td style="color:var(--text-muted);">0%</td>
+        </tr>`).join('')}
+      <tr style="background:var(--bg-surface-2);">
+        <td colspan="2"><strong>${t('th_total')}</strong></td>
+        <td class="amount"><strong>${fmt(total)}</strong></td>
+        <td><strong>100%</strong></td>
+        <td class="amount"><strong>${fmt(totalY1)}</strong></td>
+        <td class="amount"><strong>${fmt(totalY2)}</strong></td>
+        <td class="amount"><strong>$0</strong></td>
+        <td><strong>0%</strong></td>
+      </tr>
+    </tbody>`;
+  const kpiY1 = document.getElementById('kpi-y1-total');
+  if (kpiY1) kpiY1.textContent = fmt(totalY1);
+}
+
+/* ════════════ OUTCOMES ════════════ */
+function renderOutcomes() {
+  const grid = document.getElementById('outcomes-grid');
+  if (!grid) return;
+  grid.innerHTML = districts.map(d => `
+    <div class="outcome-card">
+      <div class="outcome-card-header">
+        <div class="outcome-card-name">${d.name}</div>
+        <span class="tier-badge tier${d.tier}" style="flex-shrink:0;">Tier ${d.tier}${d.lift ? '<span class="lift-mark" title="LIFT Alliance">LIFT</span>' : ''}</span>
+      </div>
+      <ul class="outcome-list">${d.outcomes.map(o => '<li>' + o + '</li>').join('')}</ul>
+    </div>`).join('');
+}
+
+/* ════════════ BUDGET — Year 1 / Year 2 cards with object-code lines, share bars, and a note ════════════ */
+function renderBudget() {
+  const grid = document.getElementById('budget-grid');
+  if (!grid) return;
+  const d = districts[0];
+  // Kern CCD budget line items per project year (Y1 = FY 2025-26 + FY 2026-27, Y2 = FY 2027-28)
+  const Y1 = [
+    { code:'1000', label:'1000 — Instructional Salaries',     amount:  26128 },
+    { code:'3000', label:'3000 — Employee Benefits',          amount:   5659 },
+    { code:'4000', label:'4000 — Supplies & Materials (VR hardware-heavy)', amount: 75000 },
+    { code:'5000', label:'5000 — Other Operating & Services', amount:   9613 },
+    { code:'7000', label:'7000 — Indirect',                   amount:   6238 }
+  ];
+  const Y2 = [
+    { code:'1000', label:'1000 — Instructional Salaries',     amount:   6532 },
+    { code:'3000', label:'3000 — Employee Benefits',          amount:   1415 },
+    { code:'4000', label:'4000 — Supplies & Materials',       amount:  15750 },
+    { code:'5000', label:'5000 — Other Operating & Services', amount:   2407 },
+    { code:'7000', label:'7000 — Indirect',                   amount:   1258 }
+  ];
+  const Y1_TOTAL = d.yearlyBudget.y1;
+  const Y2_TOTAL = d.yearlyBudget.y2;
+  const Y1_NOTE = 'Y1 (18 months) is hardware-heavy: VR headsets and peripherals for Bakersfield, Cerro Coso, and Porterville dominate the 4000 line; faculty stipends and the first peer-mentor cohort launch in Fall 2026.';
+  const Y2_NOTE = 'Y2 (12 months) emphasizes services (Unity / VR creation training, dissemination, final showcase) plus supplemental hardware and Faculty Innovation Stipends.';
+  const renderLines = (rows, total) => rows.map(r => {
+    const isIndirect = r.code === '7000';
+    const cls = isIndirect ? ' indirect-line' : '';
+    const pct = total > 0 ? ((r.amount / total) * 100).toFixed(1) : 0;
+    return `
+      <div class="budget-line${cls}"><span class="budget-line-label">${r.label}</span><span class="budget-line-amount">${fmt(r.amount)}</span></div>
+      <div class="budget-line-bar"><div class="budget-line-bar-fill" style="width:${pct}%;${isIndirect ? 'background:var(--ccc-dark-gold);' : ''}"></div></div>`;
+  }).join('');
+  grid.innerHTML = `
+    <div class="budget-card">
+      <div class="budget-card-head"><div><div class="budget-card-name">Year 1</div><div class="budget-card-dates">Jan 2026 – Jun 2027</div></div><div class="budget-card-total">${fmt(Y1_TOTAL)}</div></div>
+      <div class="budget-lines-wrap">${renderLines(Y1, Y1_TOTAL)}</div>
+      <div class="budget-note">${Y1_NOTE}</div>
+    </div>
+    <div class="budget-card">
+      <div class="budget-card-head accent"><div><div class="budget-card-name">Year 2</div><div class="budget-card-dates">Jul 2027 – Jun 2028</div></div><div class="budget-card-total">${fmt(Y2_TOTAL)}</div></div>
+      <div class="budget-lines-wrap">${renderLines(Y2, Y2_TOTAL)}</div>
+      <div class="budget-note">${Y2_NOTE}</div>
+    </div>`;
+}
+
+/* ════════════ TIMELINE — 2 years ════════════ */
+function renderTimeline() {
+  const container = document.getElementById('timeline-rows');
+  if (!container) return;
+  container.innerHTML = districts.map(d => {
+    const total = d.yearlyBudget.y1 + d.yearlyBudget.y2;
+    const pct = v => ((v / d.funding) * 100).toFixed(0);
+    return `
+      <div class="timeline-row">
+        <div class="timeline-label">${d.shortName}<small>${fmt(d.funding)}</small></div>
+        <div class="timeline-bars">
+          <div class="timeline-bar-wrap"><div class="timeline-bar-inner timeline-bar-bg"><div class="timeline-bar-fill y1" style="width:${pct(d.yearlyBudget.y1)}%"></div></div><div class="timeline-bar-label">${fmt(d.yearlyBudget.y1)}</div></div>
+          <div class="timeline-bar-wrap"><div class="timeline-bar-inner timeline-bar-bg"><div class="timeline-bar-fill y2" style="width:${pct(d.yearlyBudget.y2)}%"></div></div><div class="timeline-bar-label">${fmt(d.yearlyBudget.y2)}</div></div>
+        </div>
+        <div class="timeline-total">${fmt(total)}</div>
+      </div>`;
+  }).join('');
+}
+
+/* ════════════ CONTACTS ════════════ */
+// Map English role text in data → i18n key, so contact roles translate alongside the rest of the UI
+const ROLE_KEYS = {
+  'Project Lead': 'role_project_lead',
+  'Alternate Project Lead': 'role_alt_project_lead',
+  'Plan Approver': 'role_plan_approver',
+  'Fiscal Reporter': 'role_fiscal_reporter',
+};
+function translateRole(r) { return ROLE_KEYS[r] ? t(ROLE_KEYS[r]) : r; }
+
+function renderContacts() {
+  const grid = document.getElementById('contacts-grid');
+  if (!grid) return;
+  grid.innerHTML = districts.map(d => {
+    const people = [d.contact, d.altContact, d.fiscalReporter, d.planApprover].filter(Boolean);
+    const tierLabel = d.lift ? `${t('kpi_lift')} · ${d.liftRegion}` : `${t('th_tier')} ${d.tier}`;
+    return `
+      <div class="contact-card">
+        <div class="contact-card-header">
+          <div class="contact-card-district">${d.name}</div>
+          <div class="contact-card-region">${tierLabel}</div>
+          <div class="contact-card-address">${d.address || ''}</div>
+        </div>
+        <div class="contact-body">
+          ${people.map(p => `
+            <div class="contact-person">
+              <div class="contact-avatar">${p.name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase()}</div>
+              <div class="contact-info">
+                <div class="contact-name">${p.name}</div>
+                <div class="contact-role">${translateRole(p.role)}</div>
+                <a class="contact-email" href="mailto:${p.email}">${p.email}</a>
+                ${p.phone ? `<a class="contact-phone" href="tel:${p.phone.replace(/[^0-9+]/g,'')}">${p.phone}</a>` : ''}
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/* ════════════ CHARTS ════════════ */
+let chartInstances = {};
+function destroyCharts() { Object.values(chartInstances).forEach(c => { try { c.destroy(); } catch(e){} }); chartInstances = {}; }
+function getChartColors() {
+  return {
+    darkBlue:'#002F6D', medBlue:'#0066BA', lightBlue:'#40B4E5', gold:'#FFB600', darkGold:'#D18A00', darkGrey:'#555759',
+    grid: isDark ? 'rgba(64,180,229,0.1)' : 'rgba(0,47,109,0.08)',
+    text: isDark ? '#A8B4CC' : '#555759',
+    tick: isDark ? '#A8B4CC' : '#555759'
+  };
+}
+function initCharts() {
+  destroyCharts();
+  const C = getChartColors();
+  const baseOpts = { responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ labels:{ color:C.text, font:{family:"'Source Sans 3', sans-serif", size:12}, padding:16 } } } };
+
+  const tc = document.getElementById('tierChart');
+  if (tc) chartInstances.tier = new Chart(tc, {
+    type:'doughnut',
+    data:{ labels:['Tier 1 (7 Districts)','Tier 2 / LIFT (4 Districts)'],
+      datasets:[{ data:[999997,400000], backgroundColor:[C.darkBlue,C.medBlue], borderColor:isDark?'#131D35':'#fff', borderWidth:3, hoverOffset:6 }] },
+    options:{ ...baseOpts, cutout:'65%',
+      plugins:{ ...baseOpts.plugins, tooltip:{ callbacks:{ label:ctx => ' ' + ctx.label + ': $' + ctx.raw.toLocaleString() } } } }
+  });
+
+  const fc = document.getElementById('focusChart');
+  if (fc) chartInstances.focus = new Chart(fc, {
+    type:'bar',
+    data:{ labels:['Mentorship','Training','Hiring Equity','Technology','Faculty Pipeline','Restorative Justice','ERGs','Data Analytics'],
+      datasets:[{ data:[8,7,4,4,2,1,1,2],
+        backgroundColor:[C.darkBlue,C.medBlue,C.darkGold,C.lightBlue,C.darkBlue+'cc',C.medBlue+'cc',C.gold,C.darkGrey],
+        borderRadius:4, borderSkipped:false }] },
+    options:{ ...baseOpts, indexAxis:'y',
+      plugins:{ ...baseOpts.plugins, legend:{display:false} },
+      scales:{ x:{ grid:{color:C.grid}, ticks:{color:C.tick}, border:{color:'transparent'} },
+               y:{ grid:{display:false}, ticks:{color:C.tick, font:{size:11}}, border:{color:'transparent'} } } }
+  });
+  const tsc = document.getElementById('tierSplitChart');
+  if (tsc) chartInstances.tierSplit = new Chart(tsc, {
+    type:'pie',
+    data:{ labels:['Tier 1 (~71.4%)','Tier 2 / LIFT (~28.6%)'],
+      datasets:[{ data:[999997,400000], backgroundColor:[C.darkBlue,C.lightBlue], borderColor:isDark?'#131D35':'#fff', borderWidth:3, hoverOffset:4 }] },
+    options:{ ...baseOpts, plugins:{ ...baseOpts.plugins, tooltip:{ callbacks:{ label:ctx => ' ' + ctx.label + ': $' + ctx.raw.toLocaleString() } } } }
+  });
+
+  const yyc = document.getElementById('y1y2Chart');
+  if (yyc) chartInstances.y1y2 = new Chart(yyc, {
+    type:'bar',
+    data:{ labels:districts.map(d => d.shortName),
+      datasets:[
+        { label:t('th_y1'), data:districts.map(d => d.yearlyBudget.y1), backgroundColor:C.medBlue, borderRadius:4, borderSkipped:false },
+        { label:t('th_y2'), data:districts.map(d => d.yearlyBudget.y2), backgroundColor:C.darkBlue, borderRadius:4, borderSkipped:false }
+      ] },
+    options:{ ...baseOpts,
+      plugins:{ ...baseOpts.plugins, tooltip:{ callbacks:{ label:ctx => ' ' + ctx.dataset.label + ': $' + ctx.raw.toLocaleString() } } },
+      scales:{ x:{ stacked:true, grid:{display:false}, ticks:{color:C.tick, font:{size:10}}, border:{color:'transparent'} },
+               y:{ stacked:true, grid:{color:C.grid}, ticks:{color:C.tick, callback:v => '$' + (v/1000) + 'K'}, border:{color:'transparent'} } } }
+  });
+
+  const yc = document.getElementById('yearlyChart');
+  if (yc) chartInstances.yearly = new Chart(yc, {
+    type:'bar',
+    data:{ labels:districts.map(d => d.shortName),
+      datasets:[
+        { label:t('tl_y1'), data:districts.map(d => d.yearlyBudget.y1), backgroundColor:C.medBlue, borderRadius:4, borderSkipped:false },
+        { label:t('tl_y2'), data:districts.map(d => d.yearlyBudget.y2), backgroundColor:C.darkBlue, borderRadius:4, borderSkipped:false }
+      ] },
+    options:{ ...baseOpts,
+      plugins:{ ...baseOpts.plugins, tooltip:{ callbacks:{ label:ctx => ' ' + ctx.dataset.label + ': $' + ctx.raw.toLocaleString() } } },
+      scales:{ x:{ grid:{display:false}, ticks:{color:C.tick, font:{size:11}}, border:{color:'transparent'} },
+               y:{ grid:{color:C.grid}, ticks:{color:C.tick, callback:v => '$' + (v/1000) + 'K'}, border:{color:'transparent'} } } }
+  });
+}
+
+/* ════════════ SPEND-DOWN MONITOR ════════════ */
+// ════════════ SPEND-DOWN MONITOR — Kern CCD by fiscal year ════════════
+// The Spend-Down Monitor breaks Kern CCD's $150,000 award into the two project years and
+// fiscal-year periods stated in the application's budget narrative.
+// Each row has its own status (On/Off Track) and spend pace (Slow /
+// Moderate / Fast / Underfunded), persisted in localStorage. The
+// Underspend Risk Alert panel above the table is fed entirely from the
+// statuses/paces stored against these periods.
+
+const KERN_PERIODS = [
+  {
+    id:'y1', label:'Year 1', dates:'Jan 2026 – Jun 2027', budget:122638, year:'Year 1',
+    role:'Setup, VR hardware purchases, training cohort 1 & mentorship launch (FY 2025-26 + FY 2026-27)',
+    lineItems:[
+      { fy:'FY 2025-26', code:'4000', label:'Supplies & Materials — VR hardware (Oculus Quest 3 cohort)', amount:45000 },
+      { fy:'FY 2025-26', code:'7000', label:'Indirect costs — 5% of direct', amount:2238 },
+      { fy:'FY 2025-26', code:'5000', label:'Other Operating & Services — VR licensing & onboarding', amount:3497 },
+      { fy:'FY 2026-27', code:'1000', label:'Instructional Salaries — faculty stipends across 3 colleges', amount:26128 },
+      { fy:'FY 2026-27', code:'3000', label:'Employee Benefits — 21.7% fringe', amount:5659 },
+      { fy:'FY 2026-27', code:'4000', label:'Supplies & Materials — VR peripherals & lesson assets', amount:30000 },
+      { fy:'FY 2026-27', code:'5000', label:'Other Operating & Services — training facilitation & showcase', amount:6116 },
+      { fy:'FY 2026-27', code:'7000', label:'Indirect costs — 5% of direct', amount:4000 }
+    ]
+  },
+  {
+    id:'y2', label:'Year 2', dates:'Jul 2027 – Jun 2028', budget:27362, year:'Year 2',
+    role:'Cohort 2 expansion, Unity / VR creation training & final showcase (FY 2027-28)',
+    lineItems:[
+      { fy:'FY 2027-28', code:'1000', label:'Instructional Salaries — mentor & innovation stipends', amount:6532 },
+      { fy:'FY 2027-28', code:'3000', label:'Employee Benefits — 21.7% fringe', amount:1415 },
+      { fy:'FY 2027-28', code:'4000', label:'Supplies & Materials — VR content creation tools (Unity)', amount:15750 },
+      { fy:'FY 2027-28', code:'5000', label:'Other Operating & Services — final showcase & dissemination', amount:2407 },
+      { fy:'FY 2027-28', code:'7000', label:'Indirect costs — 5% of direct', amount:1258 }
+    ]
+  }
+];
+
+const periodStatuses = JSON.parse(localStorage.getItem('kernPeriodStatuses') || '{}');
+const periodPaces    = JSON.parse(localStorage.getItem('kernPeriodPaces')    || '{}');
+
+const PACE_CYCLE = ['slow','moderate','fast'];
+const PACE_COLOR = {
+  slow:     '#E0B500',
+  moderate: '#1a7a3c',
+  fast:     '#c53030'
+};
+const PACE_LABEL = { slow:'Slow', moderate:'Moderate', fast:'Fast' };
+
+// Current year filter for the Underspend Risk Alerts ('all' | 'y1' | 'y2')
+let currentYearFilter = (function(){
+  try { return localStorage.getItem('kernYearFilter') || 'all'; } catch(e){ return 'all'; }
+})();
+function setYearFilter(filter, btn) {
+  if (filter !== 'all' && filter !== 'y1' && filter !== 'y2') filter = 'all';
+  currentYearFilter = filter;
+  try { localStorage.setItem('kernYearFilter', filter); } catch(e){}
+  document.body.setAttribute('data-year-filter', filter);
+  document.querySelectorAll('.year-filter-tab').forEach(t => {
+    const isActive = t.dataset.yearFilter === filter;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  renderUnderspendList();
+  renderUnderspendChart();
+}
+
+// Flat list of line items across periods, each with a unique persistent ID
+function getAllLineItems() {
+  const out = [];
+  KERN_PERIODS.forEach(p => (p.lineItems || []).forEach((li, idx) => {
+    out.push(Object.assign({}, li, {
+      id: p.id + '-li' + idx,
+      periodId: p.id,
+      periodLabel: p.label,
+      year: p.year
+    }));
+  }));
+  return out;
+}
+
+function togglePeriodStatus(btn, id) {
+  const isNowOff = btn.dataset.on === '1';
+  periodStatuses[id] = isNowOff ? 'off' : 'on';
+  localStorage.setItem('kernPeriodStatuses', JSON.stringify(periodStatuses));
+  btn.dataset.on = isNowOff ? '0' : '1';
+  btn.style.background = isNowOff ? '#c53030' : '#1a7a3c';
+  btn.textContent = isNowOff ? t('status_off') : t('status_on');
+  renderUnderspendList();
+  renderUnderspendChart();
+}
+function togglePeriodPace(btn, id) {
+  const current = btn.dataset.pace || 'moderate';
+  const idx = PACE_CYCLE.indexOf(current);
+  const next = PACE_CYCLE[(idx + 1) % PACE_CYCLE.length];
+  periodPaces[id] = next;
+  localStorage.setItem('kernPeriodPaces', JSON.stringify(periodPaces));
+  btn.dataset.pace = next;
+  btn.style.background = PACE_COLOR[next];
+  btn.textContent = t('pace_' + next);
+  renderUnderspendList();
+  renderUnderspendChart();
+}
+
+function flaggedLineItems() {
+  return getAllLineItems().filter(li => {
+    if (currentYearFilter === 'y1' && li.periodId !== 'y1') return false;
+    if (currentYearFilter === 'y2' && li.periodId !== 'y2') return false;
+    const pace = periodPaces[li.id] || 'moderate';
+    const isPaceFlag = pace !== 'moderate';
+    const isStatusFlag = periodStatuses[li.id] === 'off';
+    return isPaceFlag || isStatusFlag;
+  });
+}
+
+let underspendChartInstance = null;
+function renderUnderspendChart() {
+  const wrap = document.getElementById('underspend-chart-wrap');
+  const canvas = document.getElementById('underspendChart');
+  if (!wrap || !canvas) return;
+  const flagged = flaggedLineItems();
+  if (underspendChartInstance) { try { underspendChartInstance.destroy(); } catch(e){} underspendChartInstance = null; }
+  if (flagged.length === 0) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  const C = getChartColors();
+  underspendChartInstance = new Chart(canvas, {
+    type: 'bar',
+    data: {
+      labels: flagged.map(li => li.periodLabel + ' · ' + li.code),
+      datasets: [{
+        label: 'Line-Item Budget',
+        data: flagged.map(li => li.amount),
+        backgroundColor: flagged.map(li => {
+          const pace = periodPaces[li.id] || 'moderate';
+          if (pace === 'moderate' && periodStatuses[li.id] === 'off') return '#c53030';
+          return PACE_COLOR[pace] || '#c53030';
+        }),
+        borderRadius: 4,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          title: items => items[0].label,
+          label: ctx => {
+            const p = flagged[ctx.dataIndex];
+            const pace = periodPaces[p.id] || 'moderate';
+            const paceLabel = PACE_LABEL[pace];
+            const status = periodStatuses[p.id] === 'off' ? ' · Off Track' : '';
+            return ' Pace: ' + paceLabel + status + ' · ' + fmt(p.budget);
+          }
+        }}
+      },
+      scales: {
+        x: { grid:{color:C.grid}, ticks:{color:C.tick, callback:v => '$' + (v/1000) + 'K'}, border:{color:'transparent'} },
+        y: { grid:{display:false}, ticks:{color:C.tick, font:{size:11}}, border:{color:'transparent'} }
+      }
+    }
+  });
+}
+function renderUnderspendList() {
+  const flagged = flaggedLineItems();
+  const countEl = document.getElementById('underspend-count');
+  if (countEl) {
+    countEl.textContent = flagged.length + ' ' + (flagged.length === 1 ? t('flagged_one') : t('flagged_many'));
+    countEl.style.background = flagged.length === 0 ? '#1a7a3c' : '#c53030';
+    countEl.style.color = '#fff';
+    countEl.style.padding = '3px 10px';
+    countEl.style.borderRadius = '20px';
+    countEl.style.fontSize = '12px';
+    countEl.style.fontWeight = '700';
+  }
+  const listEl = document.getElementById('underspend-list');
+  if (listEl) {
+    if (flagged.length === 0) {
+      listEl.innerHTML = '<div style="padding:16px;color:var(--success);font-weight:600;">' + t('all_clear') + '</div>';
+    } else {
+      const totalBudget = KERN_PERIODS.reduce((a,p) => a + p.budget, 0);
+      listEl.innerHTML = flagged.map(li => {
+        const pct = ((li.amount/totalBudget)*100).toFixed(2);
+        const pace = periodPaces[li.id] || 'moderate';
+        const paceLabel = t('pace_' + pace);
+        const paceColor = PACE_COLOR[pace];
+        const isOffTrack = periodStatuses[li.id] === 'off';
+        const badges = [];
+        if (pace !== 'moderate') badges.push('<span style="background:' + paceColor + ';color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">' + paceLabel + '</span>');
+        if (isOffTrack) badges.push('<span style="background:#c53030;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">' + t('status_off') + '</span>');
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);">' +
+          '<div><strong>' + li.periodLabel + ' &middot; ' + li.code + '</strong><br><span style="font-size:12px;color:var(--text-muted)">' + li.fy + ' &middot; ' + li.label + '</span></div>' +
+          '<div style="text-align:right;min-width:200px;">' +
+            '<div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;">' + badges.join('') + '</div>' +
+            '<span style="font-size:12px;color:var(--text-muted);display:block;margin-top:4px;">Line-item: ' + fmt(li.amount) + ' (' + pct + '% of total)</span>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+  }
+}
+
+function renderSpendDown() {
+  const totalGrant = KERN_PERIODS.reduce((a,p) => a + p.budget, 0);
+  const y1 = KERN_PERIODS.filter(p => p.year === 'Year 1').reduce((a,p) => a + p.budget, 0);
+  const y2 = KERN_PERIODS.filter(p => p.year === 'Year 2').reduce((a,p) => a + p.budget, 0);
+  const kpiRow = document.getElementById('spend-kpi-row');
+  if (kpiRow) {
+    kpiRow.innerHTML =
+      '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">' + t('kpi_total_grant_label') + '</div><div class="kpi-value blue">' + fmt(totalGrant) + '</div><div class="kpi-sub">Tier 1 award</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">' + t('kpi_y1_budget_label') + '</div><div class="kpi-value medium-blue">' + fmt(y1) + '</div><div class="kpi-sub">' + ((y1/totalGrant)*100).toFixed(1) + '% · Jan 2026 – Jun 2027</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">' + ((y2/totalGrant)*100).toFixed(1) + '% · Jul 2027 – Jun 2028</div></div>';
+  }
+
+  renderUnderspendList();
+  renderUnderspendChart();
+
+  const tbody = document.getElementById('spend-table-body');
+  if (tbody) {
+    tbody.innerHTML = KERN_PERIODS.map(p => {
+      const pct = ((p.budget/totalGrant)*100).toFixed(1);
+      const yearBandColor = p.id === 'y1' ? 'var(--ccc-dark-blue)' : 'var(--ccc-dark-gold)';
+      // Header summary row: read-only totals for the year, no buttons (only line items carry Pace/Status)
+      const headerRow =
+        '<tr class="spend-year-row" data-year-key="' + p.id + '">' +
+          '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:14px;"><strong style="font-size:14px;color:var(--ccc-dark-blue);">' + p.label + '</strong><br><span style="font-size:11px;color:var(--text-muted)">' + p.dates + ' · ' + p.role + '</span></td>' +
+          '<td class="amount" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
+          '<td class="amount" style="font-weight:700;">' + pct + '% of total</td>' +
+          '<td><span style="font-size:11px;color:var(--text-muted);font-weight:700;">' + p.year + '</span></td>' +
+          '<td colspan="3" style="font-size:11px;color:var(--text-muted);"><em>Year-level summary &middot; line items below carry their own pace / status</em></td>' +
+        '</tr>';
+      const lineRows = (p.lineItems || []).map((li, idx) => {
+        const liId = p.id + '-li' + idx;
+        const liPct = ((li.amount/totalGrant)*100).toFixed(2);
+        const isIndirect = li.code === '7000';
+        const codeBadge = '<span style="display:inline-block;padding:1px 7px;border-radius:6px;background:' + (isIndirect ? 'rgba(255,182,0,0.18)' : 'rgba(0,102,186,0.10)') + ';color:' + (isIndirect ? 'var(--ccc-dark-gold)' : 'var(--ccc-medium-blue)') + ';font-size:10px;font-weight:700;letter-spacing:0.04em;margin-right:8px;">' + li.code + '</span>';
+        const isOffTrack = periodStatuses[liId] === 'off';
+        const statusColor = isOffTrack ? '#c53030' : '#1a7a3c';
+        const statusText = isOffTrack ? t('status_off') : t('status_on');
+        const pace = PACE_CYCLE.includes(periodPaces[liId]) ? periodPaces[liId] : 'moderate';
+        const paceColor = PACE_COLOR[pace];
+        const paceText  = t('pace_' + pace);
+        return '<tr class="spend-line-row" data-year-key="' + p.id + '">' +
+          '<td style="padding-left:32px;border-left:4px solid ' + yearBandColor + ';opacity:0.95;"><span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;margin-right:8px;">' + li.fy + '</span>' + codeBadge + '<span style="font-size:12.5px;color:var(--text-primary);">' + li.label + '</span></td>' +
+          '<td class="amount" style="font-size:12.5px;">' + fmt(li.amount) + '</td>' +
+          '<td class="amount" style="font-size:11.5px;color:var(--text-muted);">' + liPct + '%</td>' +
+          '<td><span style="font-size:11px;color:var(--text-muted);">part of ' + p.label + '</span></td>' +
+          '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
+          '<td><button onclick="togglePeriodPace(this,\'' + liId + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + paceText + '</button></td>' +
+          '<td><button onclick="togglePeriodStatus(this,\'' + liId + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + statusText + '</button></td>' +
+        '</tr>';
+      }).join('');
+      return headerRow + lineRows;
+    }).join('');
+  }
+}
+
+/* ════════════ RE-RENDER ON LANGUAGE CHANGE ════════════ */
+function renderAll() {
+  renderOverviewTable();
+  // preserve current district filter via explicit data-filter
+  const activeFilter = document.querySelector('.filter-btn.active');
+  const filterKey = activeFilter ? (activeFilter.dataset.filter || 'all') : 'all';
+  renderDistrictCards(filterKey);
+  renderAllocationTable();
+  renderOutcomes();
+  renderBudget();
+  renderTimeline();
+  renderContacts();
+  renderSpendDown();
+  // Re-init charts so legend labels translate alongside the rest of the UI
+  if (typeof Chart !== 'undefined') initCharts();
+}
+
+/* ════════════ INIT ════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  renderAll();
+  requestAnimationFrame(() => initCharts());
+  // Restore the user's last active tab from URL hash or localStorage
+  // Restore current year filter for the Underspend Risk Alerts
+  try { document.body.setAttribute('data-year-filter', currentYearFilter); } catch(e){}
+  document.querySelectorAll('.year-filter-tab').forEach(t => {
+    const isActive = t.dataset.yearFilter === currentYearFilter;
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+  });
+  const initial = resolveInitialSection();
+  if (initial && initial !== 'overview') showSection(initial);
+  // React to manual hash changes (e.g. browser back/forward)
+  window.addEventListener('hashchange', () => {
+    const id = (window.location.hash || '').replace(/^#/, '').trim();
+    if (id && document.getElementById('section-' + id)) showSection(id);
+  });
+  window.addEventListener('popstate', (e) => {
+    const id = (e.state && e.state.section) || (window.location.hash || '').replace(/^#/, '').trim() || 'overview';
+    if (document.getElementById('section-' + id)) showSection(id);
+  });
+  // Parent-frame bridge: when this page is embedded in a host (e.g. a CRM
+  // dashboard panel) it still behaves like a standalone page, but it
+  // surfaces section changes to the parent and accepts navigation requests
+  // so the host's chrome (URL bar, breadcrumbs) can stay in sync.
+  function postSectionChange(id) {
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'dashboard:section', section: id }, '*');
+      }
+    } catch (e) { /* ignore */ }
+  }
+  // Wrap the existing showSection so every render notifies the parent
+  const _origShow = showSection;
+  window.showSection = function(id, btn, isMobile) {
+    _origShow(id, btn, isMobile);
+    postSectionChange(id);
+  };
+  // Accept navigation requests from the host frame
+  window.addEventListener('message', (ev) => {
+    try {
+      const m = ev && ev.data;
+      if (m && m.type === 'dashboard:navigate' && typeof m.section === 'string') {
+        if (document.getElementById('section-' + m.section)) showSection(m.section);
+      }
+    } catch (e) { /* ignore */ }
+  });
+  // Announce the initial section once the page settles
+  setTimeout(() => postSectionChange(resolveInitialSection()), 100);
+
+  // VR avatar — track cursor while hovered so the head looks toward the pointer
+  (function initVrAvatar(){
+    const wrap = document.getElementById('vrAvatarWrap');
+    if (!wrap) return;
+    const head = wrap.querySelector('.vr-head-group');
+    if (!head) return;
+    let raf = 0;
+    function onMove(e){
+      const rect = wrap.getBoundingClientRect();
+      const dx = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+      const dy = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+      const rot = Math.max(-22, Math.min(22, dx * 22));
+      const ty  = Math.max(-6,  Math.min(6,  dy * 6));
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        head.style.transform = 'rotate(' + rot.toFixed(1) + 'deg) translateY(' + ty.toFixed(1) + 'px)';
+      });
+    }
+    function onEnter(){ head.style.animationPlayState = 'paused'; }
+    function onLeave(){
+      cancelAnimationFrame(raf);
+      head.style.transform = '';
+      head.style.animationPlayState = '';
+    }
+    wrap.addEventListener('mouseenter', onEnter);
+    wrap.addEventListener('mousemove', onMove);
+    wrap.addEventListener('mouseleave', onLeave);
+  })();
+});
+</script>
+
+<div id="a11yModal" class="a11y-modal" role="dialog" aria-modal="true" aria-labelledby="a11yModalTitle" hidden>
+  <div class="a11y-modal-backdrop" onclick="closeA11yModal()" aria-hidden="true"></div>
+  <div class="a11y-modal-card" role="document">
+    <div class="a11y-modal-head">
+      <h2 id="a11yModalTitle" class="a11y-modal-title">Accessibility</h2>
+      <button type="button" class="a11y-modal-close" onclick="closeA11yModal()" aria-label="Close accessibility options">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <p class="a11y-modal-sub">Pick what you need. Settings stay on for you. Reset at any time.</p>
+    <ul class="a11y-modal-list" role="list">
+      <li><button type="button" class="a11y-opt" data-a11y="contrast" onclick="a11yToggle('contrast')" aria-pressed="false"><span class="a11y-opt-label">High contrast</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
+      <li><button type="button" class="a11y-opt" data-a11y="dyslexia" onclick="a11yToggle('dyslexia')" aria-pressed="false"><span class="a11y-opt-label">Dyslexia-friendly font</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
+      <li><button type="button" class="a11y-opt" data-a11y="links" onclick="a11yToggle('links')" aria-pressed="false"><span class="a11y-opt-label">Underline links</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
+      <li><button type="button" class="a11y-opt" data-a11y="motion" onclick="a11yToggle('motion')" aria-pressed="false"><span class="a11y-opt-label">Reduce motion</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
+      <li><button type="button" class="a11y-opt" data-a11y="spacing" onclick="a11yToggle('spacing')" aria-pressed="false"><span class="a11y-opt-label">Roomy line spacing</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
+      <li><button type="button" class="a11y-opt" data-a11y="guide" onclick="a11yToggle('guide')" aria-pressed="false"><span class="a11y-opt-label">Reading guide</span><span class="a11y-opt-state" aria-hidden="true">Off</span></button></li>
+      <li class="a11y-row-size">
+        <span class="a11y-opt-label">Text size</span>
+        <div class="a11y-size-controls" role="radiogroup" aria-label="Text size">
+          <button type="button" class="a11y-size" data-fs="sm" onclick="a11ySetSize('sm')" aria-label="Smaller text">A−</button>
+          <button type="button" class="a11y-size active" data-fs="md" onclick="a11ySetSize('md')" aria-label="Default text size">A</button>
+          <button type="button" class="a11y-size" data-fs="lg" onclick="a11ySetSize('lg')" aria-label="Larger text">A+</button>
+          <button type="button" class="a11y-size" data-fs="xl" onclick="a11ySetSize('xl')" aria-label="Extra large text">A++</button>
+        </div>
+      </li>
+    </ul>
+    <div class="a11y-modal-foot">
+      <button type="button" class="a11y-reset" onclick="a11yReset()">Reset to defaults</button>
+      <button type="button" class="a11y-done" onclick="closeA11yModal()">Done</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════ ACCESSIBILITY FEATURE (self-contained) ════════════ */
+(function() {
+  const STORE_KEY = 'a11yPrefs';
+  const DEFAULT = { fs:'md', contrast:false, dyslexia:false, links:false, motion:false, spacing:false, guide:false };
+  let lastFocused = null;
+  function load() {
+    try { return Object.assign({}, DEFAULT, JSON.parse(localStorage.getItem(STORE_KEY) || '{}')); }
+    catch(e) { return Object.assign({}, DEFAULT); }
+  }
+  function save(p) { try { localStorage.setItem(STORE_KEY, JSON.stringify(p)); } catch(e){} }
+  function apply(p) {
+    const root = document.documentElement;
+    root.setAttribute('data-fs', p.fs || 'md');
+    ['contrast','dyslexia','links','motion','spacing','guide'].forEach(k => {
+      if (p[k]) root.setAttribute('data-a11y-' + k, 'on');
+      else root.removeAttribute('data-a11y-' + k);
+    });
+    document.querySelectorAll('.a11y-size').forEach(b => b.classList.toggle('active', b.getAttribute('data-fs') === (p.fs || 'md')));
+    document.querySelectorAll('.a11y-opt').forEach(b => {
+      const k = b.getAttribute('data-a11y');
+      b.setAttribute('aria-pressed', String(!!p[k]));
+    });
+    if (p.guide && !document.getElementById('a11yReadingGuide')) {
+      const g = document.createElement('div');
+      g.id = 'a11yReadingGuide';
+      g.className = 'a11y-reading-guide';
+      document.body.appendChild(g);
+      document.addEventListener('mousemove', moveGuide);
+    } else if (!p.guide) {
+      const g = document.getElementById('a11yReadingGuide');
+      if (g) g.remove();
+      document.removeEventListener('mousemove', moveGuide);
+    }
+  }
+  function moveGuide(e) {
+    const g = document.getElementById('a11yReadingGuide');
+    if (g) g.style.top = (e.clientY - 17) + 'px';
+  }
+  window.openA11yModal = function() {
+    const modal = document.getElementById('a11yModal');
+    if (!modal) return;
+    lastFocused = document.activeElement;
+    modal.removeAttribute('hidden');
+    const btn = document.getElementById('a11yStamp');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    const firstFocus = modal.querySelector('.a11y-modal-close');
+    if (firstFocus) firstFocus.focus();
+  };
+  window.closeA11yModal = function() {
+    const modal = document.getElementById('a11yModal');
+    if (!modal) return;
+    modal.setAttribute('hidden','');
+    const btn = document.getElementById('a11yStamp');
+    if (btn) btn.removeAttribute('aria-expanded');
+    if (lastFocused && lastFocused.focus) lastFocused.focus();
+  };
+  window.a11yToggle = function(k) {
+    const p = load(); p[k] = !p[k]; save(p); apply(p);
+  };
+  window.a11ySetSize = function(fs) {
+    const p = load(); p.fs = fs; save(p); apply(p);
+  };
+  window.a11yReset = function() {
+    const p = Object.assign({}, DEFAULT); save(p); apply(p);
+  };
+  // Apply saved prefs on load (so the dashboard remembers a user's choices)
+  document.addEventListener('DOMContentLoaded', () => apply(load()));
+  // Escape closes the modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const modal = document.getElementById('a11yModal');
+      if (modal && !modal.hasAttribute('hidden')) closeA11yModal();
+    }
+  });
+})();
+</script>
+</body>
+</html>
