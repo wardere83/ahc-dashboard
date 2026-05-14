@@ -414,6 +414,10 @@
     .contact-card-link:hover { color:var(--ccc-medium-blue); text-decoration:underline; }
     [data-theme="dark"] .contact-card-link:hover { color:var(--accent-light); }
     .contact-card-link svg { flex-shrink:0; opacity:0.55; }
+    .contact-card-phone-row { display:flex; align-items:center; gap:6px; min-width:0; font-size:11.5px; line-height:1.4; }
+    .contact-card-phone-row .contact-card-link { flex:0 1 auto; }
+    .contact-card-phone-row .contact-card-link span { flex:0 0 auto; overflow:visible; text-overflow:clip; }
+    .contact-card-ext { color:var(--text-muted); flex-shrink:0; }
     @media (max-width:1000px) { .contacts-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
 
     .mobile-nav { display:none; position:fixed; bottom:0; left:0; right:0; height:var(--mobile-nav-h); background:var(--ccc-dark-blue); border-top:1px solid rgba(255,255,255,0.1); z-index:300; padding:0 4px; }
@@ -2011,7 +2015,12 @@ function renderContacts() {
           <div class="contact-card-divider"></div>
           <div class="contact-card-links">
             <a class="contact-card-link" href="mailto:${p.email}" title="${p.email}">${mailIcon}<span>${p.email}</span></a>
-            ${p.phone ? `<a class="contact-card-link" href="tel:${p.phone.replace(/[^0-9+]/g,'')}" title="${p.phone}">${phoneIcon}<span>${p.phone}</span></a>` : ''}
+            ${p.phone ? (() => {
+              const m = p.phone.match(/^(.+?)(\s*(?:ext\.?|x)\s*\d+)$/i);
+              const main = m ? m[1].trim() : p.phone;
+              const ext = m ? m[2].trim() : '';
+              return `<div class="contact-card-phone-row"><a class="contact-card-link" href="tel:${main.replace(/[^0-9+]/g,'')}" title="${main}">${phoneIcon}<span>${main}</span></a>${ext ? `<span class="contact-card-ext">${ext}</span>` : ''}</div>`;
+            })() : ''}
           </div>
         </div>
       </article>`;
