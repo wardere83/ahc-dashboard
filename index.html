@@ -395,25 +395,25 @@
     .tl-hbi { flex:1; text-align:center; }
     .tl-ht { width:80px; flex-shrink:0; text-align:right; }
 
-    .contacts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
-    .contact-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow var(--transition); }
-    .contact-card:hover { box-shadow:var(--shadow-md); }
-    .contact-card-header { background:var(--ccc-dark-blue); padding:12px 16px; }
-    .contact-card-district { font-size:13px; font-weight:700; color:#fff; }
-    .contact-card-region { font-size:11px; color:rgba(255,255,255,0.6); }
-    .contact-card-address { font-size:11px; color:rgba(255,255,255,0.55); margin-top:4px; line-height:1.3; }
-    .contact-phone { display:block; font-size:11.5px; color:var(--text-secondary); margin-top:1px; text-decoration:none; }
-    .contact-phone:hover { color:var(--ccc-medium-blue); }
-    [data-theme="dark"] .contact-phone:hover { color:var(--accent-light); }
-    .contact-body { padding:14px 16px; }
-    .contact-person { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
-    .contact-person:last-child { border-bottom:none; }
-    .contact-avatar { width:32px; height:32px; border-radius:50%; background:var(--tier1-bg); color:var(--tier1-color); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
-    .contact-info { flex:1; min-width:0; }
-    .contact-name { font-size:13px; font-weight:600; color:var(--text-primary); }
-    .contact-role { font-size:11px; color:var(--text-muted); margin-bottom:2px; }
-    .contact-email { font-size:11.5px; color:var(--ccc-medium-blue); word-break:break-all; }
-    [data-theme="dark"] .contact-email { color:var(--accent-light); }
+    .contacts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:22px; }
+    .contact-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; transition:box-shadow var(--transition), transform var(--transition), border-color var(--transition); display:flex; flex-direction:column; }
+    .contact-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); border-color:var(--ccc-medium-blue); }
+    .contact-photo { position:relative; aspect-ratio:1/1; width:100%; background:linear-gradient(135deg, var(--tier1-bg) 0%, var(--bg-surface-2) 100%); overflow:hidden; }
+    .contact-photo-initials { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:56px; font-weight:600; letter-spacing:-0.02em; color:var(--ccc-dark-blue); z-index:0; opacity:0.55; }
+    [data-theme="dark"] .contact-photo-initials { color:var(--accent-light); }
+    .contact-photo img { width:100%; height:100%; object-fit:cover; display:block; position:relative; z-index:1; }
+    .contact-card-body { padding:20px 22px 22px; display:flex; flex-direction:column; flex:1; }
+    .contact-card-name { font-family:var(--font-display); font-size:16.5px; font-weight:600; color:var(--text-primary); line-height:1.25; letter-spacing:-0.01em; margin:0 0 4px; }
+    .contact-card-title { font-size:12.5px; color:var(--text-secondary); line-height:1.45; }
+    .contact-card-role { display:inline-block; align-self:flex-start; font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--ccc-medium-blue); margin-top:12px; padding:4px 9px; border:1px solid var(--ccc-medium-blue); border-radius:4px; }
+    [data-theme="dark"] .contact-card-role { color:var(--accent-light); border-color:var(--accent-light); }
+    .contact-card-divider { height:1px; background:var(--border); margin:16px 0 14px; }
+    .contact-card-links { display:flex; flex-direction:column; gap:8px; }
+    .contact-card-link { font-size:12px; color:var(--text-secondary); text-decoration:none; display:flex; align-items:center; gap:9px; line-height:1.4; }
+    .contact-card-link span { word-break:break-word; min-width:0; }
+    .contact-card-link:hover { color:var(--ccc-medium-blue); }
+    [data-theme="dark"] .contact-card-link:hover { color:var(--accent-light); }
+    .contact-card-link svg { flex-shrink:0; opacity:0.55; }
 
     .mobile-nav { display:none; position:fixed; bottom:0; left:0; right:0; height:var(--mobile-nav-h); background:var(--ccc-dark-blue); border-top:1px solid rgba(255,255,255,0.1); z-index:300; padding:0 4px; }
     .mobile-nav-inner { display:flex; height:100%; }
@@ -857,7 +857,7 @@
         <div class="card mt-24">
           <div class="card-header"><div class="card-title">How the goals connect</div><div class="chart-label">Application Narrative · Section 1.3</div></div>
           <div class="card-body">
-            <p style="font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0;">Together, these two goals form a cohesive, research-supported approach to advancing equity at Allan Hancock College: equitable hiring practices for the most demographically representative employee group on campus (65% BIPOC, 48% Latinx classified staff), paired with equity-minded instruction that improves outcomes for a student body that is 70% Hispanic / Latino and 64% economically disadvantaged.</p>
+            <p style="font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0;">Together, these two goals form a cohesive, research-supported approach to advancing equity at Allan Hancock College: equitable hiring practices for the most demographically representative employee group on campus (65% BIPOC, 48% Latinx classified staff), paired with equity-minded instruction that improves outcomes for a student body where 70% identify as Hispanic / Latino, 59% are first-generation, and 24% are Pell Grant recipients (ed.gov / NCES College Scorecard).</p>
           </div>
         </div>
       </div>
@@ -916,13 +916,30 @@
 
         <!-- Student demographics -->
         <div class="card mb-24">
-          <div class="card-header"><div class="card-title">Why This Project</div><div class="chart-label">Source: ed.gov / NCES College Profile</div></div>
+          <div class="card-header"><div class="card-title">Why This Project</div><div class="chart-label">Source: ed.gov College Scorecard (NCES UnitID 108807)</div></div>
           <div class="card-body">
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
               <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
-                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">14,000+</div>
-                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">Students enrolled</div>
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">16,308</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">12-month unduplicated enrollment</div>
               </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">70%</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">Identify as Hispanic / Latino</div>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">59%</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">First-generation college</div>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">24%</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">Pell Grant recipients</div>
+              </div>
+              <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
+                <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">54%</div>
+                <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">Women</div>
+              </div>
+            </div>
               <div style="padding:14px;border:1px solid var(--border);border-radius:var(--radius-md);text-align:center;">
                 <div style="font-family:var(--font-display);font-size:28px;font-weight:600;color:var(--ccc-dark-blue);line-height:1;">70%</div>
                 <div style="font-size:11.5px;color:var(--text-muted);margin-top:6px;letter-spacing:0.04em;">Identify as Hispanic / Latino</div>
@@ -1177,14 +1194,17 @@ const districts = [
       'Faculty Agency & Instructional Effectiveness: measurable growth across five inclusive-teaching domains \u2014 curriculum design, andragogy (API), classroom management (CMSEI), inclusion practices, reflective instruction (RPQ + IAT)',
       'Student Success Impact: improved course success (A\u2013C), term-to-term persistence, and completion rates in mentee-taught courses, disaggregated by race, gender, and other demographics'
     ],
-    contact:{name:'LeeAnne McNulty',role:'Project Lead Contact',email:'leeanne.mcnulty@hancockcollege.edu',phone:'(805) 922-6966 ext. 3450'},
-    altContact:{name:'Fernando Robles, M.A.',role:'Alternate Project Lead Contact',email:'fernando.roblesjr@hancockcollege.edu',phone:'(805) 922-6966 ext. 3959'},
-    fiscalReporter:{name:'Laura Becker',role:'Institution Project Fiscal Reporter',email:'laura.becker@hancockcollege.edu',phone:'(805) 922-6966 ext. 3268'},
-    planApprover:{name:'Craig Bach, Ph.D.',role:'Plan Approver',email:'craig.bach@hancockcollege.edu',phone:'(805) 346-1006 ext. 3755'},
-    additionalContacts:[
-      {name:'Mackenzi Greeley',role:'Alternate Project Lead Contact',email:'mackenzi.greeley1@hancockcollege.edu',phone:'(805) 922-6966 ext. 3369'},
-      {name:'Craig Bach, Ph.D.',role:'Project Lead Contact',email:'craig.bach@hancockcollege.edu',phone:'(805) 346-1006 ext. 3755'},
-      {name:'Erica Biely',role:'Alternate Project Lead Contact',email:'ebiely@hancockcollege.edu',phone:''}
+    contact:{name:'LeeAnne McNulty, Ed.D.',role:'Project Lead',email:'leeanne.mcnulty@hancockcollege.edu',phone:'(805) 922-6966 ext. 3450'},
+    altContact:{name:'Fernando "Fern" Robles, MA',role:'Alternate Project Lead',email:'fernando.roblesjr@hancockcollege.edu',phone:'(805) 922-6966 ext. 3959'},
+    fiscalReporter:{name:'Laura Becker',role:'Fiscal Reporter',email:'laura.becker@hancockcollege.edu',phone:'(805) 922-6966 ext. 3268'},
+    planApprover:{name:'Craig N. Bach, Ph.D.',role:'Plan Approver',email:'craig.bach@hancockcollege.edu',phone:'(805) 922-6966 ext. 3755'},
+    projectContacts:[
+      {name:'LeeAnne McNulty, Ed.D.',title:'Director of Institutional Grants',role:'Project Lead',email:'leeanne.mcnulty@hancockcollege.edu',phone:'(805) 922-6966 ext. 3450',photo:'photos/leeanne-mcnulty.jpg'},
+      {name:'Fernando "Fern" Robles, MA',title:'Grants Analyst II',role:'Alternate Project Lead',email:'fernando.roblesjr@hancockcollege.edu',phone:'(805) 922-6966 ext. 3959',photo:'photos/fernando-robles.jpg'},
+      {name:'Mackenzie Greeley, MPA',title:'Grants Analyst II',role:'Alternate Project Lead',email:'mackenzi.greeley1@hancockcollege.edu',phone:'(805) 922-6966 ext. 3369',photo:'photos/mackenzie-greeley.jpg'},
+      {name:'Craig N. Bach, Ph.D.',title:'Executive Director, Institutional Effectiveness',role:'Plan Approver',email:'craig.bach@hancockcollege.edu',phone:'(805) 922-6966 ext. 3755',photo:'photos/craig-bach.jpg'},
+      {name:'Erica Biely',title:'Senior Institutional Effectiveness Analyst',role:'',email:'ebiely@hancockcollege.edu',phone:'(805) 922-6966 ext. 3712',photo:'photos/erica-biely.jpg'},
+      {name:'Laura Becker',title:'Institution Project Fiscal Reporter',role:'Fiscal Reporter',email:'laura.becker@hancockcollege.edu',phone:'(805) 922-6966 ext. 3268',photo:'photos/laura-becker.jpg'}
     ],
     fundMonitor:{name:'Bulle Consulting',role:'Grant Monitor',email:'admin@bulleconsulting.com',phone:''},
     budgetHighlights:{'Instructional Salaries (1000)':46080,'Employee Benefits (3000)':9999,'Supplies and Materials (4000)':1159,'Other Operating Expenses and Services (5000)':38000,'Indirect Costs (7000)':4762},
@@ -2035,29 +2055,29 @@ function translateRole(r) { return ROLE_KEYS[r] ? t(ROLE_KEYS[r]) : r; }
 function renderContacts() {
   const grid = document.getElementById('contacts-grid');
   if (!grid) return;
-  grid.innerHTML = districts.map(d => {
-    const people = [d.contact, d.altContact, d.fiscalReporter, d.planApprover].filter(Boolean);
-    const tierLabel = d.lift ? `${t('kpi_lift')} · ${d.liftRegion}` : `${t('th_tier')} ${d.tier}`;
+  const mailIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>';
+  const phoneIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+  const people = (districts[0] && districts[0].projectContacts) || [];
+  grid.innerHTML = people.map(p => {
+    const initials = p.name.replace(/[",.]/g,'').split(/\s+/).filter(w => w.length > 1 && /^[A-Z]/.test(w)).slice(0,2).map(w => w[0]).join('');
+    const roleBadge = p.role ? `<div class="contact-card-role">${translateRole(p.role)}</div>` : '';
     return `
-      <div class="contact-card">
-        <div class="contact-card-header">
-          <div class="contact-card-district">${d.name}</div>
-          <div class="contact-card-region">${tierLabel}</div>
-          <div class="contact-card-address">${d.address || ''}</div>
+      <article class="contact-card">
+        <div class="contact-photo">
+          <div class="contact-photo-initials">${initials || p.name[0]}</div>
+          ${p.photo ? `<img src="${p.photo}" alt="${p.name}" loading="lazy" onerror="this.style.visibility='hidden'" />` : ''}
         </div>
-        <div class="contact-body">
-          ${people.map(p => `
-            <div class="contact-person">
-              <div class="contact-avatar">${p.name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase()}</div>
-              <div class="contact-info">
-                <div class="contact-name">${p.name}</div>
-                <div class="contact-role">${translateRole(p.role)}</div>
-                <a class="contact-email" href="mailto:${p.email}">${p.email}</a>
-                ${p.phone ? `<a class="contact-phone" href="tel:${p.phone.replace(/[^0-9+]/g,'')}">${p.phone}</a>` : ''}
-              </div>
-            </div>`).join('')}
+        <div class="contact-card-body">
+          <h3 class="contact-card-name">${p.name}</h3>
+          ${p.title ? `<div class="contact-card-title">${p.title}</div>` : ''}
+          ${roleBadge}
+          <div class="contact-card-divider"></div>
+          <div class="contact-card-links">
+            <a class="contact-card-link" href="mailto:${p.email}">${mailIcon}<span>${p.email}</span></a>
+            ${p.phone ? `<a class="contact-card-link" href="tel:${p.phone.replace(/[^0-9+]/g,'')}">${phoneIcon}<span>${p.phone}</span></a>` : ''}
+          </div>
         </div>
-      </div>`;
+      </article>`;
   }).join('');
 }
 
