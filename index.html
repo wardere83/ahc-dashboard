@@ -395,21 +395,21 @@
     .tl-hbi { flex:1; text-align:center; }
     .tl-ht { width:80px; flex-shrink:0; text-align:right; }
 
-    .contacts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:22px; }
-    .contact-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; transition:box-shadow var(--transition), transform var(--transition), border-color var(--transition); display:flex; flex-direction:column; }
-    .contact-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); border-color:var(--ccc-medium-blue); }
-    .contact-photo { position:relative; aspect-ratio:1/1; width:100%; background:linear-gradient(135deg, var(--tier1-bg) 0%, var(--bg-surface-2) 100%); overflow:hidden; }
-    .contact-photo-initials { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:56px; font-weight:600; letter-spacing:-0.02em; color:var(--ccc-dark-blue); z-index:0; opacity:0.55; }
+    .contacts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+    .contact-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:18px; transition:box-shadow var(--transition), border-color var(--transition); display:flex; gap:14px; align-items:flex-start; box-shadow:var(--shadow-sm); }
+    .contact-card:hover { box-shadow:var(--shadow-md); border-color:var(--ccc-medium-blue); }
+    .contact-photo { position:relative; width:64px; height:64px; flex-shrink:0; border-radius:50%; overflow:hidden; background:linear-gradient(135deg, var(--tier1-bg) 0%, var(--bg-surface-2) 100%); }
+    .contact-photo-initials { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:22px; font-weight:600; letter-spacing:-0.01em; color:var(--ccc-dark-blue); z-index:0; }
     [data-theme="dark"] .contact-photo-initials { color:var(--accent-light); }
     .contact-photo img { width:100%; height:100%; object-fit:cover; display:block; position:relative; z-index:1; }
-    .contact-card-body { padding:20px 22px 22px; display:flex; flex-direction:column; flex:1; }
-    .contact-card-name { font-family:var(--font-display); font-size:16.5px; font-weight:600; color:var(--text-primary); line-height:1.25; letter-spacing:-0.01em; margin:0 0 4px; }
-    .contact-card-title { font-size:12.5px; color:var(--text-secondary); line-height:1.45; }
-    .contact-card-role { display:inline-block; align-self:flex-start; font-size:10px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--ccc-medium-blue); margin-top:12px; padding:4px 9px; border:1px solid var(--ccc-medium-blue); border-radius:4px; }
+    .contact-card-body { flex:1; min-width:0; display:flex; flex-direction:column; }
+    .contact-card-name { font-family:var(--font-display); font-size:14.5px; font-weight:600; color:var(--text-primary); line-height:1.25; letter-spacing:-0.005em; margin:0 0 2px; }
+    .contact-card-title { font-size:11.5px; color:var(--text-secondary); line-height:1.4; }
+    .contact-card-role { display:inline-block; align-self:flex-start; font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ccc-medium-blue); margin-top:8px; padding:3px 7px; border:1px solid var(--ccc-medium-blue); border-radius:4px; }
     [data-theme="dark"] .contact-card-role { color:var(--accent-light); border-color:var(--accent-light); }
-    .contact-card-divider { height:1px; background:var(--border); margin:16px 0 14px; }
-    .contact-card-links { display:flex; flex-direction:column; gap:8px; }
-    .contact-card-link { font-size:12px; color:var(--text-secondary); text-decoration:none; display:flex; align-items:center; gap:9px; line-height:1.4; }
+    .contact-card-divider { height:1px; background:var(--border); margin:10px 0 8px; }
+    .contact-card-links { display:flex; flex-direction:column; gap:4px; }
+    .contact-card-link { font-size:11.5px; color:var(--text-secondary); text-decoration:none; display:flex; align-items:center; gap:7px; line-height:1.4; }
     .contact-card-link span { word-break:break-word; min-width:0; }
     .contact-card-link:hover { color:var(--ccc-medium-blue); }
     [data-theme="dark"] .contact-card-link:hover { color:var(--accent-light); }
