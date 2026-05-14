@@ -2048,7 +2048,7 @@ function renderContacts() {
       <article class="contact-card">
         <div class="contact-photo">
           <div class="contact-photo-initials">${initials || p.name[0]}</div>
-          ${p.photo ? `<img src="${p.photo}" alt="${p.name}" loading="lazy" onerror="this.style.visibility='hidden'" />` : ''}
+          ${p.photo ? `<img src="${p.photo}" alt="${p.name}" onerror="this.style.visibility='hidden'" />` : ''}
         </div>
         <div class="contact-card-body">
           <h3 class="contact-card-name">${p.name}</h3>
