@@ -408,10 +408,10 @@
     .contact-card-role { display:inline-block; align-self:flex-start; font-size:9.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--ccc-medium-blue); margin-top:8px; padding:3px 7px; border:1px solid var(--ccc-medium-blue); border-radius:4px; }
     [data-theme="dark"] .contact-card-role { color:var(--accent-light); border-color:var(--accent-light); }
     .contact-card-divider { height:1px; background:var(--border); margin:12px 0 10px; }
-    .contact-card-links { display:flex; flex-direction:column; gap:5px; margin-top:auto; }
-    .contact-card-link { font-size:11.5px; color:var(--text-secondary); text-decoration:none; display:flex; align-items:center; gap:7px; line-height:1.4; }
-    .contact-card-link span { word-break:break-word; min-width:0; }
-    .contact-card-link:hover { color:var(--ccc-medium-blue); }
+    .contact-card-links { display:flex; flex-direction:column; gap:5px; margin-top:auto; min-width:0; }
+    .contact-card-link { font-size:11.5px; color:var(--text-secondary); text-decoration:none; display:flex; align-items:center; gap:7px; line-height:1.4; min-width:0; cursor:pointer; }
+    .contact-card-link span { min-width:0; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .contact-card-link:hover { color:var(--ccc-medium-blue); text-decoration:underline; }
     [data-theme="dark"] .contact-card-link:hover { color:var(--accent-light); }
     .contact-card-link svg { flex-shrink:0; opacity:0.55; }
     @media (max-width:1000px) { .contacts-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
@@ -2010,8 +2010,8 @@ function renderContacts() {
           ${roleBadge}
           <div class="contact-card-divider"></div>
           <div class="contact-card-links">
-            <a class="contact-card-link" href="mailto:${p.email}">${mailIcon}<span>${p.email}</span></a>
-            ${p.phone ? `<a class="contact-card-link" href="tel:${p.phone.replace(/[^0-9+]/g,'')}">${phoneIcon}<span>${p.phone}</span></a>` : ''}
+            <a class="contact-card-link" href="mailto:${p.email}" title="${p.email}">${mailIcon}<span>${p.email}</span></a>
+            ${p.phone ? `<a class="contact-card-link" href="tel:${p.phone.replace(/[^0-9+]/g,'')}" title="${p.phone}">${phoneIcon}<span>${p.phone}</span></a>` : ''}
           </div>
         </div>
       </article>`;
