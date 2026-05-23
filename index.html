@@ -395,6 +395,7 @@
     .tl-hbi { flex:1; text-align:center; }
     .tl-ht { width:80px; flex-shrink:0; text-align:right; }
 
+    .contacts-subhead { font-family:var(--font-display); font-size:clamp(11px, 3.4vw, 18px); font-weight:700; color:var(--ccc-dark-blue); letter-spacing:-0.012em; margin:24px 0 14px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .contacts-grid { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:18px; align-items:stretch; padding:4px 12px; }
     .contact-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:20px; transition:box-shadow var(--transition), border-color var(--transition); display:flex; gap:14px; align-items:flex-start; box-shadow:var(--shadow-sm); }
     .contact-card:hover { box-shadow:var(--shadow-md); border-color:var(--ccc-medium-blue); }
@@ -1059,7 +1060,21 @@
 
       <!-- CONTACTS -->
       <div id="section-contacts" class="section">
-        <div class="page-header"><h2 data-i18n="contacts_title">Project Contacts</h2><p data-i18n="contacts_sub">Project leads, alternates, and fiscal reporters</p></div>
+        <div class="page-header" style="margin-bottom:14px;"><h2 data-i18n="contacts_title" style="font-size:clamp(11px, 3.4vw, 18px);font-weight:700;color:var(--ccc-dark-blue);letter-spacing:-0.012em;line-height:1.2;margin:0;white-space:nowrap;">Project Contacts</h2></div>
+        <div class="card mb-24">
+          <div class="card-header" style="background:var(--ccc-dark-blue);">
+            <div class="card-title" style="color:#fff;" data-i18n="meta_monitor">Grant Monitor</div>
+            <img src="Bulle Cloud Logo-white.png" alt="Bulle Cloud" width="376" height="191" style="height:36px;width:auto;display:block;opacity:0.95;image-rendering:-webkit-optimize-contrast;" />
+          </div>
+          <div class="card-body" style="padding:12px 20px;">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--text-primary);line-height:1.35;">Bulle Consulting</div>
+              <div style="font-size:16px;color:var(--text-secondary);line-height:1.35;">Grant Monitor</div>
+              <div style="font-size:16px;line-height:1.35;"><a href="mailto:admin@bulleconsulting.com" style="color:var(--ccc-dark-blue);text-decoration:none;font-weight:500;">admin@bulleconsulting.com</a></div>
+            </div>
+          </div>
+        </div>
+        <h3 class="contacts-subhead">Project Leads | Alternates | Fiscal Reporters | Plan Approvers</h3>
         <div class="contacts-grid" id="contacts-grid"></div>
       </div>
 
