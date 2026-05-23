@@ -418,7 +418,7 @@
     .contact-card-ext { color:var(--text-muted); flex-shrink:0; }
     @media (max-width:1000px) { .contacts-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); } }
 
-    .mobile-nav { display:none; position:sticky; top:var(--header-h); left:0; right:0; height:64px; background:var(--ccc-dark-blue); border-bottom:1px solid rgba(255,255,255,0.12); z-index:90; padding:0; overflow:hidden; }
+    .mobile-nav { display:none; position:fixed; top:var(--header-h); left:0; right:0; height:56px; background:var(--ccc-dark-blue); border-bottom:1px solid rgba(255,255,255,0.12); z-index:120; padding:0; overflow:hidden; }
     .mobile-nav-inner { display:flex; align-items:stretch; height:100%; width:100%; padding:0 2px; }
     .mobile-nav-btn { flex:1 1 0; min-width:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:rgba(255,255,255,0.65); font-size:10px; font-weight:600; letter-spacing:0.01em; cursor:pointer; transition:color var(--transition); padding:6px 2px; border:none; background:none; position:relative; }
     .mobile-nav-btn span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
@@ -584,6 +584,12 @@
     html[data-a11y-spacing="on"] body { line-height:1.85; letter-spacing:0.02em; word-spacing:0.06em; }
     html[data-a11y-guide="on"] .a11y-reading-guide { display:block; }
     .a11y-reading-guide { position:fixed; left:0; right:0; height:34px; background:rgba(255,221,0,0.20); border-top:1px solid rgba(255,180,0,0.5); border-bottom:1px solid rgba(255,180,0,0.5); pointer-events:none; z-index:998; display:none; }
+      /* Mobile nav clearance */
+    @media (max-width:768px) {
+      .mobile-nav { display:flex; }
+      .content { padding-top:56px; }
+      .main { padding-bottom:0; height:100dvh; }
+    }
   </style>
 </head>
 <body>
