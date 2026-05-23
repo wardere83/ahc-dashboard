@@ -104,6 +104,9 @@
     .logo-title { font-family:var(--font-display); font-size:17px; font-weight:600; color:#fff; line-height:1.2; }
     .logo-sub { font-size:11.5px; color:rgba(255,255,255,0.88); letter-spacing:0.06em; text-transform:uppercase; font-weight:600; line-height:1.45; margin-top:10px; }
     .sidebar-section-label { font-size:9.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); padding:14px 18px 4px; }
+    .sidebar-footer { margin-top:auto; padding:14px 18px 18px; border-top:1px solid rgba(255,255,255,0.10); }
+    .sidebar-footer-label { font-size:9.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); margin-bottom:4px; }
+    .sidebar-footer-val { font-size:12px; color:rgba(255,255,255,0.85); font-weight:500; line-height:1.35; }
     .nav-item { display:flex; align-items:center; gap:10px; padding:7px 18px; font-size:13px; font-weight:500; color:rgba(255,255,255,0.85); cursor:pointer; border-left:3px solid transparent; transition:all var(--transition); border:none; background:none; width:100%; text-align:left; }
     .nav-item:hover { background:rgba(255,255,255,0.10); color:#fff; }
     .nav-item.active { background:rgba(255,205,0,0.15); color:var(--ccc-gold); border-left:3px solid var(--ccc-gold); }
@@ -646,6 +649,11 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       Spend-Down Monitor
     </button>
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-label" data-i18n="meta_monitor">Grant Monitor</div>
+      <div class="sidebar-footer-val">Bulle Consulting</div>
+      <div class="sidebar-footer-val" style="color:rgba(255,255,255,0.4);font-size:11px;margin-top:2px;">admin@bulleconsulting.com</div>
+    </div>
   </aside>
 
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
