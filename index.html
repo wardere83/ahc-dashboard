@@ -69,7 +69,7 @@
       --lift-color:#E5B800; --lift-bg:rgba(255,205,0,0.12);
       --success:#1a7a3c; --success-bg:rgba(26,122,60,0.08);
       --font-display:'Crimson Text',Georgia,serif; --font-body:'Source Sans 3','Helvetica Neue',sans-serif;
-      --sidebar-w:240px; --header-h:64px; --mobile-nav-h:60px; --content-max:1280px;
+      --sidebar-w:220px; --header-h:64px; --mobile-nav-h:60px; --content-max:1280px;
       --radius-sm:6px; --radius-md:10px; --radius-lg:16px; --radius-xl:20px;
       --shadow-sm:0 1px 3px rgba(0,62,90,0.08),0 1px 2px rgba(0,62,90,0.04);
       --shadow-md:0 4px 12px rgba(0,62,90,0.10),0 2px 4px rgba(0,62,90,0.06);
@@ -134,7 +134,7 @@
     .lang-flag { font-size:18px; line-height:1; }
     .lang-name { flex:1; }
     .lang-native { font-size:11px; color:var(--text-muted); }
-    .content { flex:1; padding:28px; max-width:var(--content-max); width:100%; overflow-y:auto; overflow-x:hidden; }
+    .content { flex:1; padding:22px 24px; max-width:var(--content-max); width:100%; overflow-y:auto; overflow-x:hidden; min-width:0; }
     .section { display:none; }
     .section.active { display:block; }
     .page-header { margin-bottom:24px; }
@@ -213,7 +213,7 @@
     .data-table-wrap { overflow-x:auto; }
     .data-table { width:100%; font-size:13px; }
     .data-table th { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); padding:10px 16px; text-align:left; border-bottom:2px solid var(--border); white-space:nowrap; background:var(--bg-surface-2); }
-    .data-table td { padding:11px 16px; border-bottom:1px solid var(--border); vertical-align:middle; }
+    .data-table td { padding:8px 14px; border-bottom:1px solid var(--border); vertical-align:middle; line-height:1.4; }
     .data-table tr:last-child td { border-bottom:none; }
     .data-table tr:hover td { background:var(--bg-surface-2); }
     .data-table .amount { font-family:var(--font-body); font-weight:600; font-size:13px; color:var(--ccc-dark-blue); }
@@ -1091,7 +1091,7 @@
           <div class="card-header"><div class="card-title" data-i18n="spend_table_title">Spend-Down Detail</div><div class="chart-label" data-i18n="spend_table_sub">Allan Hancock CCD · Year-by-Year Allocation vs. Spend</div></div>
           <div class="data-table-wrap">
             <table class="data-table" id="spend-table">
-              <thead><tr><th data-i18n="th_period">Period</th><th data-i18n="th_period_budget">Period Budget</th><th data-i18n="th_share">Share of Total</th><th data-i18n="th_project_year">Project Year</th><th data-i18n="th_disbursed_pct">Spent So Far</th><th data-i18n="th_spend_pace">Spend Pace</th><th data-i18n="th_status">Status</th></tr></thead>
+              <thead><tr><th data-i18n="th_period">Period</th><th class="num" data-i18n="th_period_budget">Period Budget</th><th class="num" data-i18n="th_disbursed_pct">Spent So Far</th><th class="center" data-i18n="th_spend_pace">Pace</th><th class="center" data-i18n="th_status">Status</th></tr></thead>
               <tbody id="spend-table-body"></tbody>
             </table>
           </div>
@@ -2332,11 +2332,9 @@ function renderSpendDown() {
       // Header summary row: read-only totals for the year, no buttons (only line items carry Pace/Status)
       const headerRow =
         '<tr class="spend-year-row" data-year-key="' + p.id + '">' +
-          '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:14px;"><strong style="font-size:14px;color:var(--ccc-dark-blue);">' + p.label + '</strong><br><span style="font-size:11px;color:var(--text-muted)">' + p.dates + ' · ' + p.role + '</span></td>' +
+          '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:12px;min-width:140px;"><div style="font-family:var(--font-display);font-size:13.5px;font-weight:700;color:var(--ccc-dark-blue);letter-spacing:-0.01em;line-height:1.2;">' + p.label + '</div><div style="font-size:10.5px;color:var(--text-muted);letter-spacing:0.01em;margin-top:2px;">' + p.dates + '</div></td>' +
           '<td class="amount" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
-          '<td class="amount" style="font-weight:700;">' + pct + '% of total</td>' +
-          '<td><span style="font-size:11px;color:var(--text-muted);font-weight:700;">' + p.year + '</span></td>' +
-          '<td colspan="3" style="font-size:11px;color:var(--text-muted);"><em>Year-level summary &middot; line items below carry their own pace / status</em></td>' +
+          '<td colspan="2" class="center" style="font-size:10.5px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;">Year summary &middot; line items below</td>' +
         '</tr>';
       const lineRows = (p.lineItems || []).map((li, idx) => {
         const liId = p.id + '-li' + idx;
@@ -2352,11 +2350,10 @@ function renderSpendDown() {
         return '<tr class="spend-line-row" data-year-key="' + p.id + '">' +
           '<td style="padding-left:32px;border-left:4px solid ' + yearBandColor + ';opacity:0.95;"><span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;margin-right:8px;">' + li.fy + '</span>' + codeBadge + '<span style="font-size:12.5px;color:var(--text-primary);">' + li.label + '</span></td>' +
           '<td class="amount" style="font-size:12.5px;">' + fmt(li.amount) + '</td>' +
-          '<td class="amount" style="font-size:11.5px;color:var(--text-muted);">' + liPct + '%</td>' +
-          '<td><span style="font-size:11px;color:var(--text-muted);">part of ' + p.label + '</span></td>' +
+          
           '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
-          '<td><button onclick="togglePeriodPace(this,\'' + liId + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + paceText + '</button></td>' +
-          '<td><button onclick="togglePeriodStatus(this,\'' + liId + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:3px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.02em;">' + statusText + '</button></td>' +
+          '<td class="center"><button onclick="togglePeriodPace(this,\'' + liId + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:4px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.04em;text-transform:uppercase;min-width:80px;display:inline-block;text-align:center;">' + paceText + '</button></td>' +
+          '<td class="center"><button onclick="togglePeriodStatus(this,\'' + liId + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:4px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.04em;text-transform:uppercase;min-width:80px;display:inline-block;text-align:center;">' + statusText + '</button></td>' +
         '</tr>';
       }).join('');
       return headerRow + lineRows;
