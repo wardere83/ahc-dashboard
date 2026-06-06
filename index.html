@@ -374,6 +374,109 @@
     .budget-line.indirect-line .budget-line-label { color:var(--ccc-dark-gold); font-weight:700; }
     .budget-line.indirect-line .budget-line-amount { color:var(--ccc-dark-gold); }
 
+    /* ════════════ Budget Modification Request Form (interactive, mirrors Word doc) ════════════ */
+    .bmr-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-top:22px; }
+    .bmr-card-head { background:var(--ccc-dark-blue); padding:16px 22px; display:flex; align-items:center; justify-content:space-between; gap:14px; }
+    .bmr-title { font-family:var(--font-display); font-size:18px; font-weight:600; color:#fff; letter-spacing:-0.01em; }
+    .bmr-subtitle { font-size:12px; color:rgba(255,255,255,0.72); margin-top:3px; line-height:1.45; max-width:760px; }
+    .bmr-badge { background:#fff; color:var(--ccc-dark-blue); font-size:10.5px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; padding:4px 11px; border-radius:20px; flex-shrink:0; display:inline-flex; align-items:center; box-sizing:border-box; width:118px; overflow:hidden; white-space:nowrap; }
+    .bmr-ticker { display:inline-flex; flex-shrink:0; animation:bmr-ticker 9s linear infinite; }
+    .bmr-ticker-text { flex-shrink:0; padding-right:1.8em; }
+    @keyframes bmr-ticker { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .bmr-ticker { animation:none; } }
+    .bmr-card-body { padding:20px 22px 22px; }
+
+    .bmr-meta-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 18px; margin-bottom:20px; }
+    .bmr-field { display:flex; flex-direction:column; gap:5px; }
+    .bmr-field-label { font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-muted); }
+    .bmr-input, .bmr-textarea { font-family:var(--font-body); font-size:13px; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:var(--radius-sm); padding:8px 11px; width:100%; transition:border-color var(--transition),box-shadow var(--transition); }
+    .bmr-input:focus, .bmr-textarea:focus { outline:none; border-color:var(--ccc-dark-blue); box-shadow:0 0 0 3px rgba(0,107,103,0.12); }
+    .bmr-textarea { resize:vertical; min-height:34px; line-height:1.4; }
+    .bmr-input::placeholder, .bmr-textarea::placeholder { color:var(--text-muted); opacity:0.65; }
+
+    .bmr-section-intro { font-size:12.5px; color:var(--text-muted); margin:0 0 16px; line-height:1.5; }
+
+    /* Two distinctly separated year blocks — Year 1 (blue) and Year 2 (gold) */
+    .bmr-year-block { border:1px solid var(--border-strong); border-radius:var(--radius-md); overflow:hidden; margin-bottom:22px; }
+    .bmr-year-block--y1 { border-top:3px solid var(--ccc-dark-blue); }
+    .bmr-year-block--y2 { border-top:3px solid var(--ccc-dark-gold); }
+    .bmr-year-head { display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:13px 18px; background:var(--bg-surface-2); border-bottom:1px solid var(--border); }
+    .bmr-year-chip { font-size:10.5px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; padding:4px 11px; border-radius:20px; color:#fff; white-space:nowrap; }
+    .bmr-year-block--y1 .bmr-year-chip { background:var(--ccc-dark-blue); }
+    .bmr-year-block--y2 .bmr-year-chip { background:var(--ccc-dark-gold); }
+    .bmr-year-head-title { font-family:var(--font-display); font-size:17px; font-weight:600; color:var(--ccc-dark-blue); letter-spacing:-0.01em; }
+    .bmr-year-block--y2 .bmr-year-head-title { color:var(--ccc-dark-gold); }
+    [data-theme="dark"] .bmr-year-block--y1 .bmr-year-head-title { color:var(--accent-light); }
+    .bmr-year-head-dates { font-size:12px; color:var(--text-muted); }
+    .bmr-year-head-total { margin-left:auto; font-size:12.5px; color:var(--text-secondary); white-space:nowrap; }
+    .bmr-year-head-total strong { color:var(--ccc-dark-blue); font-weight:700; }
+    .bmr-year-block--y2 .bmr-year-head-total strong { color:var(--ccc-dark-gold); }
+    [data-theme="dark"] .bmr-year-block--y1 .bmr-year-head-total strong { color:var(--accent-light); }
+    .bmr-year-block .bmr-table-wrap { border:none; border-radius:0; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+    .bmr-table-wrap { border:1px solid var(--border); border-radius:var(--radius-md); overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .bmr-table { width:100%; border-collapse:collapse; min-width:920px; font-size:12.5px; }
+    .bmr-table thead th { background:var(--bg-surface-2); color:var(--ccc-dark-blue); font-size:10.5px; font-weight:700; letter-spacing:0.03em; text-transform:uppercase; text-align:left; padding:10px 10px; border-bottom:2px solid var(--border-strong); vertical-align:bottom; white-space:nowrap; }
+    [data-theme="dark"] .bmr-table thead th { color:var(--accent-light); }
+    .bmr-table thead th small { display:block; font-size:9px; font-weight:600; letter-spacing:0.02em; text-transform:none; color:var(--text-muted); margin-top:2px; }
+    .bmr-table tbody td { padding:7px 8px; border-bottom:1px solid var(--border); vertical-align:middle; }
+    .bmr-table tbody tr:hover td { background:var(--bg-surface-2); }
+    .bmr-code { font-weight:700; color:var(--ccc-dark-blue); white-space:nowrap; font-size:13px; }
+    [data-theme="dark"] .bmr-code { color:var(--accent-light); }
+    .bmr-code.indirect { color:var(--ccc-dark-gold); }
+    .bmr-cell-input { font-family:var(--font-body); font-size:12.5px; color:var(--text-primary); background:transparent; border:1px solid transparent; border-radius:var(--radius-sm); padding:6px 8px; width:100%; transition:border-color var(--transition),background var(--transition); }
+    .bmr-cell-input:hover { border-color:var(--border); }
+    .bmr-cell-input:focus { outline:none; border-color:var(--ccc-dark-blue); background:var(--bg-surface); box-shadow:0 0 0 2px rgba(0,107,103,0.12); }
+    .bmr-num { text-align:right; font-variant-numeric:tabular-nums; }
+    .bmr-money-cell { position:relative; }
+    .bmr-money-cell::before { content:'$'; position:absolute; left:9px; top:50%; transform:translateY(-50%); font-size:12px; color:var(--text-muted); pointer-events:none; }
+    .bmr-money-cell .bmr-cell-input { padding-left:18px; }
+    .bmr-balance { text-align:right; font-variant-numeric:tabular-nums; font-weight:700; color:var(--ccc-dark-blue); white-space:nowrap; padding-right:9px; }
+    [data-theme="dark"] .bmr-balance { color:var(--accent-light); }
+    .bmr-balance.neg { color:#c53030; }
+    .bmr-proposed { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; color:var(--text-secondary); white-space:nowrap; padding-right:9px; }
+    .bmr-proposed.modified { color:var(--ccc-dark-gold); font-weight:700; }
+    .bmr-col-narrow { width:70px; }
+    .bmr-col-money { width:120px; }
+    .bmr-col-desc { min-width:150px; }
+    .bmr-col-notes { min-width:170px; }
+    .bmr-table tfoot td { padding:11px 10px; border-top:2px solid var(--border-strong); background:var(--bg-surface-2); font-weight:700; font-size:13px; color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .bmr-table tfoot td { color:var(--accent-light); }
+    .bmr-table tfoot .bmr-total-num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; padding-right:9px; }
+
+    .bmr-summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:18px; }
+    .bmr-summary-card { background:var(--bg-surface); border:1px solid var(--border); border-radius:var(--radius-md); padding:13px 15px; position:relative; overflow:hidden; }
+    .bmr-summary-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--ccc-dark-blue); }
+    .bmr-summary-card.gold::before { background:var(--ccc-dark-gold); }
+    .bmr-summary-card.grey::before { background:var(--ccc-dark-grey); }
+    .bmr-summary-label { font-size:10.5px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--text-muted); margin-bottom:6px; }
+    .bmr-summary-value { font-family:var(--font-display); font-size:21px; font-weight:600; color:var(--ccc-dark-blue); line-height:1; }
+    [data-theme="dark"] .bmr-summary-value { color:var(--accent-light); }
+    .bmr-summary-sub { font-size:11px; color:var(--text-muted); margin-top:5px; line-height:1.35; }
+    .bmr-summary-value.ok { color:#1f9d57; }
+    .bmr-summary-value.warn { color:#c53030; }
+    .bmr-reconcile-pill { display:inline-flex; align-items:center; gap:5px; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:20px; margin-top:6px; }
+    .bmr-reconcile-pill.ok { background:rgba(31,157,87,0.12); color:#1f9d57; }
+    .bmr-reconcile-pill.warn { background:rgba(197,48,48,0.12); color:#c53030; }
+
+    .bmr-footer { display:flex; align-items:flex-end; justify-content:space-between; gap:18px; margin-top:20px; flex-wrap:wrap; }
+    .bmr-footer .bmr-field { flex:1; min-width:240px; }
+    .bmr-actions { display:flex; gap:10px; flex-wrap:wrap; }
+    .bmr-btn { font-family:var(--font-body); font-size:12.5px; font-weight:600; padding:9px 16px; border-radius:var(--radius-md); border:1px solid var(--border-strong); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; transition:all var(--transition); white-space:nowrap; }
+    .bmr-btn:hover { background:var(--bg-surface-2); border-color:var(--ccc-dark-blue); color:var(--ccc-dark-blue); }
+    .bmr-btn.primary { background:var(--ccc-dark-blue); border-color:var(--ccc-dark-blue); color:#fff; }
+    .bmr-btn.primary:hover { background:var(--ccc-darker-blue); color:#fff; }
+    .bmr-saved-note { font-size:11px; color:var(--text-muted); margin-top:10px; display:flex; align-items:center; gap:6px; }
+    @media (max-width:880px) {
+      .bmr-meta-grid { grid-template-columns:1fr; }
+      .bmr-summary { grid-template-columns:1fr 1fr; }
+    }
+    @media print {
+      .sidebar, .topbar, .mobile-nav, .bmr-actions { display:none !important; }
+      .main { margin-left:0 !important; }
+      .bmr-table-wrap { overflow:visible !important; }
+    }
+
     .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
     .timeline-row { display:flex; align-items:center; padding:10px 20px; border-bottom:1px solid var(--border); gap:12px; }
     .timeline-row:last-child { border-bottom:none; }
@@ -996,14 +1099,71 @@
         <div class="page-header"><h2 data-i18n="budget_title">Budget Breakdown</h2><p data-i18n="budget_sub">Total award $100,000 split across two budget years. Indirect line ($4,762) is 5% of direct costs ($95,238).</p></div>
 
         <div class="kpi-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">
-          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Total Award</div><div class="kpi-value blue">$100,000</div><div class="kpi-sub">Tier 2 award</div></div>
-          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Direct Costs</div><div class="kpi-value medium-blue">$95,238</div><div class="kpi-sub">95% of total</div></div>
-          <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Indirect (7000)</div><div class="kpi-value gold">$4,762</div><div class="kpi-sub">5% of direct</div></div>
-          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label">Y1 / Y2 Split</div><div class="kpi-value grey">63% / 37%</div><div class="kpi-sub">$62,627 / $37,373</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Total Award</div><div class="kpi-value blue" id="kpi-total-award">$100,000</div><div class="kpi-sub">Tier 2 award</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Direct Costs</div><div class="kpi-value medium-blue" id="kpi-direct">$95,238</div><div class="kpi-sub" id="kpi-direct-sub">95% of total</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Indirect (7000)</div><div class="kpi-value gold" id="kpi-indirect">$4,762</div><div class="kpi-sub" id="kpi-indirect-sub">5% of direct</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label">Y1 / Y2 Split</div><div class="kpi-value grey" id="kpi-split">63% / 37%</div><div class="kpi-sub" id="kpi-split-sub">$62,627 / $37,373</div></div>
         </div>
 
         <div class="budget-grid budget-grid--2col" id="budget-grid"></div>
+        <!-- INTERACTIVE BUDGET MODIFICATION REQUEST FORM (mirrors Word doc; auto-calculates & drives project totals) -->
+        <div class="bmr-card" id="budget-mod-form">
+          <div class="bmr-card-head">
+            <div>
+              <div class="bmr-title">Budget Modification Request Form</div>
+              <div class="bmr-subtitle">Please complete this form if you require substantial budget modifications, including the addition or elimination of expenditures. Enter a change in <strong>Expenditure Updates</strong> (+ to add, − to reduce) or revise <strong>Proposed Funds</strong>, Fund Balance and the Totals calculate automatically, and the Year 1 / Year 2 cards and project KPIs above update live.</div>
+            </div>
+            <span class="bmr-badge"><span class="bmr-ticker"><span class="bmr-ticker-text">CCCCO SUPPORTS YOUR JOURNEY!</span><span class="bmr-ticker-text" aria-hidden="true">CCCCO SUPPORTS YOUR JOURNEY!</span></span></span>
+          </div>
+          <div class="bmr-card-body">
+            <div class="bmr-meta-grid">
+              <label class="bmr-field"><span class="bmr-field-label">Community College District</span><input class="bmr-input" type="text" data-bmr-meta="district" placeholder="Antelope Valley CCD"></label>
+              <label class="bmr-field"><span class="bmr-field-label">Submitted by - Name &amp; Designated Grant Role</span><input class="bmr-input" type="text" data-bmr-meta="submittedBy" placeholder="Name, Project Lead"></label>
+              <label class="bmr-field"><span class="bmr-field-label">Your Email</span><input class="bmr-input" type="email" data-bmr-meta="email" placeholder="name@avc.edu"></label>
+              <label class="bmr-field"><span class="bmr-field-label">Submission Date</span><input class="bmr-input" type="date" data-bmr-meta="date"></label>
+            </div>
+
+            <p class="bmr-section-intro">Year 1 and Year 2 are listed separately below, enter each modification under the correct year. Each year's Proposed Funds match the Year 1 / Year 2 budget cards above.</p>
+
+            <!-- Two distinctly separated year blocks (Year 1 = blue, Year 2 = gold) rendered by JS -->
+            <div id="bmr-year-blocks"></div>
+
+            <div class="bmr-summary" id="bmr-summary">
+              <div class="bmr-summary-card">
+                <div class="bmr-summary-label">Total Award (Ceiling)</div>
+                <div class="bmr-summary-value" id="bmr-sum-award">$100,000</div>
+                <div class="bmr-summary-sub">Fixed CCCCO Tier 2 grant award</div>
+              </div>
+              <div class="bmr-summary-card">
+                <div class="bmr-summary-label">Modified Project Budget</div>
+                <div class="bmr-summary-value" id="bmr-sum-proposed">$100,000</div>
+                <div class="bmr-summary-sub">Both years, after modifications</div>
+              </div>
+              <div class="bmr-summary-card grey">
+                <div class="bmr-summary-label">Variance vs Award</div>
+                <div class="bmr-summary-value" id="bmr-sum-variance">$0</div>
+                <span class="bmr-reconcile-pill ok" id="bmr-sum-pill">Balanced</span>
+              </div>
+              <div class="bmr-summary-card gold">
+                <div class="bmr-summary-label">Modified Y1 / Y2</div>
+                <div class="bmr-summary-value" id="bmr-sum-year">$62,627 / $37,373</div>
+                <div class="bmr-summary-sub" id="bmr-sum-year-sub">Baseline $62,627 / $37,373</div>
+              </div>
+            </div>
+
+            <div class="bmr-footer">
+              <label class="bmr-field"><span class="bmr-field-label">Approved by</span><input class="bmr-input" type="text" data-bmr-meta="approvedBy" placeholder="Approver name &amp; title"></label>
+              <div class="bmr-actions">
+                <button type="button" class="bmr-btn" onclick="resetBudgetModForm()">Reset to Current Budget</button>
+                <button type="button" class="bmr-btn primary" onclick="window.print()">Print / Save PDF</button>
+              </div>
+            </div>
+            <div class="bmr-saved-note" id="bmr-saved-note">Entries are saved automatically in this browser.</div>
+          </div>
+        </div>
       </div>
+
+
 
       <!-- TIMELINE -->
       <div id="section-timeline" class="section">
@@ -2071,28 +2231,89 @@ function renderOutcomes() {
     </div>`).join('');
 }
 
+
+/* ════════════════════════════════════════════════════════════════
+   BUDGET MODEL — single source of truth for the Budget Breakdown.
+   The Year 1 / Year 2 cards, the KPI cards, the Timeline, and the
+   interactive Budget Modification Request Form all read & write this
+   one model. Each line keeps its baseline Y1/Y2 split so that when a
+   modification changes a line's Proposed Funds, the new amount is
+   redistributed across the two years by the original ratio and every
+   downstream total updates live.
+════════════════════════════════════════════════════════════════ */
+const BUDGET_BASELINE = [
+  { code:'1000', label:'Instructional Salaries',     y1:30720, y2:15360 },
+  { code:'3000', label:'Employee Benefits',          y1: 6666, y2: 3333 },
+  { code:'4000', label:'Supplies & Materials',       y1:  759, y2:  400 },
+  { code:'5000', label:'Other Operating & Services', y1:21500, y2:16500 },
+  { code:'7000', label:'Indirect',                   y1: 2982, y2: 1780 }
+];
+// Working copy that modifications mutate (deep clone of the baseline).
+let BUDGET_MODEL = BUDGET_BASELINE.map(r => ({ ...r }));
+const codeProposed = r => r.y1 + r.y2;            // combined per-line budget
+const budgetTotal  = () => BUDGET_MODEL.reduce((s,r) => s + codeProposed(r), 0);
+
+// Baseline amount for a given object code and project year ('y1' | 'y2').
+const baselineYear = (code, yk) => { const b = BUDGET_BASELINE.find(x => x.code === code); return b ? b[yk] : 0; };
+
+// Resolve a line's modified proposed funds from what was typed in Expenditure
+// Updates, relative to the current (baseline) funds:
+//   "+5000"  -> ADD to current funds            (base + 5000)
+//   "-3000"  -> SUBTRACT from current funds      (base - 3000)
+//   "12000"  -> set as the new amount (replace)  (12000)
+//   blank    -> no change                        (base)
+function modifiedFromUpdates(base, raw) {
+  if (raw == null) return base;
+  const s = String(raw).trim();
+  if (s === '') return base;
+  const amt = parseMoney(s);
+  return /^[+\-−]/.test(s) ? base + amt : amt;   // leading sign = delta, else replacement
+}
+
+// Rebuild the whole model from the per-year modification requests.
+//   getRawUpdate(code, yearKey) -> string | null   (the raw Expenditure Updates entry)
+function applyBudgetMods(getRawUpdate) {
+  BUDGET_MODEL = BUDGET_BASELINE.map(r => ({ ...r }));
+  BUDGET_BASELINE.forEach(bl => {
+    const cur = BUDGET_MODEL.find(x => x.code === bl.code);
+    ['y1', 'y2'].forEach(yk => {
+      cur[yk] = modifiedFromUpdates(bl[yk], getRawUpdate(bl.code, yk));
+    });
+  });
+  districts[0].yearlyBudget = {
+    y1: BUDGET_MODEL.reduce((s, x) => s + x.y1, 0),
+    y2: BUDGET_MODEL.reduce((s, x) => s + x.y2, 0)
+  };
+}
+
+/* ════════════ BUDGET KPI CARDS — driven by BUDGET_MODEL ════════════ */
+function renderBudgetKPIs() {
+  const d = districts[0];
+  const total = budgetTotal();
+  const indirect = codeProposed(BUDGET_MODEL.find(r => r.code === '7000') || { y1:0, y2:0 });
+  const direct = total - indirect;
+  const y1 = BUDGET_MODEL.reduce((s,x) => s + x.y1, 0);
+  const y2 = BUDGET_MODEL.reduce((s,x) => s + x.y2, 0);
+  const pct = (a,b) => b > 0 ? Math.round((a / b) * 100) : 0;
+  const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  set('kpi-total-award', fmt(d.funding));
+  set('kpi-direct', fmt(direct));
+  set('kpi-direct-sub', `${pct(direct, total)}% of budget`);
+  set('kpi-indirect', fmt(indirect));
+  set('kpi-indirect-sub', `${pct(indirect, direct)}% of direct`);
+  set('kpi-split', `${pct(y1, total)}% / ${pct(y2, total)}%`);
+  set('kpi-split-sub', `${fmt(y1)} / ${fmt(y2)}`);
+}
+
 /* ════════════ BUDGET — Year 1 / Year 2 cards with object-code lines, share bars, and a note ════════════ */
 function renderBudget() {
+  renderBudgetKPIs();
   const grid = document.getElementById('budget-grid');
   if (!grid) return;
-  const d = districts[0];
-  // AHC budget line items per project year (Y1 = FY 2025-26 + FY 2026-27, Y2 = FY 2027-28)
-  const Y1 = [
-    { code:'1000', label:'1000 — Instructional Salaries',   amount: 30720 },
-    { code:'3000', label:'3000 — Employee Benefits',        amount:  6666 },
-    { code:'4000', label:'4000 — Supplies & Materials',     amount:   759 },
-    { code:'5000', label:'5000 — Other Operating & Services', amount: 21500 },
-    { code:'7000', label:'7000 — Indirect',                 amount:  2982 }
-  ];
-  const Y2 = [
-    { code:'1000', label:'1000 — Instructional Salaries',   amount: 15360 },
-    { code:'3000', label:'3000 — Employee Benefits',        amount:  3333 },
-    { code:'4000', label:'4000 — Supplies & Materials',     amount:   400 },
-    { code:'5000', label:'5000 — Other Operating & Services', amount: 16500 },
-    { code:'7000', label:'7000 — Indirect',                 amount:  1780 }
-  ];
-  const Y1_TOTAL = d.yearlyBudget.y1;
-  const Y2_TOTAL = d.yearlyBudget.y2;
+  const Y1 = BUDGET_MODEL.map(r => ({ code:r.code, label:`${r.code} - ${r.label}`, amount:r.y1 }));
+  const Y2 = BUDGET_MODEL.map(r => ({ code:r.code, label:`${r.code} - ${r.label}`, amount:r.y2 }));
+  const Y1_TOTAL = Y1.reduce((s,r) => s + r.amount, 0);
+  const Y2_TOTAL = Y2.reduce((s,r) => s + r.amount, 0);
   const Y1_NOTE = 'Y1 (18 months) covers framework development, the first DRS training cohort, and the launch of the Faculty Mentorship Model. The 5000 line carries the mentorship-development and equity-specialist contracts.';
   const Y2_NOTE = 'Y2 (12 months) emphasizes mentees in full training cycle, dissemination travel, and a second DRS cohort. The 5000 line stays heavy with the equity-specialist contract continuing through close-out.';
   const renderLines = (rows, total) => rows.map(r => {
@@ -2114,6 +2335,243 @@ function renderBudget() {
       <div class="budget-lines-wrap">${renderLines(Y2, Y2_TOTAL)}</div>
       <div class="budget-note">${Y2_NOTE}</div>
     </div>`;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   INTERACTIVE BUDGET MODIFICATION REQUEST FORM
+   - Mirrors the District's Word form (object-code rows + Totals).
+   - Fund Balance auto-calculates (Proposed − Actuals).
+   - Column Totals auto-sum.
+   - Editing Proposed Funds rewrites BUDGET_MODEL and re-renders the
+     Year 1 / Year 2 cards, the KPI cards and the Timeline live.
+   - All entries persist in localStorage.
+════════════════════════════════════════════════════════════════ */
+const BMR_STORE = 'avc_budget_mod_form_v1';
+const parseMoney = s => { const n = parseFloat(String(s).replace(/−/g, '-').replace(/[^0-9.\-]/g, '')); return isFinite(n) ? n : 0; };
+
+function loadBmrState() {
+  try { return JSON.parse(localStorage.getItem(BMR_STORE)) || {}; } catch(e) { return {}; }
+}
+function saveBmrState(state) {
+  try { localStorage.setItem(BMR_STORE, JSON.stringify(state)); } catch(e) {}
+}
+
+// The project year the form is currently showing ('y1' | 'y2').
+const yearMeta = { y1:{ label:'Year 1', dates:'Jan 2026 – Jun 2027' }, y2:{ label:'Year 2', dates:'Jul 2027 – Jun 2028' } };
+// Pull the saved modification rows for one year ({} if none).
+const yearRows = (state, yk) => (state.years && state.years[yk] && state.years[yk].rows) || {};
+
+// One distinctly-styled, clearly-labelled block per project year.
+function yearBlockHTML(yk, rowState) {
+  const meta = yearMeta[yk];
+  const moneyVal = v => (v != null ? Number(v).toLocaleString() : '');
+  const rows = BUDGET_BASELINE.map(r => {
+    const rs = rowState[r.code] || {};
+    const isIndirect = r.code === '7000';
+    const baseAmt = r[yk];   // this year's current proposed funds (matches the Y1/Y2 card)
+    return `
+      <tr data-code="${r.code}" data-year="${yk}">
+        <td><span class="bmr-code${isIndirect ? ' indirect' : ''}">${r.code}</span></td>
+        <td><input class="bmr-cell-input" type="text" data-bmr="description" value="${rs.description != null ? String(rs.description).replace(/"/g,'&quot;') : ''}" placeholder="${r.label}"></td>
+        <td class="bmr-proposed bmr-num" data-bmr-proposed>${fmt(baseAmt)}</td>
+        <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="actuals" value="${moneyVal(rs.actuals)}" placeholder="0"></td>
+        <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="balance" value="${moneyVal(rs.balance)}" placeholder="0"></td>
+        <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="projections" value="${moneyVal(rs.projections)}" placeholder="0"></td>
+        <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="updates" value="${rs.updates != null ? String(rs.updates).replace(/"/g,'&quot;') : ''}" placeholder="+ / − or new amt"></td>
+      </tr>`;
+  }).join('');
+  return `
+    <div class="bmr-year-block bmr-year-block--${yk}" data-year="${yk}">
+      <div class="bmr-year-head">
+        <span class="bmr-year-chip">${meta.label}</span>
+        <span class="bmr-year-head-title">${meta.label} Budget Modification</span>
+        <span class="bmr-year-head-dates">${meta.dates}</span>
+        <span class="bmr-year-head-total">Modified budget: <strong data-bmr-yeartotal>$0</strong></span>
+      </div>
+      <div class="bmr-table-wrap">
+        <table class="bmr-table">
+          <thead>
+            <tr>
+              <th class="bmr-col-narrow">Expenditure Type<small>per original grant submission</small></th>
+              <th class="bmr-col-desc">Description</th>
+              <th class="bmr-col-money bmr-num">Proposed Funds<small>current → modified</small></th>
+              <th class="bmr-col-money bmr-num">Actuals<small>spent to date</small></th>
+              <th class="bmr-col-money bmr-num">Fund Balance<small>entered by district</small></th>
+              <th class="bmr-col-money bmr-num">Projections<small>to be spent by Jun 2028</small></th>
+              <th class="bmr-col-money bmr-num">Expenditure Updates<small>+ add / − reduce, or new amount</small></th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2">${meta.label} Totals:</td>
+              <td class="bmr-total-num" data-bmr-total="proposed">$0</td>
+              <td class="bmr-total-num" data-bmr-total="actuals">$0</td>
+              <td class="bmr-total-num" data-bmr-total="balance">$0</td>
+              <td class="bmr-total-num" data-bmr-total="projections">$0</td>
+              <td class="bmr-total-num" data-bmr-total="updates">+$0</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>`;
+}
+
+function renderBudgetModForm() {
+  const wrap = document.getElementById('bmr-year-blocks');
+  if (!wrap) return;
+  const state = loadBmrState();
+  wrap.innerHTML = ['y1', 'y2'].map(yk => yearBlockHTML(yk, yearRows(state, yk))).join('');
+
+  // Restore meta fields
+  document.querySelectorAll('[data-bmr-meta]').forEach(el => {
+    const k = el.getAttribute('data-bmr-meta');
+    if (state.meta && state.meta[k] != null) el.value = state.meta[k];
+    if (k === 'district' && !el.value) el.value = districts[0].name;
+  });
+
+  // Wire row inputs (both year blocks)
+  wrap.querySelectorAll('input[data-bmr]').forEach(inp => {
+    inp.addEventListener('input', onBmrInput);
+    inp.addEventListener('blur', onBmrBlur);
+  });
+  document.querySelectorAll('[data-bmr-meta]').forEach(el => {
+    if (el.dataset.bmrBound) return;      // meta inputs are static — bind once
+    el.dataset.bmrBound = '1';
+    el.addEventListener('input', () => persistBmr());
+  });
+
+  bmrRecalc();
+}
+
+function onBmrInput(e) {
+  const field = e.target.getAttribute('data-bmr');
+  persistBmr();
+  // A modification (new proposed amount in Expenditure Updates) re-flows through
+  // the Year 1 / Year 2 cards, KPIs and Timeline for the whole project.
+  if (field === 'updates') recomputeBudgetFromState();
+  bmrRecalc();
+}
+
+function onBmrBlur(e) {
+  const field = e.target.getAttribute('data-bmr');
+  const s = e.target.value.trim();
+  if (field === 'updates') {
+    // Preserve the leading +/− sign (it means add/subtract); just tidy the number.
+    if (s === '') { e.target.value = ''; return; }
+    const sign = /^\+/.test(s) ? '+' : (/^[-−]/.test(s) ? '−' : '');
+    e.target.value = sign + Number(Math.abs(parseMoney(s))).toLocaleString();
+    return;
+  }
+  if (['actuals','balance','projections'].includes(field)) {
+    // Keep blank cells blank; only tidy formatting when a value was entered.
+    if (s === '') { e.target.value = ''; return; }
+    e.target.value = Number(parseMoney(s)).toLocaleString();
+  }
+}
+
+// Recompute the live model from saved per-year modifications, then refresh the
+// Budget cards/KPIs and the Timeline so the whole project reflects the change.
+function recomputeBudgetFromState() {
+  applySavedBudgetMods();
+  renderBudget();
+  renderTimeline();
+}
+
+function bmrRecalc() {
+  const setText = (el, v) => { if (el) el.textContent = v; };
+  const yearTotals = { y1:0, y2:0 };
+  document.querySelectorAll('.bmr-year-block').forEach(block => {
+    const yk = block.getAttribute('data-year');
+    let tProp = 0, tAct = 0, tBal = 0, tProj = 0, tBase = 0, balTouched = 0;
+    block.querySelectorAll('tbody tr').forEach(tr => {
+      const code = tr.getAttribute('data-code');
+      const raw = f => ((tr.querySelector(`[data-bmr="${f}"]`) || {}).value || '').trim();
+      const base = baselineYear(code, yk);                 // current proposed funds (this year)
+      const modified = modifiedFromUpdates(base, raw('updates'));  // +add / −reduce / replace
+      const actuals = parseMoney(raw('actuals'));
+      const proj = parseMoney(raw('projections'));
+      const balance = parseMoney(raw('balance'));          // Fund Balance entered by the district
+      const pEl = tr.querySelector('[data-bmr-proposed]');
+      if (pEl) { pEl.textContent = fmt(modified); pEl.classList.toggle('modified', raw('updates') !== ''); }
+      tProp += modified; tAct += actuals; tProj += proj; tBase += base;
+      if (raw('balance') !== '') { tBal += balance; balTouched++; }
+    });
+    setText(block.querySelector('[data-bmr-total="proposed"]'), fmt(tProp));
+    setText(block.querySelector('[data-bmr-total="actuals"]'), fmt(tAct));
+    setText(block.querySelector('[data-bmr-total="balance"]'), balTouched ? fmt(tBal) : '—');
+    setText(block.querySelector('[data-bmr-total="projections"]'), fmt(tProj));
+    const net = tProp - tBase;
+    setText(block.querySelector('[data-bmr-total="updates"]'), (net >= 0 ? '+' : '−') + fmt(Math.abs(net)));
+    setText(block.querySelector('[data-bmr-yeartotal]'), fmt(tProp));
+    yearTotals[yk] = tProp;
+  });
+
+  // Reconciliation summary — whole project vs the fixed award ceiling.
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const award = districts[0].funding;
+  const modifiedBudget = budgetTotal();
+  const variance = modifiedBudget - award;
+  set('bmr-sum-award', fmt(award));
+  set('bmr-sum-proposed', fmt(modifiedBudget));
+  const varEl = document.getElementById('bmr-sum-variance');
+  if (varEl) { varEl.textContent = (variance >= 0 ? '+' : '−') + fmt(Math.abs(variance)); varEl.className = 'bmr-summary-value ' + (Math.round(variance) === 0 ? 'ok' : 'warn'); }
+  const pill = document.getElementById('bmr-sum-pill');
+  if (pill) {
+    const balanced = Math.round(variance) === 0;
+    pill.className = 'bmr-reconcile-pill ' + (balanced ? 'ok' : 'warn');
+    pill.textContent = balanced ? 'Balanced to award' : (variance > 0 ? 'Over award' : 'Under award');
+  }
+  set('bmr-sum-year', `${fmt(yearTotals.y1)} / ${fmt(yearTotals.y2)}`);
+  const y1base = BUDGET_BASELINE.reduce((s, r) => s + r.y1, 0);
+  const y2base = BUDGET_BASELINE.reduce((s, r) => s + r.y2, 0);
+  set('bmr-sum-year-sub', `Baseline ${fmt(y1base)} / ${fmt(y2base)}`);
+}
+
+function persistBmr() {
+  const state = loadBmrState();
+  state.meta = state.meta || {};
+  document.querySelectorAll('[data-bmr-meta]').forEach(el => { state.meta[el.getAttribute('data-bmr-meta')] = el.value; });
+  state.years = { y1:{ rows:{} }, y2:{ rows:{} } };
+  document.querySelectorAll('.bmr-year-block').forEach(block => {
+    const yk = block.getAttribute('data-year');
+    const rows = {};
+    block.querySelectorAll('tbody tr').forEach(tr => {
+      const code = tr.getAttribute('data-code');
+      const g = f => { const el = tr.querySelector(`[data-bmr="${f}"]`); return el ? el.value : ''; };
+      rows[code] = {
+        description: g('description'),
+        actuals: g('actuals').trim() === '' ? null : parseMoney(g('actuals')),
+        balance: g('balance').trim() === '' ? null : parseMoney(g('balance')),   // entered by district
+        projections: g('projections').trim() === '' ? null : parseMoney(g('projections')),
+        updates: g('updates').trim() === '' ? null : g('updates').trim()   // raw entry (may be +/− signed)
+      };
+    });
+    state.years[yk].rows = rows;
+  });
+  saveBmrState(state);
+}
+
+// On load, fold any previously-saved modifications back into the live model
+// so the Year 1 / Year 2 cards and KPIs reflect them before first render.
+function applySavedBudgetMods() {
+  const state = loadBmrState();
+  applyBudgetMods((code, yk) => {
+    const r = yearRows(state, yk)[code];
+    return (r && r.updates != null) ? r.updates : null;
+  });
+}
+
+function resetBudgetModForm() {
+  localStorage.removeItem(BMR_STORE);
+  BUDGET_MODEL = BUDGET_BASELINE.map(r => ({ ...r }));
+  districts[0].yearlyBudget = {
+    y1: BUDGET_MODEL.reduce((s,x) => s + x.y1, 0),
+    y2: BUDGET_MODEL.reduce((s,x) => s + x.y2, 0)
+  };
+  renderBudget();
+  renderTimeline();
+  renderBudgetModForm();
 }
 
 /* ════════════ TIMELINE — 2 years ════════════ */
@@ -2526,12 +2984,14 @@ function renderAll() {
   renderTimeline();
   renderContacts();
   renderSpendDown();
+  renderBudgetModForm();
   // Re-init charts so legend labels translate alongside the rest of the UI
   if (typeof Chart !== 'undefined') initCharts();
 }
 
 /* ════════════ INIT ════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+  applySavedBudgetMods();   // fold saved budget modifications into the model first
   renderAll();
   requestAnimationFrame(() => initCharts());
   // Restore the user's last active tab from URL hash or localStorage
