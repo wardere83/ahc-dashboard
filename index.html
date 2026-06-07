@@ -62,7 +62,7 @@
       --bg:#F3F6F9; --bg-surface:#FFFFFF; --bg-surface-2:#EEF2F6; --bg-card:#FFFFFF;
       --border:rgba(0,62,90,0.12); --border-strong:rgba(0,62,90,0.22);
       --text-primary:#1A1F2E; --text-secondary:#555759; --text-muted:#717271; --text-on-dark:#FFFFFF; --text-on-gold:#003E5A;
-      --accent:#003E5A; --accent-hover:#002A3A; --accent-secondary:#0033A0; --accent-light:#3B7EB9;
+      --accent:#003E5A; --accent-hover:#002A3A; --accent-secondary:#0033A0; --accent-light:#3B7EB9; --fig-color:var(--ccc-dark-blue);
       --accent-gold:#FFCD00; --accent-dark-gold:#E5B800;
       --tier1-color:#003E5A; --tier1-bg:rgba(0,62,90,0.08);
       --tier2-color:#0033A0; --tier2-bg:rgba(0,51,160,0.08);
@@ -80,7 +80,7 @@
       --bg:#0D1526; --bg-surface:#131D35; --bg-surface-2:#192340; --bg-card:#192340;
       --border:rgba(64,180,229,0.15); --border-strong:rgba(64,180,229,0.28);
       --text-primary:#E8EDF8; --text-secondary:#A8B4CC; --text-muted:#6B7A99; --text-on-dark:#FFFFFF;
-      --accent:#40B4E5; --accent-hover:#5EC5F0; --accent-light:#40B4E5;
+      --accent:#40B4E5; --accent-hover:#5EC5F0; --accent-light:#40B4E5; --fig-color:var(--accent-light);
       --tier1-color:#40B4E5; --tier1-bg:rgba(64,180,229,0.12);
       --tier2-color:#5EC5F0; --tier2-bg:rgba(94,197,240,0.10);
       --lift-color:#FFCD00; --lift-bg:rgba(255,205,0,0.14);
@@ -181,6 +181,7 @@
     .kpi-value.medium-blue { color:var(--ccc-medium-blue); }
     .kpi-value.gold { color:var(--ccc-dark-gold); }
     .kpi-value.grey { color:var(--ccc-dark-grey); }
+    [data-theme="dark"] .kpi-value.grey { color:var(--text-secondary); }
     .kpi-value.green { color:var(--success); }
     [data-theme="dark"] .kpi-value.blue { color:var(--accent-light); }
     [data-theme="dark"] .kpi-value.medium-blue { color:#5EC5F0; }
@@ -464,6 +465,7 @@
     .bmr-actions { display:flex; gap:10px; flex-wrap:wrap; }
     .bmr-btn { font-family:var(--font-body); font-size:12.5px; font-weight:600; padding:9px 16px; border-radius:var(--radius-md); border:1px solid var(--border-strong); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; transition:all var(--transition); white-space:nowrap; }
     .bmr-btn:hover { background:var(--bg-surface-2); border-color:var(--ccc-dark-blue); color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .bmr-btn:hover { color:var(--accent-light); border-color:var(--accent-light); }
     .bmr-btn.primary { background:var(--ccc-dark-blue); border-color:var(--ccc-dark-blue); color:#fff; }
     .bmr-btn.primary:hover { background:var(--ccc-darker-blue); color:#fff; }
     .bmr-saved-note { font-size:11px; color:var(--text-muted); margin-top:10px; display:flex; align-items:center; gap:6px; }
@@ -1224,7 +1226,7 @@
 
       <!-- CONTACTS -->
       <div id="section-contacts" class="section">
-        <div class="page-header" style="margin-bottom:14px;"><h2 data-i18n="contacts_title" style="font-size:clamp(11px, 3.4vw, 18px);font-weight:700;color:var(--ccc-dark-blue);letter-spacing:-0.012em;line-height:1.2;margin:0;white-space:nowrap;">Project Contacts</h2></div>
+        <div class="page-header" style="margin-bottom:14px;"><h2 data-i18n="contacts_title" style="font-size:clamp(11px, 3.4vw, 18px);font-weight:700;color:var(--fig-color);letter-spacing:-0.012em;line-height:1.2;margin:0;white-space:nowrap;">Project Contacts</h2></div>
         <div class="card mb-24">
           <div class="card-header" style="background:var(--ccc-dark-blue);">
             <div class="card-title" style="color:#fff;" data-i18n="meta_monitor">Grant Monitor</div>
@@ -1234,7 +1236,7 @@
             <div style="display:flex;flex-direction:column;gap:2px;">
               <div style="font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--text-primary);line-height:1.35;">Bulle Consulting</div>
               <div style="font-size:16px;color:var(--text-secondary);line-height:1.35;">Grant Monitor</div>
-              <div style="font-size:16px;line-height:1.35;"><a href="mailto:admin@bulleconsulting.com" style="color:var(--ccc-dark-blue);text-decoration:none;font-weight:500;">admin@bulleconsulting.com</a></div>
+              <div style="font-size:16px;line-height:1.35;"><a href="mailto:admin@bulleconsulting.com" style="color:var(--fig-color);text-decoration:none;font-weight:500;">admin@bulleconsulting.com</a></div>
             </div>
           </div>
         </div>
@@ -2944,7 +2946,7 @@ function renderSpendDown() {
       // Header summary row: read-only totals for the year, no buttons (only line items carry Pace/Status)
       const headerRow =
         '<tr class="spend-year-row" data-year-key="' + p.id + '">' +
-          '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:12px;min-width:140px;"><div style="font-family:var(--font-display);font-size:13.5px;font-weight:700;color:var(--ccc-dark-blue);letter-spacing:-0.01em;line-height:1.2;">' + p.label + '</div><div style="font-size:10.5px;color:var(--text-muted);letter-spacing:0.01em;margin-top:2px;">' + p.dates + '</div></td>' +
+          '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:12px;min-width:140px;"><div style="font-family:var(--font-display);font-size:13.5px;font-weight:700;color:var(--fig-color);letter-spacing:-0.01em;line-height:1.2;">' + p.label + '</div><div style="font-size:10.5px;color:var(--text-muted);letter-spacing:0.01em;margin-top:2px;">' + p.dates + '</div></td>' +
           '<td class="amount" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
           '<td colspan="3" class="center" style="font-size:10.5px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;background:var(--bg-surface-2);">Year summary &middot; line items below</td>' +
         '</tr>';
