@@ -700,7 +700,11 @@
       .content { padding-top:56px; }
       .main { padding-bottom:0; height:100dvh; }
     }
-  </style>
+      /* Dark-mode legibility: brand dark-blue text kept readable on dark surfaces */
+    [data-theme="dark"] .contacts-subhead { color:var(--accent-light); }
+    [data-theme="dark"] .bmr-btn:not(.primary):hover { color:var(--accent-light); border-color:var(--accent-light); }
+    [data-theme="dark"] .budget-card-total { color:var(--accent-light); }
+</style>
 </head>
 <body>
 
