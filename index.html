@@ -613,6 +613,8 @@
     .a11y-stamp:hover { color:var(--ccc-medium-blue); border-color:var(--ccc-medium-blue); }
     .a11y-stamp:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:2px; }
     .a11y-stamp-label { display:inline-block; line-height:1; }
+    [data-theme="dark"] .a11y-stamp { color:var(--text-secondary); }
+    [data-theme="dark"] .a11y-stamp:hover { color:var(--accent-light); border-color:var(--accent-light); }
     /* Modal overlay — strictly fixed-position so it doesn't shift any layout. */
     .a11y-modal { position:fixed; inset:0; z-index:1000; display:flex; align-items:center; justify-content:center; padding:24px; }
     .a11y-modal[hidden] { display:none; }
