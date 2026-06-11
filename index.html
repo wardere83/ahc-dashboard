@@ -2360,6 +2360,32 @@ function saveBmrState(state) {
   try { localStorage.setItem(BMR_STORE, JSON.stringify(state)); } catch(e) {}
 }
 
+/* ── BMR live sync: publish this district's Budget Modification data to the
+      shared feed consumed by the EEO Data Intelligence "BMR Updates" tab ── */
+const BMR_SYNC_URL = '';   // bmr-sync Worker URL; publishing is disabled while empty
+const BMR_SYNC_ID = 'ahc';
+const BMR_SYNC_NAME = 'Allan Hancock Joint CCD';
+let bmrSyncTimer = null;
+function publishBmr() {
+  if (!BMR_SYNC_URL) return;
+  clearTimeout(bmrSyncTimer);
+  bmrSyncTimer = setTimeout(() => {
+    const payload = {
+      district: BMR_SYNC_ID,
+      name: BMR_SYNC_NAME,
+      award: districts[0].funding,
+      baseline: BUDGET_BASELINE,
+      model: BUDGET_MODEL,
+      state: loadBmrState()
+    };
+    fetch(BMR_SYNC_URL + '/bmr/' + BMR_SYNC_ID, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  }, 1200);
+}
+
 // The project year the form is currently showing ('y1' | 'y2').
 const yearMeta = { y1:{ label:'Year 1', dates:'Jan 2026 – Jun 2027' }, y2:{ label:'Year 2', dates:'Jul 2027 – Jun 2028' } };
 // Pull the saved modification rows for one year ({} if none).
@@ -2554,6 +2580,7 @@ function persistBmr() {
     state.years[yk].rows = rows;
   });
   saveBmrState(state);
+  publishBmr();
 }
 
 // On load, fold any previously-saved modifications back into the live model
