@@ -479,6 +479,32 @@
       .bmr-table-wrap { overflow:visible !important; }
     }
 
+    /* ════════════ Forms tab + scrollable sidebar nav ════════════ */
+    .forms-list { display:flex; flex-direction:column; gap:12px; }
+    .forms-item { display:flex; align-items:center; gap:14px; text-align:left; width:100%; background:var(--bg-card); border:1px solid var(--border); border-left:3px solid var(--ccc-dark-blue); border-radius:var(--radius-lg); padding:16px 18px; cursor:pointer; transition:box-shadow var(--transition),transform var(--transition),border-color var(--transition); box-shadow:var(--shadow-sm); }
+    .forms-item:hover { box-shadow:var(--shadow-md); border-left-color:var(--ccc-dark-gold); transform:translateY(-1px); }
+    .forms-item-ic { width:42px; height:42px; flex-shrink:0; border-radius:10px; background:var(--bg-surface-2); color:var(--ccc-dark-blue); display:flex; align-items:center; justify-content:center; }
+    [data-theme="dark"] .forms-item-ic { color:var(--accent-light); }
+    .forms-item-main { flex:1; min-width:0; }
+    .forms-item-title { font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .forms-item-title { color:var(--accent-light); }
+    .forms-item-desc { font-size:12.5px; color:var(--text-muted); margin-top:3px; line-height:1.45; }
+    .forms-item-go { font-size:13px; font-weight:700; color:var(--ccc-dark-gold); white-space:nowrap; flex-shrink:0; }
+    .forms-back { margin-bottom:14px; }
+    .grform-section-title { font-size:11px; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; color:var(--ccc-dark-blue); margin:20px 0 8px; }
+    [data-theme="dark"] .grform-section-title { color:var(--accent-light); }
+    .grform-prompt { font-size:12.5px; color:var(--text-muted); margin:0 0 8px; line-height:1.5; max-width:820px; }
+    .grform-note { display:flex; gap:14px; align-items:center; flex-wrap:wrap; justify-content:space-between; border:1px solid var(--border); border-left:3px solid var(--ccc-gold); background:var(--bg-surface); border-radius:var(--radius-md); padding:12px 16px; margin-top:20px; }
+    .grform-note p { margin:0; font-size:12.5px; color:var(--text-secondary); line-height:1.5; max-width:720px; }
+    .grform-cooffice { margin-top:20px; border:1px dashed var(--border-strong); border-radius:var(--radius-md); background:var(--bg-surface-2); padding:14px 16px; }
+    .grform-cooffice-title { font-size:11px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); margin-bottom:10px; }
+    .grform-rowdel { width:26px; height:26px; border-radius:6px; border:1px solid var(--border-strong); background:var(--bg-surface); color:var(--text-muted); cursor:pointer; font-size:15px; line-height:1; }
+    .grform-rowdel:hover { border-color:#c53030; color:#c53030; }
+    .sidebar-nav-scroll { flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,0.25) transparent; }
+    .sidebar-nav-scroll::-webkit-scrollbar { width:6px; }
+    .sidebar-nav-scroll::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.2); border-radius:3px; }
+    .sidebar > .sidebar-footer { margin-top:0; }
+
     .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
     .timeline-row { display:flex; align-items:center; padding:10px 20px; border-bottom:1px solid var(--border); gap:12px; }
     .timeline-row:last-child { border-bottom:none; }
@@ -724,6 +750,7 @@
       <div class="logo-attribution">Administered by CCCCO</div>
     </div>
 
+    <div class="sidebar-nav-scroll">
     <div class="sidebar-section-label" data-i18n="sb_dashboard">Dashboard</div>
     <button class="nav-item active" onclick="showSection('overview',this)" data-i18n="nav_overview">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
@@ -760,6 +787,12 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       Spend-Down Monitor
     </button>
+    <div class="sidebar-section-label">District Forms</div>
+    <button class="nav-item" onclick="showSection('forms',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Forms
+    </button>
+    </div><!-- /sidebar-nav-scroll -->
     <div class="sidebar-footer">
       <div class="sidebar-footer-label">Administered by</div>
       <div class="sidebar-footer-val">California Community Colleges Chancellor&rsquo;s Office</div>
@@ -1283,6 +1316,77 @@
         </div>
       </div>
 
+      <!-- FORMS TAB -->
+      <div id="section-forms" class="section">
+        <div class="page-header"><h2>Forms</h2><p>District request forms for the EEO IBP Grant. Click a form to open and complete it.</p></div>
+
+        <div class="forms-list" id="forms-list">
+          <button type="button" class="forms-item" onclick="openForm('grant')">
+            <span class="forms-item-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+            <span class="forms-item-main"><span class="forms-item-title">Grant Modification Request Form</span><span class="forms-item-desc">For substantial changes to your proposed grant workplan, activities, and/or outcomes.</span></span>
+            <span class="forms-item-go">Open ›</span>
+          </button>
+          <button type="button" class="forms-item" onclick="showSection('budget')">
+            <span class="forms-item-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+            <span class="forms-item-main"><span class="forms-item-title">Budget Modification Request Form</span><span class="forms-item-desc">For substantial budget changes, including adding or eliminating expenditures. Opens in the Budget Breakdown tab.</span></span>
+            <span class="forms-item-go">Open ›</span>
+          </button>
+        </div>
+
+        <div id="grant-mod-wrap" style="display:none;">
+          <button type="button" class="bmr-btn forms-back" onclick="backToForms()">‹ Back to Forms</button>
+          <div class="bmr-card" id="grant-mod-form">
+            <div class="bmr-card-head">
+              <div>
+                <div class="bmr-title">Grant Modification Request Form</div>
+                <div class="bmr-subtitle">Please complete this form if you require substantial modifications to your original proposed grant workplan, activities, and/or outcomes.</div>
+              </div>
+            </div>
+            <div class="bmr-card-body">
+              <div class="bmr-meta-grid">
+                <label class="bmr-field"><span class="bmr-field-label">Community College District</span><input class="bmr-input" type="text" data-gmr="district" placeholder="District name"></label>
+                <label class="bmr-field"><span class="bmr-field-label">Submitted by - Name &amp; Designated Grant Role</span><input class="bmr-input" type="text" data-gmr="submittedBy" placeholder="Name, Grant Role"></label>
+                <label class="bmr-field"><span class="bmr-field-label">Your Email</span><input class="bmr-input" type="email" data-gmr="email" placeholder="name@district.edu"></label>
+                <label class="bmr-field"><span class="bmr-field-label">Submission Date</span><input class="bmr-input" type="date" data-gmr="date"></label>
+              </div>
+              <div class="grform-section-title">Original Workplan, Activities, and Outcomes</div>
+              <p class="grform-prompt">Please outline the original “Workplan, Activities, and Outcomes” (from section 2 of grant submission), and explain any barriers that are leading to a change in direction.</p>
+              <textarea class="bmr-textarea" rows="5" data-gmr="originalWorkplan" placeholder="Original workplan, activities, outcomes, and the barriers prompting this change…"></textarea>
+              <div class="grform-section-title">Proposed Workplan, Activities and Outcomes</div>
+              <p class="grform-prompt">Please outline your proposed “Workplan, Activities and Outcomes.”</p>
+              <textarea class="bmr-textarea" rows="5" data-gmr="proposedWorkplan" placeholder="Your proposed workplan, activities, and outcomes…"></textarea>
+              <div class="grform-section-title">Timeline</div>
+              <p class="grform-prompt">Provide the estimated start and end dates for each newly proposed activity, ensuring that all activities are completed by the grant’s end date of June 30, 2028.</p>
+              <div class="bmr-table-wrap">
+                <table class="bmr-table" style="min-width:660px;">
+                  <thead><tr><th>Activity</th><th>Timeline</th><th class="bmr-col-desc">Description</th><th style="width:38px;"></th></tr></thead>
+                  <tbody id="gmr-timeline"></tbody>
+                </table>
+              </div>
+              <div style="margin-top:10px;"><button type="button" class="bmr-btn" onclick="gmrAddRow()">+ Add activity</button></div>
+              <div class="grform-note">
+                <p>Please note that a corresponding budget modification request must also be completed to align with this proposed programmatic change.</p>
+                <button type="button" class="bmr-btn" onclick="showSection('budget')">Open the Budget Modification Form</button>
+              </div>
+              <div class="grform-cooffice">
+                <div class="grform-cooffice-title">For Chancellor’s Office Use Only</div>
+                <span class="bmr-field-label">SME Recommendations</span>
+                <p class="grform-prompt" style="margin-top:6px;">Please detail any recommendations or considerations for the Chancellor’s Office team regarding the approval of this grant modification request.</p>
+                <textarea class="bmr-textarea" rows="3" data-gmr="sme" placeholder="SME recommendations…"></textarea>
+              </div>
+              <div class="bmr-footer">
+                <label class="bmr-field"><span class="bmr-field-label">Approved by</span><input class="bmr-input" type="text" data-gmr="approvedBy" placeholder="Approver name &amp; title"></label>
+                <div class="bmr-actions">
+                  <button type="button" class="bmr-btn" onclick="resetGrantForm()">Reset</button>
+                  <button type="button" class="bmr-btn primary" onclick="window.print()">Print / Save PDF</button>
+                </div>
+              </div>
+              <div class="bmr-saved-note">Entries are saved automatically in this browser.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 
@@ -1295,6 +1399,7 @@
       <button class="mobile-nav-btn" onclick="showSection('timeline',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="nav_timeline">Timeline</span></button>
       <button class="mobile-nav-btn" onclick="showSection('contacts',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-i18n="nav_contacts">Contacts</span></button>
       <button class="mobile-nav-btn" onclick="showSection('spenddown',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-i18n="nav_spenddown">Spend</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('forms',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Forms</span></button>
     </div>
   </nav>
 </div>
@@ -2609,6 +2714,60 @@ function resetBudgetModForm() {
   renderBudgetModForm();
 }
 
+/* ════════════ GRANT MODIFICATION REQUEST FORM (Forms tab) ════════════ */
+const GMR_STORE = 'grant_mod_form_v1';
+function gmrLoad() { try { return JSON.parse(localStorage.getItem(GMR_STORE)) || {}; } catch (e) { return {}; } }
+function gmrSave(s) { try { localStorage.setItem(GMR_STORE, JSON.stringify(s)); } catch (e) {} }
+function gmrEsc(v) { return v == null ? '' : String(v).replace(/"/g, '&quot;'); }
+function gmrTimelineRow(r) {
+  r = r || {};
+  return '<tr>' +
+    '<td><input class="bmr-cell-input" data-gmr-tl="activity" value="' + gmrEsc(r.activity) + '" placeholder="Activity"></td>' +
+    '<td><input class="bmr-cell-input" data-gmr-tl="timeline" value="' + gmrEsc(r.timeline) + '" placeholder="Start – End (by Jun 30, 2028)"></td>' +
+    '<td><input class="bmr-cell-input" data-gmr-tl="description" value="' + gmrEsc(r.description) + '" placeholder="Description"></td>' +
+    '<td><button type="button" class="grform-rowdel" aria-label="Remove activity" onclick="gmrDelRow(this)">×</button></td></tr>';
+}
+function renderGrantForm() {
+  const tb = document.getElementById('gmr-timeline');
+  if (!tb) return;
+  const st = gmrLoad();
+  document.querySelectorAll('[data-gmr]').forEach(el => {
+    const k = el.getAttribute('data-gmr');
+    if (st[k] != null) el.value = st[k];
+    el.oninput = gmrPersist;
+  });
+  const rows = (st.timeline && st.timeline.length) ? st.timeline : [{}, {}];
+  tb.innerHTML = rows.map(gmrTimelineRow).join('');
+  tb.querySelectorAll('input[data-gmr-tl]').forEach(i => i.oninput = gmrPersist);
+}
+function gmrPersist() {
+  const st = {};
+  document.querySelectorAll('[data-gmr]').forEach(el => { st[el.getAttribute('data-gmr')] = el.value; });
+  st.timeline = [];
+  document.querySelectorAll('#gmr-timeline tr').forEach(tr => {
+    const g = f => { const el = tr.querySelector('[data-gmr-tl="' + f + '"]'); return el ? el.value : ''; };
+    st.timeline.push({ activity: g('activity'), timeline: g('timeline'), description: g('description') });
+  });
+  gmrSave(st);
+}
+function gmrAddRow() {
+  const tb = document.getElementById('gmr-timeline'); if (!tb) return;
+  tb.insertAdjacentHTML('beforeend', gmrTimelineRow({}));
+  tb.lastElementChild.querySelectorAll('input[data-gmr-tl]').forEach(i => i.oninput = gmrPersist);
+  gmrPersist();
+}
+function gmrDelRow(btn) { const tr = btn.closest('tr'); if (tr) tr.remove(); gmrPersist(); }
+function resetGrantForm() { localStorage.removeItem(GMR_STORE); renderGrantForm(); }
+function openForm(which) {
+  const list = document.getElementById('forms-list'), wrap = document.getElementById('grant-mod-wrap');
+  if (which === 'grant') { if (list) list.style.display = 'none'; if (wrap) wrap.style.display = 'block'; }
+  try { (document.querySelector('.main') || window).scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
+}
+function backToForms() {
+  const list = document.getElementById('forms-list'), wrap = document.getElementById('grant-mod-wrap');
+  if (wrap) wrap.style.display = 'none'; if (list) list.style.display = 'flex';
+}
+
 /* ════════════ TIMELINE — 2 years ════════════ */
 function renderTimeline() {
   const container = document.getElementById('timeline-rows');
@@ -3029,6 +3188,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applySavedBudgetMods();   // fold saved budget modifications into the model first
   renderAll();
   requestAnimationFrame(() => initCharts());
+  try { renderGrantForm(); } catch (e) {}   // Forms tab: Grant Modification Request Form
   // Restore the user's last active tab from URL hash or localStorage
   // Restore current year filter for the Underspend Risk Alerts
   try { document.body.setAttribute('data-year-filter', currentYearFilter); } catch(e){}
