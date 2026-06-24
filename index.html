@@ -513,7 +513,7 @@
     .bmrv-bar-title { margin-left:8px; font-size:12px; font-weight:600; color:#cdd6e6; letter-spacing:0.01em; }
     .bmrv-frame { position:relative; height:400px; overflow:hidden; background:var(--bg-surface); }
     @media (max-width:760px){ .bmrv-frame{ height:340px; } }
-    .bmrv-scroll { position:relative; padding:20px 22px 40px; transition:transform 0.6s cubic-bezier(0.22,1,0.36,1); will-change:transform; }
+    .bmrv-scroll { position:relative; padding:20px 22px 40px; transition:transform 0.95s cubic-bezier(0.33,1,0.68,1); will-change:transform; }
     .bmrv-doc-title { font-family:var(--font-display); font-size:18px; font-weight:600; color:var(--fig-color,var(--ccc-dark-blue)); margin-bottom:14px; }
     .bmrv-cursor { position:absolute; top:0; left:0; width:22px; height:22px; z-index:6; pointer-events:none; transition:top 0.5s cubic-bezier(0.22,1,0.36,1), left 0.5s cubic-bezier(0.22,1,0.36,1); filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }
     .bmrv-caption { position:absolute; left:0; right:0; bottom:0; padding:12px 16px; background:linear-gradient(transparent, rgba(12,18,28,0.86) 38%); color:#fff; font-size:13.5px; line-height:1.45; font-weight:500; z-index:5; min-height:30px; }
@@ -1197,7 +1197,7 @@
         <!-- INTERACTIVE BUDGET MODIFICATION REQUEST FORM (mirrors Word doc; auto-calculates & drives project totals) -->
         <!-- VIDEO TRAINING GUIDE — screencast of filling out the form (shown above the form) -->
         <div class="bmrv-card" id="bmr-guide">
-          <div class="bmrv-bar"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">How to Complete This Form — Video Guide</span></div>
+          <div class="bmrv-bar"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">How to Complete This Form</span></div>
           <div class="bmrv-frame" id="bmrv-frame">
             <div class="bmrv-scroll" id="bmrv-scroll">
               <div class="bmrv-doc-title">Budget Modification Request Form</div>
@@ -2861,7 +2861,7 @@ function relocateBudgetForm() {
 
 /* ════════════ BMR VIDEO TRAINING GUIDE (animated screencast of the real form) ════════════ */
 let bmrvScenes = [], bmrvCum = [], bmrvTotal = 0, bmrvT = 0, bmrvPlaying = false, bmrvLast = 0, bmrvRAF = null, bmrvLastI = -1;
-const BMRV_MOVE = 620, BMRV_TYPE = 22, BMRV_DWELL = 750;
+const BMRV_MOVE = 1000, BMRV_TYPE = 22, BMRV_DWELL = 750;
 const BMRV_EX = { y1:'1000', y2:'5000' };
 const BMRV_IDS = { y1:{desc:'mv-d1',prop:'mv-p1',act:'mv-a1',bal:'mv-b1',proj:'mv-pr1',upd:'mv-u1'},
                    y2:{desc:'mv-d2',prop:'mv-p2',act:'mv-a2',bal:'mv-b2',proj:'mv-pr2',upd:'mv-u2'} };
