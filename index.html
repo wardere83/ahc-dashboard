@@ -533,7 +533,7 @@
     @keyframes bmrvCaret { 50% { opacity:0; } }
     @media (prefers-reduced-motion: reduce) { .bmrv-scroll, .bmrv-cursor { transition:none; } }
     /* video replica of the real form layout */
-    .bmrv-meta { display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; margin-bottom:14px; }
+    .bmrv-meta { display:flex; flex-direction:column; gap:11px; margin-bottom:14px; }
     .bmrv-fld { display:flex; flex-direction:column; gap:4px; min-width:0; }
     .bmrv-fld label { font-size:9px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); }
     .bmrv-cell { min-height:15px; font-size:11px; line-height:1.35; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:5px; padding:5px 7px; word-break:break-word; display:block; }
@@ -557,8 +557,8 @@
     .bmrv-rowsum { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--text-secondary); padding:7px 4px; border-bottom:1px solid var(--border); }
     .bmrv-rowsum-name { flex:1; min-width:0; }
     .bmrv-rowsum-amt { font-variant-numeric:tabular-nums; font-weight:600; color:var(--text-primary); white-space:nowrap; }
-    .bmrv-line { border:1px solid var(--border-strong); border-radius:8px; padding:12px 13px; background:var(--bg-surface); }
-    .bmrv-line-top { display:flex; align-items:center; gap:8px; margin-bottom:9px; }
+    .bmrv-line { border:1px solid var(--border-strong); border-radius:8px; padding:13px 14px; background:var(--bg-surface); display:flex; flex-direction:column; gap:11px; }
+    .bmrv-line-top { display:flex; align-items:center; gap:8px; margin-bottom:1px; }
     .bmrv-line-name { font-size:13px; font-weight:600; color:var(--text-primary); }
     .bmrv-nums { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin:9px 0; }
     .bmrv-fld-full { margin-top:9px; }
@@ -2894,13 +2894,11 @@ function bmrvBuildForm() {
       return '<div class="bmrv-line">' +
         '<div class="bmrv-line-top"><span class="bmrv-code">' + r.code + '</span><span class="bmrv-line-name">' + r.label + '</span></div>' +
         '<div class="bmrv-fld"><label>Description</label><span class="bmrv-cell" id="' + m.desc + '"></span></div>' +
-        '<div class="bmrv-nums">' +
-          '<div class="bmrv-fld"><label>Proposed Funds</label><span class="bmrv-cell num" id="' + m.prop + '"></span></div>' +
-          '<div class="bmrv-fld"><label>Actuals</label><span class="bmrv-cell num" id="' + m.act + '"></span></div>' +
-          '<div class="bmrv-fld"><label>Fund Balance</label><span class="bmrv-cell num" id="' + m.bal + '"></span></div>' +
-          '<div class="bmrv-fld"><label>Projections</label><span class="bmrv-cell num" id="' + m.proj + '"></span></div>' +
-        '</div>' +
-        '<div class="bmrv-fld bmrv-fld-full"><label>Expenditure Updates</label><span class="bmrv-cell" id="' + m.upd + '"></span></div>' +
+        '<div class="bmrv-fld"><label>Proposed Funds</label><span class="bmrv-cell num" id="' + m.prop + '"></span></div>' +
+        '<div class="bmrv-fld"><label>Actuals (spent to date)</label><span class="bmrv-cell num" id="' + m.act + '"></span></div>' +
+        '<div class="bmrv-fld"><label>Fund Balance</label><span class="bmrv-cell num" id="' + m.bal + '"></span></div>' +
+        '<div class="bmrv-fld"><label>Projections (by Jun 2028)</label><span class="bmrv-cell num" id="' + m.proj + '"></span></div>' +
+        '<div class="bmrv-fld"><label>Expenditure Updates</label><span class="bmrv-cell" id="' + m.upd + '"></span></div>' +
       '</div>';
     }).join('');
   });
