@@ -505,6 +505,53 @@
     .sidebar-nav-scroll::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.2); border-radius:3px; }
     .sidebar > .sidebar-footer { margin-top:0; }
 
+    /* ════════════ BMR Video Training Guide (animated screencast) ════════════ */
+    .bmrv-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-top:22px; }
+    .bmrv-bar { display:flex; align-items:center; gap:7px; padding:9px 14px; background:#1b2330; }
+    .bmrv-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+    .bmrv-dot.r{background:#ff5f57;} .bmrv-dot.y{background:#febc2e;} .bmrv-dot.g{background:#28c840;}
+    .bmrv-bar-title { margin-left:8px; font-size:12px; font-weight:600; color:#cdd6e6; letter-spacing:0.01em; }
+    .bmrv-frame { position:relative; height:400px; overflow:hidden; background:var(--bg-surface); }
+    @media (max-width:760px){ .bmrv-frame{ height:340px; } }
+    .bmrv-scroll { position:relative; padding:20px 22px 40px; transition:transform 0.6s cubic-bezier(0.22,1,0.36,1); will-change:transform; }
+    .bmrv-doc-title { font-family:var(--font-display); font-size:18px; font-weight:600; color:var(--fig-color,var(--ccc-dark-blue)); margin-bottom:14px; }
+    .bmrv-cursor { position:absolute; top:0; left:0; width:22px; height:22px; z-index:6; pointer-events:none; transition:top 0.5s cubic-bezier(0.22,1,0.36,1), left 0.5s cubic-bezier(0.22,1,0.36,1); filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }
+    .bmrv-caption { position:absolute; left:0; right:0; bottom:0; padding:12px 16px; background:linear-gradient(transparent, rgba(12,18,28,0.86) 38%); color:#fff; font-size:13.5px; line-height:1.45; font-weight:500; z-index:5; min-height:30px; }
+    .bmrv-caption span { opacity:0; }
+    .bmrv-caption span.show { animation:bmrvCapIn 0.35s ease forwards; }
+    @keyframes bmrvCapIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+    .bmrv-poster { position:absolute; inset:0; z-index:8; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; background:rgba(12,18,28,0.55); border:none; cursor:pointer; color:#fff; }
+    .bmrv-poster-play { width:62px; height:62px; border-radius:50%; background:var(--ccc-gold); color:var(--ccc-darker-blue); display:flex; align-items:center; justify-content:center; font-size:24px; padding-left:4px; box-shadow:0 6px 20px rgba(0,0,0,0.35); }
+    .bmrv-poster-text { font-size:13.5px; font-weight:600; letter-spacing:0.01em; }
+    .bmrv-controls { display:flex; align-items:center; gap:12px; padding:11px 16px; background:var(--bg-surface-2); border-top:1px solid var(--border); }
+    .bmrv-play, .bmrv-replay { width:34px; height:34px; flex-shrink:0; border-radius:50%; border:none; background:var(--ccc-dark-blue); color:#fff; cursor:pointer; font-size:13px; display:inline-flex; align-items:center; justify-content:center; }
+    .bmrv-play:hover, .bmrv-replay:hover { background:var(--ccc-darker-blue); }
+    .bmrv-replay { background:var(--bg-surface); color:var(--text-secondary); border:1px solid var(--border-strong); }
+    .bmrv-time { font-size:11.5px; font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
+    .bmrv-track { flex:1; height:6px; background:var(--border); border-radius:3px; cursor:pointer; position:relative; }
+    .bmrv-prog { height:100%; width:0; background:var(--ccc-gold); border-radius:3px; }
+    @keyframes bmrvCaret { 50% { opacity:0; } }
+    @media (prefers-reduced-motion: reduce) { .bmrv-scroll, .bmrv-cursor { transition:none; } }
+    /* video replica of the real form layout */
+    .bmrv-meta { display:grid; grid-template-columns:1fr 1fr; gap:10px 14px; margin-bottom:14px; }
+    .bmrv-fld { display:flex; flex-direction:column; gap:4px; min-width:0; }
+    .bmrv-fld label { font-size:9px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); }
+    .bmrv-cell { min-height:15px; font-size:11px; line-height:1.35; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:5px; padding:5px 7px; word-break:break-word; display:block; }
+    .bmrv-cell.num { font-variant-numeric:tabular-nums; }
+    .bmrv-cell.typing { border-color:var(--ccc-dark-gold); box-shadow:0 0 0 2px rgba(241,138,32,0.15); }
+    .bmrv-cell.typing::after { content:''; display:inline-block; width:1px; height:1em; background:var(--ccc-dark-gold); margin-left:1px; vertical-align:-2px; animation:bmrvCaret 0.8s steps(1) infinite; }
+    .bmrv-yblock { margin-top:14px; border:1px solid var(--border-strong); border-radius:8px; overflow:hidden; }
+    .bmrv-yblock.y1 { border-top:3px solid var(--ccc-dark-blue); }
+    .bmrv-yblock.y2 { border-top:3px solid var(--ccc-dark-gold); }
+    .bmrv-yhead { font-size:11px; font-weight:600; color:var(--text-secondary); padding:9px 11px; background:var(--bg-surface-2); border-bottom:1px solid var(--border); display:flex; gap:8px; align-items:center; }
+    .bmrv-chip { font-size:9px; font-weight:800; letter-spacing:0.05em; text-transform:uppercase; color:#fff; background:var(--ccc-dark-blue); padding:2px 8px; border-radius:20px; }
+    .bmrv-chip.gold { background:var(--ccc-dark-gold); }
+    .bmrv-tbl { width:100%; border-collapse:collapse; table-layout:fixed; }
+    .bmrv-tbl th { font-size:8px; font-weight:700; letter-spacing:0.02em; text-transform:uppercase; color:var(--text-muted); text-align:left; padding:5px 5px; border-bottom:1px solid var(--border); }
+    .bmrv-tbl td { padding:4px 5px; vertical-align:top; border-bottom:1px solid var(--border); }
+    .bmrv-tbl th:first-child, .bmrv-tbl td:first-child { width:40px; }
+    .bmrv-code { font-size:11px; font-weight:700; color:var(--fig-color,var(--ccc-dark-blue)); }
+
     .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
     .timeline-row { display:flex; align-items:center; padding:10px 20px; border-bottom:1px solid var(--border); gap:12px; }
     .timeline-row:last-child { border-bottom:none; }
@@ -1148,6 +1195,40 @@
 
         <div class="budget-grid budget-grid--2col" id="budget-grid"></div>
         <!-- INTERACTIVE BUDGET MODIFICATION REQUEST FORM (mirrors Word doc; auto-calculates & drives project totals) -->
+        <!-- VIDEO TRAINING GUIDE — screencast of filling out the form (shown above the form) -->
+        <div class="bmrv-card" id="bmr-guide">
+          <div class="bmrv-bar"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">How to Complete This Form — Video Guide</span></div>
+          <div class="bmrv-frame" id="bmrv-frame">
+            <div class="bmrv-scroll" id="bmrv-scroll">
+              <div class="bmrv-doc-title">Budget Modification Request Form</div>
+              <div class="bmrv-meta">
+                <div class="bmrv-fld"><label>Community College District</label><span class="bmrv-cell" id="mv-district"></span></div>
+                <div class="bmrv-fld"><label>Submitted by - Name &amp; Role</label><span class="bmrv-cell" id="mv-by"></span></div>
+                <div class="bmrv-fld"><label>Your Email</label><span class="bmrv-cell" id="mv-email"></span></div>
+                <div class="bmrv-fld"><label>Submission Date</label><span class="bmrv-cell" id="mv-date"></span></div>
+              </div>
+              <div class="bmrv-yblock y1">
+                <div class="bmrv-yhead"><span class="bmrv-chip">Year 1</span> Budget Modification · Jan 2026 – Jun 2027</div>
+                <table class="bmrv-tbl"><thead><tr><th>Type</th><th>Description</th><th>Proposed</th><th>Actuals</th><th>Fund Bal.</th><th>Projections</th><th>Expenditure Updates</th></tr></thead><tbody id="bmrv-y1body"></tbody></table>
+              </div>
+              <div class="bmrv-yblock y2">
+                <div class="bmrv-yhead"><span class="bmrv-chip gold">Year 2</span> Budget Modification · Jul 2027 – Jun 2028</div>
+                <table class="bmrv-tbl"><thead><tr><th>Type</th><th>Description</th><th>Proposed</th><th>Actuals</th><th>Fund Bal.</th><th>Projections</th><th>Expenditure Updates</th></tr></thead><tbody id="bmrv-y2body"></tbody></table>
+              </div>
+              <div class="bmrv-fld" style="margin-top:16px;max-width:320px;"><label>Approved by</label><span class="bmrv-cell" id="mv-appr"></span></div>
+            </div>
+            <svg class="bmrv-cursor" id="bmrv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
+            <div class="bmrv-caption" id="bmrv-caption"></div>
+            <button type="button" class="bmrv-poster" id="bmrv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">Play the video guide</span></button>
+          </div>
+          <div class="bmrv-controls">
+            <button type="button" class="bmrv-play" id="bmrv-play" aria-label="Play or pause">▶</button>
+            <span class="bmrv-time" id="bmrv-time">0:00 / 0:00</span>
+            <div class="bmrv-track" id="bmrv-track"><div class="bmrv-prog" id="bmrv-prog"></div></div>
+            <button type="button" class="bmrv-replay" id="bmrv-replay" aria-label="Replay">↻</button>
+          </div>
+        </div>
+
         <div class="bmr-card" id="budget-mod-form">
           <div class="bmr-card-head">
             <div>
@@ -1326,7 +1407,7 @@
             <span class="forms-item-main"><span class="forms-item-title">Grant Modification Request Form</span><span class="forms-item-desc">For substantial changes to your proposed grant workplan, activities, and/or outcomes.</span></span>
             <span class="forms-item-go">Open ›</span>
           </button>
-          <button type="button" class="forms-item" onclick="showSection('budget')">
+          <button type="button" class="forms-item" onclick="openForm('budget')">
             <span class="forms-item-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
             <span class="forms-item-main"><span class="forms-item-title">Budget Modification Request Form</span><span class="forms-item-desc">For substantial budget changes, including adding or eliminating expenditures. Opens in the Budget Breakdown tab.</span></span>
             <span class="forms-item-go">Open ›</span>
@@ -1366,7 +1447,7 @@
               <div style="margin-top:10px;"><button type="button" class="bmr-btn" onclick="gmrAddRow()">+ Add activity</button></div>
               <div class="grform-note">
                 <p>Please note that a corresponding budget modification request must also be completed to align with this proposed programmatic change.</p>
-                <button type="button" class="bmr-btn" onclick="showSection('budget')">Open the Budget Modification Form</button>
+                <button type="button" class="bmr-btn" onclick="openForm('budget')">Open the Budget Modification Form</button>
               </div>
               <div class="grform-cooffice">
                 <div class="grform-cooffice-title">For Chancellor’s Office Use Only</div>
@@ -1384,6 +1465,12 @@
               <div class="bmr-saved-note">Entries are saved automatically in this browser.</div>
             </div>
           </div>
+        </div>
+
+        <!-- BUDGET MODIFICATION REQUEST FORM (opens inline from the list; video guide above the form, no breakdown cards) -->
+        <div id="budget-mod-wrap" style="display:none;">
+          <button type="button" class="bmr-btn forms-back" onclick="backToForms()">‹ Back to Forms</button>
+          <div id="budget-mod-host"></div>
         </div>
       </div>
 
@@ -2369,28 +2456,22 @@ const budgetTotal  = () => BUDGET_MODEL.reduce((s,r) => s + codeProposed(r), 0);
 // Baseline amount for a given object code and project year ('y1' | 'y2').
 const baselineYear = (code, yk) => { const b = BUDGET_BASELINE.find(x => x.code === code); return b ? b[yk] : 0; };
 
-// Resolve a line's modified proposed funds from what was typed in Expenditure
-// Updates, relative to the current (baseline) funds:
-//   "+5000"  -> ADD to current funds            (base + 5000)
-//   "-3000"  -> SUBTRACT from current funds      (base - 3000)
-//   "12000"  -> set as the new amount (replace)  (12000)
-//   blank    -> no change                        (base)
-function modifiedFromUpdates(base, raw) {
+// A line's modified proposed funds come from the Proposed Funds cell.
+// Blank = keep the current (baseline) amount; any number = the new proposed amount.
+function modifiedProposed(base, raw) {
   if (raw == null) return base;
   const s = String(raw).trim();
-  if (s === '') return base;
-  const amt = parseMoney(s);
-  return /^[+\-−]/.test(s) ? base + amt : amt;   // leading sign = delta, else replacement
+  return s === '' ? base : parseMoney(s);
 }
 
 // Rebuild the whole model from the per-year modification requests.
-//   getRawUpdate(code, yearKey) -> string | null   (the raw Expenditure Updates entry)
-function applyBudgetMods(getRawUpdate) {
+//   getProposed(code, yearKey) -> string | null   (the Proposed Funds cell)
+function applyBudgetMods(getProposed) {
   BUDGET_MODEL = BUDGET_BASELINE.map(r => ({ ...r }));
   BUDGET_BASELINE.forEach(bl => {
     const cur = BUDGET_MODEL.find(x => x.code === bl.code);
     ['y1', 'y2'].forEach(yk => {
-      cur[yk] = modifiedFromUpdates(bl[yk], getRawUpdate(bl.code, yk));
+      cur[yk] = modifiedProposed(bl[yk], getProposed(bl.code, yk));
     });
   });
   districts[0].yearlyBudget = {
@@ -2512,11 +2593,11 @@ function yearBlockHTML(yk, rowState) {
       <tr data-code="${r.code}" data-year="${yk}">
         <td><span class="bmr-code${isIndirect ? ' indirect' : ''}">${r.code}</span></td>
         <td><input class="bmr-cell-input" type="text" data-bmr="description" value="${rs.description != null ? String(rs.description).replace(/"/g,'&quot;') : ''}" placeholder="${r.label}"></td>
-        <td class="bmr-proposed bmr-num" data-bmr-proposed>${fmt(baseAmt)}</td>
+        <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="proposed" value="${moneyVal(rs.proposed)}" placeholder="${baseAmt.toLocaleString()}"></td>
         <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="actuals" value="${moneyVal(rs.actuals)}" placeholder="0"></td>
         <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="balance" value="${moneyVal(rs.balance)}" placeholder="0"></td>
         <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="projections" value="${moneyVal(rs.projections)}" placeholder="0"></td>
-        <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="updates" value="${rs.updates != null ? String(rs.updates).replace(/"/g,'&quot;') : ''}" placeholder="+ / − or new amt"></td>
+        <td><input class="bmr-cell-input" type="text" data-bmr="updates" value="${rs.updates != null ? String(rs.updates).replace(/"/g,'&quot;') : ''}" placeholder="Explain the change (narrative)…"></td>
       </tr>`;
   }).join('');
   return `
@@ -2537,7 +2618,7 @@ function yearBlockHTML(yk, rowState) {
               <th class="bmr-col-money bmr-num">Actuals<small>spent to date</small></th>
               <th class="bmr-col-money bmr-num">Fund Balance<small>entered by district</small></th>
               <th class="bmr-col-money bmr-num">Projections<small>to be spent by Jun 2028</small></th>
-              <th class="bmr-col-money bmr-num">Expenditure Updates<small>+ add / − reduce, or new amount</small></th>
+              <th class="bmr-col-desc">Expenditure Updates<small>explanation / narrative</small></th>
             </tr>
           </thead>
           <tbody>${rows}</tbody>
@@ -2548,7 +2629,7 @@ function yearBlockHTML(yk, rowState) {
               <td class="bmr-total-num" data-bmr-total="actuals">$0</td>
               <td class="bmr-total-num" data-bmr-total="balance">$0</td>
               <td class="bmr-total-num" data-bmr-total="projections">$0</td>
-              <td class="bmr-total-num" data-bmr-total="updates">+$0</td>
+              <td></td>
             </tr>
           </tfoot>
         </table>
@@ -2586,24 +2667,17 @@ function renderBudgetModForm() {
 function onBmrInput(e) {
   const field = e.target.getAttribute('data-bmr');
   persistBmr();
-  // A modification (new proposed amount in Expenditure Updates) re-flows through
-  // the Year 1 / Year 2 cards, KPIs and Timeline for the whole project.
-  if (field === 'updates') recomputeBudgetFromState();
+  // Editing Proposed Funds re-flows through the Year 1 / Year 2 cards, KPIs and
+  // Timeline. Expenditure Updates is a narrative box and changes no numbers.
+  if (field === 'proposed') recomputeBudgetFromState();
   bmrRecalc();
 }
 
 function onBmrBlur(e) {
   const field = e.target.getAttribute('data-bmr');
   const s = e.target.value.trim();
-  if (field === 'updates') {
-    // Preserve the leading +/− sign (it means add/subtract); just tidy the number.
-    if (s === '') { e.target.value = ''; return; }
-    const sign = /^\+/.test(s) ? '+' : (/^[-−]/.test(s) ? '−' : '');
-    e.target.value = sign + Number(Math.abs(parseMoney(s))).toLocaleString();
-    return;
-  }
-  if (['actuals','balance','projections'].includes(field)) {
-    // Keep blank cells blank; only tidy formatting when a value was entered.
+  // Expenditure Updates is free-text narrative — leave it exactly as typed.
+  if (['proposed','actuals','balance','projections'].includes(field)) {
     if (s === '') { e.target.value = ''; return; }
     e.target.value = Number(parseMoney(s)).toLocaleString();
   }
@@ -2627,12 +2701,10 @@ function bmrRecalc() {
       const code = tr.getAttribute('data-code');
       const raw = f => ((tr.querySelector(`[data-bmr="${f}"]`) || {}).value || '').trim();
       const base = baselineYear(code, yk);                 // current proposed funds (this year)
-      const modified = modifiedFromUpdates(base, raw('updates'));  // +add / −reduce / replace
+      const modified = modifiedProposed(base, raw('proposed'));   // Proposed Funds drives the budget
       const actuals = parseMoney(raw('actuals'));
       const proj = parseMoney(raw('projections'));
       const balance = parseMoney(raw('balance'));          // Fund Balance entered by the district
-      const pEl = tr.querySelector('[data-bmr-proposed]');
-      if (pEl) { pEl.textContent = fmt(modified); pEl.classList.toggle('modified', raw('updates') !== ''); }
       tProp += modified; tAct += actuals; tProj += proj; tBase += base;
       if (raw('balance') !== '') { tBal += balance; balTouched++; }
     });
@@ -2680,10 +2752,11 @@ function persistBmr() {
       const g = f => { const el = tr.querySelector(`[data-bmr="${f}"]`); return el ? el.value : ''; };
       rows[code] = {
         description: g('description'),
+        proposed: g('proposed').trim() === '' ? null : parseMoney(g('proposed')),   // modified proposed amount
         actuals: g('actuals').trim() === '' ? null : parseMoney(g('actuals')),
-        balance: g('balance').trim() === '' ? null : parseMoney(g('balance')),   // entered by district
+        balance: g('balance').trim() === '' ? null : parseMoney(g('balance')),
         projections: g('projections').trim() === '' ? null : parseMoney(g('projections')),
-        updates: g('updates').trim() === '' ? null : g('updates').trim()   // raw entry (may be +/− signed)
+        updates: g('updates').trim() === '' ? null : g('updates').trim()   // narrative explanation
       };
     });
     state.years[yk].rows = rows;
@@ -2698,7 +2771,7 @@ function applySavedBudgetMods() {
   const state = loadBmrState();
   applyBudgetMods((code, yk) => {
     const r = yearRows(state, yk)[code];
-    return (r && r.updates != null) ? r.updates : null;
+    return (r && r.proposed != null) ? r.proposed : null;
   });
 }
 
@@ -2759,13 +2832,148 @@ function gmrAddRow() {
 function gmrDelRow(btn) { const tr = btn.closest('tr'); if (tr) tr.remove(); gmrPersist(); }
 function resetGrantForm() { localStorage.removeItem(GMR_STORE); renderGrantForm(); }
 function openForm(which) {
-  const list = document.getElementById('forms-list'), wrap = document.getElementById('grant-mod-wrap');
-  if (which === 'grant') { if (list) list.style.display = 'none'; if (wrap) wrap.style.display = 'block'; }
+  const list = document.getElementById('forms-list'),
+        gw = document.getElementById('grant-mod-wrap'),
+        bw = document.getElementById('budget-mod-wrap');
+  if (list) list.style.display = 'none';
+  if (gw) gw.style.display = (which === 'grant') ? 'block' : 'none';
+  if (bw) bw.style.display = (which === 'budget') ? 'block' : 'none';
   try { (document.querySelector('.main') || window).scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
 }
 function backToForms() {
-  const list = document.getElementById('forms-list'), wrap = document.getElementById('grant-mod-wrap');
-  if (wrap) wrap.style.display = 'none'; if (list) list.style.display = 'flex';
+  const list = document.getElementById('forms-list'),
+        gw = document.getElementById('grant-mod-wrap'),
+        bw = document.getElementById('budget-mod-wrap');
+  if (gw) gw.style.display = 'none';
+  if (bw) bw.style.display = 'none';
+  if (list) list.style.display = 'flex';
+}
+// Move the Budget video guide + form into the Forms tab (out of the Budget
+// Breakdown tab, which keeps only its cards) so it opens inline under Forms.
+function relocateBudgetForm() {
+  const host = document.getElementById('budget-mod-host');
+  if (!host || host.dataset.filled) return;
+  const guide = document.getElementById('bmr-guide'), form = document.getElementById('budget-mod-form');
+  if (guide) host.appendChild(guide);
+  if (form) host.appendChild(form);
+  host.dataset.filled = '1';
+}
+
+/* ════════════ BMR VIDEO TRAINING GUIDE (animated screencast of the real form) ════════════ */
+let bmrvScenes = [], bmrvCum = [], bmrvTotal = 0, bmrvT = 0, bmrvPlaying = false, bmrvLast = 0, bmrvRAF = null, bmrvLastI = -1;
+const BMRV_MOVE = 620, BMRV_TYPE = 22, BMRV_DWELL = 750;
+const BMRV_EX = { y1:'1000', y2:'5000' };
+const BMRV_IDS = { y1:{desc:'mv-d1',prop:'mv-p1',act:'mv-a1',bal:'mv-b1',proj:'mv-pr1',upd:'mv-u1'},
+                   y2:{desc:'mv-d2',prop:'mv-p2',act:'mv-a2',bal:'mv-b2',proj:'mv-pr2',upd:'mv-u2'} };
+function bmrvFmt(ms) { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+function bmrvCellTD(id, cls, val) { return '<td><span class="bmrv-cell ' + (cls || '') + '"' + (id ? ' id="' + id + '"' : '') + '>' + (val || '') + '</span></td>'; }
+function bmrvBuildForm() {
+  if (typeof BUDGET_BASELINE === 'undefined') return;
+  ['y1', 'y2'].forEach(yk => {
+    const body = document.getElementById('bmrv-' + yk + 'body');
+    if (!body) return;
+    body.innerHTML = BUDGET_BASELINE.map(r => {
+      const ex = (r.code === BMRV_EX[yk]); const m = BMRV_IDS[yk];
+      return '<tr>' +
+        '<td><span class="bmrv-code">' + r.code + '</span></td>' +
+        bmrvCellTD(ex ? m.desc : null, 'desc', ex ? '' : r.label) +
+        bmrvCellTD(ex ? m.prop : null, 'num', ex ? '' : fmt(r[yk])) +
+        bmrvCellTD(ex ? m.act : null, 'num', '') +
+        bmrvCellTD(ex ? m.bal : null, 'num', '') +
+        bmrvCellTD(ex ? m.proj : null, 'num', '') +
+        bmrvCellTD(ex ? m.upd : null, 'note', '') +
+      '</tr>';
+    }).join('');
+  });
+}
+function bmrvBuildScenes() {
+  const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Community College District';
+  bmrvScenes = [
+    { t:'mv-district', cap:'Start with your district and contact details.', text:dist },
+    { t:'mv-by',    cap:'Add who is submitting and their grant role.', text:'Project Lead Name, Grant Role' },
+    { t:'mv-email', cap:'Enter your email.', text:'lead@district.edu' },
+    { t:'mv-date',  cap:'Set the submission date.', text:'2026-09-30' },
+    { t:'mv-d1', cap:'In Year 1, take the 1000 Instructional Salaries line. Describe the change and show the math.', text:'Stipends, Faculty to assist with delivery Onboarding Program = $5,000 (2 faculty, 50 hours at $50/hour)' },
+    { t:'mv-p1', cap:'Enter Proposed Funds. This is the modification, and it updates your Year 1 / Year 2 totals automatically.', text:'$5,000' },
+    { t:'mv-a1', cap:'Actuals: the amount spent to date.', text:'$0' },
+    { t:'mv-b1', cap:'Fund Balance: the remaining balance.', text:'$5,000' },
+    { t:'mv-pr1', cap:'Projections: amount to be spent by June 2028.', text:'$0' },
+    { t:'mv-u1', cap:'Expenditure Updates is a written explanation, not a number.', text:'Due to the retirement of the project lead for this initiative, we have been unable to make the progress we wanted on this initiative. While we are currently meeting with constituents on developing this onboarding program, and have secured a consultant, we have made the decision to continue with this project utilizing other EEO/District funds and not continue with this initiative under the EEO IBP Grant.' },
+    { t:'mv-d2', cap:'In Year 2, add a new expenditure not in the grant: the 5000 line.', text:'Launching of California Community College Employee Resource Group Conference, Consultant to support planning and post-conference data analysis.' },
+    { t:'mv-p2', cap:'Proposed Funds for the new line.', text:'$8,000' },
+    { t:'mv-a2', cap:'Actuals to date.', text:'$0' },
+    { t:'mv-b2', cap:'Fund Balance.', text:'$8,000' },
+    { t:'mv-pr2', cap:'Projections through June 2028.', text:'$8,000' },
+    { t:'mv-u2', cap:'Explain the new initiative in Expenditure Updates.', text:'Since the Project Lead on this project was out on a leave of absence, we hired a consultant to assist with planning of conference and will also use consultant to assist with data analysis for EEO IBP reporting.' },
+    { t:'mv-appr', cap:'Finally, complete Approved by. Now you are ready to fill in the live form below.', text:'Approver Name, Title' }
+  ];
+  bmrvCum = []; let acc = 0;
+  bmrvScenes.forEach(sc => { bmrvCum.push(acc); acc += BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL; });
+  bmrvTotal = acc;
+}
+function bmrvMoveTo(id) {
+  const el = document.getElementById(id), scroll = document.getElementById('bmrv-scroll'), frame = document.getElementById('bmrv-frame'), cur = document.getElementById('bmrv-cursor');
+  if (!el || !scroll || !frame) return;
+  const frameH = frame.clientHeight, contentH = scroll.scrollHeight;
+  let shift = el.offsetTop - frameH * 0.34;
+  shift = Math.max(0, Math.min(shift, Math.max(0, contentH - frameH)));
+  scroll.style.transform = 'translateY(' + (-shift) + 'px)';
+  if (cur) { cur.style.top = (el.offsetTop - shift + Math.min(el.offsetHeight, 28) / 2 + 2) + 'px'; cur.style.left = (el.offsetLeft + 14) + 'px'; }
+}
+function bmrvEnter(i) {
+  bmrvScenes.forEach((sc, j) => {
+    const el = document.getElementById(sc.t);
+    if (!el) return;
+    if (j < i) { el.textContent = sc.text; el.classList.remove('typing'); }
+    else if (j > i) { el.textContent = ''; el.classList.remove('typing'); }
+  });
+  const cap = document.getElementById('bmrv-caption');
+  if (cap) cap.innerHTML = '<span class="show">' + bmrvScenes[i].cap + '</span>';
+  bmrvMoveTo(bmrvScenes[i].t);
+}
+function bmrvRender(t) {
+  if (!bmrvScenes.length) return;
+  let i = 0; while (i < bmrvScenes.length - 1 && t >= bmrvCum[i + 1]) i++;
+  if (i !== bmrvLastI) { bmrvEnter(i); bmrvLastI = i; }
+  const sc = bmrvScenes[i], lt = t - bmrvCum[i];
+  const ch = Math.max(0, Math.min(sc.text.length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
+  const el = document.getElementById(sc.t);
+  if (el) { el.textContent = sc.text.slice(0, ch); el.classList.toggle('typing', lt >= BMRV_MOVE && ch < sc.text.length); }
+  const prog = document.getElementById('bmrv-prog'), tm = document.getElementById('bmrv-time');
+  if (prog) prog.style.width = (bmrvTotal ? (t / bmrvTotal * 100) : 0) + '%';
+  if (tm) tm.textContent = bmrvFmt(t) + ' / ' + bmrvFmt(bmrvTotal);
+}
+function bmrvIcon() { const b = document.getElementById('bmrv-play'); if (b) b.textContent = bmrvPlaying ? '❚❚' : '▶'; }
+function bmrvTick(ts) {
+  if (!bmrvPlaying) return;
+  if (!bmrvLast) bmrvLast = ts;
+  bmrvT += ts - bmrvLast; bmrvLast = ts;
+  if (bmrvT >= bmrvTotal) { bmrvT = bmrvTotal; bmrvRender(bmrvTotal); bmrvPlaying = false; bmrvIcon(); return; }
+  bmrvRender(bmrvT);
+  bmrvRAF = requestAnimationFrame(bmrvTick);
+}
+function bmrvPlay() {
+  const frame = document.getElementById('bmrv-frame');
+  if (frame && frame.clientHeight === 0) return;
+  if (bmrvT >= bmrvTotal) bmrvT = 0;
+  bmrvPlaying = true; bmrvLast = 0; bmrvLastI = -1;
+  const poster = document.getElementById('bmrv-poster'); if (poster) poster.style.display = 'none';
+  bmrvIcon(); bmrvRAF = requestAnimationFrame(bmrvTick);
+}
+function bmrvPause() { bmrvPlaying = false; if (bmrvRAF) cancelAnimationFrame(bmrvRAF); bmrvIcon(); }
+function startBmrGuide() {
+  const frame = document.getElementById('bmrv-frame');
+  if (!frame || frame.dataset.ready) return;
+  frame.dataset.ready = '1';
+  bmrvBuildForm();
+  bmrvBuildScenes();
+  const play = document.getElementById('bmrv-play'), poster = document.getElementById('bmrv-poster'),
+        track = document.getElementById('bmrv-track'), replay = document.getElementById('bmrv-replay');
+  if (play) play.onclick = () => bmrvPlaying ? bmrvPause() : bmrvPlay();
+  if (poster) poster.onclick = bmrvPlay;
+  if (replay) replay.onclick = () => { bmrvT = 0; bmrvLastI = -1; bmrvRender(0); bmrvPlay(); };
+  if (track) track.onclick = (e) => { const r = track.getBoundingClientRect(); bmrvT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * bmrvTotal; bmrvLastI = -1; bmrvRender(bmrvT); };
+  bmrvLastI = -1; bmrvRender(0);
 }
 
 /* ════════════ TIMELINE — 2 years ════════════ */
@@ -3188,6 +3396,8 @@ document.addEventListener('DOMContentLoaded', () => {
   applySavedBudgetMods();   // fold saved budget modifications into the model first
   renderAll();
   requestAnimationFrame(() => initCharts());
+  try { startBmrGuide(); } catch (e) {}   // video training guide above the Budget form
+  try { relocateBudgetForm(); } catch (e) {}   // move Budget guide+form into the Forms tab
   try { renderGrantForm(); } catch (e) {}   // Forms tab: Grant Modification Request Form
   // Restore the user's last active tab from URL hash or localStorage
   // Restore current year filter for the Underspend Risk Alerts
