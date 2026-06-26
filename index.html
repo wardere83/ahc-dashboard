@@ -540,6 +540,16 @@
     .bmrv-prog { height:100%; width:0; background:var(--ccc-gold); border-radius:3px; }
     @keyframes bmrvCaret { 50% { opacity:0; } }
     @media (prefers-reduced-motion: reduce) { .bmrv-scroll, .bmrv-cursor { transition:none; } }
+    .bmrv-q { display:flex; flex-direction:column; gap:6px; margin-top:14px; }
+    .bmrv-qlabel { font-size:11px; font-weight:700; letter-spacing:0.02em; color:var(--text-secondary); line-height:1.35; }
+    .rpv-opts { display:flex; gap:8px; flex-wrap:wrap; }
+    .rpv-opt { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; color:var(--text-muted); border:1px solid var(--border-strong); border-radius:7px; padding:5px 12px; background:var(--bg-surface); transition:border-color 0.2s ease,color 0.2s ease,background 0.2s ease; }
+    .rpv-dot { width:11px; height:11px; border-radius:50%; border:2px solid var(--text-muted); box-sizing:border-box; flex-shrink:0; transition:all 0.2s ease; }
+    .rpv-opt.rpv-sel { border-color:var(--ccc-dark-blue); color:var(--ccc-dark-blue); background:var(--bg-surface-2); font-weight:700; }
+    .rpv-opt.rpv-sel .rpv-dot { border-color:var(--ccc-dark-blue); background:var(--ccc-dark-blue); box-shadow:inset 0 0 0 2px var(--bg-surface); }
+    [data-theme="dark"] .rpv-opt.rpv-sel { color:var(--accent-light); border-color:var(--accent-light); }
+    [data-theme="dark"] .rpv-opt.rpv-sel .rpv-dot { border-color:var(--accent-light); background:var(--accent-light); }
+    .rpv-box { display:block; min-height:26px; }
     /* video replica of the real form layout */
     .bmrv-meta { display:flex; flex-direction:column; gap:11px; margin-bottom:14px; }
     .bmrv-fld { display:flex; flex-direction:column; gap:4px; min-width:0; }
@@ -1515,13 +1525,28 @@
                   <div class="bmrv-fld"><label>Support Staff for Grant Activities — Name and Title</label><span class="bmrv-cell" id="rv-staff"></span></div>
                   <div class="bmrv-fld"><label>Support Staff Email</label><span class="bmrv-cell" id="rv-staffemail"></span></div>
                 </div>
-                <div class="bmrv-meta">
-                  <div class="bmrv-fld"><label>Has your project team changed since the grant began?</label><span class="bmrv-cell" id="rv-team"></span></div>
-                  <div class="bmrv-fld"><label>Grant goals as submitted in section 2.3 (Year 1)</label><span class="bmrv-cell" id="rv-goals"></span></div>
-                  <div class="bmrv-fld"><label>Are the goals currently being met?</label><span class="bmrv-cell" id="rv-goalsmet"></span></div>
-                  <div class="bmrv-fld"><label>How each goal is being met to date</label><span class="bmrv-cell" id="rv-goalsdetail"></span></div>
-                  <div class="bmrv-fld"><label>Significant updates to goals or planned activities?</label><span class="bmrv-cell" id="rv-updates"></span></div>
-                  <div class="bmrv-fld"><label>Barriers, and the steps you are taking to address them</label><span class="bmrv-cell" id="rv-barriers"></span></div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Has your project team changed since the grant began?</label>
+                  <div class="rpv-opts"><span class="rpv-opt" id="rv-team-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-team-no"><i class="rpv-dot"></i>No</span></div>
+                  <span class="bmrv-cell rpv-box" id="rv-teamdetail"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Grant goals as submitted in section 2.3 (Year 1)</label>
+                  <span class="bmrv-cell rpv-box" id="rv-goals"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">7.a. Are the goals listed above currently being met?</label>
+                  <div class="rpv-opts"><span class="rpv-opt" id="rv-goalsmet-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-goalsmet-no"><i class="rpv-dot"></i>No</span></div>
+                  <span class="bmrv-cell rpv-box" id="rv-goalsdetail"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Significant updates to goals or planned activities?</label>
+                  <div class="rpv-opts"><span class="rpv-opt" id="rv-updates-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-updates-no"><i class="rpv-dot"></i>No</span></div>
+                  <span class="bmrv-cell rpv-box" id="rv-updatesdetail"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Barriers, and the steps you are taking to address them</label>
+                  <span class="bmrv-cell rpv-box" id="rv-barriers"></span>
                 </div>
                 <div class="bmrv-yblock y1">
                   <div class="bmrv-yhead"><span class="bmrv-chip">Expenditures</span> Total Grant Expenditures to Date</div>
@@ -1537,9 +1562,14 @@
                     </div>
                   </div>
                 </div>
-                <div class="bmrv-meta" style="margin-top:14px;">
-                  <div class="bmrv-fld"><label>Intend to submit a budget modification request?</label><span class="bmrv-cell" id="rv-bmr"></span></div>
-                  <div class="bmrv-fld" style="max-width:340px;"><label>Enter your name to certify *</label><span class="bmrv-cell" id="rv-certify"></span></div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Do you intend to submit a budget modification request?</label>
+                  <div class="rpv-opts"><span class="rpv-opt" id="rv-bmr-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-bmr-no"><i class="rpv-dot"></i>No</span></div>
+                  <span class="bmrv-cell rpv-box" id="rv-bmrnote"></span>
+                </div>
+                <div class="bmrv-q" style="max-width:340px;">
+                  <label class="bmrv-qlabel">Enter your name to certify *</label>
+                  <span class="bmrv-cell" id="rv-certify"></span>
                 </div>
               </div>
               <svg class="bmrv-cursor" id="rpv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
@@ -3216,28 +3246,30 @@ function rpvFmt(ms) { const s = Math.max(0, Math.round(ms / 1000)); return Math.
 function rpvBuildScenes() {
   const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Community College District';
   rpvScenes = [
-    { t:'rv-district',     cap:'Start with your Community College District.', text:dist },
-    { t:'rv-lead',         cap:'Enter the Project Lead’s name and title.', text:'Project Lead Name, Title' },
-    { t:'rv-leademail',    cap:'Add the Project Lead’s email.', text:'lead@district.edu' },
-    { t:'rv-staff',        cap:'Name the support staff member for grant activities, with their title.', text:'Support Staff Name, Title' },
-    { t:'rv-staffemail',   cap:'And the support staff email.', text:'staff@district.edu' },
-    { t:'rv-team',         cap:'Has your project team changed since the grant began? Pick Yes or No — if Yes, list who to add or remove and their roles.', text:'No' },
-    { t:'rv-goals',        cap:'Outline your grant goals as submitted in section 2.3 of your application (for Year 1).', text:'Goal 1: Audit district-wide hiring practices for equity. Goal 2: Convene a cross-constituent EEO workgroup and publish evidence-based recommendations.' },
-    { t:'rv-goalsmet',     cap:'Are those goals being met? If Yes, describe how each is progressing; if No, give your plan to meet them.', text:'Yes' },
-    { t:'rv-goalsdetail',  cap:'Briefly describe progress to date for each goal.', text:'The EEO workgroup is convened and meeting monthly; five years of hiring data are under analysis and the first process-mapping workshops are complete.' },
-    { t:'rv-updates',      cap:'Any significant updates to your goals or planned activities since the original proposal? If Yes, add a brief summary.', text:'No' },
-    { t:'rv-barriers',     cap:'Identify any barriers affecting progress or spending, and the steps you are taking to address them.', text:'Hiring delays slowed onboarding; we secured a consultant and shifted two workshops to spring to stay on schedule.' },
-    { t:'rv-ex-type',      cap:'In the expenditures table, list each expenditure type from your approved budget.', text:'Non-Instructional Salaries (2000)' },
-    { t:'rv-ex-year',      cap:'Note the grant year for the line.', text:'Year 1' },
-    { t:'rv-ex-desc',      cap:'Describe the expenditure.', text:'Project coordinator stipend' },
-    { t:'rv-ex-approved',  cap:'Enter the approved grant award amount for the line.', text:'$38,000' },
-    { t:'rv-ex-spent',     cap:'Then the total expenditures to date.', text:'$12,500' },
-    { t:'rv-ex-balance',   cap:'The unexpended balance is what remains.', text:'$25,500' },
-    { t:'rv-bmr',          cap:'Indicate whether you intend to submit a budget modification request. If Yes, contact Drs. John Parker and Herbert English.', text:'No' },
-    { t:'rv-certify',      cap:'Finally, type your name to certify the report is complete and accurate. Now you are ready to fill in the live form below.', text:'Project Lead Name' }
+    { t:'rv-district',       cap:'Start with your Community College District.', text:dist },
+    { t:'rv-lead',           cap:'Enter the Project Lead’s name and title.', text:'Project Lead Name, Title' },
+    { t:'rv-leademail',      cap:'Add the Project Lead’s email.', text:'lead@district.edu' },
+    { t:'rv-staff',          cap:'Name the support staff member for grant activities, with their title.', text:'Support Staff Name, Title' },
+    { t:'rv-staffemail',     cap:'And the support staff email.', text:'staff@district.edu' },
+    { t:'rv-team-yes',       cap:'Has your project team changed since the grant began? Choose Yes or No.', kind:'pick' },
+    { t:'rv-teamdetail',     cap:'Because you chose Yes, use the box underneath to list who to add or remove and outline their roles.', text:'Adding Dr. Rivera as co-lead for data analysis; removing J. Smith, who has left the district.' },
+    { t:'rv-goals',          cap:'Outline your grant goals as submitted in section 2.3 of your application (Year 1).', text:'Goal 1: Audit district-wide hiring practices for equity. Goal 2: Convene a cross-constituent EEO workgroup and publish evidence-based recommendations.' },
+    { t:'rv-goalsmet-yes',   cap:'7.a. Are those goals currently being met? Choose Yes or No.', kind:'pick' },
+    { t:'rv-goalsdetail',    cap:'Since you chose Yes, describe in the box underneath how each goal is progressing; if No, give your plan to meet them.', text:'The EEO workgroup meets monthly; five years of hiring data are under analysis and the first process-mapping workshops are complete.' },
+    { t:'rv-updates-no',     cap:'Any significant updates to your goals or activities since the proposal? Here we choose No — if Yes, you would summarize them in the box underneath.', kind:'pick' },
+    { t:'rv-barriers',       cap:'Identify any barriers affecting progress or spending, and the steps you are taking to address them.', text:'Hiring delays slowed onboarding; we secured a consultant and shifted two workshops to spring to stay on schedule.' },
+    { t:'rv-ex-type',        cap:'In the expenditures table, list each expenditure type from your approved budget.', text:'Non-Instructional Salaries (2000)' },
+    { t:'rv-ex-year',        cap:'Note the grant year for the line.', text:'Year 1' },
+    { t:'rv-ex-desc',        cap:'Describe the expenditure.', text:'Project coordinator stipend' },
+    { t:'rv-ex-approved',    cap:'Enter the approved grant award amount.', text:'$38,000' },
+    { t:'rv-ex-spent',       cap:'Then the total expenditures to date.', text:'$12,500' },
+    { t:'rv-ex-balance',     cap:'The unexpended balance is what remains.', text:'$25,500' },
+    { t:'rv-bmr-yes',        cap:'Do you intend to submit a budget modification request? Choose Yes or No.', kind:'pick' },
+    { t:'rv-bmrnote',        cap:'Because you chose Yes, a note appears underneath — contact Drs. John Parker and Herbert English to discuss next steps.', text:'If yes, please contact Drs. John Parker and Herbert English at your earliest convenience.' },
+    { t:'rv-certify',        cap:'Finally, type your name to certify the report is complete and accurate. Now you are ready to fill in the live form below.', text:'Project Lead Name' }
   ];
   rpvCum = []; let acc = 0;
-  rpvScenes.forEach(sc => { rpvCum.push(acc); acc += BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL; });
+  rpvScenes.forEach(sc => { rpvCum.push(acc); acc += BMRV_MOVE + (sc.text || '').length * BMRV_TYPE + BMRV_DWELL; });
   rpvTotal = acc;
 }
 function rpvMoveTo(id) {
@@ -3251,11 +3283,17 @@ function rpvMoveTo(id) {
 }
 function rpvEnter(i) {
   rpvScenes.forEach((sc, j) => {
+    if (j === i) return;
     const el = document.getElementById(sc.t);
     if (!el) return;
-    if (j < i) { el.textContent = sc.text; el.classList.remove('typing'); }
-    else if (j > i) { el.textContent = ''; el.classList.remove('typing'); }
+    if (sc.kind === 'pick') { el.classList.toggle('rpv-sel', j < i); }
+    else { el.textContent = (j < i) ? sc.text : ''; el.classList.remove('typing'); }
   });
+  const cur = document.getElementById(rpvScenes[i].t);
+  if (cur) {
+    if (rpvScenes[i].kind === 'pick') cur.classList.remove('rpv-sel');
+    else { cur.textContent = ''; cur.classList.remove('typing'); }
+  }
   const cap = document.getElementById('rpv-caption');
   if (cap) cap.innerHTML = '<span class="show">' + rpvScenes[i].cap + '</span>';
   rpvMoveTo(rpvScenes[i].t);
@@ -3264,10 +3302,15 @@ function rpvRender(t) {
   if (!rpvScenes.length) return;
   let i = 0; while (i < rpvScenes.length - 1 && t >= rpvCum[i + 1]) i++;
   if (i !== rpvLastI) { rpvEnter(i); rpvLastI = i; }
-  const sc = rpvScenes[i], lt = t - rpvCum[i];
-  const ch = Math.max(0, Math.min(sc.text.length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
-  const el = document.getElementById(sc.t);
-  if (el) { el.textContent = sc.text.slice(0, ch); el.classList.toggle('typing', lt >= BMRV_MOVE && ch < sc.text.length); }
+  const sc = rpvScenes[i], lt = t - rpvCum[i], el = document.getElementById(sc.t);
+  if (sc.kind === 'pick') {
+    if (el) el.classList.toggle('rpv-sel', lt >= BMRV_MOVE);
+  } else if (el) {
+    const txt = sc.text || '';
+    const ch = Math.max(0, Math.min(txt.length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
+    el.textContent = txt.slice(0, ch);
+    el.classList.toggle('typing', lt >= BMRV_MOVE && ch < txt.length);
+  }
   const prog = document.getElementById('rpv-prog'), tm = document.getElementById('rpv-time');
   if (prog) prog.style.width = (rpvTotal ? (t / rpvTotal * 100) : 0) + '%';
   if (tm) tm.textContent = rpvFmt(t) + ' / ' + rpvFmt(rpvTotal);
