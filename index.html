@@ -1501,6 +1501,59 @@
         <!-- EEO IBP GRANT REPORT (opens inline from the list; mirrors the Word/online form exactly) -->
         <div id="report-wrap" style="display:none;">
           <button type="button" class="bmr-btn forms-back" onclick="backToForms()">‹ Back to Forms</button>
+
+          <!-- VIDEO TRAINING GUIDE — screencast of filling out the EEO IBP Grant Report (shown above the form) -->
+          <div class="bmrv-card" id="report-guide">
+            <div class="bmrv-bar"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">How to Complete This Form</span></div>
+            <div class="bmrv-frame" id="rpv-frame">
+              <div class="bmrv-scroll" id="rpv-scroll">
+                <div class="bmrv-doc-title">EEO IBP Grant Report</div>
+                <div class="bmrv-meta">
+                  <div class="bmrv-fld"><label>Community College District</label><span class="bmrv-cell" id="rv-district"></span></div>
+                  <div class="bmrv-fld"><label>Project Lead Name and Title</label><span class="bmrv-cell" id="rv-lead"></span></div>
+                  <div class="bmrv-fld"><label>Project Lead Email</label><span class="bmrv-cell" id="rv-leademail"></span></div>
+                  <div class="bmrv-fld"><label>Support Staff for Grant Activities — Name and Title</label><span class="bmrv-cell" id="rv-staff"></span></div>
+                  <div class="bmrv-fld"><label>Support Staff Email</label><span class="bmrv-cell" id="rv-staffemail"></span></div>
+                </div>
+                <div class="bmrv-meta">
+                  <div class="bmrv-fld"><label>Has your project team changed since the grant began?</label><span class="bmrv-cell" id="rv-team"></span></div>
+                  <div class="bmrv-fld"><label>Grant goals as submitted in section 2.3 (Year 1)</label><span class="bmrv-cell" id="rv-goals"></span></div>
+                  <div class="bmrv-fld"><label>Are the goals currently being met?</label><span class="bmrv-cell" id="rv-goalsmet"></span></div>
+                  <div class="bmrv-fld"><label>How each goal is being met to date</label><span class="bmrv-cell" id="rv-goalsdetail"></span></div>
+                  <div class="bmrv-fld"><label>Significant updates to goals or planned activities?</label><span class="bmrv-cell" id="rv-updates"></span></div>
+                  <div class="bmrv-fld"><label>Barriers, and the steps you are taking to address them</label><span class="bmrv-cell" id="rv-barriers"></span></div>
+                </div>
+                <div class="bmrv-yblock y1">
+                  <div class="bmrv-yhead"><span class="bmrv-chip">Expenditures</span> Total Grant Expenditures to Date</div>
+                  <div class="bmrv-lines">
+                    <div class="bmrv-line">
+                      <div class="bmrv-line-top"><span class="bmrv-line-name">An approved budget line</span></div>
+                      <div class="bmrv-fld"><label>Expenditure Type</label><span class="bmrv-cell" id="rv-ex-type"></span></div>
+                      <div class="bmrv-fld"><label>Year</label><span class="bmrv-cell" id="rv-ex-year"></span></div>
+                      <div class="bmrv-fld"><label>Description</label><span class="bmrv-cell" id="rv-ex-desc"></span></div>
+                      <div class="bmrv-fld"><label>Approved Grant Award Amount</label><span class="bmrv-cell num" id="rv-ex-approved"></span></div>
+                      <div class="bmrv-fld"><label>Total Expenditures to Date</label><span class="bmrv-cell num" id="rv-ex-spent"></span></div>
+                      <div class="bmrv-fld"><label>Unexpended Balance</label><span class="bmrv-cell num" id="rv-ex-balance"></span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bmrv-meta" style="margin-top:14px;">
+                  <div class="bmrv-fld"><label>Intend to submit a budget modification request?</label><span class="bmrv-cell" id="rv-bmr"></span></div>
+                  <div class="bmrv-fld" style="max-width:340px;"><label>Enter your name to certify *</label><span class="bmrv-cell" id="rv-certify"></span></div>
+                </div>
+              </div>
+              <svg class="bmrv-cursor" id="rpv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
+              <div class="bmrv-caption" id="rpv-caption"></div>
+              <button type="button" class="bmrv-poster" id="rpv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">Play the video guide</span></button>
+            </div>
+            <div class="bmrv-controls">
+              <button type="button" class="bmrv-play" id="rpv-play" aria-label="Play or pause">▶</button>
+              <span class="bmrv-time" id="rpv-time">0:00 / 0:00</span>
+              <div class="bmrv-track" id="rpv-track"><div class="bmrv-prog" id="rpv-prog"></div></div>
+              <button type="button" class="bmrv-replay" id="rpv-replay" aria-label="Replay">↻</button>
+            </div>
+          </div>
+
           <div class="bmr-card" id="report-form">
             <div class="bmr-card-head">
               <div>
@@ -3011,6 +3064,7 @@ function openForm(which) {
   if (gw) gw.style.display = (which === 'grant') ? 'block' : 'none';
   if (bw) bw.style.display = (which === 'budget') ? 'block' : 'none';
   if (rw) rw.style.display = (which === 'report') ? 'block' : 'none';
+  if (which === 'report') { try { startReportGuide(); } catch (e) {} }
   try { (document.querySelector('.main') || window).scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
 }
 function backToForms() {
@@ -3154,6 +3208,100 @@ function startBmrGuide() {
   if (replay) replay.onclick = () => { bmrvT = 0; bmrvLastI = -1; bmrvRender(0); bmrvPlay(); };
   if (track) track.onclick = (e) => { const r = track.getBoundingClientRect(); bmrvT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * bmrvTotal; bmrvLastI = -1; bmrvRender(bmrvT); };
   bmrvLastI = -1; bmrvRender(0);
+}
+
+/* ════════════ EEO IBP GRANT REPORT VIDEO GUIDE (animated screencast of the report form) ════════════ */
+let rpvScenes = [], rpvCum = [], rpvTotal = 0, rpvT = 0, rpvPlaying = false, rpvLast = 0, rpvRAF = null, rpvLastI = -1;
+function rpvFmt(ms) { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+function rpvBuildScenes() {
+  const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Community College District';
+  rpvScenes = [
+    { t:'rv-district',     cap:'Start with your Community College District.', text:dist },
+    { t:'rv-lead',         cap:'Enter the Project Lead’s name and title.', text:'Project Lead Name, Title' },
+    { t:'rv-leademail',    cap:'Add the Project Lead’s email.', text:'lead@district.edu' },
+    { t:'rv-staff',        cap:'Name the support staff member for grant activities, with their title.', text:'Support Staff Name, Title' },
+    { t:'rv-staffemail',   cap:'And the support staff email.', text:'staff@district.edu' },
+    { t:'rv-team',         cap:'Has your project team changed since the grant began? Pick Yes or No — if Yes, list who to add or remove and their roles.', text:'No' },
+    { t:'rv-goals',        cap:'Outline your grant goals as submitted in section 2.3 of your application (for Year 1).', text:'Goal 1: Audit district-wide hiring practices for equity. Goal 2: Convene a cross-constituent EEO workgroup and publish evidence-based recommendations.' },
+    { t:'rv-goalsmet',     cap:'Are those goals being met? If Yes, describe how each is progressing; if No, give your plan to meet them.', text:'Yes' },
+    { t:'rv-goalsdetail',  cap:'Briefly describe progress to date for each goal.', text:'The EEO workgroup is convened and meeting monthly; five years of hiring data are under analysis and the first process-mapping workshops are complete.' },
+    { t:'rv-updates',      cap:'Any significant updates to your goals or planned activities since the original proposal? If Yes, add a brief summary.', text:'No' },
+    { t:'rv-barriers',     cap:'Identify any barriers affecting progress or spending, and the steps you are taking to address them.', text:'Hiring delays slowed onboarding; we secured a consultant and shifted two workshops to spring to stay on schedule.' },
+    { t:'rv-ex-type',      cap:'In the expenditures table, list each expenditure type from your approved budget.', text:'Non-Instructional Salaries (2000)' },
+    { t:'rv-ex-year',      cap:'Note the grant year for the line.', text:'Year 1' },
+    { t:'rv-ex-desc',      cap:'Describe the expenditure.', text:'Project coordinator stipend' },
+    { t:'rv-ex-approved',  cap:'Enter the approved grant award amount for the line.', text:'$38,000' },
+    { t:'rv-ex-spent',     cap:'Then the total expenditures to date.', text:'$12,500' },
+    { t:'rv-ex-balance',   cap:'The unexpended balance is what remains.', text:'$25,500' },
+    { t:'rv-bmr',          cap:'Indicate whether you intend to submit a budget modification request. If Yes, contact Drs. John Parker and Herbert English.', text:'No' },
+    { t:'rv-certify',      cap:'Finally, type your name to certify the report is complete and accurate. Now you are ready to fill in the live form below.', text:'Project Lead Name' }
+  ];
+  rpvCum = []; let acc = 0;
+  rpvScenes.forEach(sc => { rpvCum.push(acc); acc += BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL; });
+  rpvTotal = acc;
+}
+function rpvMoveTo(id) {
+  const el = document.getElementById(id), scroll = document.getElementById('rpv-scroll'), frame = document.getElementById('rpv-frame'), cur = document.getElementById('rpv-cursor');
+  if (!el || !scroll || !frame) return;
+  const frameH = frame.clientHeight, contentH = scroll.scrollHeight;
+  let shift = el.offsetTop - frameH * 0.30;
+  shift = Math.max(0, Math.min(shift, Math.max(0, contentH - frameH)));
+  scroll.style.transform = 'translateY(' + (-shift) + 'px)';
+  if (cur) { cur.style.top = (el.offsetTop - shift + Math.min(el.offsetHeight, 28) / 2 + 2) + 'px'; cur.style.left = (el.offsetLeft + 14) + 'px'; }
+}
+function rpvEnter(i) {
+  rpvScenes.forEach((sc, j) => {
+    const el = document.getElementById(sc.t);
+    if (!el) return;
+    if (j < i) { el.textContent = sc.text; el.classList.remove('typing'); }
+    else if (j > i) { el.textContent = ''; el.classList.remove('typing'); }
+  });
+  const cap = document.getElementById('rpv-caption');
+  if (cap) cap.innerHTML = '<span class="show">' + rpvScenes[i].cap + '</span>';
+  rpvMoveTo(rpvScenes[i].t);
+}
+function rpvRender(t) {
+  if (!rpvScenes.length) return;
+  let i = 0; while (i < rpvScenes.length - 1 && t >= rpvCum[i + 1]) i++;
+  if (i !== rpvLastI) { rpvEnter(i); rpvLastI = i; }
+  const sc = rpvScenes[i], lt = t - rpvCum[i];
+  const ch = Math.max(0, Math.min(sc.text.length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
+  const el = document.getElementById(sc.t);
+  if (el) { el.textContent = sc.text.slice(0, ch); el.classList.toggle('typing', lt >= BMRV_MOVE && ch < sc.text.length); }
+  const prog = document.getElementById('rpv-prog'), tm = document.getElementById('rpv-time');
+  if (prog) prog.style.width = (rpvTotal ? (t / rpvTotal * 100) : 0) + '%';
+  if (tm) tm.textContent = rpvFmt(t) + ' / ' + rpvFmt(rpvTotal);
+}
+function rpvIcon() { const b = document.getElementById('rpv-play'); if (b) b.textContent = rpvPlaying ? '❚❚' : '▶'; }
+function rpvTick(ts) {
+  if (!rpvPlaying) return;
+  if (!rpvLast) rpvLast = ts;
+  rpvT += ts - rpvLast; rpvLast = ts;
+  if (rpvT >= rpvTotal) { rpvT = rpvTotal; rpvRender(rpvTotal); rpvPlaying = false; rpvIcon(); return; }
+  rpvRender(rpvT);
+  rpvRAF = requestAnimationFrame(rpvTick);
+}
+function rpvPlay() {
+  const frame = document.getElementById('rpv-frame');
+  if (frame && frame.clientHeight === 0) return;
+  if (rpvT >= rpvTotal) rpvT = 0;
+  rpvPlaying = true; rpvLast = 0; rpvLastI = -1;
+  const poster = document.getElementById('rpv-poster'); if (poster) poster.style.display = 'none';
+  rpvIcon(); rpvRAF = requestAnimationFrame(rpvTick);
+}
+function rpvPause() { rpvPlaying = false; if (rpvRAF) cancelAnimationFrame(rpvRAF); rpvIcon(); }
+function startReportGuide() {
+  const frame = document.getElementById('rpv-frame');
+  if (!frame || frame.dataset.ready) return;
+  frame.dataset.ready = '1';
+  rpvBuildScenes();
+  const play = document.getElementById('rpv-play'), poster = document.getElementById('rpv-poster'),
+        track = document.getElementById('rpv-track'), replay = document.getElementById('rpv-replay');
+  if (play) play.onclick = () => rpvPlaying ? rpvPause() : rpvPlay();
+  if (poster) poster.onclick = rpvPlay;
+  if (replay) replay.onclick = () => { rpvT = 0; rpvLastI = -1; rpvRender(0); rpvPlay(); };
+  if (track) track.onclick = (e) => { const r = track.getBoundingClientRect(); rpvT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * rpvTotal; rpvLastI = -1; rpvRender(rpvT); };
+  rpvLastI = -1; rpvRender(0);
 }
 
 /* ════════════ TIMELINE — 2 years ════════════ */
