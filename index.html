@@ -2857,26 +2857,55 @@ function bmrMailtoHref(state) {
          '&body=' + encodeURIComponent(bmrEmailBody(state));
 }
 
-// Open the mail app pre-addressed with the full copy. Returns true if opened.
-function openBmrSubmissionEmail() {
-  const state = loadBmrState();
+// Signature of the current form content, so Print doesn't re-send an identical copy.
+let bmrLastSubmitSig = '';
+function bmrContentSig(state) { return JSON.stringify(state.years || {}) + '|' + JSON.stringify(state.meta || {}); }
+
+// POST the completed form to the bmr-sync Worker, which stores it (feeding the
+// EEO Data Intelligence CRM) and emails a complete copy to the recipients.
+// If the service can't be reached, fall back to the staff member's mail app.
+function submitBmrToWorker(state, btn) {
   const problem = bmrReadiness(state);
-  if (problem) { setBmrSubmitStatus(problem, 'warn'); return false; }
-  window.location.href = bmrMailtoHref(state);
-  setBmrSubmitStatus('✓ Opening your email app with a complete copy addressed to ' +
-    BMR_SUBMIT_TO.join(' and ') + ' — press Send to submit.', 'ok');
-  return true;
+  if (problem) { setBmrSubmitStatus(problem, 'warn'); return Promise.resolve(false); }
+  if (!BMR_SYNC_URL) {
+    setBmrSubmitStatus('Submission service isn’t connected yet — set the dashboard’s Worker URL (BMR_SYNC_URL) to go live.', 'warn');
+    return Promise.resolve(false);
+  }
+  if (btn) btn.disabled = true;
+  setBmrSubmitStatus('Submitting to CCCCO…', 'pending');
+  const payload = {
+    district: BMR_SYNC_ID, name: BMR_SYNC_NAME, award: districts[0].funding,
+    baseline: BUDGET_BASELINE, state: state, recipients: BMR_SUBMIT_TO,
+    submittedAt: new Date().toISOString()
+  };
+  return fetch(BMR_SYNC_URL.replace(/\/+$/, '') + '/bmr/' + BMR_SYNC_ID + '/submit', {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload)
+  })
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json().catch(() => ({})); })
+    .then(() => {
+      bmrLastSubmitSig = bmrContentSig(state);
+      setBmrSubmitStatus('✓ Submitted — a copy was emailed to ' + BMR_SUBMIT_TO.join(' and ') + '.', 'ok');
+      return true;
+    })
+    .catch(() => {
+      setBmrSubmitStatus('Couldn’t reach the submission service — opening your email app with a complete copy instead.', 'warn');
+      window.location.href = bmrMailtoHref(state);
+      return false;
+    })
+    .finally(() => { if (btn) btn.disabled = false; });
 }
 
 function submitBmrForm() {
-  openBmrSubmissionEmail();
+  submitBmrToWorker(loadBmrState(), document.getElementById('bmr-submit-btn'));
 }
 
-// Print / Save PDF: email a complete copy too, then open the print dialog.
+// Print / Save PDF: also submit a copy (unless this exact content was just sent), then print.
 function printBmrForm() {
-  const opened = openBmrSubmissionEmail();
-  // Let the mail app take focus first, then raise the print dialog.
-  setTimeout(() => window.print(), opened ? 600 : 0);
+  const state = loadBmrState();
+  if (!bmrReadiness(state) && bmrContentSig(state) !== bmrLastSubmitSig) {
+    submitBmrToWorker(state, document.getElementById('bmr-submit-btn'));
+  }
+  setTimeout(() => window.print(), 300);
 }
 
 // The project year the form is currently showing ('y1' | 'y2').
