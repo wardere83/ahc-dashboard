@@ -2874,7 +2874,7 @@ function submitBmrToWorker(state, btn) {
   setBmrSubmitStatus('Submitting to CCCCO…', 'pending');
   const payload = {
     district: BMR_SYNC_ID, name: BMR_SYNC_NAME, award: districts[0].funding,
-    baseline: BUDGET_BASELINE, state: state, recipients: BMR_SUBMIT_TO,
+    baseline: BUDGET_BASELINE, model: BUDGET_MODEL, state: state, recipients: BMR_SUBMIT_TO,
     submittedAt: new Date().toISOString()
   };
   return fetch(BMR_SYNC_URL.replace(/\/+$/, '') + '/bmr/' + BMR_SYNC_ID + '/submit', {
