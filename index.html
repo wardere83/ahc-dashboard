@@ -1317,7 +1317,6 @@
               </div>
               <div class="bmr-submit-status" id="bmr-submit-status" role="status" aria-live="polite"></div>
             </div>
-            <div class="bmr-saved-note" id="bmr-saved-note">Entries are saved automatically in this browser. Submitting emails a complete copy to the CCCCO EEO inbox and Bulle Consulting admin.</div>
           </div>
         </div>
       </div>
@@ -2867,7 +2866,8 @@ function submitBmrToWorker(state, btn) {
   const problem = bmrReadiness(state);
   if (problem) { setBmrSubmitStatus(problem, 'warn'); return Promise.resolve(false); }
   if (!BMR_SYNC_URL) {
-    setBmrSubmitStatus('Submission service isn’t connected yet — set the dashboard’s Worker URL (BMR_SYNC_URL) to go live.', 'warn');
+    window.location.href = bmrMailtoHref(state);
+    setBmrSubmitStatus('Opening your email app with a complete copy for ' + BMR_SUBMIT_TO.join(' and ') + '.', 'ok');
     return Promise.resolve(false);
   }
   if (btn) btn.disabled = true;
