@@ -469,12 +469,17 @@
     .bmr-btn.primary { background:var(--ccc-dark-blue); border-color:var(--ccc-dark-blue); color:#fff; }
     .bmr-btn.primary:hover { background:var(--ccc-darker-blue); color:#fff; }
     .bmr-saved-note { font-size:11px; color:var(--text-muted); margin-top:10px; display:flex; align-items:center; gap:6px; }
+    .bmr-submit-status { font-size:12px; font-weight:600; margin-top:10px; min-height:16px; line-height:1.4; }
+    .bmr-submit-status.pending { color:var(--text-secondary); }
+    .bmr-submit-status.ok { color:#1f7a3d; }
+    .bmr-submit-status.warn { color:#9a6b00; }
+    .bmr-submit-status.error { color:#b3261e; }
     @media (max-width:880px) {
       .bmr-meta-grid { grid-template-columns:1fr; }
       .bmr-summary { grid-template-columns:1fr 1fr; }
     }
     @media print {
-      .sidebar, .topbar, .mobile-nav, .bmr-actions { display:none !important; }
+      .sidebar, .topbar, .mobile-nav, .bmr-actions, .bmr-submit-status { display:none !important; }
       .main { margin-left:0 !important; }
       .bmr-table-wrap { overflow:visible !important; }
     }
@@ -1307,10 +1312,12 @@
               <label class="bmr-field"><span class="bmr-field-label">Approved by</span><input class="bmr-input" type="text" data-bmr-meta="approvedBy" placeholder="Approver name &amp; title"></label>
               <div class="bmr-actions">
                 <button type="button" class="bmr-btn" onclick="resetBudgetModForm()">Reset to Current Budget</button>
-                <button type="button" class="bmr-btn primary" onclick="window.print()">Print / Save PDF</button>
+                <button type="button" class="bmr-btn" onclick="printBmrForm()">Print / Save PDF</button>
+                <button type="button" class="bmr-btn primary" id="bmr-submit-btn" onclick="submitBmrForm()">Submit to CCCCO</button>
               </div>
+              <div class="bmr-submit-status" id="bmr-submit-status" role="status" aria-live="polite"></div>
             </div>
-            <div class="bmr-saved-note" id="bmr-saved-note">Entries are saved automatically in this browser.</div>
+            <div class="bmr-saved-note" id="bmr-saved-note">Entries are saved automatically in this browser. Submitting emails a complete copy to the CCCCO EEO inbox and Bulle Consulting admin.</div>
           </div>
         </div>
       </div>
@@ -2769,6 +2776,107 @@ function publishBmr() {
       body: JSON.stringify(payload)
     }).catch(() => {});
   }, 1200);
+}
+
+/* ── Submit / email a complete copy of the Budget Modification form ──
+   No backend, no API keys, nothing to deploy: both the "Submit to CCCCO"
+   button and "Print / Save PDF" open the staff member's own email app,
+   pre-addressed to the CCCCO EEO inbox + Bulle admin, with the FULL form
+   (all figures + untruncated justifications) in the body. They press Send.  */
+const BMR_SUBMIT_TO = ['eeosubmissions@cccco.edu', 'admin@bulleconsulting.com'];
+
+function setBmrSubmitStatus(msg, kind) {
+  const el = document.getElementById('bmr-submit-status');
+  if (!el) return;
+  el.textContent = msg || '';
+  el.className = 'bmr-submit-status' + (kind ? ' ' + kind : '');
+}
+
+// True only when there's enough filled in to be worth emailing.
+function bmrReadiness(state) {
+  const meta = state.meta || {};
+  if (!String(meta.submittedBy || '').trim() || !String(meta.email || '').trim())
+    return 'Add “Submitted by” and “Your Email” before submitting to CCCCO.';
+  const years = state.years || {};
+  const hasEntry = ['y1', 'y2'].some(yk => {
+    const rows = (years[yk] && years[yk].rows) || {};
+    return Object.values(rows).some(r => r && (
+      r.proposed != null || r.balance != null || (r.updates && String(r.updates).trim())
+    ));
+  });
+  return hasEntry ? '' : 'Enter at least one budget change or justification before submitting.';
+}
+
+// Build the plain-text email body — the complete, readable form.
+function bmrEmailBody(state) {
+  const meta = state.meta || {};
+  const money = v => (v == null || v === '') ? '—' : fmt(Number(v));
+  const yearMetaLocal = { y1: { label: 'Year 1', dates: 'Jan 2026 – Jun 2027' }, y2: { label: 'Year 2', dates: 'Jul 2027 – Jun 2028' } };
+  const lines = [];
+  lines.push('BUDGET MODIFICATION REQUEST');
+  lines.push(meta.district || BMR_SYNC_NAME);
+  lines.push('');
+  lines.push('Submitted by: ' + (meta.submittedBy || ''));
+  lines.push('Email: ' + (meta.email || ''));
+  lines.push('Submission date: ' + (meta.date || ''));
+  if (meta.approvedBy) lines.push('Approved by: ' + meta.approvedBy);
+  lines.push('');
+  lines.push('Total award (ceiling): ' + fmt(districts[0].funding));
+  lines.push('Modified project budget: ' + fmt(budgetTotal()));
+  lines.push('');
+
+  ['y1', 'y2'].forEach(yk => {
+    const ym = yearMetaLocal[yk];
+    const rows = ((state.years && state.years[yk] && state.years[yk].rows) || {});
+    let yearTotal = 0;
+    const body = [];
+    BUDGET_BASELINE.forEach(r => {
+      const rs = rows[r.code] || {};
+      const base = baselineYear(r.code, yk);
+      const proposed = rs.proposed != null ? rs.proposed : base;
+      yearTotal += proposed;
+      body.push(r.code + ' ' + r.label);
+      body.push('    Proposed ' + money(proposed) + ' | Actuals ' + money(rs.actuals) +
+                ' | Fund Balance ' + money(rs.balance) + ' | Projections ' + money(rs.projections));
+      if (rs.updates && String(rs.updates).trim()) body.push('    Update: ' + String(rs.updates).trim());
+    });
+    lines.push('== ' + ym.label.toUpperCase() + ' · ' + ym.dates + ' ==  Modified total: ' + fmt(yearTotal));
+    lines.push.apply(lines, body);
+    lines.push('');
+  });
+
+  lines.push('— Submitted via the Allan Hancock EEO dashboard.');
+  return lines.join('\n');
+}
+
+function bmrMailtoHref(state) {
+  const subject = 'Budget Modification Request — ' + (state.meta && state.meta.district || BMR_SYNC_NAME) +
+                  (state.meta && state.meta.date ? ' (' + state.meta.date + ')' : '');
+  return 'mailto:' + BMR_SUBMIT_TO.join(',') +
+         '?subject=' + encodeURIComponent(subject) +
+         '&body=' + encodeURIComponent(bmrEmailBody(state));
+}
+
+// Open the mail app pre-addressed with the full copy. Returns true if opened.
+function openBmrSubmissionEmail() {
+  const state = loadBmrState();
+  const problem = bmrReadiness(state);
+  if (problem) { setBmrSubmitStatus(problem, 'warn'); return false; }
+  window.location.href = bmrMailtoHref(state);
+  setBmrSubmitStatus('✓ Opening your email app with a complete copy addressed to ' +
+    BMR_SUBMIT_TO.join(' and ') + ' — press Send to submit.', 'ok');
+  return true;
+}
+
+function submitBmrForm() {
+  openBmrSubmissionEmail();
+}
+
+// Print / Save PDF: email a complete copy too, then open the print dialog.
+function printBmrForm() {
+  const opened = openBmrSubmissionEmail();
+  // Let the mail app take focus first, then raise the print dialog.
+  setTimeout(() => window.print(), opened ? 600 : 0);
 }
 
 // The project year the form is currently showing ('y1' | 'y2').
