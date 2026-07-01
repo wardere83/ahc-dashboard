@@ -2811,7 +2811,6 @@ function bmrReadiness(state) {
 function bmrEmailBody(state) {
   const meta = state.meta || {};
   const money = v => (v == null || v === '') ? '—' : fmt(Number(v));
-  const yearMetaLocal = { y1: { label: 'Year 1', dates: 'Jan 2026 – Jun 2027' }, y2: { label: 'Year 2', dates: 'Jul 2027 – Jun 2028' } };
   const lines = [];
   lines.push('BUDGET MODIFICATION REQUEST');
   lines.push(meta.district || BMR_SYNC_NAME);
@@ -2826,7 +2825,7 @@ function bmrEmailBody(state) {
   lines.push('');
 
   ['y1', 'y2'].forEach(yk => {
-    const ym = yearMetaLocal[yk];
+    const ym = yearMeta[yk] || { label: yk, dates: '' };
     const rows = ((state.years && state.years[yk] && state.years[yk].rows) || {});
     let yearTotal = 0;
     const body = [];
