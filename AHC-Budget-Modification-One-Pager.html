@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AHC · Budget Modification Request — One-Pager</title>
+<style>
+  :root{
+    --midnight:#003E5A; --midnight-deep:#002A3A; --blue:#0033A0; --blue-soft:#3B7EB9;
+    --gold:#FFCD00; --gold-deep:#E5B800; --gold-soft:#FFE680;
+    --ink:#1A1F2E; --muted:#5b6270; --line:rgba(0,62,90,0.14); --line-strong:rgba(0,62,90,0.28);
+    --bg:#F3F6F9; --card:#FFFFFF; --up:#C7361F; --down:#1B7A4B; --flat:#717271;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-family:"Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;font-size:12px}
+  .sheet{max-width:850px;margin:0 auto;background:var(--card);padding:26px 30px 22px}
+  /* Header */
+  .hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border-bottom:3px solid var(--gold);padding-bottom:12px}
+  .hdr-l .eyebrow{font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);font-weight:800}
+  .hdr-l h1{font-size:20px;color:var(--midnight);margin-top:3px;line-height:1.2;font-weight:800}
+  .hdr-l .sub{font-size:11px;color:var(--muted);margin-top:4px}
+  .hdr-r{text-align:right;flex-shrink:0}
+  .badge{display:inline-block;background:var(--midnight);color:#fff;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.04em}
+  .badge.gold{background:var(--gold);color:var(--midnight);margin-top:5px}
+  .hdr-r .meta{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.5}
+  /* Note banner */
+  .note{margin-top:12px;background:var(--gold-soft);border:1px solid var(--gold-deep);border-radius:7px;padding:8px 12px;font-size:10.5px;color:var(--midnight-deep)}
+  .note b{color:var(--midnight)}
+  /* KPI row */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+  .kpi{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#fff;position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--midnight)}
+  .kpi.g::before{background:var(--gold)}
+  .kpi.b::before{background:var(--blue)}
+  .kpi.r::before{background:var(--down)}
+  .kpi .lbl{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpi .val{font-size:19px;font-weight:800;color:var(--midnight);margin-top:3px}
+  .kpi .foot{font-size:9.5px;color:var(--muted);margin-top:2px}
+  .kpi .val.ok{color:var(--down)}
+  /* Section */
+  h2{font-size:12.5px;color:var(--midnight);margin:18px 0 8px;padding-bottom:4px;border-bottom:1.5px solid var(--line);letter-spacing:.02em;text-transform:uppercase;font-weight:800}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  /* Request cards */
+  .req{border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:8px;padding:10px 12px;background:#fbfcfe}
+  .req.add{border-left-color:var(--gold-deep)}
+  .req .tag{font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--blue)}
+  .req.add .tag{color:var(--gold-deep)}
+  .req h3{font-size:12px;color:var(--midnight);margin:2px 0 4px}
+  .req p{font-size:10.5px;color:var(--muted);margin-bottom:4px}
+  .req .amt{font-size:13px;font-weight:800}
+  .amt.neg{color:var(--down)} .amt.pos{color:var(--up)}
+  /* Table */
+  table{width:100%;border-collapse:collapse;font-size:10.5px;margin-top:2px}
+  thead th{background:var(--midnight);color:#fff;font-size:9.5px;letter-spacing:.03em;text-transform:uppercase;padding:6px 7px;text-align:right;font-weight:700}
+  thead th:first-child,tbody td:first-child{text-align:left}
+  tbody td{padding:5px 7px;text-align:right;border-bottom:1px solid var(--line)}
+  tbody tr:nth-child(even){background:#f7fafc}
+  .code{color:var(--muted);font-weight:700}
+  .var-pos{color:var(--up);font-weight:700}
+  .var-neg{color:var(--down);font-weight:700}
+  .var-flat{color:var(--flat)}
+  tfoot td{padding:6px 7px;text-align:right;font-weight:800;background:var(--midnight-deep);color:#fff;border-top:2px solid var(--gold)}
+  tfoot td:first-child{text-align:left}
+  .yr-row td{background:#eef2f6;font-weight:700;color:var(--midnight)}
+  /* Advisory */
+  .adv{list-style:none;counter-reset:a}
+  .adv li{position:relative;padding:7px 10px 7px 34px;border-bottom:1px solid var(--line);font-size:10.8px}
+  .adv li::before{counter-increment:a;content:counter(a);position:absolute;left:8px;top:7px;width:18px;height:18px;background:var(--gold);color:var(--midnight);font-weight:800;font-size:10px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .adv li b{color:var(--midnight)}
+  .flag{background:#fff}
+  .adv li.warn::before{background:var(--down);color:#fff}
+  /* verdict box */
+  .verdict{margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .vbox{border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+  .vbox h4{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--blue);margin-bottom:5px}
+  .vbox ul{margin-left:15px;font-size:10.5px;color:var(--muted)}
+  .vbox ul li{margin-bottom:3px}
+  .footer{margin-top:16px;border-top:1px solid var(--line);padding-top:8px;font-size:9px;color:var(--muted);display:flex;justify-content:space-between}
+  @media print{body{background:#fff;font-size:11px}.sheet{max-width:none;padding:0}.note{-webkit-print-color-adjust:exact}}
+  @page{size:letter;margin:14mm}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-l">
+      <div class="eyebrow">EEO Innovative Best Practices Grant · 2026–2028</div>
+      <h1>Budget Modification Request — Expert Review</h1>
+      <div class="sub">Allan Hancock Joint Community College District · Professional Development &amp; EEO Representative Programs</div>
+    </div>
+    <div class="hdr-r">
+      <span class="badge">TIER 2 · $100,000</span><br>
+      <span class="badge gold">CCCCO EEO IBP</span>
+      <div class="meta">Prepared for: CCCCO EEO submission<br>Reviewer: Bulle Consulting<br>Period: Jan 1 2026 – Jun 30 2028</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Basis of this analysis.</b> The approved budget below is AHC's authoritative grant budget of record. The requested changes are modeled on the modification scenario documented in the form's guidance (discontinue a Year&nbsp;1 faculty-stipend activity; add a new Year&nbsp;2 conference line). Dollar amounts on the modification are <b>illustrative pending confirmation of the live-entered figures</b> — replace with the exact values from your submitted form and every total recalculates on the same logic.
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Total Award (Ceiling)</div><div class="val">$100,000</div><div class="foot">Fixed Tier 2 grant</div></div>
+    <div class="kpi b"><div class="lbl">Modified Budget</div><div class="val">$100,000</div><div class="foot">After reallocation</div></div>
+    <div class="kpi r"><div class="lbl">Variance vs Award</div><div class="val ok">$0</div><div class="foot">Balanced to ceiling ✓</div></div>
+    <div class="kpi g"><div class="lbl">Modified Y1 / Y2</div><div class="val" style="font-size:15px">$57,627 / $45,373</div><div class="foot">Baseline $62,627 / $37,373</div></div>
+  </div>
+
+  <!-- THE REQUEST -->
+  <h2>The Request — Two Modifications</h2>
+  <div class="two">
+    <div class="req">
+      <div class="tag">Change 1 · Year 1 · Code 1000 Instructional Salaries</div>
+      <h3>Discontinue faculty onboarding-stipend activity</h3>
+      <p>The project lead retired; the faculty stipends that were to support delivery of the onboarding program (2 faculty × 50 hrs × $50) are being <b>discontinued under the grant</b> and continued with other district/EEO funds.</p>
+      <div class="amt neg">−$8,000 released from 1000</div>
+    </div>
+    <div class="req add">
+      <div class="tag">Change 2 · Year 2 · Code 5000 Other Operating &amp; Services</div>
+      <h3>Add new line: CCC Employee Resource Group Conference</h3>
+      <p>Launch of a California Community College Employee Resource Group Conference, plus a <b>consultant</b> to support planning and post-conference data analysis for EEO/IBP reporting.</p>
+      <div class="amt pos">+$8,000 added to 5000</div>
+    </div>
+  </div>
+
+  <!-- VARIANCE TABLE -->
+  <h2>Budget Variance Analysis — Approved vs Proposed</h2>
+  <table>
+    <thead>
+      <tr><th>Object Code</th><th>Approved Y1</th><th>Approved Y2</th><th>Approved Total</th><th>Proposed Total</th><th>Variance $</th><th>Variance %</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="code">1000</span> Instructional Salaries</td><td>30,720</td><td>15,360</td><td>46,080</td><td>38,080</td><td class="var-neg">−8,000</td><td class="var-neg">−17.4%</td></tr>
+      <tr><td><span class="code">3000</span> Employee Benefits</td><td>6,666</td><td>3,333</td><td>9,999</td><td>9,999</td><td class="var-flat">0</td><td class="var-flat">—</td></tr>
+      <tr><td><span class="code">4000</span> Supplies &amp; Materials</td><td>759</td><td>400</td><td>1,159</td><td>1,159</td><td class="var-flat">0</td><td class="var-flat">—</td></tr>
+      <tr><td><span class="code">5000</span> Other Operating &amp; Services</td><td>21,500</td><td>16,500</td><td>38,000</td><td>46,000</td><td class="var-pos">+8,000</td><td class="var-pos">+21.1%</td></tr>
+      <tr><td><span class="code">7000</span> Indirect (5.0% of direct)</td><td>2,982</td><td>1,780</td><td>4,762</td><td>4,762</td><td class="var-flat">0</td><td class="var-flat">—</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><td>TOTAL PROJECT</td><td>62,627</td><td>37,373</td><td>100,000</td><td>100,000</td><td>$0</td><td>0.0%</td></tr>
+    </tfoot>
+  </table>
+  <table style="margin-top:8px">
+    <thead><tr><th>By Grant Year</th><th>Approved</th><th>Proposed</th><th>Variance $</th><th>Variance %</th><th>Reads As</th></tr></thead>
+    <tbody>
+      <tr class="yr-row"><td>Year 1 · Jan 2026 – Jun 2027</td><td>62,627</td><td>57,627</td><td class="var-neg">−5,000</td><td class="var-neg">−8.0%</td><td style="text-align:left">Lighter Y1</td></tr>
+      <tr class="yr-row"><td>Year 2 · Jul 2027 – Jun 2028</td><td>37,373</td><td>45,373</td><td class="var-pos">+8,000</td><td class="var-pos">+21.4%</td><td style="text-align:left">Heavier Y2</td></tr>
+    </tbody>
+    <tfoot><tr><td>NET SHIFT</td><td>100,000</td><td>100,000</td><td>$0</td><td>0.0%</td><td style="text-align:left">Reallocation, not a budget increase</td></tr></tfoot>
+  </table>
+
+  <!-- EXPERT ADVISORY -->
+  <h2>Expert Advisory — Read Before Submitting</h2>
+  <ul class="adv">
+    <li class="warn"><b>Reconcile to exactly $100,000.</b> A Tier 2 award is a fixed ceiling, so every modification must be a zero-sum reallocation. The most common filing error is entering the new $8,000 line <i>without</i> the offsetting reduction, which silently pushes the total to $103,000 (over ceiling). Confirm the sum of all Proposed Funds equals $100,000 before you submit — as modeled, it does.</li>
+    <li class="warn"><b>A new expenditure type triggers prior approval <u>and</u> a workplan update.</b> Adding a 5000 line that was not in the approved budget is a "substantial" change requiring CCCCO written approval (this form provides it). Because it introduces a <i>new activity</i>, also file the <b>Grant Modification Request Form</b> to align the workplan/outcomes — the dashboard flags this dependency explicitly.</li>
+    <li><b>Justify the 1000 → 5000 shift.</b> Moving dollars from Instructional Salaries to a consultant/services line changes the personnel-to-services mix. Document that the consultant scope (planning + data analysis) is grant-allowable, non-supplanting, and procured per district/CCCCO rules (competitive quotes or a documented sole-source), with defined deliverables and a not-to-exceed rate.</li>
+    <li><b>Indirect (7000) stays valid — keep it that way.</b> Indirect is $4,762 = 5.0% of the $95,238 direct base, at the EEO IBP cap. Because this is a like-for-like direct reallocation (total direct unchanged), 7000 needs no change. If the direct base ever moves, recompute so indirect never exceeds 5%.</li>
+    <li><b>Check benefits (3000) linkage.</b> Releasing $8,000 of salary may reduce associated benefits. Confirm whether the discontinued stipends/position carried statutory benefits; if so, a small 3000 reduction could free additional funds (faculty stipends often carry minimal benefits, so the effect may be immaterial).</li>
+    <li><b>Watch the Year-2 back-loading.</b> The change lifts Y2 spend +21% ($37,373 → $45,373). Ensure the ERG Conference and consultant deliverables land inside the period of performance (through Jun 30, 2028) and that Y2 staffing/cash flow can absorb the heavier load — back-loaded spend raises close-out and reversion risk.</li>
+    <li><b>Protect the funded goals.</b> Confirm discontinuing the onboarding-stipend piece does not undercut Goal 2 (faculty mentorship: 4 mentors / 8 mentees) and that it is genuinely continued off-grant. Map the ERG Conference to an approved EEO outcome (employee resource groups → inclusive climate &amp; retention) so CCCCO does not read it as scope creep.</li>
+  </ul>
+
+  <!-- VERDICT -->
+  <div class="verdict">
+    <div class="vbox">
+      <h4>Bottom line</h4>
+      <ul>
+        <li><b>Fundamentally sound:</b> a balanced, well-motivated reallocation driven by a genuine staffing change — not a request for more money.</li>
+        <li><b>Approvable</b> once (a) totals reconcile to $100,000, (b) a paired Grant Modification updates the workplan, and (c) the consultant procurement is documented.</li>
+      </ul>
+    </div>
+    <div class="vbox">
+      <h4>Action checklist before "Submit to CCCCO"</h4>
+      <ul>
+        <li>☐ Confirm Proposed Funds sum to $100,000 (variance $0)</li>
+        <li>☐ File paired Grant Modification Request Form</li>
+        <li>☐ Attach consultant scope + procurement basis</li>
+        <li>☐ Verify Y2 activities fit before Jun 30, 2028</li>
+        <li>☐ Complete "Submitted by" + "Your Email" fields</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Allan Hancock Joint CCD · EEO IBP Tier 2 · Budget Modification One-Pager</span>
+    <span>Prepared by Bulle Consulting · Figures on the modification are illustrative pending live-form confirmation</span>
+  </div>
+
+</div>
+</body>
+</html>
