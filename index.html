@@ -2753,7 +2753,7 @@ function saveBmrState(state) {
 
 /* ── BMR live sync: publish this district's Budget Modification data to the
       shared feed consumed by the EEO Data Intelligence "BMR Updates" tab ── */
-const BMR_SYNC_URL = '';   // bmr-sync Worker URL; publishing is disabled while empty
+const BMR_SYNC_URL = 'https://bmr-sync.shrill-king-ef4e.workers.dev';   // bmr-sync Worker URL; publishing is disabled while empty
 const BMR_SYNC_ID = 'ahc';
 const BMR_SYNC_NAME = 'Allan Hancock Joint CCD';
 let bmrSyncTimer = null;
