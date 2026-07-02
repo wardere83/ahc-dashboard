@@ -1544,7 +1544,9 @@
 
           <!-- VIDEO TRAINING GUIDE — screencast of filling out the EEO IBP Grant Report (shown above the form) -->
           <div class="bmrv-card" id="report-guide">
-            <div class="bmrv-bar"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">How to Complete This Form</span></div>
+            <div class="bmrv-bar"><div class="bmrv-bar-left"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">Video Guide &middot; EEO IBP Grant Report</span></div><button type="button" class="bmrv-speed-btn" id="rpv-speed">1&times;</button></div>
+            <div class="bmrv-chapters" id="rpv-chapters"><span class="bmrv-pill active" data-ch="0">1 &middot; Team Info</span><span class="bmrv-pill" data-ch="1">2 &middot; Grant Goals</span><span class="bmrv-pill" data-ch="2">3 &middot; Barriers &amp; Expenditures</span><span class="bmrv-pill" data-ch="3">4 &middot; Certification</span></div>
+            <div class="bmrv-pips" id="rpv-pips"></div>
             <div class="bmrv-frame" id="rpv-frame">
               <div class="bmrv-scroll" id="rpv-scroll">
                 <div class="bmrv-doc-title">EEO IBP Grant Report</div>
@@ -1603,14 +1605,15 @@
                 </div>
               </div>
               <svg class="bmrv-cursor" id="rpv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
-              <div class="bmrv-caption" id="rpv-caption"></div>
-              <button type="button" class="bmrv-poster" id="rpv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">Play the video guide</span></button>
+              <div class="bmrv-caption" id="rpv-caption"><div class="bmrv-caption-inner"><span class="bmrv-avatar">&#128105;</span><span class="bmrv-caption-text" id="rpv-caption-text"></span></div></div>
+              <button type="button" class="bmrv-poster" id="rpv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">EEO IBP Grant Report &middot; ~4 min walkthrough</span></button>
             </div>
             <div class="bmrv-controls">
               <button type="button" class="bmrv-play" id="rpv-play" aria-label="Play or pause">▶</button>
               <span class="bmrv-time" id="rpv-time">0:00 / 0:00</span>
               <div class="bmrv-track" id="rpv-track"><div class="bmrv-prog" id="rpv-prog"></div></div>
               <button type="button" class="bmrv-replay" id="rpv-replay" aria-label="Replay">↻</button>
+              <button type="button" class="bmrv-voice-btn" id="rpv-voice" title="Toggle voice narration">🔊</button>
             </div>
           </div>
 
@@ -3443,7 +3446,7 @@ function startBmrGuide() {
       window._bmrvAudio = new Audio('audio/s' + idx + '.mp3');
       window._bmrvAudio.addEventListener('loadedmetadata', function() {
         const audioDur = this.duration;
-        if (audioDur > 0) { this._baseRate = audioDur / sceneDuration; this.playbackRate = Math.min(4, Math.max(0.5, this._baseRate * (_bmrvSpeed || 1))); }
+        if (audioDur > 0) { this._baseRate = sceneDuration / audioDur; this.playbackRate = Math.min(4, Math.max(0.25, this._baseRate * (window._bmrvSpeed || _bmrvSpeed || 1))); }
       });
       window._bmrvAudio.play().catch(()=>{});
     }
@@ -3581,8 +3584,77 @@ function startReportGuide() {
   if (poster) poster.onclick = rpvPlay;
   if (replay) replay.onclick = () => { rpvT = 0; rpvLastI = -1; rpvRender(0); rpvPlay(); };
   if (track) track.onclick = (e) => { const r = track.getBoundingClientRect(); rpvT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * rpvTotal; rpvLastI = -1; rpvRender(rpvT); };
+  /* ── pips ── */
+  (function(){
+    const bar = document.getElementById('rpv-pips'); if (!bar) return;
+    bar.innerHTML = rpvScenes.map((_,i)=>'<span class="bmrv-pip" id="rpv-pip-'+i+'"></span>').join('');
+  })();
+  /* ── chapter pills ── */
+  document.querySelectorAll('#rpv-chapters .bmrv-pill').forEach(pill => {
+    pill.onclick = () => {
+      const ch = parseInt(pill.dataset.ch, 10);
+      const starts = [0, 7, 11, 19];
+      rpvT = rpvCum[starts[ch]] || 0; rpvLastI = -1; rpvRender(rpvT); rpvPlay();
+    };
+  });
+  /* ── patch rpvEnter for pips + chapter pills + caption avatar + voice ── */
+  const _rpvEnterOrig = rpvEnter;
+  rpvEnter = function(i) {
+    _rpvEnterOrig(i);
+    /* caption inner text */
+    const ct = document.getElementById('rpv-caption-text');
+    if (ct) { ct.innerHTML = '<span class="show">' + rpvScenes[i].cap + '</span>'; }
+    const cap = document.getElementById('rpv-caption');
+    if (cap) { cap.childNodes.forEach(n=>{ if(n.nodeType===3) n.textContent=''; }); }
+    /* pips */
+    rpvScenes.forEach((_,j)=>{ const p=document.getElementById('rpv-pip-'+j); if(!p)return; p.className='bmrv-pip'+(j<i?' done':j===i?' active':''); });
+    /* chapter pills */
+    const starts=[0,7,11,19]; let activeCh=0; starts.forEach((s,c)=>{ if(i>=s) activeCh=c; });
+    document.querySelectorAll('#rpv-chapters .bmrv-pill').forEach((p,c)=>{ p.classList.toggle('active',c===activeCh); });
+    /* voice */
+    if (window._rpvVoiceOn) {
+      if (window._rpvAudio) { window._rpvAudio.pause(); window._rpvAudio.currentTime=0; }
+      const idx = String(i).padStart(2,'0');
+      const sc = rpvScenes[i];
+      const sceneDuration = (BMRV_MOVE + (sc.text||'').length * BMRV_TYPE + BMRV_DWELL) / 1000;
+      window._rpvAudio = new Audio('audio/r' + idx + '.mp3');
+      window._rpvAudio.addEventListener('loadedmetadata', function() {
+        if (this.duration > 0) {
+          this._baseRate = sceneDuration / this.duration;
+          this.playbackRate = Math.min(4, Math.max(0.25, this._baseRate * (window._rpvSpeed || 1)));
+        }
+      });
+      window._rpvAudio.play().catch(()=>{});
+    }
+  };
+  /* ── patch rpvTick for speed ── */
+  rpvTick = function(ts) {
+    if (!rpvPlaying) return;
+    if (!rpvLast) rpvLast = ts;
+    rpvT += (ts - rpvLast) * (window._rpvSpeed || 1); rpvLast = ts;
+    if (rpvT >= rpvTotal) { rpvT = rpvTotal; rpvRender(rpvTotal); rpvPlaying = false; rpvIcon(); if (window._rpvAudio) { window._rpvAudio.pause(); window._rpvAudio.currentTime=0; } return; }
+    rpvRender(rpvT);
+    rpvRAF = requestAnimationFrame(rpvTick);
+  };
+  /* ── voice button ── */
+  window._rpvVoiceOn = false; window._rpvAudio = null; window._rpvSpeed = 1;
+  const rpvVoiceBtn = document.getElementById('rpv-voice');
+  if (rpvVoiceBtn) rpvVoiceBtn.onclick = () => {
+    window._rpvVoiceOn = !window._rpvVoiceOn;
+    rpvVoiceBtn.classList.toggle('active', window._rpvVoiceOn);
+    if (!window._rpvVoiceOn && window._rpvAudio) { window._rpvAudio.pause(); window._rpvAudio.currentTime=0; }
+  };
+  /* ── speed button ── */
+  const rpvSpeedBtn = document.getElementById('rpv-speed');
+  const _rpvSpeeds = [1, 1.5, 2];
+  if (rpvSpeedBtn) rpvSpeedBtn.onclick = () => {
+    window._rpvSpeed = _rpvSpeeds[(_rpvSpeeds.indexOf(window._rpvSpeed)+1) % _rpvSpeeds.length];
+    rpvSpeedBtn.textContent = window._rpvSpeed + '×';
+    if (window._rpvAudio) window._rpvAudio.playbackRate = Math.min(4, window._rpvSpeed * (window._rpvAudio._baseRate||1));
+  };
   rpvLastI = -1; rpvRender(0);
 }
+
 
 /* ════════════ TIMELINE — 2 years ════════════ */
 function renderTimeline() {
