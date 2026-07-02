@@ -213,7 +213,9 @@
     .card-body { padding:20px; }
     .data-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
     .data-table { width:100%; font-size:13px; }
-    .data-table th { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); padding:10px 16px; text-align:left; border-bottom:2px solid var(--border); white-space:nowrap; background:var(--bg-surface-2); }
+    .data-table th { font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); padding:10px 14px; text-align:left; border-bottom:2px solid var(--border); white-space:nowrap; background:var(--bg-surface-2); }
+    .data-table th.num, .data-table td.num { text-align:right; font-variant-numeric:tabular-nums; }
+    .data-table th.center, .data-table td.center { text-align:center; }
     .data-table td { padding:8px 14px; border-bottom:1px solid var(--border); vertical-align:middle; line-height:1.4; }
     .data-table tr:last-child td { border-bottom:none; }
     .data-table tr:hover td { background:var(--bg-surface-2); }
@@ -3852,7 +3854,7 @@ function renderSpendDown() {
       const headerRow =
         '<tr class="spend-year-row" data-year-key="' + p.id + '">' +
           '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:12px;min-width:140px;"><div style="font-family:var(--font-display);font-size:13.5px;font-weight:700;color:var(--fig-color);letter-spacing:-0.01em;line-height:1.2;">' + p.label + '</div><div style="font-size:10.5px;color:var(--text-muted);letter-spacing:0.01em;margin-top:2px;">' + p.dates + '</div></td>' +
-          '<td class="amount" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
+          '<td class="amount num" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
           '<td colspan="3" class="center" style="font-size:10.5px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;background:var(--bg-surface-2);">Year summary &middot; line items below</td>' +
         '</tr>';
       const lineRows = (p.lineItems || []).map((li, idx) => {
@@ -3868,7 +3870,7 @@ function renderSpendDown() {
         const paceText  = t('pace_' + pace);
         return '<tr class="spend-line-row" data-year-key="' + p.id + '">' +
           '<td style="padding-left:32px;border-left:4px solid ' + yearBandColor + ';opacity:0.95;"><span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;margin-right:8px;">' + li.fy + '</span>' + codeBadge + '<span style="font-size:12.5px;color:var(--text-primary);">' + li.label + '</span></td>' +
-          '<td class="amount" style="font-size:12.5px;">' + fmt(li.amount) + '</td>' +
+          '<td class="amount num" style="font-size:12.5px;">' + fmt(li.amount) + '</td>' +
           
           '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
           '<td class="center"><button onclick="togglePeriodPace(this,\'' + liId + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:4px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.04em;text-transform:uppercase;min-width:80px;display:inline-block;text-align:center;">' + paceText + '</button></td>' +
