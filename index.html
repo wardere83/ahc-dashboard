@@ -476,6 +476,19 @@
     .rpt-upload-label:hover { border-color:var(--ccc-dark-blue); background:var(--bg-surface-2); }
     .rpt-upload-label svg { flex-shrink:0; }
     .rpt-upload-clear { margin-top:8px; }
+    /* EEO Form — expenditure table */
+    .rpt-tbl-wrap { border:1px solid var(--border-strong); border-radius:var(--radius-md); overflow:hidden; margin-top:4px; }
+    .rpt-exp-table { width:100%; border-collapse:collapse; font-size:12px; min-width:700px; }
+    .rpt-exp-table th { background:var(--ccc-dark-blue); color:#fff; font-size:10px; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:8px 10px; text-align:left; white-space:nowrap; }
+    .rpt-exp-table td { padding:6px 8px; border-bottom:1px solid var(--border); vertical-align:middle; }
+    .rpt-exp-table tbody tr:last-child td { border-bottom:none; }
+    .rpt-exp-table tbody tr:hover td { background:var(--bg-surface-2); }
+    .rpt-exp-table input, .rpt-exp-table select { width:100%; font-size:12px; border:1px solid var(--border-strong); border-radius:4px; padding:4px 6px; background:var(--bg-surface); color:var(--text-primary); min-width:80px; }
+    .rpt-exp-table input:focus, .rpt-exp-table select:focus { outline:none; border-color:var(--ccc-dark-blue); box-shadow:0 0 0 2px rgba(0,62,90,.12); }
+    .rpt-exp-table .rpt-del-btn { background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:16px; padding:2px 4px; border-radius:4px; }
+    .rpt-exp-table .rpt-del-btn:hover { color:#e53e3e; background:#fff0f0; }
+    /* Certification text */
+    .grform-cert-text { font-size:12px; color:var(--text-secondary); line-height:1.6; padding:12px 14px; background:var(--bg-surface-2); border-left:3px solid var(--ccc-dark-blue); border-radius:0 6px 6px 0; }
     .bmr-saved-note { font-size:11px; color:var(--text-muted); margin-top:10px; display:flex; align-items:center; gap:6px; }
     .bmr-submit-status { font-size:12px; font-weight:600; margin-top:10px; min-height:16px; line-height:1.4; }
     .bmr-submit-status.pending { color:var(--text-secondary); }
@@ -610,9 +623,7 @@
     .bmrv-caption-inner { display:flex; align-items:flex-start; gap:8px; }
     .bmrv-avatar { font-size:20px; line-height:1; flex-shrink:0; margin-top:1px; }
     .bmrv-caption-text { flex:1; }
-    .bmrv-voice-btn { width:34px; height:34px; flex-shrink:0; border-radius:50%; border:1px solid var(--border-strong); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font-size:16px; display:inline-flex; align-items:center; justify-content:center; }
-    .bmrv-voice-btn:hover { background:var(--bg-surface-2); }
-    .bmrv-voice-btn.active { background:var(--ccc-dark-blue); color:#fff; border-color:var(--ccc-dark-blue); }
+
 
     .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
     .timeline-row { display:flex; align-items:center; padding:10px 20px; border-bottom:1px solid var(--border); gap:12px; }
@@ -1290,7 +1301,6 @@
             <span class="bmrv-time" id="bmrv-time">0:00 / 0:00</span>
             <div class="bmrv-track" id="bmrv-track"><div class="bmrv-prog" id="bmrv-prog"></div></div>
             <button type="button" class="bmrv-replay" id="bmrv-replay" aria-label="Replay">↻</button>
-            <button type="button" class="bmrv-voice-btn" id="bmrv-voice" title="Toggle voice narration">🔊</button>
           </div>
         </div>
 
@@ -1494,47 +1504,112 @@
                 <div class="bmr-subtitle">Please complete this form if you require substantial modifications to your original proposed grant workplan, activities, and/or outcomes.</div>
               </div>
             </div>
-            <div class="bmr-card-body">
+                        <div class="bmr-card-body">
+              <!-- ── Contact Info ── -->
               <div class="bmr-meta-grid">
-                <label class="bmr-field"><span class="bmr-field-label">Community College District</span><input class="bmr-input" type="text" data-gmr="district" placeholder="District name"></label>
-                <label class="bmr-field"><span class="bmr-field-label">Submitted by - Name &amp; Designated Grant Role</span><input class="bmr-input" type="text" data-gmr="submittedBy" placeholder="Name, Grant Role"></label>
-                <label class="bmr-field"><span class="bmr-field-label">Your Email</span><input class="bmr-input" type="email" data-gmr="email" placeholder="name@district.edu"></label>
-                <label class="bmr-field"><span class="bmr-field-label">Submission Date</span><input class="bmr-input" type="date" data-gmr="date"></label>
+                <label class="bmr-field"><span class="bmr-field-label">Community College District <span class="grform-required">*</span></span><input class="bmr-input" type="text" data-rpt="district" placeholder="District name" required></label>
+                <label class="bmr-field"><span class="bmr-field-label">Project Lead Name and Title <span class="grform-required">*</span></span><input class="bmr-input" type="text" data-rpt="leadName" placeholder="Name, Title" required></label>
+                <label class="bmr-field"><span class="bmr-field-label">Project Lead Email <span class="grform-required">*</span></span><input class="bmr-input" type="email" data-rpt="leadEmail" placeholder="name@district.edu" required></label>
+                <label class="bmr-field"><span class="bmr-field-label">Name and Title of Support Staff for Grant Activities <span class="grform-required">*</span></span><input class="bmr-input" type="text" data-rpt="staffName" placeholder="Name, Title" required></label>
+                <label class="bmr-field"><span class="bmr-field-label">Support Staff Email <span class="grform-required">*</span></span><input class="bmr-input" type="email" data-rpt="staffEmail" placeholder="name@district.edu" required></label>
               </div>
-              <div class="grform-section-title">Original Workplan, Activities, and Outcomes</div>
-              <p class="grform-prompt">Please outline the original “Workplan, Activities, and Outcomes” (from section 2 of grant submission), and explain any barriers that are leading to a change in direction.</p>
-              <textarea class="bmr-textarea" rows="5" data-gmr="originalWorkplan" placeholder="Original workplan, activities, outcomes, and the barriers prompting this change…"></textarea>
-              <div class="grform-section-title">Proposed Workplan, Activities and Outcomes</div>
-              <p class="grform-prompt">Please outline your proposed “Workplan, Activities and Outcomes.”</p>
-              <textarea class="bmr-textarea" rows="5" data-gmr="proposedWorkplan" placeholder="Your proposed workplan, activities, and outcomes…"></textarea>
-              <div class="grform-section-title">Timeline</div>
-              <p class="grform-prompt">Provide the estimated start and end dates for each newly proposed activity, ensuring that all activities are completed by the grant’s end date of June 30, 2028.</p>
-              <div class="bmr-table-wrap">
-                <table class="bmr-table" style="min-width:660px;">
-                  <thead><tr><th>Activity</th><th>Timeline</th><th class="bmr-col-desc">Description</th><th style="width:38px;"></th></tr></thead>
-                  <tbody id="gmr-timeline"></tbody>
+
+              <!-- ── Team Change ── -->
+              <p class="grform-q">Has your project team changed since the grant began? <span class="grform-required">*</span></p>
+              <div class="grform-radio">
+                <label><input type="radio" name="rpt-teamChanged" data-rpt="teamChanged" value="Yes" onchange="rptToggle('rpt-team-detail','Yes',this)"><span>Yes</span></label>
+                <label><input type="radio" name="rpt-teamChanged" data-rpt="teamChanged" value="No" onchange="rptToggle('rpt-team-detail','Yes',this)"><span>No</span></label>
+              </div>
+              <div id="rpt-team-detail" style="display:none;">
+                <label class="bmr-field" style="margin-top:10px;"><span class="bmr-field-label">If yes, please update us on which project leads to add or remove and provide an outline of their roles. <span class="grform-required">*</span></span><textarea class="bmr-textarea" rows="4" data-rpt="teamDetail" placeholder="List additions and removals with role descriptions…"></textarea></label>
+              </div>
+
+              <!-- ── Grant Goals ── -->
+              <label class="bmr-field" style="margin-top:18px;"><span class="bmr-field-label">Please outline your grant goals as submitted in section 2.3 of your grant application for Year 1. <span class="grform-required">*</span></span><textarea class="bmr-textarea" rows="5" data-rpt="goals" placeholder="Grant goals as submitted in section 2.3 (Year 1)…" required></textarea></label>
+
+              <p class="grform-q" style="margin-top:14px;">Are the goals listed above currently being met? <span class="grform-required">*</span></p>
+              <div class="grform-radio">
+                <label><input type="radio" name="rpt-goalsMet" data-rpt="goalsMet" value="Yes" onchange="rptToggle('rpt-goals-detail','Yes',this)"><span>Yes</span></label>
+                <label><input type="radio" name="rpt-goalsMet" data-rpt="goalsMet" value="No" onchange="rptToggle('rpt-goals-detail','Yes',this)"><span>No</span></label>
+              </div>
+              <div id="rpt-goals-detail" style="display:none;">
+                <label class="bmr-field" style="margin-top:10px;"><span class="bmr-field-label">If so, briefly describe how each grant goal is being met to date for Year 1. If no, please detail your plan for meeting those goals. <span class="grform-required">*</span></span><textarea class="bmr-textarea" rows="4" data-rpt="goalsDetail" placeholder="Describe progress on each goal, or your plan if not yet met…"></textarea></label>
+              </div>
+
+              <p class="grform-q" style="margin-top:14px;">Since your original proposal, have there been any significant updates to your project's goals or plans/activities? <span class="grform-required">*</span></p>
+              <div class="grform-radio">
+                <label><input type="radio" name="rpt-goalsUpdated" data-rpt="goalsUpdated" value="Yes" onchange="rptToggle('rpt-updates-detail','Yes',this)"><span>Yes</span></label>
+                <label><input type="radio" name="rpt-goalsUpdated" data-rpt="goalsUpdated" value="No" onchange="rptToggle('rpt-updates-detail','Yes',this)"><span>No</span></label>
+              </div>
+              <div id="rpt-updates-detail" style="display:none;">
+                <label class="bmr-field" style="margin-top:10px;"><span class="bmr-field-label">If so, please provide a brief summary. <span class="grform-required">*</span></span><textarea class="bmr-textarea" rows="4" data-rpt="goalsUpdatedDetail" placeholder="Brief summary of updates…"></textarea></label>
+              </div>
+
+              <!-- ── Barriers ── -->
+              <label class="bmr-field" style="margin-top:18px;"><span class="bmr-field-label">Identify any barriers you have encountered that may affect your progress/spending. Describe the steps you are taking to address these barriers and ensure continued progress. <span class="grform-required">*</span></span><textarea class="bmr-textarea" rows="5" data-rpt="barriers" placeholder="Describe barriers and your steps to address them…" required></textarea></label>
+
+              <!-- ── Expenditures ── -->
+              <div class="grform-section-title" style="margin-top:24px;">Total Grant Expenditures to Date <span class="grform-required">*</span></div>
+              <p class="grform-prompt" style="margin-bottom:10px;">Please list the amount spent as of the date of this submission, in alignment with your approved application budget. Include the following columns: Expenditure Type, Year, Description, Approved Grant Award Amount, Total Expenditures to Date, and Unexpended Balance.</p>
+              <div class="rpt-tbl-wrap" style="overflow-x:auto;">
+                <table class="rpt-exp-table" id="rpt-expenditures">
+                  <thead>
+                    <tr>
+                      <th>Expenditure Type</th>
+                      <th>Year</th>
+                      <th>Description</th>
+                      <th>Approved Grant Award Amount</th>
+                      <th>Total Expenditures to Date</th>
+                      <th>Unexpended Balance</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="rpt-exp-body">
+                  </tbody>
                 </table>
               </div>
-              <div style="margin-top:10px;"><button type="button" class="bmr-btn" onclick="gmrAddRow()">+ Add activity</button></div>
-              <div class="grform-note">
-                <p>Please note that a corresponding budget modification request must also be completed to align with this proposed programmatic change.</p>
-                <button type="button" class="bmr-btn" onclick="openForm('budget')">Open the Budget Modification Form</button>
+              <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" class="bmr-btn" onclick="rptAddRow()">+ Add Expenditure Row</button>
+                <button type="button" class="bmr-btn" onclick="rptAddDefaultRows()" id="rpt-add-defaults-btn">+ Add All Budget Categories</button>
               </div>
-              <div class="grform-cooffice">
-                <div class="grform-cooffice-title">For Chancellor’s Office Use Only</div>
-                <span class="bmr-field-label">SME Recommendations</span>
-                <p class="grform-prompt" style="margin-top:6px;">Please detail any recommendations or considerations for the Chancellor’s Office team regarding the approval of this grant modification request.</p>
-                <textarea class="bmr-textarea" rows="3" data-gmr="sme" placeholder="SME recommendations…"></textarea>
+
+              <!-- ── Expenditure Upload ── -->
+              <div class="grform-section-title" style="margin-top:24px;">Expenditure Report Upload <span class="grform-required">*</span></div>
+              <p class="grform-prompt">To ensure compliance with auditing requirements and accuracy, please upload a corresponding expenditure report.</p>
+              <div class="rpt-upload-wrap" id="rpt-upload-wrap">
+                <label class="rpt-upload-label" for="rpt-upload-input">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="rpt-upload-label-text">Drop files here or click to select (PDF, Excel, CSV)</span>
+                </label>
+                <input type="file" id="rpt-upload-input" accept=".pdf,.xlsx,.xls,.csv,.doc,.docx" style="display:none;" onchange="rptHandleUpload(this)">
+                <div class="rpt-upload-clear" id="rpt-upload-clear" style="display:none;"><button type="button" class="bmr-btn" onclick="rptClearUpload()">✕ Remove file</button></div>
               </div>
-              <div class="bmr-footer">
-                <label class="bmr-field"><span class="bmr-field-label">Approved by CCCCO Staff</span><input class="bmr-input" type="text" data-gmr="approvedBy" placeholder="Approver name &amp; title"></label>
-                <div class="bmr-actions">
-                  <button type="button" class="bmr-btn" onclick="resetGrantForm()">Reset</button>
-                  <button type="button" class="bmr-btn primary" onclick="window.print()">Print / Save PDF</button>
+
+              <!-- ── Budget Modification ── -->
+              <p class="grform-q" style="margin-top:24px;">Does your district have any intention of submitting a budget modification request? <span class="grform-required">*</span></p>
+              <div class="grform-radio">
+                <label><input type="radio" name="rpt-bmrIntent" data-rpt="bmrIntent" value="Yes" onchange="rptToggle('rpt-bmr-note',null,null,true)"><span>Yes</span></label>
+                <label><input type="radio" name="rpt-bmrIntent" data-rpt="bmrIntent" value="No" onchange="rptToggle('rpt-bmr-note',null,null,false)"><span>No</span></label>
+              </div>
+              <div class="grform-note" id="rpt-bmr-note" style="display:none;">
+                <p>If so, please contact Drs. John Parker and Herbert English at your earliest convenience to discuss next steps.</p>
+              </div>
+
+              <!-- ── Optional ── -->
+              <label class="bmr-field" style="margin-top:18px;"><span class="bmr-field-label">Optional: Are there any other barriers your district has experienced that have interfered with grant progress or is there anything else you would like to share?</span><textarea class="bmr-textarea" rows="4" data-rpt="optional" placeholder="Optional — anything else you would like to share…"></textarea></label>
+
+              <!-- ── Certification ── -->
+              <div class="bmr-footer" style="margin-top:24px;">
+                <p class="grform-cert-text">The Chancellor's Office may modify reporting requirements and may convene required technical assistance meetings or workshops, facilitated by the Grant Monitor or Chancellor's Office staff, to address implementation challenges and leverage Vision 2030 or institution specific resources. The designated Point of Contact or team member is required to participate in all required technical assistance activities during the performance period.</p>
+                <label class="bmr-field" style="margin-top:12px;"><span class="bmr-field-label">By submitting this form, you certify that the information recorded in this form is complete and accurate to the best of your knowledge. Enter your name to certify. <span class="grform-required">*</span></span><input class="bmr-input" type="text" data-rpt="certify" placeholder="Your full name" required></label>
+                <div class="bmr-actions" style="margin-top:16px;">
+                  <button type="button" class="bmr-btn" onclick="rptSaveDraft()">Save Draft</button>
+                  <button type="button" class="bmr-btn" onclick="resetReportForm()">Reset</button>
+                  <button type="button" class="bmr-btn primary" id="rpt-submit-btn" onclick="submitRptForm()">Submit</button>
                 </div>
+                <div class="bmr-submit-status" id="rpt-submit-status" role="status" aria-live="polite"></div>
               </div>
-              <div class="bmr-saved-note">Entries are saved automatically in this browser.</div>
-            </div>
+            </div><!-- /bmr-card-body -->
           </div>
         </div>
 
@@ -1619,106 +1694,9 @@
               <span class="bmrv-time" id="rpv-time">0:00 / 0:00</span>
               <div class="bmrv-track" id="rpv-track"><div class="bmrv-prog" id="rpv-prog"></div></div>
               <button type="button" class="bmrv-replay" id="rpv-replay" aria-label="Replay">↻</button>
-              <button type="button" class="bmrv-voice-btn" id="rpv-voice" title="Toggle voice narration">🔊</button>
             </div>
           </div>
 
-          <div class="bmr-card" id="report-form">
-            <div class="bmr-card-head">
-              <div>
-                <div class="bmr-title">EEO IBP Grant Report</div>
-                <div class="bmr-subtitle">Periodic progress report on your EEO IBP grant — goals, expenditures to date, barriers, and any project-team updates.</div>
-              </div>
-            </div>
-            <div class="bmr-card-body">
-              <div class="bmr-meta-grid">
-                <label class="bmr-field"><span class="bmr-field-label">Community College District</span><input class="bmr-input" type="text" data-rpt="district" placeholder="District name"></label>
-                <label class="bmr-field"><span class="bmr-field-label">Project Lead Name and Title</span><input class="bmr-input" type="text" data-rpt="leadName" placeholder="Name, Title"></label>
-                <label class="bmr-field"><span class="bmr-field-label">Project Lead Email</span><input class="bmr-input" type="email" data-rpt="leadEmail" placeholder="name@district.edu"></label>
-                <label class="bmr-field"><span class="bmr-field-label">Name and Title of Support Staff for Grant Activities</span><input class="bmr-input" type="text" data-rpt="staffName" placeholder="Name, Title"></label>
-                <label class="bmr-field"><span class="bmr-field-label">Support Staff Email</span><input class="bmr-input" type="email" data-rpt="staffEmail" placeholder="name@district.edu"></label>
-              </div>
-
-              <p class="grform-q">Has your project team changed since the grant began?</p>
-              <div class="grform-radio">
-                <label><input type="radio" name="rpt-teamChanged" data-rpt="teamChanged" value="Yes"><span>Yes</span></label>
-                <label><input type="radio" name="rpt-teamChanged" data-rpt="teamChanged" value="No"><span>No</span></label>
-              </div>
-              <p class="grform-prompt">If so, please update us on which project leads to add or remove and provide an outline of their roles.</p>
-              <textarea class="bmr-textarea" rows="4" data-rpt="teamChangedDetail" placeholder="Project leads to add or remove and an outline of their roles…"></textarea>
-
-              <div class="grform-section-title">Grant Goals</div>
-              <p class="grform-prompt">Please outline your grant goals as submitted in section 2.3 of your grant application (for year 1).</p>
-              <textarea class="bmr-textarea" rows="5" data-rpt="goals" placeholder="Grant goals as submitted in section 2.3 (year 1)…"></textarea>
-
-              <p class="grform-q">7.a. Are the goals listed above currently being met? If so, briefly describe how each grant goal is being met to date (for year 1). If no, please detail your plan to meet those goals.</p>
-              <div class="grform-radio">
-                <label><input type="radio" name="rpt-goalsMet" data-rpt="goalsMet" value="Yes"><span>Yes</span></label>
-                <label><input type="radio" name="rpt-goalsMet" data-rpt="goalsMet" value="No"><span>No</span></label>
-              </div>
-              <textarea class="bmr-textarea" rows="5" data-rpt="goalsMetDetail" placeholder="If yes, how each goal is being met to date; if no, your plan to meet those goals…"></textarea>
-
-              <p class="grform-q">Since your original proposal, have there been any significant updates to your project’s goals or planned activities?</p>
-              <div class="grform-radio">
-                <label><input type="radio" name="rpt-updates" data-rpt="updates" value="Yes"><span>Yes</span></label>
-                <label><input type="radio" name="rpt-updates" data-rpt="updates" value="No"><span>No</span></label>
-              </div>
-              <p class="grform-prompt">If so, please provide a brief summary.</p>
-              <textarea class="bmr-textarea" rows="4" data-rpt="updatesDetail" placeholder="Brief summary of significant updates…"></textarea>
-
-              <div class="grform-section-title">Barriers</div>
-              <p class="grform-prompt">Identify any barriers you have encountered that may affect your progress/spending. Describe the steps you are taking to address these barriers and ensure continued progress.</p>
-              <textarea class="bmr-textarea" rows="5" data-rpt="barriers" placeholder="Barriers encountered and the steps you are taking to address them…"></textarea>
-
-              <div class="grform-section-title">Total Grant Expenditures to Date</div>
-              <p class="grform-prompt">Please list the amount spent as of the date of this submission, in alignment with your approved application.</p>
-              <div class="bmr-table-wrap">
-                <table class="bmr-table" style="min-width:860px;">
-                  <thead><tr><th>Expenditure Type</th><th>Year</th><th class="bmr-col-desc">Description</th><th>Approved Grant Award Amount</th><th>Total Expenditures to Date</th><th>Unexpended Balance</th><th style="width:38px;"></th></tr></thead>
-                  <tbody id="rpt-expenditures"></tbody>
-                </table>
-              </div>
-              <div style="margin-top:10px;"><button type="button" class="bmr-btn" onclick="rptAddRow()">+ Add expenditure</button></div>
-
-              <div class="grform-section-title" style="margin-top:24px;">Expenditure Report Upload</div>
-              <p class="grform-prompt">To ensure compliance with auditing requirements and accuracy, please upload a corresponding expenditure report.</p>
-              <div class="rpt-upload-wrap" id="rpt-upload-wrap">
-                <label class="rpt-upload-label" for="rpt-upload-input">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  <span id="rpt-upload-label-text">Click to upload expenditure report (PDF, Excel, CSV)</span>
-                </label>
-                <input type="file" id="rpt-upload-input" accept=".pdf,.xlsx,.xls,.csv,.doc,.docx" style="display:none;" onchange="rptHandleUpload(this)">
-                <div class="rpt-upload-clear" id="rpt-upload-clear" style="display:none;"><button type="button" class="bmr-btn" onclick="rptClearUpload()">Remove file</button></div>
-              </div>
-
-              <p class="grform-q" style="margin-top:24px;">Does your district have any intention of submitting a budget modification request?</p>
-              <div class="grform-radio">
-                <label><input type="radio" name="rpt-bmrIntent" data-rpt="bmrIntent" value="Yes"><span>Yes</span></label>
-                <label><input type="radio" name="rpt-bmrIntent" data-rpt="bmrIntent" value="No"><span>No</span></label>
-              </div>
-              <div class="grform-note" id="rpt-bmr-note" style="display:none;">
-                <p>If so, please contact Drs. John Parker and Herbert English at your earliest convenience to discuss next steps.</p>
-                <button type="button" class="bmr-btn" onclick="openForm('budget')">Open the Budget Modification Form</button>
-              </div>
-
-              <div class="grform-section-title">Optional</div>
-              <p class="grform-prompt">Are there any other barriers your district has experienced that have interfered with grant progress or anything else you would like to share?</p>
-              <textarea class="bmr-textarea" rows="4" data-rpt="optional" placeholder="Optional — anything else you would like to share…"></textarea>
-
-              <div class="bmr-footer">
-                <label class="bmr-field"><span class="bmr-field-label">By submitting this form, you certify that the information recorded is complete and accurate to the best of your knowledge. Enter your name to certify <span class="grform-required">*</span></span><input class="bmr-input" type="text" data-rpt="certify" placeholder="Your full name" required></label>
-                <div class="bmr-actions">
-                  <button type="button" class="bmr-btn" onclick="resetReportForm()">Reset</button>
-                  <button type="button" class="bmr-btn" onclick="window.print()">Print / Save PDF</button>
-                  <button type="button" class="bmr-btn primary" id="rpt-submit-btn" onclick="submitRptForm()">Submit Report</button>
-                </div>
-                <div class="bmr-submit-status" id="rpt-submit-status" role="status" aria-live="polite"></div>
-              </div>
-              <p class="grform-prompt" style="margin-top:14px;">The Chancellor’s Office may modify reporting requirements and may convene required technical assistance meetings or workshops, facilitated by the Grant Monitor or Chancellor’s Office staff, to address implementation challenges and leverage Vision 2030 or institution specific resources. The designated Point of Contact or team member is required to participate in all required technical assistance activities during the performance period.</p>
-              <div class="bmr-saved-note">Entries are saved automatically in this browser.</div>
-            </div>
-          </div>
-        </div>
       </div>
 
     </main>
@@ -3251,20 +3229,66 @@ function rptPersist() {
     if (el.type === 'radio') { if (el.checked) st[k] = el.value; }
     else st[k] = el.value;
   });
-  st.expenditures = [];
-  document.querySelectorAll('#rpt-expenditures tr').forEach(tr => {
-    const g = f => { const el = tr.querySelector('[data-rpt-ex="' + f + '"]'); return el ? el.value : ''; };
-    st.expenditures.push({ type: g('type'), year: g('year'), description: g('description'), approved: g('approved'), spent: g('spent'), balance: g('balance') });
-  });
+  st.expenditures = rptGetRows();
   rptSave(st);
   rptSyncConditionals();
 }
+function rptToggle(divId, showVal, radioEl, forceShow) {
+  const div = document.getElementById(divId);
+  if (!div) return;
+  if (forceShow !== undefined) { div.style.display = forceShow ? 'block' : 'none'; return; }
+  div.style.display = (radioEl && radioEl.value === showVal) ? 'block' : 'none';
+}
+
+function rptSaveDraft() {
+  const st = {};
+  document.querySelectorAll('[data-rpt]').forEach(el => {
+    const k = el.getAttribute('data-rpt');
+    if (el.type === 'radio') { if (el.checked) st[k] = el.value; }
+    else st[k] = el.value;
+  });
+  st.expenditures = rptGetRows();
+  try { localStorage.setItem(RPT_STORE, JSON.stringify(st)); } catch(e) {}
+  setRptSubmitStatus('Draft saved.', 'ok');
+}
+
+const RPT_EXP_TYPES = [
+  'Non-Instructional Salaries (2000)',
+  'Employee Benefits (3000)',
+  'Supplies and Materials (4000)',
+  'Other Operating Expenses (5000)',
+  'Capital Outlay (6000)',
+  'Other Outgo (7000)',
+];
+
+function rptAddDefaultRows() {
+  const tbody = document.getElementById('rpt-exp-body');
+  if (!tbody) return;
+  const btn = document.getElementById('rpt-add-defaults-btn');
+  RPT_EXP_TYPES.forEach(type => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = rptExpRowHTML({ type });
+    tbody.appendChild(tr);
+  });
+  if (btn) btn.style.display = 'none';
+  rptPersist();
+}
+
+function rptGetRows() {
+  const rows = [];
+  document.querySelectorAll('#rpt-exp-body tr').forEach(tr => {
+    const g = k => { const el = tr.querySelector('[data-rpt-ex="'+k+'"]'); return el ? el.value : ''; };
+    rows.push({ type: g('type'), year: g('year'), description: g('description'), approved: g('approved'), spent: g('spent'), balance: g('balance') });
+  });
+  return rows;
+}
+
 function rptAddRow() {
   // If the table has never been rendered (still empty), render it first
   const tb = document.getElementById('rpt-expenditures');
   if (!tb) return;
   if (tb.children.length === 0) renderReportForm();
-  tb.insertAdjacentHTML('beforeend', rptExpRow({}));
+  tb.insertAdjacentHTML('beforeend', rptExpRowHTML({}));
   tb.lastElementChild.querySelectorAll('input[data-rpt-ex]').forEach(i => i.oninput = rptPersist);
   rptPersist();
 }
@@ -3543,36 +3567,14 @@ function startBmrGuide() {
     document.querySelectorAll('#bmrv-chapters .bmrv-pill').forEach((p,c)=>{
       p.classList.toggle('active', c === activeCh);
     });
-    /* voice — play pre-generated MP3 at speed-matched rate */
-    if (window._bmrvVoiceOn) {
-      if (window._bmrvAudio) { window._bmrvAudio.pause(); window._bmrvAudio.currentTime = 0; }
-      const idx = String(i).padStart(2,'0');
-      const sc = bmrvScenes[i];
-      const sceneDuration = (BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL) / 1000;
-      window._bmrvAudio = new Audio('audio/s' + idx + '.mp3');
-      window._bmrvAudio.addEventListener('loadedmetadata', function() {
-        const audioDur = this.duration;
-        if (audioDur > 0) { this._baseRate = sceneDuration / audioDur; this.playbackRate = Math.min(4, Math.max(0.25, this._baseRate * (window._bmrvSpeed || _bmrvSpeed || 1))); }
-      });
-      window._bmrvAudio.play().catch(()=>{});
-    }
   };
-  /* ── voice button ── */
-  window._bmrvVoiceOn = false;
-  window._bmrvAudio = null;
-  const voiceBtn = document.getElementById('bmrv-voice');
-  if (voiceBtn) voiceBtn.onclick = () => {
-    window._bmrvVoiceOn = !window._bmrvVoiceOn;
-    voiceBtn.classList.toggle('active', window._bmrvVoiceOn);
-    if (!window._bmrvVoiceOn && window._bmrvAudio) { window._bmrvAudio.pause(); window._bmrvAudio.currentTime = 0; }
-  };
+
   /* ── speed button ── */
   let _bmrvSpeed = 1, _bmrvSpeeds = [1, 1.5, 2];
   const speedBtn = document.getElementById('bmrv-speed');
   if (speedBtn) speedBtn.onclick = () => {
     _bmrvSpeed = _bmrvSpeeds[(_bmrvSpeeds.indexOf(_bmrvSpeed) + 1) % _bmrvSpeeds.length];
     speedBtn.textContent = _bmrvSpeed + '×';
-    if (window._bmrvAudio) window._bmrvAudio.playbackRate = Math.min(4, (_bmrvSpeed || 1) * (window._bmrvAudio._baseRate || 1));
   };
   /* ── speed-aware tick patch ── */
   const _bmrvTickOrig = bmrvTick;
@@ -3580,7 +3582,7 @@ function startBmrGuide() {
     if (!bmrvPlaying) return;
     if (!bmrvLast) bmrvLast = ts;
     bmrvT += (ts - bmrvLast) * (_bmrvSpeed || 1); bmrvLast = ts;
-    if (bmrvT >= bmrvTotal) { bmrvT = bmrvTotal; bmrvRender(bmrvTotal); bmrvPlaying = false; bmrvIcon(); if (window._bmrvAudio) { window._bmrvAudio.pause(); window._bmrvAudio.currentTime = 0; } return; }
+    if (bmrvT >= bmrvTotal) { bmrvT = bmrvTotal; bmrvRender(bmrvTotal); bmrvPlaying = false; bmrvIcon(); return; }
     bmrvRender(bmrvT);
     bmrvRAF = requestAnimationFrame(bmrvTick);
   };
@@ -3717,46 +3719,25 @@ function startReportGuide() {
     /* chapter pills */
     const starts=[0,7,11,19]; let activeCh=0; starts.forEach((s,c)=>{ if(i>=s) activeCh=c; });
     document.querySelectorAll('#rpv-chapters .bmrv-pill').forEach((p,c)=>{ p.classList.toggle('active',c===activeCh); });
-    /* voice */
-    if (window._rpvVoiceOn) {
-      if (window._rpvAudio) { window._rpvAudio.pause(); window._rpvAudio.currentTime=0; }
-      const idx = String(i).padStart(2,'0');
-      const sc = rpvScenes[i];
-      const sceneDuration = (BMRV_MOVE + (sc.text||'').length * BMRV_TYPE + BMRV_DWELL) / 1000;
-      window._rpvAudio = new Audio('audio/r' + idx + '.mp3');
-      window._rpvAudio.addEventListener('loadedmetadata', function() {
-        if (this.duration > 0) {
-          this._baseRate = sceneDuration / this.duration;
-          this.playbackRate = Math.min(4, Math.max(0.25, this._baseRate * (window._rpvSpeed || 1)));
-        }
-      });
-      window._rpvAudio.play().catch(()=>{});
-    }
+
   };
   /* ── patch rpvTick for speed ── */
   rpvTick = function(ts) {
     if (!rpvPlaying) return;
     if (!rpvLast) rpvLast = ts;
     rpvT += (ts - rpvLast) * (window._rpvSpeed || 1); rpvLast = ts;
-    if (rpvT >= rpvTotal) { rpvT = rpvTotal; rpvRender(rpvTotal); rpvPlaying = false; rpvIcon(); if (window._rpvAudio) { window._rpvAudio.pause(); window._rpvAudio.currentTime=0; } return; }
+    if (rpvT >= rpvTotal) { rpvT = rpvTotal; rpvRender(rpvTotal); rpvPlaying = false; rpvIcon(); return; }
     rpvRender(rpvT);
     rpvRAF = requestAnimationFrame(rpvTick);
   };
   /* ── voice button ── */
-  window._rpvVoiceOn = false; window._rpvAudio = null; window._rpvSpeed = 1;
-  const rpvVoiceBtn = document.getElementById('rpv-voice');
-  if (rpvVoiceBtn) rpvVoiceBtn.onclick = () => {
-    window._rpvVoiceOn = !window._rpvVoiceOn;
-    rpvVoiceBtn.classList.toggle('active', window._rpvVoiceOn);
-    if (!window._rpvVoiceOn && window._rpvAudio) { window._rpvAudio.pause(); window._rpvAudio.currentTime=0; }
-  };
+
   /* ── speed button ── */
   const rpvSpeedBtn = document.getElementById('rpv-speed');
   const _rpvSpeeds = [1, 1.5, 2];
   if (rpvSpeedBtn) rpvSpeedBtn.onclick = () => {
     window._rpvSpeed = _rpvSpeeds[(_rpvSpeeds.indexOf(window._rpvSpeed)+1) % _rpvSpeeds.length];
     rpvSpeedBtn.textContent = window._rpvSpeed + '×';
-    if (window._rpvAudio) window._rpvAudio.playbackRate = Math.min(4, window._rpvSpeed * (window._rpvAudio._baseRate||1));
   };
   rpvLastI = -1; rpvRender(0);
 }
