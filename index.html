@@ -588,6 +588,25 @@
     .bmrv-nums { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin:9px 0; }
     .bmrv-fld-full { margin-top:9px; }
     .bmrv-cell { font-size:12.5px; line-height:1.5; }
+    /* ── BMR Video Guide upgrades: chapters, pips, voice, avatar ── */
+    .bmrv-bar { justify-content:space-between; }
+    .bmrv-bar-left { display:flex; align-items:center; gap:7px; }
+    .bmrv-speed-btn { margin-left:auto; font-size:10px; font-weight:700; letter-spacing:0.04em; color:#cdd6e6; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:4px; padding:2px 7px; cursor:pointer; }
+    .bmrv-speed-btn:hover { background:rgba(255,255,255,0.15); }
+    .bmrv-chapters { display:flex; gap:6px; padding:8px 14px; background:#0f1623; border-bottom:1px solid rgba(255,255,255,0.07); flex-wrap:wrap; }
+    .bmrv-pill { font-size:10.5px; font-weight:600; color:#8faabf; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.10); border-radius:20px; padding:3px 10px; cursor:pointer; white-space:nowrap; transition:background 0.18s,color 0.18s,border-color 0.18s; }
+    .bmrv-pill:hover { background:rgba(255,255,255,0.12); color:#e0eaf4; }
+    .bmrv-pill.active { background:var(--ccc-gold,#d4a017); border-color:var(--ccc-gold,#d4a017); color:#111; }
+    .bmrv-pips { display:flex; gap:4px; padding:6px 16px 0; }
+    .bmrv-pip { flex:1; height:3px; border-radius:2px; background:rgba(255,255,255,0.12); transition:background 0.25s; }
+    .bmrv-pip.done { background:var(--ccc-gold,#d4a017); }
+    .bmrv-pip.active { background:var(--ccc-gold,#d4a017); opacity:0.6; }
+    .bmrv-caption-inner { display:flex; align-items:flex-start; gap:8px; }
+    .bmrv-avatar { font-size:20px; line-height:1; flex-shrink:0; margin-top:1px; }
+    .bmrv-caption-text { flex:1; }
+    .bmrv-voice-btn { width:34px; height:34px; flex-shrink:0; border-radius:50%; border:1px solid var(--border-strong); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; font-size:16px; display:inline-flex; align-items:center; justify-content:center; }
+    .bmrv-voice-btn:hover { background:var(--bg-surface-2); }
+    .bmrv-voice-btn.active { background:var(--ccc-dark-blue); color:#fff; border-color:var(--ccc-dark-blue); }
 
     .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
     .timeline-row { display:flex; align-items:center; padding:10px 20px; border-bottom:1px solid var(--border); gap:12px; }
@@ -1234,7 +1253,9 @@
         <!-- INTERACTIVE BUDGET MODIFICATION REQUEST FORM (mirrors Word doc; auto-calculates & drives project totals) -->
         <!-- VIDEO TRAINING GUIDE — screencast of filling out the form (shown above the form) -->
         <div class="bmrv-card" id="bmr-guide">
-          <div class="bmrv-bar"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">How to Complete This Form</span></div>
+          <div class="bmrv-bar"><div class="bmrv-bar-left"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">Video Guide &middot; Budget Modification Request</span></div><button type="button" class="bmrv-speed-btn" id="bmrv-speed">1&times;</button></div>
+          <div class="bmrv-chapters" id="bmrv-chapters"><span class="bmrv-pill active" data-ch="0">1 &middot; Contact Info</span><span class="bmrv-pill" data-ch="1">2 &middot; Year 1 Changes</span><span class="bmrv-pill" data-ch="2">3 &middot; Year 2 Changes</span><span class="bmrv-pill" data-ch="3">4 &middot; Approval</span></div>
+          <div class="bmrv-pips" id="bmrv-pips"></div>
           <div class="bmrv-frame" id="bmrv-frame">
             <div class="bmrv-scroll" id="bmrv-scroll">
               <div class="bmrv-doc-title">Budget Modification Request Form</div>
@@ -1255,14 +1276,15 @@
               <div class="bmrv-fld" style="margin-top:16px;max-width:320px;"><label>Approved by CCCCO Staff</label><span class="bmrv-cell" id="mv-appr"></span></div>
             </div>
             <svg class="bmrv-cursor" id="bmrv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
-            <div class="bmrv-caption" id="bmrv-caption"></div>
-            <button type="button" class="bmrv-poster" id="bmrv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">Play the video guide</span></button>
+            <div class="bmrv-caption" id="bmrv-caption"><div class="bmrv-caption-inner"><span class="bmrv-avatar">&#128105;</span><span class="bmrv-caption-text" id="bmrv-caption-text"></span></div></div>
+            <button type="button" class="bmrv-poster" id="bmrv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">Budget Modification Request &middot; ~3 min walkthrough</span></button>
           </div>
           <div class="bmrv-controls">
             <button type="button" class="bmrv-play" id="bmrv-play" aria-label="Play or pause">▶</button>
             <span class="bmrv-time" id="bmrv-time">0:00 / 0:00</span>
             <div class="bmrv-track" id="bmrv-track"><div class="bmrv-prog" id="bmrv-prog"></div></div>
             <button type="button" class="bmrv-replay" id="bmrv-replay" aria-label="Replay">↻</button>
+            <button type="button" class="bmrv-voice-btn" id="bmrv-voice" title="Toggle voice narration">🔊</button>
           </div>
         </div>
 
@@ -3376,6 +3398,85 @@ function startBmrGuide() {
   if (replay) replay.onclick = () => { bmrvT = 0; bmrvLastI = -1; bmrvRender(0); bmrvPlay(); };
   if (track) track.onclick = (e) => { const r = track.getBoundingClientRect(); bmrvT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * bmrvTotal; bmrvLastI = -1; bmrvRender(bmrvT); };
   bmrvLastI = -1; bmrvRender(0);
+  /* ── chapter pills wiring ── */
+  document.querySelectorAll('#bmrv-chapters .bmrv-pill').forEach(pill => {
+    pill.onclick = () => {
+      const ch = parseInt(pill.dataset.ch, 10);
+      const starts = [0, 4, 10, 16]; // scene indices per chapter
+      bmrvT = bmrvCum[starts[ch]] || 0; bmrvLastI = -1; bmrvRender(bmrvT); bmrvPlay();
+    };
+  });
+  /* ── pips build ── */
+  (function buildPips(){
+    const bar = document.getElementById('bmrv-pips'); if (!bar) return;
+    bar.innerHTML = bmrvScenes.map((_,i)=>'<span class="bmrv-pip" id="bmrv-pip-'+i+'"></span>').join('');
+  })();
+  /* ── patch bmrvEnter to update pips + chapter pills + speak ── */
+  const _bmrvEnterOrig = bmrvEnter;
+  bmrvEnter = function(i) {
+    _bmrvEnterOrig(i);
+    /* update caption text node (inner span) */
+    const ct = document.getElementById('bmrv-caption-text');
+    if (ct) { ct.innerHTML = '<span class="show">' + bmrvScenes[i].cap + '</span>'; }
+    /* also clear the outer caption direct text so old text doesn't double */
+    const cap = document.getElementById('bmrv-caption');
+    if (cap) { /* keep inner div, remove stray text nodes */ cap.childNodes.forEach(n=>{ if(n.nodeType===3) n.textContent=''; }); }
+    /* pips */
+    bmrvScenes.forEach((_,j)=>{
+      const p = document.getElementById('bmrv-pip-'+j);
+      if (!p) return;
+      p.className = 'bmrv-pip' + (j < i ? ' done' : j === i ? ' active' : '');
+    });
+    /* chapter pills */
+    const starts = [0,4,10,16];
+    let activeCh = 0;
+    starts.forEach((s,c)=>{ if (i >= s) activeCh = c; });
+    document.querySelectorAll('#bmrv-chapters .bmrv-pill').forEach((p,c)=>{
+      p.classList.toggle('active', c === activeCh);
+    });
+    /* voice */
+    if (window._bmrvVoiceOn && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(bmrvScenes[i].cap);
+      utt.rate = 0.92; utt.pitch = 1.05;
+      const voices = window.speechSynthesis.getVoices();
+      const pref = ['Samantha','Zira','Victoria','Karen','Moira','Fiona','Allison','Ava','Susan','Alice'];
+      let v = null;
+      for (const name of pref) { v = voices.find(x=>x.name===name); if (v) break; }
+      if (!v) v = voices.find(x=>/female/i.test(x.name) && /en/i.test(x.lang));
+      if (!v) v = voices.find(x=>/en/i.test(x.lang));
+      if (v) utt.voice = v;
+      window.speechSynthesis.speak(utt);
+    }
+  };
+  /* ── voice button ── */
+  window._bmrvVoiceOn = false;
+  const voiceBtn = document.getElementById('bmrv-voice');
+  if (voiceBtn) voiceBtn.onclick = () => {
+    window._bmrvVoiceOn = !window._bmrvVoiceOn;
+    voiceBtn.classList.toggle('active', window._bmrvVoiceOn);
+    if (!window._bmrvVoiceOn && window.speechSynthesis) window.speechSynthesis.cancel();
+    /* preload voices on first enable */
+    if (window._bmrvVoiceOn && window.speechSynthesis) window.speechSynthesis.getVoices();
+  };
+  /* ── speed button ── */
+  let _bmrvSpeed = 1, _bmrvSpeeds = [1, 1.5, 2];
+  const speedBtn = document.getElementById('bmrv-speed');
+  if (speedBtn) speedBtn.onclick = () => {
+    _bmrvSpeed = _bmrvSpeeds[(_bmrvSpeeds.indexOf(_bmrvSpeed) + 1) % _bmrvSpeeds.length];
+    speedBtn.textContent = _bmrvSpeed + "×";
+    /* patch tick to use speed */
+  };
+  /* ── speed-aware tick patch ── */
+  const _bmrvTickOrig = bmrvTick;
+  bmrvTick = function(ts) {
+    if (!bmrvPlaying) return;
+    if (!bmrvLast) bmrvLast = ts;
+    bmrvT += (ts - bmrvLast) * (_bmrvSpeed || 1); bmrvLast = ts;
+    if (bmrvT >= bmrvTotal) { bmrvT = bmrvTotal; bmrvRender(bmrvTotal); bmrvPlaying = false; bmrvIcon(); if (window._bmrvVoiceOn && window.speechSynthesis) window.speechSynthesis.cancel(); return; }
+    bmrvRender(bmrvT);
+    bmrvRAF = requestAnimationFrame(bmrvTick);
+  };
 }
 
 /* ════════════ EEO IBP GRANT REPORT VIDEO GUIDE (animated screencast of the report form) ════════════ */
