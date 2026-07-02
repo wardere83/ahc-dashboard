@@ -3597,29 +3597,30 @@ function startBmrGuide() {
 let rpvScenes = [], rpvCum = [], rpvTotal = 0, rpvT = 0, rpvPlaying = false, rpvLast = 0, rpvRAF = null, rpvLastI = -1;
 function rpvFmt(ms) { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
 function rpvBuildScenes() {
-  const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Community College District';
+  const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Allan Hancock Community College District';
   rpvScenes = [
-    { t:'rv-district',       cap:'Start with your Community College District.', text:dist },
-    { t:'rv-lead',           cap:'Enter the Project Lead’s name and title.', text:'Project Lead Name, Title' },
-    { t:'rv-leademail',      cap:'Add the Project Lead’s email.', text:'lead@district.edu' },
-    { t:'rv-staff',          cap:'Name the support staff member for grant activities, with their title.', text:'Support Staff Name, Title' },
-    { t:'rv-staffemail',     cap:'And the support staff email.', text:'staff@district.edu' },
-    { t:'rv-team-yes',       cap:'Has your project team changed since the grant began? Choose Yes or No.', kind:'pick' },
-    { t:'rv-teamdetail',     cap:'Because you chose Yes, use the box underneath to list who to add or remove and outline their roles.', text:'Adding Dr. Rivera as co-lead for data analysis; removing J. Smith, who has left the district.' },
-    { t:'rv-goals',          cap:'Outline your grant goals as submitted in section 2.3 of your application (Year 1).', text:'Goal 1: Audit district-wide hiring practices for equity. Goal 2: Convene a cross-constituent EEO workgroup and publish evidence-based recommendations.' },
-    { t:'rv-goalsmet-yes',   cap:'7.a. Are those goals currently being met? Choose Yes or No.', kind:'pick' },
-    { t:'rv-goalsdetail',    cap:'Since you chose Yes, describe in the box underneath how each goal is progressing; if No, give your plan to meet them.', text:'The EEO workgroup meets monthly; five years of hiring data are under analysis and the first process-mapping workshops are complete.' },
-    { t:'rv-updates-no',     cap:'Any significant updates to your goals or activities since the proposal? Here we choose No — if Yes, you would summarize them in the box underneath.', kind:'pick' },
-    { t:'rv-barriers',       cap:'Identify any barriers affecting progress or spending, and the steps you are taking to address them.', text:'Hiring delays slowed onboarding; we secured a consultant and shifted two workshops to spring to stay on schedule.' },
+    { t:'rv-district',       cap:'Start with your Community College District name.', text:dist },
+    { t:'rv-lead',           cap:'Enter the Project Lead\'s full name and title.', text:'Dr. Jane Smith, Project Lead' },
+    { t:'rv-leademail',      cap:'Add the Project Lead\'s email address.', text:'jdoe@example.edu' },
+    { t:'rv-staff',          cap:'Name the support staff member for grant activities and their title.', text:'John Doe, Support Coordinator' },
+    { t:'rv-staffemail',     cap:'And the support staff email.', text:'johndoe@example.edu' },
+    { t:'rv-team-no',        cap:'Has your project team changed since the grant began? Select Yes or No. Here we select No.', kind:'pick' },
+    { t:'rv-teamdetail',     cap:'If you selected Yes, use this box to list additions or removals and outline their roles.', text:'Adding Dr. Rivera as co-lead for data analysis; removing J. Smith, who has left the district.' },
+    { t:'rv-goals',          cap:'Describe your grant goals as submitted in section 2.3 of your approved application for Year 1.', text:'Goal 1: Audit district-wide hiring practices for equity. Goal 2: Convene a cross-constituent EEO workgroup and publish evidence-based recommendations.' },
+    { t:'rv-goalsmet-yes',   cap:'Are the goals listed above currently being met? Select Yes or No.', kind:'pick' },
+    { t:'rv-goalsdetail',    cap:'If Yes, briefly describe how each goal is being met. If No, detail your plan for meeting them.', text:'The EEO workgroup meets monthly; five years of hiring data are under analysis and the first process-mapping workshops are complete.' },
+    { t:'rv-updates-no',     cap:'Have there been any significant updates to your goals or activities since the proposal? Select Yes or No. Here we select No.', kind:'pick' },
+    { t:'rv-updatesdetail',  cap:'If Yes, provide a brief summary of those updates in the box below.', text:'Launched mentorship pilot program in March 2026 with 12 participants.' },
+    { t:'rv-barriers',       cap:'Identify any barriers affecting your progress or spending, and the steps you are taking to address them.', text:'Hiring delays slowed onboarding; we secured a consultant and shifted two workshops to spring to stay on schedule.' },
     { t:'rv-ex-type',        cap:'In the expenditures table, list each expenditure type from your approved budget.', text:'Non-Instructional Salaries (2000)' },
-    { t:'rv-ex-year',        cap:'Note the grant year for the line.', text:'Year 1' },
+    { t:'rv-ex-year',        cap:'Note the grant year for this expenditure line.', text:'Year 1' },
     { t:'rv-ex-desc',        cap:'Describe the expenditure.', text:'Project coordinator stipend' },
-    { t:'rv-ex-approved',    cap:'Enter the approved grant award amount.', text:'$38,000' },
-    { t:'rv-ex-spent',       cap:'Then the total expenditures to date.', text:'$12,500' },
-    { t:'rv-ex-balance',     cap:'The unexpended balance is what remains.', text:'$25,500' },
-    { t:'rv-bmr-yes',        cap:'Do you intend to submit a budget modification request? Choose Yes or No.', kind:'pick' },
-    { t:'rv-bmrnote',        cap:'Because you chose Yes, a note appears underneath — contact Drs. John Parker and Herbert English to discuss next steps.', text:'If yes, please contact Drs. John Parker and Herbert English at your earliest convenience.' },
-    { t:'rv-certify',        cap:'Finally, type your name to certify the report is complete and accurate. Now you are ready to fill in the live form below.', text:'Project Lead Name' }
+    { t:'rv-ex-approved',    cap:'Enter the approved grant award amount for this line.', text:'$18,000' },
+    { t:'rv-ex-spent',       cap:'Then enter the total expenditures to date.', text:'$12,500' },
+    { t:'rv-ex-balance',     cap:'The unexpended balance is the amount remaining.', text:'$5,500' },
+    { t:'rv-bmr-yes',        cap:'Does your district intend to submit a budget modification request? Select Yes or No.', kind:'pick' },
+    { t:'rv-bmrnote',        cap:'If Yes, a note appears — contact Drs. John Parker and Herbert English at your earliest convenience to discuss next steps.', text:'If yes, please contact Drs. John Parker and Herbert English at your earliest convenience.' },
+    { t:'rv-certify',        cap:'Finally, type your full name to certify the report is complete and accurate. You are now ready to submit.', text:'Dr. Jane Smith' }
   ];
   rpvCum = []; let acc = 0;
   rpvScenes.forEach(sc => { rpvCum.push(acc); acc += BMRV_MOVE + (sc.text || '').length * BMRV_TYPE + BMRV_DWELL; });
@@ -3722,7 +3723,7 @@ function startReportGuide() {
     /* pips */
     rpvScenes.forEach((_,j)=>{ const p=document.getElementById('rpv-pip-'+j); if(!p)return; p.className='bmrv-pip'+(j<i?' done':j===i?' active':''); });
     /* chapter pills */
-    const starts=[0,7,11,19]; let activeCh=0; starts.forEach((s,c)=>{ if(i>=s) activeCh=c; });
+    const starts=[0,7,12,19]; let activeCh=0; starts.forEach((s,c)=>{ if(i>=s) activeCh=c; });
     document.querySelectorAll('#rpv-chapters .bmrv-pill').forEach((p,c)=>{ p.classList.toggle('active',c===activeCh); });
 
   };
