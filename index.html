@@ -470,6 +470,12 @@
     [data-theme="dark"] .bmr-btn:hover { color:var(--accent-light); border-color:var(--accent-light); }
     .bmr-btn.primary { background:var(--ccc-dark-blue); border-color:var(--ccc-dark-blue); color:#fff; }
     .bmr-btn.primary:hover { background:var(--ccc-darker-blue); color:#fff; }
+    /* EEO Report Upload */
+    .rpt-upload-wrap { margin-top:8px; }
+    .rpt-upload-label { display:flex; align-items:center; gap:10px; padding:14px 18px; border:2px dashed var(--border-strong); border-radius:var(--radius-md); cursor:pointer; background:var(--bg-surface); color:var(--text-secondary); font-size:13px; transition:border-color var(--transition),background var(--transition); }
+    .rpt-upload-label:hover { border-color:var(--ccc-dark-blue); background:var(--bg-surface-2); }
+    .rpt-upload-label svg { flex-shrink:0; }
+    .rpt-upload-clear { margin-top:8px; }
     .bmr-saved-note { font-size:11px; color:var(--text-muted); margin-top:10px; display:flex; align-items:center; gap:6px; }
     .bmr-submit-status { font-size:12px; font-weight:600; margin-top:10px; min-height:16px; line-height:1.4; }
     .bmr-submit-status.pending { color:var(--text-secondary); }
@@ -1674,7 +1680,18 @@
               </div>
               <div style="margin-top:10px;"><button type="button" class="bmr-btn" onclick="rptAddRow()">+ Add expenditure</button></div>
 
-              <p class="grform-q">Does your district have any intention of submitting a budget modification request?</p>
+              <div class="grform-section-title" style="margin-top:24px;">Expenditure Report Upload</div>
+              <p class="grform-prompt">To ensure compliance with auditing requirements and accuracy, please upload a corresponding expenditure report.</p>
+              <div class="rpt-upload-wrap" id="rpt-upload-wrap">
+                <label class="rpt-upload-label" for="rpt-upload-input">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="rpt-upload-label-text">Click to upload expenditure report (PDF, Excel, CSV)</span>
+                </label>
+                <input type="file" id="rpt-upload-input" accept=".pdf,.xlsx,.xls,.csv,.doc,.docx" style="display:none;" onchange="rptHandleUpload(this)">
+                <div class="rpt-upload-clear" id="rpt-upload-clear" style="display:none;"><button type="button" class="bmr-btn" onclick="rptClearUpload()">Remove file</button></div>
+              </div>
+
+              <p class="grform-q" style="margin-top:24px;">Does your district have any intention of submitting a budget modification request?</p>
               <div class="grform-radio">
                 <label><input type="radio" name="rpt-bmrIntent" data-rpt="bmrIntent" value="Yes"><span>Yes</span></label>
                 <label><input type="radio" name="rpt-bmrIntent" data-rpt="bmrIntent" value="No"><span>No</span></label>
@@ -1692,8 +1709,10 @@
                 <label class="bmr-field"><span class="bmr-field-label">By submitting this form, you certify that the information recorded is complete and accurate to the best of your knowledge. Enter your name to certify <span class="grform-required">*</span></span><input class="bmr-input" type="text" data-rpt="certify" placeholder="Your full name" required></label>
                 <div class="bmr-actions">
                   <button type="button" class="bmr-btn" onclick="resetReportForm()">Reset</button>
-                  <button type="button" class="bmr-btn primary" onclick="window.print()">Print / Save PDF</button>
+                  <button type="button" class="bmr-btn" onclick="window.print()">Print / Save PDF</button>
+                  <button type="button" class="bmr-btn primary" id="rpt-submit-btn" onclick="submitRptForm()">Submit Report</button>
                 </div>
+                <div class="bmr-submit-status" id="rpt-submit-status" role="status" aria-live="polite"></div>
               </div>
               <p class="grform-prompt" style="margin-top:14px;">The Chancellor’s Office may modify reporting requirements and may convene required technical assistance meetings or workshops, facilitated by the Grant Monitor or Chancellor’s Office staff, to address implementation challenges and leverage Vision 2030 or institution specific resources. The designated Point of Contact or team member is required to participate in all required technical assistance activities during the performance period.</p>
               <div class="bmr-saved-note">Entries are saved automatically in this browser.</div>
@@ -3241,10 +3260,97 @@ function rptPersist() {
   rptSyncConditionals();
 }
 function rptAddRow() {
-  const tb = document.getElementById('rpt-expenditures'); if (!tb) return;
+  // If the table has never been rendered (still empty), render it first
+  const tb = document.getElementById('rpt-expenditures');
+  if (!tb) return;
+  if (tb.children.length === 0) renderReportForm();
   tb.insertAdjacentHTML('beforeend', rptExpRow({}));
   tb.lastElementChild.querySelectorAll('input[data-rpt-ex]').forEach(i => i.oninput = rptPersist);
   rptPersist();
+}
+
+// ── Upload helpers ───────────────────────────────────────────────────────────
+let _rptUploadFile = null, _rptUploadB64 = null, _rptUploadName = null;
+function rptHandleUpload(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  _rptUploadFile = file;
+  _rptUploadName = file.name;
+  const lbl = document.getElementById('rpt-upload-label-text');
+  if (lbl) lbl.textContent = '✓ ' + file.name + ' (' + (file.size > 1024*1024 ? (file.size/1024/1024).toFixed(1)+'MB' : (file.size/1024).toFixed(0)+'KB') + ')';
+  const clr = document.getElementById('rpt-upload-clear');
+  if (clr) clr.style.display = 'block';
+  const reader = new FileReader();
+  reader.onload = e => { _rptUploadB64 = e.target.result.split(',')[1]; };
+  reader.readAsDataURL(file);
+}
+function rptClearUpload() {
+  _rptUploadFile = null; _rptUploadB64 = null; _rptUploadName = null;
+  const input = document.getElementById('rpt-upload-input');
+  if (input) input.value = '';
+  const lbl = document.getElementById('rpt-upload-label-text');
+  if (lbl) lbl.textContent = 'Click to upload expenditure report (PDF, Excel, CSV)';
+  const clr = document.getElementById('rpt-upload-clear');
+  if (clr) clr.style.display = 'none';
+}
+
+// ── Submit EEO Grant Report to Worker ───────────────────────────────────────
+const RPT_SUBMIT_TO = ['eeosubmissions@cccco.edu', 'admin@bulleconsulting.com'];
+const EEO_RPT_URL = 'https://eeo-rpt-sync.shrill-king-ef4e.workers.dev';  // EEO IBP Grant Report Worker
+function setRptSubmitStatus(msg, kind) {
+  const el = document.getElementById('rpt-submit-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'bmr-submit-status' + (kind ? ' ' + kind : '');
+}
+function submitRptForm() {
+  const btn = document.getElementById('rpt-submit-btn');
+  // Validate certify
+  const certify = (document.querySelector('[data-rpt="certify"]') || {}).value || '';
+  if (!certify.trim()) {
+    setRptSubmitStatus('Please enter your name in the certification field before submitting.', 'warn');
+    return;
+  }
+  // Gather state
+  const st = {};
+  document.querySelectorAll('[data-rpt]').forEach(el => {
+    const k = el.getAttribute('data-rpt');
+    if (el.type === 'radio') { if (el.checked) st[k] = el.value; }
+    else st[k] = el.value;
+  });
+  st.expenditures = [];
+  document.querySelectorAll('#rpt-expenditures tr').forEach(tr => {
+    const g = f => { const el = tr.querySelector('[data-rpt-ex="' + f + '"]'); return el ? el.value : ''; };
+    st.expenditures.push({ type: g('type'), year: g('year'), description: g('description'), approved: g('approved'), spent: g('spent'), balance: g('balance') });
+  });
+  const districtId = (st.district || 'unknown').toLowerCase().replace(/[^a-z0-9]/g,'-').replace(/-+/g,'-').slice(0,30) || 'district';
+  st._uploadFileName = _rptUploadName || null;
+  const payload = {
+    formType: 'eeo_ibp_grant_report',
+    district: st.district || '',
+    state: st,
+    recipients: RPT_SUBMIT_TO,
+    submittedAt: new Date().toISOString(),
+    uploadFileName: _rptUploadName || null,
+    uploadFileB64: _rptUploadB64 || null
+  };
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+  setRptSubmitStatus('Sending to EEO office…', 'pending');
+  fetch(EEO_RPT_URL.replace(/\/+$/, '') + '/rpt/' + districtId + '/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(r => r.json()).then(data => {
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit Report'; }
+    if (data.ok) {
+      setRptSubmitStatus('✓ Submitted — a copy was emailed to ' + RPT_SUBMIT_TO.join(' and ') + '.', 'ok');
+    } else {
+      setRptSubmitStatus('Submission error: ' + (data.error || 'unknown'), 'error');
+    }
+  }).catch(err => {
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit Report'; }
+    setRptSubmitStatus('Network error — please try again or use Print / Save PDF.', 'error');
+  });
 }
 function rptDelRow(btn) { const tr = btn.closest('tr'); if (tr) tr.remove(); rptPersist(); }
 function resetReportForm() { try { localStorage.removeItem(RPT_STORE); } catch (e) {} renderReportForm(); }
