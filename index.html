@@ -521,32 +521,64 @@
     .sidebar > .sidebar-footer { margin-top:0; }
 
     /* ════════════ BMR Video Training Guide (animated screencast) ════════════ */
-    .bmrv-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-top:22px; }
-    .bmrv-bar { display:flex; align-items:center; gap:7px; padding:9px 14px; background:#1b2330; }
-    .bmrv-dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+    /* ═══════════════════════════════════════════════════════════
+       VIDEO GUIDE — Professional screencast player
+       ═══════════════════════════════════════════════════════════ */
+    .bmrv-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-md,0 4px 20px rgba(0,0,0,0.10)); overflow:hidden; margin-top:22px; }
+    .bmrv-titlebar { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; background:#111827; }
+    .bmrv-titlebar-left { display:flex; align-items:center; gap:7px; }
+    .bmrv-dot { width:11px; height:11px; border-radius:50%; display:inline-block; flex-shrink:0; }
     .bmrv-dot.r{background:#ff5f57;} .bmrv-dot.y{background:#febc2e;} .bmrv-dot.g{background:#28c840;}
-    .bmrv-bar-title { margin-left:8px; font-size:12px; font-weight:600; color:#cdd6e6; letter-spacing:0.01em; }
-    .bmrv-frame { position:relative; height:400px; overflow:hidden; background:var(--bg-surface); }
+    .bmrv-bar-title { margin-left:8px; font-size:12px; font-weight:600; color:#94a3b8; letter-spacing:0.04em; text-transform:uppercase; }
+    .bmrv-chapter-pills { display:flex; gap:6px; flex-wrap:wrap; padding:0 16px 0; }
+    .bmrv-chapter-pill { font-size:10.5px; font-weight:700; padding:3px 11px; border-radius:20px; border:1.5px solid var(--border-strong); background:var(--bg-surface); color:var(--text-muted); cursor:pointer; transition:all 0.18s ease; letter-spacing:0.02em; white-space:nowrap; }
+    .bmrv-chapter-pill:hover { border-color:var(--ccc-dark-blue); color:var(--ccc-dark-blue); }
+    .bmrv-chapter-pill.active { background:var(--ccc-dark-blue); color:#fff; border-color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .bmrv-chapter-pill.active { background:var(--accent-light); border-color:var(--accent-light); color:#0f172a; }
+    .bmrv-chapter-bar { padding:10px 16px 6px; border-bottom:1px solid var(--border); background:var(--bg-surface-2); display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .bmrv-chapter-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); flex-shrink:0; }
+    .bmrv-frame { position:relative; height:420px; overflow:hidden; background:var(--bg-surface); }
     @media (max-width:760px){ .bmrv-frame{ height:340px; } }
-    .bmrv-scroll { position:relative; padding:20px 22px 150px; transition:transform 0.95s cubic-bezier(0.33,1,0.68,1); will-change:transform; }
-    .bmrv-doc-title { font-family:var(--font-display); font-size:18px; font-weight:600; color:var(--fig-color,var(--ccc-dark-blue)); margin-bottom:14px; }
+    .bmrv-scroll { position:relative; padding:20px 22px 160px; transition:transform 0.95s cubic-bezier(0.33,1,0.68,1); will-change:transform; }
+    .bmrv-doc-title { font-family:var(--font-display); font-size:18px; font-weight:700; color:var(--fig-color,var(--ccc-dark-blue)); margin-bottom:16px; padding-bottom:10px; border-bottom:2px solid var(--border); }
     .bmrv-cursor { position:absolute; top:0; left:0; width:22px; height:22px; z-index:6; pointer-events:none; transition:top 0.5s cubic-bezier(0.22,1,0.36,1), left 0.5s cubic-bezier(0.22,1,0.36,1); filter:drop-shadow(0 1px 2px rgba(0,0,0,0.4)); }
-    .bmrv-caption { position:absolute; left:0; right:0; bottom:0; padding:12px 16px; background:linear-gradient(transparent, rgba(12,18,28,0.86) 38%); color:#fff; font-size:13.5px; line-height:1.45; font-weight:500; z-index:5; min-height:30px; }
-    .bmrv-caption span { opacity:0; }
-    .bmrv-caption span.show { animation:bmrvCapIn 0.35s ease forwards; }
-    @keyframes bmrvCapIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-    .bmrv-poster { position:absolute; inset:0; z-index:8; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; background:rgba(12,18,28,0.55); border:none; cursor:pointer; color:#fff; }
-    .bmrv-poster-play { width:62px; height:62px; border-radius:50%; background:var(--ccc-gold); color:var(--ccc-darker-blue); display:flex; align-items:center; justify-content:center; font-size:24px; padding-left:4px; box-shadow:0 6px 20px rgba(0,0,0,0.35); }
-    .bmrv-poster-text { font-size:13.5px; font-weight:600; letter-spacing:0.01em; }
-    .bmrv-controls { display:flex; align-items:center; gap:12px; padding:11px 16px; background:var(--bg-surface-2); border-top:1px solid var(--border); }
-    .bmrv-play, .bmrv-replay { width:34px; height:34px; flex-shrink:0; border-radius:50%; border:none; background:var(--ccc-dark-blue); color:#fff; cursor:pointer; font-size:13px; display:inline-flex; align-items:center; justify-content:center; }
-    .bmrv-play:hover, .bmrv-replay:hover { background:var(--ccc-darker-blue); }
-    .bmrv-replay { background:var(--bg-surface); color:var(--text-secondary); border:1px solid var(--border-strong); }
+    /* Caption area with step indicator */
+    .bmrv-caption-wrap { position:absolute; left:0; right:0; bottom:0; z-index:5; }
+    .bmrv-step-bar { display:flex; gap:3px; padding:8px 16px 0; background:linear-gradient(transparent,rgba(12,18,28,0.75) 40%); }
+    .bmrv-step-pip { flex:1; height:3px; border-radius:2px; background:rgba(255,255,255,0.25); transition:background 0.3s ease; }
+    .bmrv-step-pip.done { background:var(--ccc-gold,#FFCD00); }
+    .bmrv-step-pip.active { background:#fff; }
+    .bmrv-caption { padding:9px 16px 14px; background:rgba(12,18,28,0.86); color:#fff; font-size:13.5px; line-height:1.5; font-weight:500; min-height:30px; }
+    .bmrv-caption-inner { display:flex; align-items:flex-start; gap:10px; }
+    .bmrv-caption-avatar { width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,#667eea,#764ba2); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:13px; }
+    .bmrv-caption-text { flex:1; opacity:0; }
+    .bmrv-caption-text.show { animation:bmrvCapIn 0.35s ease forwards; }
+    @keyframes bmrvCapIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:none; } }
+    /* Poster / play overlay */
+    .bmrv-poster { position:absolute; inset:0; z-index:8; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; background:rgba(11,17,27,0.62); border:none; cursor:pointer; color:#fff; backdrop-filter:blur(2px); }
+    .bmrv-poster-play { width:68px; height:68px; border-radius:50%; background:var(--ccc-gold,#FFCD00); color:#0a1929; display:flex; align-items:center; justify-content:center; font-size:26px; padding-left:5px; box-shadow:0 8px 28px rgba(0,0,0,0.45); transition:transform 0.18s ease,box-shadow 0.18s ease; }
+    .bmrv-poster:hover .bmrv-poster-play { transform:scale(1.08); box-shadow:0 12px 36px rgba(0,0,0,0.55); }
+    .bmrv-poster-text { font-size:14px; font-weight:600; letter-spacing:0.02em; }
+    .bmrv-poster-sub { font-size:11.5px; color:rgba(255,255,255,0.65); margin-top:-8px; }
+    /* Controls bar */
+    .bmrv-controls { display:flex; align-items:center; gap:10px; padding:10px 14px; background:var(--bg-surface-2); border-top:1px solid var(--border); }
+    .bmrv-btn-icon { width:34px; height:34px; flex-shrink:0; border-radius:50%; border:none; cursor:pointer; font-size:14px; display:inline-flex; align-items:center; justify-content:center; transition:all 0.15s ease; }
+    .bmrv-play { background:var(--ccc-dark-blue,#003E5A); color:#fff; }
+    .bmrv-play:hover { filter:brightness(1.15); }
+    .bmrv-replay { background:var(--bg-surface); color:var(--text-secondary); border:1.5px solid var(--border-strong); }
+    .bmrv-replay:hover { background:var(--bg-surface-2); }
+    .bmrv-voice-btn { background:var(--bg-surface); color:var(--text-secondary); border:1.5px solid var(--border-strong); font-size:16px; }
+    .bmrv-voice-btn.active { background:rgba(0,102,186,0.12); color:var(--ccc-dark-blue); border-color:var(--ccc-dark-blue); }
+    [data-theme="dark"] .bmrv-voice-btn.active { color:var(--accent-light); border-color:var(--accent-light); }
     .bmrv-time { font-size:11.5px; font-weight:600; color:var(--text-muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
     .bmrv-track { flex:1; height:6px; background:var(--border); border-radius:3px; cursor:pointer; position:relative; }
-    .bmrv-prog { height:100%; width:0; background:var(--ccc-gold); border-radius:3px; }
+    .bmrv-track:hover .bmrv-prog { filter:brightness(1.15); }
+    .bmrv-prog { height:100%; width:0; background:var(--ccc-gold,#FFCD00); border-radius:3px; transition:width 0.08s linear; }
+    .bmrv-speed-btn { font-size:11px; font-weight:700; padding:4px 9px; border-radius:20px; border:1.5px solid var(--border-strong); background:var(--bg-surface); color:var(--text-muted); cursor:pointer; letter-spacing:0.02em; }
+    .bmrv-speed-btn:hover { border-color:var(--ccc-dark-blue); color:var(--ccc-dark-blue); }
     @keyframes bmrvCaret { 50% { opacity:0; } }
     @media (prefers-reduced-motion: reduce) { .bmrv-scroll, .bmrv-cursor { transition:none; } }
+    /* Form replica elements */
     .bmrv-q { display:flex; flex-direction:column; gap:6px; margin-top:14px; }
     .bmrv-qlabel { font-size:11px; font-weight:700; letter-spacing:0.02em; color:var(--text-secondary); line-height:1.35; }
     .rpv-opts { display:flex; gap:8px; flex-wrap:wrap; }
@@ -557,27 +589,19 @@
     [data-theme="dark"] .rpv-opt.rpv-sel { color:var(--accent-light); border-color:var(--accent-light); }
     [data-theme="dark"] .rpv-opt.rpv-sel .rpv-dot { border-color:var(--accent-light); background:var(--accent-light); }
     .rpv-box { display:block; min-height:26px; }
-    /* video replica of the real form layout */
     .bmrv-meta { display:flex; flex-direction:column; gap:11px; margin-bottom:14px; }
     .bmrv-fld { display:flex; flex-direction:column; gap:4px; min-width:0; }
     .bmrv-fld label { font-size:9px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); }
     .bmrv-cell { min-height:15px; font-size:11px; line-height:1.35; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:5px; padding:5px 7px; word-break:break-word; display:block; }
     .bmrv-cell.num { font-variant-numeric:tabular-nums; }
-    .bmrv-cell.typing { border-color:var(--ccc-dark-gold); box-shadow:0 0 0 2px rgba(241,138,32,0.15); }
-    .bmrv-cell.typing::after { content:''; display:inline-block; width:1px; height:1em; background:var(--ccc-dark-gold); margin-left:1px; vertical-align:-2px; animation:bmrvCaret 0.8s steps(1) infinite; }
+    .bmrv-cell.typing { border-color:var(--ccc-dark-gold,#E5B800); box-shadow:0 0 0 2px rgba(241,138,32,0.18); }
+    .bmrv-cell.typing::after { content:''; display:inline-block; width:1px; height:1em; background:var(--ccc-dark-gold,#E5B800); margin-left:1px; vertical-align:-2px; animation:bmrvCaret 0.8s steps(1) infinite; }
     .bmrv-yblock { margin-top:14px; border:1px solid var(--border-strong); border-radius:8px; overflow:hidden; }
-    .bmrv-yblock.y1 { border-top:3px solid var(--ccc-dark-blue); }
-    .bmrv-yblock.y2 { border-top:3px solid var(--ccc-dark-gold); }
+    .bmrv-yblock.y1 { border-top:3px solid var(--ccc-dark-blue,#003E5A); }
+    .bmrv-yblock.y2 { border-top:3px solid var(--ccc-dark-gold,#E5B800); }
     .bmrv-yhead { font-size:11px; font-weight:600; color:var(--text-secondary); padding:9px 11px; background:var(--bg-surface-2); border-bottom:1px solid var(--border); display:flex; gap:8px; align-items:center; }
-    .bmrv-chip { font-size:9px; font-weight:800; letter-spacing:0.05em; text-transform:uppercase; color:#fff; background:var(--ccc-dark-blue); padding:2px 8px; border-radius:20px; }
-    .bmrv-chip.gold { background:var(--ccc-dark-gold); }
-    .bmrv-tbl { width:100%; border-collapse:collapse; table-layout:fixed; }
-    .bmrv-tbl th { font-size:8px; font-weight:700; letter-spacing:0.02em; text-transform:uppercase; color:var(--text-muted); text-align:left; padding:5px 5px; border-bottom:1px solid var(--border); }
-    .bmrv-tbl td { padding:4px 5px; vertical-align:top; border-bottom:1px solid var(--border); }
-    .bmrv-tbl th:first-child, .bmrv-tbl td:first-child { width:40px; }
-    .bmrv-code { font-size:11px; font-weight:700; color:var(--fig-color,var(--ccc-dark-blue)); }
-
-    /* readable, full-width fields in the video replica */
+    .bmrv-chip { font-size:9px; font-weight:800; letter-spacing:0.05em; text-transform:uppercase; color:#fff; background:var(--ccc-dark-blue,#003E5A); padding:2px 8px; border-radius:20px; }
+    .bmrv-chip.gold { background:var(--ccc-dark-gold,#E5B800); color:#0a1929; }
     .bmrv-lines { display:flex; flex-direction:column; gap:9px; padding:11px 12px; }
     .bmrv-rowsum { display:flex; align-items:center; gap:10px; font-size:12px; color:var(--text-secondary); padding:7px 4px; border-bottom:1px solid var(--border); }
     .bmrv-rowsum-name { flex:1; min-width:0; }
@@ -585,8 +609,7 @@
     .bmrv-line { border:1px solid var(--border-strong); border-radius:8px; padding:13px 14px; background:var(--bg-surface); display:flex; flex-direction:column; gap:11px; }
     .bmrv-line-top { display:flex; align-items:center; gap:8px; margin-bottom:1px; }
     .bmrv-line-name { font-size:13px; font-weight:600; color:var(--text-primary); }
-    .bmrv-nums { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin:9px 0; }
-    .bmrv-fld-full { margin-top:9px; }
+    .bmrv-code { font-size:11px; font-weight:700; color:var(--fig-color,var(--ccc-dark-blue,#003E5A)); }
     .bmrv-cell { font-size:12.5px; line-height:1.5; }
 
     .timeline-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow:hidden; margin-bottom:20px; }
@@ -1233,8 +1256,21 @@
         <div class="budget-grid budget-grid--2col" id="budget-grid"></div>
         <!-- INTERACTIVE BUDGET MODIFICATION REQUEST FORM (mirrors Word doc; auto-calculates & drives project totals) -->
         <!-- VIDEO TRAINING GUIDE — screencast of filling out the form (shown above the form) -->
+        <!-- VIDEO TRAINING GUIDE — Budget Modification Request Form -->
         <div class="bmrv-card" id="bmr-guide">
-          <div class="bmrv-bar"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">How to Complete This Form</span></div>
+          <div class="bmrv-titlebar">
+            <div class="bmrv-titlebar-left">
+              <span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span>
+              <span class="bmrv-bar-title">Video Guide · Budget Modification Request</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button type="button" class="bmrv-speed-btn" id="bmrv-speed" onclick="bmrvCycleSpeed()" title="Playback speed">1×</button>
+            </div>
+          </div>
+          <div class="bmrv-chapter-bar">
+            <span class="bmrv-chapter-label">Jump to:</span>
+            <div class="bmrv-chapter-pills" id="bmrv-chapters"></div>
+          </div>
           <div class="bmrv-frame" id="bmrv-frame">
             <div class="bmrv-scroll" id="bmrv-scroll">
               <div class="bmrv-doc-title">Budget Modification Request Form</div>
@@ -1255,14 +1291,27 @@
               <div class="bmrv-fld" style="margin-top:16px;max-width:320px;"><label>Approved by CCCCO Staff</label><span class="bmrv-cell" id="mv-appr"></span></div>
             </div>
             <svg class="bmrv-cursor" id="bmrv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
-            <div class="bmrv-caption" id="bmrv-caption"></div>
-            <button type="button" class="bmrv-poster" id="bmrv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">Play the video guide</span></button>
+            <div class="bmrv-caption-wrap" id="bmrv-caption-wrap">
+              <div class="bmrv-step-bar" id="bmrv-step-bar"></div>
+              <div class="bmrv-caption" id="bmrv-caption">
+                <div class="bmrv-caption-inner">
+                  <div class="bmrv-caption-avatar">👩</div>
+                  <div class="bmrv-caption-text" id="bmrv-caption-text"></div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="bmrv-poster" id="bmrv-poster" aria-label="Play the video guide">
+              <span class="bmrv-poster-play">▶</span>
+              <span class="bmrv-poster-text">Play Video Guide</span>
+              <span class="bmrv-poster-sub">Budget Modification Request · ~3 min walkthrough</span>
+            </button>
           </div>
           <div class="bmrv-controls">
-            <button type="button" class="bmrv-play" id="bmrv-play" aria-label="Play or pause">▶</button>
+            <button type="button" class="bmrv-btn-icon bmrv-play" id="bmrv-play" aria-label="Play or pause" title="Play / Pause">▶</button>
+            <button type="button" class="bmrv-btn-icon bmrv-voice-btn" id="bmrv-voice" aria-label="Toggle voice narration" title="Voice narration">🔊</button>
             <span class="bmrv-time" id="bmrv-time">0:00 / 0:00</span>
             <div class="bmrv-track" id="bmrv-track"><div class="bmrv-prog" id="bmrv-prog"></div></div>
-            <button type="button" class="bmrv-replay" id="bmrv-replay" aria-label="Replay">↻</button>
+            <button type="button" class="bmrv-btn-icon bmrv-replay" id="bmrv-replay" aria-label="Replay from start" title="Replay">↻</button>
           </div>
         </div>
 
@@ -1520,9 +1569,21 @@
         <div id="report-wrap" style="display:none;">
           <button type="button" class="bmr-btn forms-back" onclick="backToForms()">‹ Back to Forms</button>
 
-          <!-- VIDEO TRAINING GUIDE — screencast of filling out the EEO IBP Grant Report (shown above the form) -->
+          <!-- VIDEO TRAINING GUIDE — EEO IBP Grant Report -->
           <div class="bmrv-card" id="report-guide">
-            <div class="bmrv-bar"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">How to Complete This Form</span></div>
+            <div class="bmrv-titlebar">
+              <div class="bmrv-titlebar-left">
+                <span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span>
+                <span class="bmrv-bar-title">Video Guide · EEO IBP Grant Report</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <button type="button" class="bmrv-speed-btn" id="rpv-speed" onclick="rpvCycleSpeed()" title="Playback speed">1×</button>
+              </div>
+            </div>
+            <div class="bmrv-chapter-bar">
+              <span class="bmrv-chapter-label">Jump to:</span>
+              <div class="bmrv-chapter-pills" id="rpv-chapters"></div>
+            </div>
             <div class="bmrv-frame" id="rpv-frame">
               <div class="bmrv-scroll" id="rpv-scroll">
                 <div class="bmrv-doc-title">EEO IBP Grant Report</div>
@@ -1581,14 +1642,27 @@
                 </div>
               </div>
               <svg class="bmrv-cursor" id="rpv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
-              <div class="bmrv-caption" id="rpv-caption"></div>
-              <button type="button" class="bmrv-poster" id="rpv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">Play the video guide</span></button>
+              <div class="bmrv-caption-wrap" id="rpv-caption-wrap">
+                <div class="bmrv-step-bar" id="rpv-step-bar"></div>
+                <div class="bmrv-caption" id="rpv-caption">
+                  <div class="bmrv-caption-inner">
+                    <div class="bmrv-caption-avatar">👩</div>
+                    <div class="bmrv-caption-text" id="rpv-caption-text"></div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="bmrv-poster" id="rpv-poster" aria-label="Play the video guide">
+                <span class="bmrv-poster-play">▶</span>
+                <span class="bmrv-poster-text">Play Video Guide</span>
+                <span class="bmrv-poster-sub">EEO IBP Grant Report · ~4 min walkthrough</span>
+              </button>
             </div>
             <div class="bmrv-controls">
-              <button type="button" class="bmrv-play" id="rpv-play" aria-label="Play or pause">▶</button>
+              <button type="button" class="bmrv-btn-icon bmrv-play" id="rpv-play" aria-label="Play or pause" title="Play / Pause">▶</button>
+              <button type="button" class="bmrv-btn-icon bmrv-voice-btn" id="rpv-voice" aria-label="Toggle voice narration" title="Voice narration">🔊</button>
               <span class="bmrv-time" id="rpv-time">0:00 / 0:00</span>
               <div class="bmrv-track" id="rpv-track"><div class="bmrv-prog" id="rpv-prog"></div></div>
-              <button type="button" class="bmrv-replay" id="rpv-replay" aria-label="Replay">↻</button>
+              <button type="button" class="bmrv-btn-icon bmrv-replay" id="rpv-replay" aria-label="Replay from start" title="Replay">↻</button>
             </div>
           </div>
 
@@ -3258,12 +3332,104 @@ function relocateBudgetForm() {
 
 /* ════════════ BMR VIDEO TRAINING GUIDE (animated screencast of the real form) ════════════ */
 let bmrvScenes = [], bmrvCum = [], bmrvTotal = 0, bmrvT = 0, bmrvPlaying = false, bmrvLast = 0, bmrvRAF = null, bmrvLastI = -1;
-const BMRV_MOVE = 1000, BMRV_TYPE = 22, BMRV_DWELL = 750;
+
+/* ════════════════════════════════════════════════════════════════
+   PROFESSIONAL VIDEO GUIDE ENGINE — v2
+   Shared by BMR (Budget Mod) and RPV (EEO Report) guides.
+   Features: chapters, step-pips, voice narration (Web Speech API),
+   speed control, animated cursor, typewriter cells.
+   ════════════════════════════════════════════════════════════════ */
+
+// ── Shared timing constants ──────────────────────────────────────
+const BMRV_MOVE = 900, BMRV_TYPE = 20, BMRV_DWELL = 700;
 const BMRV_EX = { y1:'1000', y2:'5000' };
 const BMRV_IDS = { y1:{desc:'mv-d1',prop:'mv-p1',act:'mv-a1',bal:'mv-b1',proj:'mv-pr1',upd:'mv-u1'},
                    y2:{desc:'mv-d2',prop:'mv-p2',act:'mv-a2',bal:'mv-b2',proj:'mv-pr2',upd:'mv-u2'} };
+
+// ── Shared voice engine (singleton, reused by both guides) ───────
+let _voiceEnabled = false;
+let _voiceUtter = null;
+let _preferredVoice = null;
+
+function _loadVoice() {
+  if (_preferredVoice) return;
+  const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  // Prefer a female English voice
+  const female = voices.find(v =>
+    /samantha|zira|victoria|karen|moira|fiona|allison|ava|susan|alice|female/i.test(v.name) &&
+    /en/i.test(v.lang)
+  ) || voices.find(v => /en/i.test(v.lang));
+  if (female) _preferredVoice = female;
+}
+
+function _speak(text) {
+  if (!_voiceEnabled || !window.speechSynthesis || !text) return;
+  window.speechSynthesis.cancel();
+  _loadVoice();
+  _voiceUtter = new SpeechSynthesisUtterance(text);
+  _voiceUtter.rate = 0.92;
+  _voiceUtter.pitch = 1.05;
+  _voiceUtter.volume = 1;
+  if (_preferredVoice) _voiceUtter.voice = _preferredVoice;
+  window.speechSynthesis.speak(_voiceUtter);
+}
+
+function _stopSpeech() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+// ── Utility ─────────────────────────────────────────────────────
 function bmrvFmt(ms) { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
 function bmrvCellTD(id, cls, val) { return '<td><span class="bmrv-cell ' + (cls || '') + '"' + (id ? ' id="' + id + '"' : '') + '>' + (val || '') + '</span></td>'; }
+
+function _buildPips(barId, count, activeIdx) {
+  const bar = document.getElementById(barId);
+  if (!bar) return;
+  bar.innerHTML = Array.from({length: count}, (_, i) =>
+    '<div class="bmrv-step-pip' + (i < activeIdx ? ' done' : i === activeIdx ? ' active' : '') + '"></div>'
+  ).join('');
+}
+
+function _buildChapterPills(containerId, chapters, jumpFn) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = chapters.map((ch, i) =>
+    '<button type="button" class="bmrv-chapter-pill" data-ci="' + i + '" onclick="' + jumpFn + '(' + i + ')">' + ch.label + '</button>'
+  ).join('');
+}
+
+function _updateChapterPills(containerId, chapters, currentSceneIdx) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const pills = el.querySelectorAll('.bmrv-chapter-pill');
+  // find which chapter the current scene belongs to
+  let active = 0;
+  chapters.forEach((ch, i) => { if (currentSceneIdx >= ch.startScene) active = i; });
+  pills.forEach((p, i) => p.classList.toggle('active', i === active));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUDGET MODIFICATION REQUEST VIDEO GUIDE (bmrv)
+   ═══════════════════════════════════════════════════════════════ */
+let bmrvScenes = [], bmrvCum = [], bmrvTotal = 0, bmrvT = 0,
+    bmrvPlaying = false, bmrvLast = 0, bmrvRAF = null, bmrvLastI = -1,
+    bmrvSpeed = 1;
+
+const BMR_CHAPTERS = [
+  { label: '1 · Contact Info', startScene: 0 },
+  { label: '2 · Year 1 Changes', startScene: 4 },
+  { label: '3 · Year 2 Changes', startScene: 10 },
+  { label: '4 · Approval', startScene: 16 }
+];
+
+function bmrvCycleSpeed() {
+  const speeds = [1, 1.5, 2];
+  const idx = speeds.indexOf(bmrvSpeed);
+  bmrvSpeed = speeds[(idx + 1) % speeds.length];
+  const btn = document.getElementById('bmrv-speed');
+  if (btn) btn.textContent = bmrvSpeed + '×';
+}
+
 function bmrvBuildForm() {
   if (typeof BUDGET_BASELINE === 'undefined') return;
   ['y1', 'y2'].forEach(yk => {
@@ -3288,31 +3454,48 @@ function bmrvBuildForm() {
     }).join('');
   });
 }
+
 function bmrvBuildScenes() {
   const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Community College District';
   bmrvScenes = [
-    { t:'mv-district', cap:'Start with your district and contact details.', text:dist },
-    { t:'mv-by',    cap:'Add who is submitting and their grant role.', text:'Project Lead Name, Grant Role' },
-    { t:'mv-email', cap:'Enter your email.', text:'lead@district.edu' },
-    { t:'mv-date',  cap:'Set the submission date.', text:'2026-09-30' },
-    { t:'mv-d1', cap:'In Year 1, take the 1000 Instructional Salaries line. Describe the change and show the math.', text:'Stipends, Faculty to assist with delivery Onboarding Program = $5,000 (2 faculty, 50 hours at $50/hour)' },
-    { t:'mv-p1', cap:'Enter Proposed Funds. This is the modification, and it updates your Year 1 / Year 2 totals automatically.', text:'$5,000' },
-    { t:'mv-a1', cap:'Actuals: the amount spent to date.', text:'$0' },
-    { t:'mv-b1', cap:'Fund Balance: the remaining balance.', text:'$5,000' },
-    { t:'mv-pr1', cap:'Projections: amount to be spent by June 2028.', text:'$0' },
-    { t:'mv-u1', cap:'Expenditure Updates is a written explanation, not a number.', text:'Due to the retirement of the project lead for this initiative, we have been unable to make the progress we wanted on this initiative. While we are currently meeting with constituents on developing this onboarding program, and have secured a consultant, we have made the decision to continue with this project utilizing other EEO/District funds and not continue with this initiative under the EEO IBP Grant.' },
-    { t:'mv-d2', cap:'In Year 2, add a new expenditure not in the grant: the 5000 line.', text:'Launching of California Community College Employee Resource Group Conference, Consultant to support planning and post-conference data analysis.' },
-    { t:'mv-p2', cap:'Proposed Funds for the new line.', text:'$8,000' },
-    { t:'mv-a2', cap:'Actuals to date.', text:'$0' },
-    { t:'mv-b2', cap:'Fund Balance.', text:'$8,000' },
-    { t:'mv-pr2', cap:'Projections through June 2028.', text:'$8,000' },
-    { t:'mv-u2', cap:'Explain the new initiative in Expenditure Updates.', text:'Since the Project Lead on this project was out on a leave of absence, we hired a consultant to assist with planning of conference and will also use consultant to assist with data analysis for EEO IBP reporting.' },
-    { t:'mv-appr', cap:'Finally, complete Approved by. Now you are ready to fill in the live form below.', text:'Approver Name, Title' }
+    { t:'mv-district', cap:'Start with your district name — this identifies who is submitting the request.', text:dist },
+    { t:'mv-by',    cap:'Enter the name and designated grant role of the person submitting this form.', text:'Project Lead Name, Grant Role' },
+    { t:'mv-email', cap:'Provide your professional email address for follow-up communication.', text:'lead@district.edu' },
+    { t:'mv-date',  cap:'Set today's submission date. This creates a clear timestamp for your request.', text:'2026-09-30' },
+    { t:'mv-d1', cap:'In Year 1, focus on the 1000 Instructional Salaries line. Describe the change clearly with who, hours, and rate.', text:'Stipends, Faculty to assist with delivery Onboarding Program = $5,000 (2 faculty, 50 hours at $50/hour)' },
+    { t:'mv-p1', cap:'Enter the Proposed Funds — this is the modified dollar amount. It will automatically update your Year 1 and Year 2 totals.', text:'$5,000' },
+    { t:'mv-a1', cap:'Actuals are the amount already spent to date on this line item. Be precise — it should match your financial records.', text:'$0' },
+    { t:'mv-b1', cap:'Fund Balance is what remains after subtracting actuals from proposed funds.', text:'$5,000' },
+    { t:'mv-pr1', cap:'Projections are the amount you expect to spend by June 2028 — your forward-looking estimate.', text:'$0' },
+    { t:'mv-u1', cap:'Expenditure Updates is a written narrative, not a number. Explain the reason for the change clearly and concisely.', text:'Due to the retirement of the project lead for this initiative, we have been unable to make the progress we wanted on this initiative. While we are currently meeting with constituents on developing this onboarding program, and have secured a consultant, we have made the decision to continue with this project utilizing other EEO/District funds and not continue with this initiative under the EEO IBP Grant.' },
+    { t:'mv-d2', cap:'Moving to Year 2 — if you are adding a new expenditure not in the original grant, describe it clearly here.', text:'Launching of California Community College Employee Resource Group Conference, Consultant to support planning and post-conference data analysis.' },
+    { t:'mv-p2', cap:'Enter the Proposed Funds for this new Year 2 line item.', text:'$8,000' },
+    { t:'mv-a2', cap:'Actuals to date for this line — zero if not yet started.', text:'$0' },
+    { t:'mv-b2', cap:'Fund Balance for Year 2.', text:'$8,000' },
+    { t:'mv-pr2', cap:'Projections: the full amount you plan to spend on this initiative through June 2028.', text:'$8,000' },
+    { t:'mv-u2', cap:'Use the Expenditure Updates field to explain the new initiative and any relevant context for the Chancellor's Office.', text:'Since the Project Lead on this project was out on a leave of absence, we hired a consultant to assist with planning of conference and will also use consultant to assist with data analysis for EEO IBP reporting.' },
+    { t:'mv-appr', cap:'Finally, the Approved by field is completed by CCCCO staff after review. Your form is now ready to submit. Great work!', text:'Approver Name, Title' }
   ];
   bmrvCum = []; let acc = 0;
-  bmrvScenes.forEach(sc => { bmrvCum.push(acc); acc += BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL; });
+  bmrvScenes.forEach(sc => {
+    bmrvCum.push(acc);
+    acc += (BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL) / bmrvSpeed;
+  });
   bmrvTotal = acc;
+  _buildPips('bmrv-step-bar', bmrvScenes.length, 0);
+  _buildChapterPills('bmrv-chapters', BMR_CHAPTERS, 'bmrvJumpChapter');
 }
+
+function bmrvJumpChapter(idx) {
+  const ch = BMR_CHAPTERS[idx];
+  if (!ch) return;
+  const sceneIdx = ch.startScene;
+  bmrvT = bmrvCum[sceneIdx] || 0;
+  bmrvLastI = -1;
+  bmrvRender(bmrvT);
+  if (!bmrvPlaying) bmrvPlay();
+}
+
 function bmrvMoveTo(id) {
   const el = document.getElementById(id), scroll = document.getElementById('bmrv-scroll'), frame = document.getElementById('bmrv-frame'), cur = document.getElementById('bmrv-cursor');
   if (!el || !scroll || !frame) return;
@@ -3322,6 +3505,7 @@ function bmrvMoveTo(id) {
   scroll.style.transform = 'translateY(' + (-shift) + 'px)';
   if (cur) { cur.style.top = (el.offsetTop - shift + Math.min(el.offsetHeight, 28) / 2 + 2) + 'px'; cur.style.left = (el.offsetLeft + 14) + 'px'; }
 }
+
 function bmrvEnter(i) {
   bmrvScenes.forEach((sc, j) => {
     const el = document.getElementById(sc.t);
@@ -3329,87 +3513,146 @@ function bmrvEnter(i) {
     if (j < i) { el.textContent = sc.text; el.classList.remove('typing'); }
     else if (j > i) { el.textContent = ''; el.classList.remove('typing'); }
   });
-  const cap = document.getElementById('bmrv-caption');
-  if (cap) cap.innerHTML = '<span class="show">' + bmrvScenes[i].cap + '</span>';
+  const capText = document.getElementById('bmrv-caption-text');
+  if (capText) {
+    capText.className = 'bmrv-caption-text';
+    void capText.offsetWidth;
+    capText.textContent = bmrvScenes[i].cap;
+    capText.className = 'bmrv-caption-text show';
+  }
+  _buildPips('bmrv-step-bar', bmrvScenes.length, i);
+  _updateChapterPills('bmrv-chapters', BMR_CHAPTERS, i);
+  _speak(bmrvScenes[i].cap);
   bmrvMoveTo(bmrvScenes[i].t);
 }
+
 function bmrvRender(t) {
   if (!bmrvScenes.length) return;
   let i = 0; while (i < bmrvScenes.length - 1 && t >= bmrvCum[i + 1]) i++;
   if (i !== bmrvLastI) { bmrvEnter(i); bmrvLastI = i; }
   const sc = bmrvScenes[i], lt = t - bmrvCum[i];
-  const ch = Math.max(0, Math.min(sc.text.length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
+  const dur = (BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL) / bmrvSpeed;
+  const ch = Math.max(0, Math.min(sc.text.length, Math.floor((lt - BMRV_MOVE / bmrvSpeed) / (BMRV_TYPE / bmrvSpeed))));
   const el = document.getElementById(sc.t);
-  if (el) { el.textContent = sc.text.slice(0, ch); el.classList.toggle('typing', lt >= BMRV_MOVE && ch < sc.text.length); }
+  if (el) { el.textContent = sc.text.slice(0, ch); el.classList.toggle('typing', lt >= BMRV_MOVE / bmrvSpeed && ch < sc.text.length); }
   const prog = document.getElementById('bmrv-prog'), tm = document.getElementById('bmrv-time');
   if (prog) prog.style.width = (bmrvTotal ? (t / bmrvTotal * 100) : 0) + '%';
   if (tm) tm.textContent = bmrvFmt(t) + ' / ' + bmrvFmt(bmrvTotal);
 }
+
 function bmrvIcon() { const b = document.getElementById('bmrv-play'); if (b) b.textContent = bmrvPlaying ? '❚❚' : '▶'; }
 function bmrvTick(ts) {
   if (!bmrvPlaying) return;
   if (!bmrvLast) bmrvLast = ts;
-  bmrvT += ts - bmrvLast; bmrvLast = ts;
-  if (bmrvT >= bmrvTotal) { bmrvT = bmrvTotal; bmrvRender(bmrvTotal); bmrvPlaying = false; bmrvIcon(); return; }
+  const dt = (ts - bmrvLast) * bmrvSpeed;
+  bmrvT += dt; bmrvLast = ts;
+  if (bmrvT >= bmrvTotal) { bmrvT = bmrvTotal; bmrvRender(bmrvTotal); bmrvPlaying = false; _stopSpeech(); bmrvIcon(); return; }
   bmrvRender(bmrvT);
   bmrvRAF = requestAnimationFrame(bmrvTick);
 }
 function bmrvPlay() {
   const frame = document.getElementById('bmrv-frame');
   if (frame && frame.clientHeight === 0) return;
-  if (bmrvT >= bmrvTotal) bmrvT = 0;
-  bmrvPlaying = true; bmrvLast = 0; bmrvLastI = -1;
+  if (bmrvT >= bmrvTotal) { bmrvT = 0; bmrvLastI = -1; }
+  bmrvPlaying = true; bmrvLast = 0;
   const poster = document.getElementById('bmrv-poster'); if (poster) poster.style.display = 'none';
   bmrvIcon(); bmrvRAF = requestAnimationFrame(bmrvTick);
 }
-function bmrvPause() { bmrvPlaying = false; if (bmrvRAF) cancelAnimationFrame(bmrvRAF); bmrvIcon(); }
+function bmrvPause() { bmrvPlaying = false; _stopSpeech(); if (bmrvRAF) cancelAnimationFrame(bmrvRAF); bmrvIcon(); }
+
 function startBmrGuide() {
   const frame = document.getElementById('bmrv-frame');
   if (!frame || frame.dataset.ready) return;
   frame.dataset.ready = '1';
   bmrvBuildForm();
   bmrvBuildScenes();
+  if (window.speechSynthesis) {
+    window.speechSynthesis.onvoiceschanged = _loadVoice;
+    _loadVoice();
+  }
   const play = document.getElementById('bmrv-play'), poster = document.getElementById('bmrv-poster'),
-        track = document.getElementById('bmrv-track'), replay = document.getElementById('bmrv-replay');
+        track = document.getElementById('bmrv-track'), replay = document.getElementById('bmrv-replay'),
+        voiceBtn = document.getElementById('bmrv-voice');
   if (play) play.onclick = () => bmrvPlaying ? bmrvPause() : bmrvPlay();
   if (poster) poster.onclick = bmrvPlay;
   if (replay) replay.onclick = () => { bmrvT = 0; bmrvLastI = -1; bmrvRender(0); bmrvPlay(); };
   if (track) track.onclick = (e) => { const r = track.getBoundingClientRect(); bmrvT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * bmrvTotal; bmrvLastI = -1; bmrvRender(bmrvT); };
+  if (voiceBtn) voiceBtn.onclick = () => {
+    _voiceEnabled = !_voiceEnabled;
+    voiceBtn.classList.toggle('active', _voiceEnabled);
+    if (!_voiceEnabled) _stopSpeech();
+  };
   bmrvLastI = -1; bmrvRender(0);
 }
 
-/* ════════════ EEO IBP GRANT REPORT VIDEO GUIDE (animated screencast of the report form) ════════════ */
-let rpvScenes = [], rpvCum = [], rpvTotal = 0, rpvT = 0, rpvPlaying = false, rpvLast = 0, rpvRAF = null, rpvLastI = -1;
-function rpvFmt(ms) { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+/* ═══════════════════════════════════════════════════════════════
+   EEO IBP GRANT REPORT VIDEO GUIDE (rpv)
+   ═══════════════════════════════════════════════════════════════ */
+let rpvScenes = [], rpvCum = [], rpvTotal = 0, rpvT = 0,
+    rpvPlaying = false, rpvLast = 0, rpvRAF = null, rpvLastI = -1,
+    rpvSpeed = 1;
+
+const RPV_CHAPTERS = [
+  { label: '1 · Team Info',    startScene: 0 },
+  { label: '2 · Goals',        startScene: 6 },
+  { label: '3 · Expenditures', startScene: 12 },
+  { label: '4 · Certification', startScene: 19 }
+];
+
+function rpvCycleSpeed() {
+  const speeds = [1, 1.5, 2];
+  const idx = speeds.indexOf(rpvSpeed);
+  rpvSpeed = speeds[(idx + 1) % speeds.length];
+  const btn = document.getElementById('rpv-speed');
+  if (btn) btn.textContent = rpvSpeed + '×';
+}
+
 function rpvBuildScenes() {
   const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Community College District';
   rpvScenes = [
-    { t:'rv-district',       cap:'Start with your Community College District.', text:dist },
-    { t:'rv-lead',           cap:'Enter the Project Lead’s name and title.', text:'Project Lead Name, Title' },
-    { t:'rv-leademail',      cap:'Add the Project Lead’s email.', text:'lead@district.edu' },
-    { t:'rv-staff',          cap:'Name the support staff member for grant activities, with their title.', text:'Support Staff Name, Title' },
-    { t:'rv-staffemail',     cap:'And the support staff email.', text:'staff@district.edu' },
-    { t:'rv-team-yes',       cap:'Has your project team changed since the grant began? Choose Yes or No.', kind:'pick' },
-    { t:'rv-teamdetail',     cap:'Because you chose Yes, use the box underneath to list who to add or remove and outline their roles.', text:'Adding Dr. Rivera as co-lead for data analysis; removing J. Smith, who has left the district.' },
-    { t:'rv-goals',          cap:'Outline your grant goals as submitted in section 2.3 of your application (Year 1).', text:'Goal 1: Audit district-wide hiring practices for equity. Goal 2: Convene a cross-constituent EEO workgroup and publish evidence-based recommendations.' },
-    { t:'rv-goalsmet-yes',   cap:'7.a. Are those goals currently being met? Choose Yes or No.', kind:'pick' },
-    { t:'rv-goalsdetail',    cap:'Since you chose Yes, describe in the box underneath how each goal is progressing; if No, give your plan to meet them.', text:'The EEO workgroup meets monthly; five years of hiring data are under analysis and the first process-mapping workshops are complete.' },
-    { t:'rv-updates-no',     cap:'Any significant updates to your goals or activities since the proposal? Here we choose No — if Yes, you would summarize them in the box underneath.', kind:'pick' },
-    { t:'rv-barriers',       cap:'Identify any barriers affecting progress or spending, and the steps you are taking to address them.', text:'Hiring delays slowed onboarding; we secured a consultant and shifted two workshops to spring to stay on schedule.' },
-    { t:'rv-ex-type',        cap:'In the expenditures table, list each expenditure type from your approved budget.', text:'Non-Instructional Salaries (2000)' },
-    { t:'rv-ex-year',        cap:'Note the grant year for the line.', text:'Year 1' },
-    { t:'rv-ex-desc',        cap:'Describe the expenditure.', text:'Project coordinator stipend' },
-    { t:'rv-ex-approved',    cap:'Enter the approved grant award amount.', text:'$38,000' },
-    { t:'rv-ex-spent',       cap:'Then the total expenditures to date.', text:'$12,500' },
-    { t:'rv-ex-balance',     cap:'The unexpended balance is what remains.', text:'$25,500' },
-    { t:'rv-bmr-yes',        cap:'Do you intend to submit a budget modification request? Choose Yes or No.', kind:'pick' },
-    { t:'rv-bmrnote',        cap:'Because you chose Yes, a note appears underneath — contact Drs. John Parker and Herbert English to discuss next steps.', text:'If yes, please contact Drs. John Parker and Herbert English at your earliest convenience.' },
-    { t:'rv-certify',        cap:'Finally, type your name to certify the report is complete and accurate. Now you are ready to fill in the live form below.', text:'Project Lead Name' }
+    { t:'rv-district',     cap:'Begin with your Community College District name — this ties the report to the correct grantee record.', text:dist, kind:'text' },
+    { t:'rv-lead',         cap:'Enter the full name and title of the Project Lead — the person responsible for grant oversight.', text:'Project Lead Name, Title', kind:'text' },
+    { t:'rv-leademail',    cap:'Provide the Project Lead's professional email address for CCCCO correspondence.', text:'lead@district.edu', kind:'text' },
+    { t:'rv-staff',        cap:'Name the support staff member who assists with grant activities, along with their title.', text:'Support Staff Name, Title', kind:'text' },
+    { t:'rv-staffemail',   cap:'And their email address. All five contact fields ensure clear communication with the Chancellor's Office.', text:'staff@district.edu', kind:'text' },
+    { t:'rv-team-yes',     cap:'Has your project team changed since the grant began? Select Yes or No. We are selecting Yes here as an example.', kind:'pick' },
+    { t:'rv-teamdetail',   cap:'Because you selected Yes, use the box below to specify who is joining or leaving the team and what their roles are.', text:'Adding Dr. Rivera as co-lead for data analysis; removing J. Smith, who has left the district.', kind:'text' },
+    { t:'rv-goals',        cap:'Outline your grant goals exactly as submitted in section 2.3 of your Year 1 application. Copy them directly to maintain consistency.', text:'Goal 1: Audit district-wide hiring practices for equity. Goal 2: Convene a cross-constituent EEO workgroup and publish evidence-based recommendations.', kind:'text' },
+    { t:'rv-goalsmet-yes', cap:'Question 7a: Are those goals currently being met? Select Yes or No. Here we select Yes to demonstrate a positive status.', kind:'pick' },
+    { t:'rv-goalsdetail',  cap:'Since you selected Yes, describe in the text box how each goal is progressing. If you had selected No, you would explain your plan to get back on track.', text:'The EEO workgroup meets monthly; five years of hiring data are under analysis and the first process-mapping workshops are complete.', kind:'text' },
+    { t:'rv-updates-no',   cap:'Are there significant updates to your goals or activities since the original proposal? Here we select No. If Yes, summarize the changes below.', kind:'pick' },
+    { t:'rv-barriers',     cap:'Identify any barriers affecting your progress or spending, and describe the steps you are taking to address them. Be specific and solution-focused.', text:'Hiring delays slowed onboarding; we secured a consultant and shifted two workshops to spring to stay on schedule.', kind:'text' },
+    { t:'rv-ex-type',      cap:'In the expenditures table, list each expenditure type from your approved budget, using the correct object code category.', text:'Non-Instructional Salaries (2000)', kind:'text' },
+    { t:'rv-ex-year',      cap:'Indicate the grant year this expenditure belongs to — Year 1 or Year 2.', text:'Year 1', kind:'text' },
+    { t:'rv-ex-desc',      cap:'Provide a clear, brief description of what this expenditure covers.', text:'Project coordinator stipend', kind:'text' },
+    { t:'rv-ex-approved',  cap:'Enter the approved grant award amount for this line — exactly as it appears in your approved budget.', text:'$38,000', kind:'text' },
+    { t:'rv-ex-spent',     cap:'Then enter the total expenditures to date. This should match your district's financial records precisely.', text:'$12,500', kind:'text' },
+    { t:'rv-ex-balance',   cap:'The unexpended balance is the difference — what remains to be spent. Reviewers use this to assess spend pace.', text:'$25,500', kind:'text' },
+    { t:'rv-bmr-yes',      cap:'Do you intend to submit a Budget Modification Request? Select Yes or No. We select Yes here as an example.', kind:'pick' },
+    { t:'rv-bmrnote',      cap:'Because you selected Yes, a note appears — contact Drs. John Parker and Herbert English at your earliest convenience to discuss the modification.', text:'If yes, please contact Drs. John Parker and Herbert English at your earliest convenience.', kind:'text' },
+    { t:'rv-certify',      cap:'Finally, type your full name to certify that this report is accurate and complete. Your report is now ready to submit. Excellent work!', text:'Project Lead Name', kind:'text' }
   ];
   rpvCum = []; let acc = 0;
-  rpvScenes.forEach(sc => { rpvCum.push(acc); acc += BMRV_MOVE + (sc.text || '').length * BMRV_TYPE + BMRV_DWELL; });
+  rpvScenes.forEach(sc => {
+    rpvCum.push(acc);
+    const txt = sc.kind === 'pick' ? '' : (sc.text || '');
+    acc += (BMRV_MOVE + txt.length * BMRV_TYPE + BMRV_DWELL) / rpvSpeed;
+  });
   rpvTotal = acc;
+  _buildPips('rpv-step-bar', rpvScenes.length, 0);
+  _buildChapterPills('rpv-chapters', RPV_CHAPTERS, 'rpvJumpChapter');
 }
+
+function rpvJumpChapter(idx) {
+  const ch = RPV_CHAPTERS[idx];
+  if (!ch) return;
+  const sceneIdx = ch.startScene;
+  rpvT = rpvCum[sceneIdx] || 0;
+  rpvLastI = -1;
+  rpvRender(rpvT);
+  if (!rpvPlaying) rpvPlay();
+}
+
 function rpvMoveTo(id) {
   const el = document.getElementById(id), scroll = document.getElementById('rpv-scroll'), frame = document.getElementById('rpv-frame'), cur = document.getElementById('rpv-cursor');
   if (!el || !scroll || !frame) return;
@@ -3419,6 +3662,7 @@ function rpvMoveTo(id) {
   scroll.style.transform = 'translateY(' + (-shift) + 'px)';
   if (cur) { cur.style.top = (el.offsetTop - shift + Math.min(el.offsetHeight, 28) / 2 + 2) + 'px'; cur.style.left = (el.offsetLeft + 14) + 'px'; }
 }
+
 function rpvEnter(i) {
   rpvScenes.forEach((sc, j) => {
     if (j === i) return;
@@ -3432,58 +3676,77 @@ function rpvEnter(i) {
     if (rpvScenes[i].kind === 'pick') cur.classList.remove('rpv-sel');
     else { cur.textContent = ''; cur.classList.remove('typing'); }
   }
-  const cap = document.getElementById('rpv-caption');
-  if (cap) cap.innerHTML = '<span class="show">' + rpvScenes[i].cap + '</span>';
+  const capText = document.getElementById('rpv-caption-text');
+  if (capText) {
+    capText.className = 'bmrv-caption-text';
+    void capText.offsetWidth;
+    capText.textContent = rpvScenes[i].cap;
+    capText.className = 'bmrv-caption-text show';
+  }
+  _buildPips('rpv-step-bar', rpvScenes.length, i);
+  _updateChapterPills('rpv-chapters', RPV_CHAPTERS, i);
+  _speak(rpvScenes[i].cap);
   rpvMoveTo(rpvScenes[i].t);
 }
+
 function rpvRender(t) {
   if (!rpvScenes.length) return;
   let i = 0; while (i < rpvScenes.length - 1 && t >= rpvCum[i + 1]) i++;
   if (i !== rpvLastI) { rpvEnter(i); rpvLastI = i; }
   const sc = rpvScenes[i], lt = t - rpvCum[i], el = document.getElementById(sc.t);
   if (sc.kind === 'pick') {
-    if (el) el.classList.toggle('rpv-sel', lt >= BMRV_MOVE);
+    if (el) el.classList.toggle('rpv-sel', lt >= BMRV_MOVE / rpvSpeed);
   } else if (el) {
     const txt = sc.text || '';
-    const ch = Math.max(0, Math.min(txt.length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
+    const ch = Math.max(0, Math.min(txt.length, Math.floor((lt - BMRV_MOVE / rpvSpeed) / (BMRV_TYPE / rpvSpeed))));
     el.textContent = txt.slice(0, ch);
-    el.classList.toggle('typing', lt >= BMRV_MOVE && ch < txt.length);
+    el.classList.toggle('typing', lt >= BMRV_MOVE / rpvSpeed && ch < txt.length);
   }
   const prog = document.getElementById('rpv-prog'), tm = document.getElementById('rpv-time');
   if (prog) prog.style.width = (rpvTotal ? (t / rpvTotal * 100) : 0) + '%';
-  if (tm) tm.textContent = rpvFmt(t) + ' / ' + rpvFmt(rpvTotal);
+  if (tm) tm.textContent = bmrvFmt(t) + ' / ' + bmrvFmt(rpvTotal);
 }
+
 function rpvIcon() { const b = document.getElementById('rpv-play'); if (b) b.textContent = rpvPlaying ? '❚❚' : '▶'; }
 function rpvTick(ts) {
   if (!rpvPlaying) return;
   if (!rpvLast) rpvLast = ts;
-  rpvT += ts - rpvLast; rpvLast = ts;
-  if (rpvT >= rpvTotal) { rpvT = rpvTotal; rpvRender(rpvTotal); rpvPlaying = false; rpvIcon(); return; }
+  const dt = (ts - rpvLast) * rpvSpeed;
+  rpvT += dt; rpvLast = ts;
+  if (rpvT >= rpvTotal) { rpvT = rpvTotal; rpvRender(rpvTotal); rpvPlaying = false; _stopSpeech(); rpvIcon(); return; }
   rpvRender(rpvT);
   rpvRAF = requestAnimationFrame(rpvTick);
 }
 function rpvPlay() {
   const frame = document.getElementById('rpv-frame');
   if (frame && frame.clientHeight === 0) return;
-  if (rpvT >= rpvTotal) rpvT = 0;
-  rpvPlaying = true; rpvLast = 0; rpvLastI = -1;
+  if (rpvT >= rpvTotal) { rpvT = 0; rpvLastI = -1; }
+  rpvPlaying = true; rpvLast = 0;
   const poster = document.getElementById('rpv-poster'); if (poster) poster.style.display = 'none';
   rpvIcon(); rpvRAF = requestAnimationFrame(rpvTick);
 }
-function rpvPause() { rpvPlaying = false; if (rpvRAF) cancelAnimationFrame(rpvRAF); rpvIcon(); }
+function rpvPause() { rpvPlaying = false; _stopSpeech(); if (rpvRAF) cancelAnimationFrame(rpvRAF); rpvIcon(); }
+
 function startReportGuide() {
   const frame = document.getElementById('rpv-frame');
   if (!frame || frame.dataset.ready) return;
   frame.dataset.ready = '1';
   rpvBuildScenes();
   const play = document.getElementById('rpv-play'), poster = document.getElementById('rpv-poster'),
-        track = document.getElementById('rpv-track'), replay = document.getElementById('rpv-replay');
+        track = document.getElementById('rpv-track'), replay = document.getElementById('rpv-replay'),
+        voiceBtn = document.getElementById('rpv-voice');
   if (play) play.onclick = () => rpvPlaying ? rpvPause() : rpvPlay();
   if (poster) poster.onclick = rpvPlay;
   if (replay) replay.onclick = () => { rpvT = 0; rpvLastI = -1; rpvRender(0); rpvPlay(); };
   if (track) track.onclick = (e) => { const r = track.getBoundingClientRect(); rpvT = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * rpvTotal; rpvLastI = -1; rpvRender(rpvT); };
+  if (voiceBtn) voiceBtn.onclick = () => {
+    _voiceEnabled = !_voiceEnabled;
+    voiceBtn.classList.toggle('active', _voiceEnabled);
+    if (!_voiceEnabled) _stopSpeech();
+  };
   rpvLastI = -1; rpvRender(0);
 }
+
 
 /* ════════════ TIMELINE — 2 years ════════════ */
 function renderTimeline() {
