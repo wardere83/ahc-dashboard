@@ -3434,38 +3434,36 @@ function startBmrGuide() {
     document.querySelectorAll('#bmrv-chapters .bmrv-pill').forEach((p,c)=>{
       p.classList.toggle('active', c === activeCh);
     });
-    /* voice */
-    if (window._bmrvVoiceOn && window.speechSynthesis) {
-      window.speechSynthesis.cancel();
-      const utt = new SpeechSynthesisUtterance(bmrvScenes[i].cap);
-      utt.rate = 0.92; utt.pitch = 1.05;
-      const voices = window.speechSynthesis.getVoices();
-      const pref = ['Samantha','Zira','Victoria','Karen','Moira','Fiona','Allison','Ava','Susan','Alice'];
-      let v = null;
-      for (const name of pref) { v = voices.find(x=>x.name===name); if (v) break; }
-      if (!v) v = voices.find(x=>/female/i.test(x.name) && /en/i.test(x.lang));
-      if (!v) v = voices.find(x=>/en/i.test(x.lang));
-      if (v) utt.voice = v;
-      window.speechSynthesis.speak(utt);
+    /* voice — play pre-generated MP3 at speed-matched rate */
+    if (window._bmrvVoiceOn) {
+      if (window._bmrvAudio) { window._bmrvAudio.pause(); window._bmrvAudio.currentTime = 0; }
+      const idx = String(i).padStart(2,'0');
+      const sc = bmrvScenes[i];
+      const sceneDuration = (BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL) / 1000;
+      window._bmrvAudio = new Audio('audio/s' + idx + '.mp3');
+      window._bmrvAudio.addEventListener('loadedmetadata', function() {
+        const audioDur = this.duration;
+        if (audioDur > 0) { this._baseRate = audioDur / sceneDuration; this.playbackRate = Math.min(4, Math.max(0.5, this._baseRate * (_bmrvSpeed || 1))); }
+      });
+      window._bmrvAudio.play().catch(()=>{});
     }
   };
   /* ── voice button ── */
   window._bmrvVoiceOn = false;
+  window._bmrvAudio = null;
   const voiceBtn = document.getElementById('bmrv-voice');
   if (voiceBtn) voiceBtn.onclick = () => {
     window._bmrvVoiceOn = !window._bmrvVoiceOn;
     voiceBtn.classList.toggle('active', window._bmrvVoiceOn);
-    if (!window._bmrvVoiceOn && window.speechSynthesis) window.speechSynthesis.cancel();
-    /* preload voices on first enable */
-    if (window._bmrvVoiceOn && window.speechSynthesis) window.speechSynthesis.getVoices();
+    if (!window._bmrvVoiceOn && window._bmrvAudio) { window._bmrvAudio.pause(); window._bmrvAudio.currentTime = 0; }
   };
   /* ── speed button ── */
   let _bmrvSpeed = 1, _bmrvSpeeds = [1, 1.5, 2];
   const speedBtn = document.getElementById('bmrv-speed');
   if (speedBtn) speedBtn.onclick = () => {
     _bmrvSpeed = _bmrvSpeeds[(_bmrvSpeeds.indexOf(_bmrvSpeed) + 1) % _bmrvSpeeds.length];
-    speedBtn.textContent = _bmrvSpeed + "×";
-    /* patch tick to use speed */
+    speedBtn.textContent = _bmrvSpeed + '×';
+    if (window._bmrvAudio) window._bmrvAudio.playbackRate = Math.min(4, (_bmrvSpeed || 1) * (window._bmrvAudio._baseRate || 1));
   };
   /* ── speed-aware tick patch ── */
   const _bmrvTickOrig = bmrvTick;
@@ -3473,7 +3471,7 @@ function startBmrGuide() {
     if (!bmrvPlaying) return;
     if (!bmrvLast) bmrvLast = ts;
     bmrvT += (ts - bmrvLast) * (_bmrvSpeed || 1); bmrvLast = ts;
-    if (bmrvT >= bmrvTotal) { bmrvT = bmrvTotal; bmrvRender(bmrvTotal); bmrvPlaying = false; bmrvIcon(); if (window._bmrvVoiceOn && window.speechSynthesis) window.speechSynthesis.cancel(); return; }
+    if (bmrvT >= bmrvTotal) { bmrvT = bmrvTotal; bmrvRender(bmrvTotal); bmrvPlaying = false; bmrvIcon(); if (window._bmrvAudio) { window._bmrvAudio.pause(); window._bmrvAudio.currentTime = 0; } return; }
     bmrvRender(bmrvT);
     bmrvRAF = requestAnimationFrame(bmrvTick);
   };
