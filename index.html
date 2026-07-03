@@ -3550,9 +3550,23 @@ function startBmrGuide() {
     bar.innerHTML = bmrvScenes.map((_,i)=>'<span class="bmrv-pip" id="bmrv-pip-'+i+'"></span>').join('');
   })();
   /* ── patch bmrvEnter to update pips + chapter pills + speak ── */
+  /* ── BMR audio player ── */
+  window._bmrvAud = new Audio();
+  window._bmrvAud.preload = 'auto';
   const _bmrvEnterOrig = bmrvEnter;
   bmrvEnter = function(i) {
     _bmrvEnterOrig(i);
+    /* play scene audio */
+    try {
+      const src = 'audio/s' + String(i).padStart(2,'0') + '.mp3';
+      if (window._bmrvAud.src !== location.href.replace(/[^/]*$/, src)) {
+        window._bmrvAud.pause();
+        window._bmrvAud.src = src;
+        window._bmrvAud.load();
+      }
+      window._bmrvAud.currentTime = 0;
+      window._bmrvAud.play().catch(()=>{});
+    } catch(e) {}
     /* update caption text node (inner span) */
     const ct = document.getElementById('bmrv-caption-text');
     if (ct) { ct.innerHTML = '<span class="show">' + bmrvScenes[i].cap + '</span>'; }
@@ -3712,9 +3726,23 @@ function startReportGuide() {
     };
   });
   /* ── patch rpvEnter for pips + chapter pills + caption avatar + voice ── */
+  /* ── EEO audio player ── */
+  window._rpvAud = new Audio();
+  window._rpvAud.preload = 'auto';
   const _rpvEnterOrig = rpvEnter;
   rpvEnter = function(i) {
     _rpvEnterOrig(i);
+    /* play scene audio */
+    try {
+      const src = 'audio/r' + String(i).padStart(2,'0') + '.mp3';
+      if (window._rpvAud.src !== location.href.replace(/[^/]*$/, src)) {
+        window._rpvAud.pause();
+        window._rpvAud.src = src;
+        window._rpvAud.load();
+      }
+      window._rpvAud.currentTime = 0;
+      window._rpvAud.play().catch(()=>{});
+    } catch(e) {}
     /* caption inner text */
     const ct = document.getElementById('rpv-caption-text');
     if (ct) { ct.innerHTML = '<span class="show">' + rpvScenes[i].cap + '</span>'; }
