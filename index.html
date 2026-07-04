@@ -489,6 +489,7 @@
     .rpt-exp-table .rpt-del-btn:hover { color:#e53e3e; background:#fff0f0; }
     /* Certification text */
     .grform-cert-text { font-size:12px; color:var(--text-secondary); line-height:1.6; padding:12px 14px; background:var(--bg-surface-2); border-left:3px solid var(--ccc-dark-blue); border-radius:0 6px 6px 0; }
+    .grform-cert-statement { font-size:13.5px; color:var(--text-primary); line-height:1.6; margin:16px 0 0; max-width:820px; font-weight:500; }
     .bmr-saved-note { font-size:11px; color:var(--text-muted); margin-top:10px; display:flex; align-items:center; gap:6px; }
     .bmr-submit-status { font-size:12px; font-weight:600; margin-top:10px; min-height:16px; line-height:1.4; }
     .bmr-submit-status.pending { color:var(--text-secondary); }
@@ -1763,10 +1764,11 @@
               <label class="bmr-field" style="margin-top:18px;"><span class="bmr-field-label">Optional: Are there any other barriers your district has experienced that have interfered with grant progress or is there anything else you would like to share?</span><textarea class="bmr-textarea" rows="4" data-rpt="optional" placeholder="Optional — anything else you would like to share…"></textarea></label>
 
               <!-- ── Certification ── -->
-              <div class="bmr-footer" style="margin-top:24px;">
+              <div style="margin-top:24px;">
                 <p class="grform-cert-text">The Chancellor's Office may modify reporting requirements and may convene required technical assistance meetings or workshops, facilitated by the Grant Monitor or Chancellor's Office staff, to address implementation challenges and leverage Vision 2030 or institution specific resources. The designated Point of Contact or team member is required to participate in all required technical assistance activities during the performance period.</p>
-                <label class="bmr-field" style="margin-top:12px;"><span class="bmr-field-label">By submitting this form, you certify that the information recorded in this form is complete and accurate to the best of your knowledge. Enter your name to certify. <span class="grform-required">*</span></span><input class="bmr-input" type="text" data-rpt="certify" placeholder="Your full name" required></label>
-                <div class="bmr-actions" style="margin-top:16px;">
+                <p class="grform-cert-statement">By submitting this form, you certify that the information recorded in this form is complete and accurate to the best of your knowledge. Enter your name to certify. <span class="grform-required">*</span></p>
+                <label class="bmr-field" style="margin-top:8px;max-width:440px;"><span class="bmr-field-label">Your full name</span><input class="bmr-input" type="text" data-rpt="certify" placeholder="Your full name" required></label>
+                <div class="bmr-actions" style="margin-top:18px;">
                   <button type="button" class="bmr-btn" onclick="rptSaveDraft()">Save Draft</button>
                   <button type="button" class="bmr-btn" onclick="resetReportForm()">Reset</button>
                   <button type="button" class="bmr-btn primary" id="rpt-submit-btn" onclick="submitRptForm()">Submit to CCCCO</button>
