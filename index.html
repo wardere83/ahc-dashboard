@@ -1767,11 +1767,13 @@
               <div style="margin-top:24px;">
                 <p class="grform-cert-text">The Chancellor's Office may modify reporting requirements and may convene required technical assistance meetings or workshops, facilitated by the Grant Monitor or Chancellor's Office staff, to address implementation challenges and leverage Vision 2030 or institution specific resources. The designated Point of Contact or team member is required to participate in all required technical assistance activities during the performance period.</p>
                 <p class="grform-cert-statement">By submitting this form, you certify that the information recorded in this form is complete and accurate to the best of your knowledge. Enter your name to certify. <span class="grform-required">*</span></p>
-                <label class="bmr-field" style="margin-top:8px;max-width:440px;"><span class="bmr-field-label">Your full name</span><input class="bmr-input" type="text" data-rpt="certify" placeholder="Your full name" required></label>
-                <div class="bmr-actions" style="margin-top:18px;">
-                  <button type="button" class="bmr-btn" onclick="rptSaveDraft()">Save Draft</button>
-                  <button type="button" class="bmr-btn" onclick="resetReportForm()">Reset</button>
-                  <button type="button" class="bmr-btn primary" id="rpt-submit-btn" onclick="submitRptForm()">Submit to CCCCO</button>
+                <div style="display:inline-flex;flex-direction:column;align-items:stretch;gap:16px;margin-top:8px;">
+                  <label class="bmr-field" style="margin:0;"><span class="bmr-field-label">Your full name</span><input class="bmr-input" type="text" data-rpt="certify" placeholder="Your full name" required style="width:100%;"></label>
+                  <div class="bmr-actions" style="margin:0;flex-wrap:nowrap;">
+                    <button type="button" class="bmr-btn" onclick="rptSaveDraft()">Save Draft</button>
+                    <button type="button" class="bmr-btn" onclick="resetReportForm()">Reset</button>
+                    <button type="button" class="bmr-btn primary" id="rpt-submit-btn" onclick="submitRptForm()">Submit to CCCCO</button>
+                  </div>
                 </div>
                 <div class="bmr-submit-status" id="rpt-submit-status" role="status" aria-live="polite"></div>
               </div>
