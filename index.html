@@ -3572,13 +3572,11 @@ function bmrvPlay() {
   if (bmrvT >= bmrvTotal) bmrvT = 0;
   bmrvPlaying = true; bmrvLast = 0; bmrvLastI = -1;
   const poster = document.getElementById('bmrv-poster'); if (poster) poster.style.display = 'none';
-  if (window._bmrvAud) { window._bmrvAud.currentTime = 0; window._bmrvAud.play().catch(()=>{}); }
   bmrvIcon(); bmrvRAF = requestAnimationFrame(bmrvTick);
 }
 function bmrvPause() {
   bmrvPlaying = false;
   if (bmrvRAF) cancelAnimationFrame(bmrvRAF);
-  if (window._bmrvAud) window._bmrvAud.pause();
   bmrvIcon();
 }
 function startBmrGuide() {
@@ -3608,9 +3606,6 @@ function startBmrGuide() {
     bar.innerHTML = bmrvScenes.map((_,i)=>'<span class="bmrv-pip" id="bmrv-pip-'+i+'"></span>').join('');
   })();
   /* ── patch bmrvEnter to update pips + chapter pills ── */
-  /* ── BMR single audio track ── */
-  window._bmrvAud = new Audio('audio/bmr_full.mp3');
-  window._bmrvAud.preload = 'auto';
   const _bmrvEnterOrig = bmrvEnter;
   bmrvEnter = function(i) {
     _bmrvEnterOrig(i);
