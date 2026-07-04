@@ -3743,14 +3743,11 @@ function rpvPlay() {
   if (rpvT >= rpvTotal) rpvT = 0;
   rpvPlaying = true; rpvLast = 0; rpvLastI = -1;
   const poster = document.getElementById('rpv-poster'); if (poster) poster.style.display = 'none';
-  /* play single audio track from beginning */
-  if (window._rpvAud) { window._rpvAud.currentTime = 0; window._rpvAud.play().catch(()=>{}); }
   rpvIcon(); rpvRAF = requestAnimationFrame(rpvTick);
 }
 function rpvPause() {
   rpvPlaying = false;
   if (rpvRAF) cancelAnimationFrame(rpvRAF);
-  if (window._rpvAud) window._rpvAud.pause();
   rpvIcon();
 }
 function startReportGuide() {
@@ -3777,10 +3774,7 @@ function startReportGuide() {
       rpvT = rpvCum[starts[ch]] || 0; rpvLastI = -1; rpvRender(rpvT); rpvPlay();
     };
   });
-  /* ── patch rpvEnter for pips + chapter pills + caption avatar + voice ── */
-  /* ── EEO single audio track ── */
-  window._rpvAud = new Audio('audio/eeo_full.mp3');
-  window._rpvAud.preload = 'auto';
+  /* ── patch rpvEnter for pips + chapter pills + caption avatar ── */
   const _rpvEnterOrig = rpvEnter;
   rpvEnter = function(i) {
     _rpvEnterOrig(i);
