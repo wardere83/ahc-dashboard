@@ -1290,7 +1290,9 @@
                 <div class="bmrv-yhead"><span class="bmrv-chip gold">Year 2</span> Budget Modification · Jul 2027 – Jun 2028</div>
                 <div id="bmrv-y2body" class="bmrv-lines"></div>
               </div>
-              <div class="bmrv-fld" style="margin-top:16px;max-width:320px;"><label>Approved by CCCCO Staff</label><span class="bmrv-cell" id="mv-appr"></span></div>
+              <div style="margin-top:20px;">
+                <span class="bmr-btn primary" id="mv-submit-btn" style="display:inline-block;">Submit to CCCCO</span>
+              </div>
             </div>
             <svg class="bmrv-cursor" id="bmrv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
             <div class="bmrv-caption" id="bmrv-caption"><div class="bmrv-caption-inner"><span class="bmrv-avatar">&#128105;</span><span class="bmrv-caption-text" id="bmrv-caption-text"></span></div></div>
@@ -1683,6 +1685,9 @@
                 <div class="bmrv-q" style="max-width:340px;">
                   <label class="bmrv-qlabel">Enter your name to certify *</label>
                   <span class="bmrv-cell" id="rv-certify"></span>
+                </div>
+                <div style="margin-top:20px;">
+                  <span class="bmr-btn primary" id="rv-submit-btn" style="display:inline-block;">Submit to CCCCO</span>
                 </div>
               </div>
               <svg class="bmrv-cursor" id="rpv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
@@ -3510,7 +3515,7 @@ function bmrvBuildScenes() {
     { t:'mv-b2', cap:'Enter the Fund Balance for this Year 2 line.', text:'8000' },
     { t:'mv-pr2', cap:'Enter your Projections for spending through June 2028.', text:'8000' },
     { t:'mv-u2', cap:'Explain this new initiative in the Expenditure Updates field. Be specific about how it supports your EEO goals.', text:'With the Project Lead on leave, a consultant was hired to plan the conference and support post-event data analysis for EEO IBP reporting.' },
-    { t:'bmr-submit-btn', cap:'When your form is complete, click Submit to CCCCO to send your Budget Modification Request.', kind:'click', text:'' }
+    { t:'mv-submit-btn', cap:'When your form is complete, click Submit to CCCCO to send your Budget Modification Request.', kind:'click', text:'' }
   ];
   bmrvCum = []; let acc = 0;
   bmrvScenes.forEach(sc => { bmrvCum.push(acc); acc += BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL; });
