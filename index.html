@@ -1271,7 +1271,7 @@
         <!-- VIDEO TRAINING GUIDE — screencast of filling out the form (shown above the form) -->
         <div class="bmrv-card" id="bmr-guide">
           <div class="bmrv-bar"><div class="bmrv-bar-left"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">Video Guide &middot; Budget Modification Request</span></div><button type="button" class="bmrv-speed-btn" id="bmrv-speed">1&times;</button></div>
-          <div class="bmrv-chapters" id="bmrv-chapters"><span class="bmrv-pill active" data-ch="0">1 &middot; Contact Info</span><span class="bmrv-pill" data-ch="1">2 &middot; Year 1 Changes</span><span class="bmrv-pill" data-ch="2">3 &middot; Year 2 Changes</span><span class="bmrv-pill" data-ch="3">4 &middot; Approval</span></div>
+          <div class="bmrv-chapters" id="bmrv-chapters"><span class="bmrv-pill active" data-ch="0">1 &middot; Contact Info</span><span class="bmrv-pill" data-ch="1">2 &middot; Year 1 Changes</span><span class="bmrv-pill" data-ch="2">3 &middot; Year 2 Changes</span><span class="bmrv-pill" data-ch="3">4 &middot; Submit</span></div>
           <div class="bmrv-pips" id="bmrv-pips"></div>
           <div class="bmrv-frame" id="bmrv-frame">
             <div class="bmrv-scroll" id="bmrv-scroll">
@@ -2989,7 +2989,37 @@ function yearBlockHTML(yk, rowState) {
           </tfoot>
         </table>
       </div>
+      <div style="margin-top:10px;">
+        <button type="button" class="bmr-btn" onclick="bmrAddRow('${yk}', this)">+ Add Expenditure Row</button>
+      </div>
     </div>`;
+}
+
+function bmrAddRow(yk, btn) {
+  // Find the tbody in the year block that contains this button
+  const block = btn.closest('.bmr-year-block');
+  if (!block) return;
+  const tbody = block.querySelector('tbody');
+  if (!tbody) return;
+  const rowIdx = tbody.querySelectorAll('tr').length;
+  const tr = document.createElement('tr');
+  tr.setAttribute('data-code', 'custom-' + yk + '-' + rowIdx);
+  tr.setAttribute('data-year', yk);
+  tr.innerHTML = `
+    <td><input class="bmr-cell-input" type="text" data-bmr="code" placeholder="Code (e.g. 2000)"></td>
+    <td><input class="bmr-cell-input" type="text" data-bmr="description" placeholder="Description of expenditure"></td>
+    <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="proposed" placeholder="0"></td>
+    <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="actuals" placeholder="0"></td>
+    <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="balance" placeholder="0"></td>
+    <td class="bmr-money-cell"><input class="bmr-cell-input bmr-num" type="text" inputmode="decimal" data-bmr="projections" placeholder="0"></td>
+    <td><input class="bmr-cell-input" type="text" data-bmr="updates" placeholder="Explain the change (narrative)…"></td>`;
+  tbody.appendChild(tr);
+  // Wire inputs
+  tr.querySelectorAll('input[data-bmr]').forEach(inp => {
+    inp.addEventListener('input', onBmrInput);
+    inp.addEventListener('blur', onBmrBlur);
+  });
+  bmrRecalc();
 }
 
 function renderBudgetModForm() {
@@ -3451,23 +3481,23 @@ function bmrvBuildForm() {
 function bmrvBuildScenes() {
   const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Community College District';
   bmrvScenes = [
-    { t:'mv-district', cap:'Start with your district and contact details.', text:dist },
-    { t:'mv-by',    cap:'Add who is submitting and their grant role.', text:'Project Lead Name, Grant Role' },
-    { t:'mv-email', cap:'Enter your email.', text:'lead@district.edu' },
-    { t:'mv-date',  cap:'Set the submission date.', text:'2026-09-30' },
-    { t:'mv-d1', cap:'In Year 1, take the 1000 Instructional Salaries line. Describe the change and show the math.', text:'Stipends, Faculty to assist with delivery Onboarding Program = $5,000 (2 faculty, 50 hours at $50/hour)' },
-    { t:'mv-p1', cap:'Enter Proposed Funds. This is the modification, and it updates your Year 1 / Year 2 totals automatically.', text:'$5,000' },
-    { t:'mv-a1', cap:'Actuals: the amount spent to date.', text:'$0' },
-    { t:'mv-b1', cap:'Fund Balance: the remaining balance.', text:'$5,000' },
-    { t:'mv-pr1', cap:'Projections: amount to be spent by June 2028.', text:'$0' },
-    { t:'mv-u1', cap:'Expenditure Updates is a written explanation, not a number.', text:'Due to the retirement of the project lead for this initiative, we have been unable to make the progress we wanted on this initiative. While we are currently meeting with constituents on developing this onboarding program, and have secured a consultant, we have made the decision to continue with this project utilizing other EEO/District funds and not continue with this initiative under the EEO IBP Grant.' },
-    { t:'mv-d2', cap:'In Year 2, add a new expenditure not in the grant: the 5000 line.', text:'Launching of California Community College Employee Resource Group Conference, Consultant to support planning and post-conference data analysis.' },
-    { t:'mv-p2', cap:'Proposed Funds for the new line.', text:'$8,000' },
-    { t:'mv-a2', cap:'Actuals to date.', text:'$0' },
-    { t:'mv-b2', cap:'Fund Balance.', text:'$8,000' },
-    { t:'mv-pr2', cap:'Projections through June 2028.', text:'$8,000' },
-    { t:'mv-u2', cap:'Explain the new initiative in Expenditure Updates.', text:'Since the Project Lead on this project was out on a leave of absence, we hired a consultant to assist with planning of conference and will also use consultant to assist with data analysis for EEO IBP reporting.' },
-    { t:'mv-appr', cap:'Finally, complete Approved by. Now you are ready to fill in the live form below.', text:'Approver Name, Title' }
+    { t:'mv-district', cap:'Start by entering your Community College District name.', text:dist },
+    { t:'mv-by',    cap:'Enter the name and designated grant role of the person submitting this request.', text:'Dr. Jane Smith, Project Lead' },
+    { t:'mv-email', cap:'Add your email address so the Chancellor\'s Office can follow up if needed.', text:'jsmith@ahc.edu' },
+    { t:'mv-date',  cap:'Set today\'s submission date.', text:'2026-09-30' },
+    { t:'mv-d1', cap:'In Year 1, locate the expenditure line you are modifying. Describe the change clearly, including any supporting calculations.', text:'Stipends — Faculty to assist with delivery of Onboarding Program: 2 faculty × 50 hours × $50/hr = $5,000' },
+    { t:'mv-p1', cap:'Enter the Proposed Funds amount for this line. This value updates the Year 1 budget totals automatically.', text:'5000' },
+    { t:'mv-a1', cap:'Enter Actuals — the amount already spent on this line to date.', text:'0' },
+    { t:'mv-b1', cap:'Enter the Fund Balance — the remaining amount available for this line.', text:'5000' },
+    { t:'mv-pr1', cap:'Enter your Projections — the amount you expect to spend through June 2028.', text:'0' },
+    { t:'mv-u1', cap:'Use the Expenditure Updates field to provide a written narrative explaining the change. This is not a dollar amount — it is your explanation.', text:'Due to the retirement of the project lead, progress on this initiative was delayed. After consulting with constituents and securing a consultant, the district has decided to continue this project using other EEO funds and remove it from the IBP Grant.' },
+    { t:'mv-d2', cap:'Now move to Year 2. If you are adding a new expenditure line, describe it here.', text:'California Community College Employee Resource Group Conference — Consultant to support planning and post-conference data analysis.' },
+    { t:'mv-p2', cap:'Enter the Proposed Funds for this new Year 2 line.', text:'8000' },
+    { t:'mv-a2', cap:'Enter Actuals to date for this line.', text:'0' },
+    { t:'mv-b2', cap:'Enter the Fund Balance for this Year 2 line.', text:'8000' },
+    { t:'mv-pr2', cap:'Enter your Projections for spending through June 2028.', text:'8000' },
+    { t:'mv-u2', cap:'Explain this new initiative in the Expenditure Updates field. Be specific about how it supports your EEO goals.', text:'With the Project Lead on leave, a consultant was hired to plan the conference and support post-event data analysis for EEO IBP reporting.' },
+    { t:'bmr-submit-btn', cap:'When your form is complete, click Submit to CCCCO to send your Budget Modification Request.', kind:'click', text:'' }
   ];
   bmrvCum = []; let acc = 0;
   bmrvScenes.forEach(sc => { bmrvCum.push(acc); acc += BMRV_MOVE + sc.text.length * BMRV_TYPE + BMRV_DWELL; });
@@ -3498,9 +3528,13 @@ function bmrvRender(t) {
   let i = 0; while (i < bmrvScenes.length - 1 && t >= bmrvCum[i + 1]) i++;
   if (i !== bmrvLastI) { bmrvEnter(i); bmrvLastI = i; }
   const sc = bmrvScenes[i], lt = t - bmrvCum[i];
-  const ch = Math.max(0, Math.min(sc.text.length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
   const el = document.getElementById(sc.t);
-  if (el) { el.textContent = sc.text.slice(0, ch); el.classList.toggle('typing', lt >= BMRV_MOVE && ch < sc.text.length); }
+  if (sc.kind === 'click') {
+    if (el && lt >= BMRV_MOVE) { el.style.boxShadow = '0 0 0 3px #2563eb, 0 0 16px #2563eb88'; el.style.transform = lt >= BMRV_MOVE + 600 ? 'scale(0.97)' : 'scale(1)'; }
+  } else if (el) {
+    const ch = Math.max(0, Math.min((sc.text||'').length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
+    el.textContent = (sc.text||'').slice(0, ch); el.classList.toggle('typing', lt >= BMRV_MOVE && ch < (sc.text||'').length);
+  }
   const prog = document.getElementById('bmrv-prog'), tm = document.getElementById('bmrv-time');
   if (prog) prog.style.width = (bmrvTotal ? (t / bmrvTotal * 100) : 0) + '%';
   if (tm) tm.textContent = bmrvFmt(t) + ' / ' + bmrvFmt(bmrvTotal);
@@ -3520,9 +3554,15 @@ function bmrvPlay() {
   if (bmrvT >= bmrvTotal) bmrvT = 0;
   bmrvPlaying = true; bmrvLast = 0; bmrvLastI = -1;
   const poster = document.getElementById('bmrv-poster'); if (poster) poster.style.display = 'none';
+  if (window._bmrvAud) { window._bmrvAud.currentTime = 0; window._bmrvAud.play().catch(()=>{}); }
   bmrvIcon(); bmrvRAF = requestAnimationFrame(bmrvTick);
 }
-function bmrvPause() { bmrvPlaying = false; if (bmrvRAF) cancelAnimationFrame(bmrvRAF); bmrvIcon(); }
+function bmrvPause() {
+  bmrvPlaying = false;
+  if (bmrvRAF) cancelAnimationFrame(bmrvRAF);
+  if (window._bmrvAud) window._bmrvAud.pause();
+  bmrvIcon();
+}
 function startBmrGuide() {
   const frame = document.getElementById('bmrv-frame');
   if (!frame || frame.dataset.ready) return;
@@ -3549,24 +3589,13 @@ function startBmrGuide() {
     const bar = document.getElementById('bmrv-pips'); if (!bar) return;
     bar.innerHTML = bmrvScenes.map((_,i)=>'<span class="bmrv-pip" id="bmrv-pip-'+i+'"></span>').join('');
   })();
-  /* ── patch bmrvEnter to update pips + chapter pills + speak ── */
-  /* ── BMR audio player ── */
-  window._bmrvAud = new Audio();
+  /* ── patch bmrvEnter to update pips + chapter pills ── */
+  /* ── BMR single audio track ── */
+  window._bmrvAud = new Audio('audio/bmr_full.mp3');
   window._bmrvAud.preload = 'auto';
   const _bmrvEnterOrig = bmrvEnter;
   bmrvEnter = function(i) {
     _bmrvEnterOrig(i);
-    /* play scene audio */
-    try {
-      const src = 'audio/s' + String(i).padStart(2,'0') + '.mp3';
-      if (window._bmrvAud.src !== location.href.replace(/[^/]*$/, src)) {
-        window._bmrvAud.pause();
-        window._bmrvAud.src = src;
-        window._bmrvAud.load();
-      }
-      window._bmrvAud.currentTime = 0;
-      window._bmrvAud.play().catch(()=>{});
-    } catch(e) {}
     /* update caption text node (inner span) */
     const ct = document.getElementById('bmrv-caption-text');
     if (ct) { ct.innerHTML = '<span class="show">' + bmrvScenes[i].cap + '</span>'; }
@@ -3580,7 +3609,7 @@ function startBmrGuide() {
       p.className = 'bmrv-pip' + (j < i ? ' done' : j === i ? ' active' : '');
     });
     /* chapter pills */
-    const starts = [0,4,10,16];
+    const starts = [0,4,10,16]; // Contact(0-3), Y1(4-9), Y2(10-15), Submit(16)
     let activeCh = 0;
     starts.forEach((s,c)=>{ if (i >= s) activeCh = c; });
     document.querySelectorAll('#bmrv-chapters .bmrv-pill').forEach((p,c)=>{
