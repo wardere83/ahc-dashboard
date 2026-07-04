@@ -3374,6 +3374,7 @@ function setRptSubmitStatus(msg, kind) {
   el.textContent = msg;
   el.className = 'bmr-submit-status' + (kind ? ' ' + kind : '');
       if (el2) { el2.textContent = msg; el2.className = 'bmr-submit-status' + (kind ? ' ' + kind : ''); }
+  }
   function submitRptForm() {
   const btn = document.getElementById('rpt-submit-btn');
   // Validate certify
