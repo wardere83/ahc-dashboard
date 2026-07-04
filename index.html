@@ -395,6 +395,27 @@
     .bmr-input, .bmr-textarea { font-family:var(--font-body); font-size:13px; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-strong); border-radius:var(--radius-sm); padding:8px 11px; width:100%; transition:border-color var(--transition),box-shadow var(--transition); }
     .bmr-input:focus, .bmr-textarea:focus { outline:none; border-color:var(--ccc-dark-blue); box-shadow:0 0 0 3px rgba(0,107,103,0.12); }
     .bmr-textarea { resize:vertical; min-height:34px; line-height:1.4; }
+    /* ── Live Activity Halo — presentation layer for the input interaction shell ──
+       States are driven by the LiveHalo primitive (JS): .halo-focus (soft highlight),
+       .halo-typing (circling activity ring), .halo-cooldown (eases back to calm focus). */
+    :root { --halo-rgb:0,107,103; }
+    [data-theme="dark"] { --halo-rgb:64,180,229; }
+    .bmr-input.halo-focus, .bmr-textarea.halo-focus, .bmr-cell-input.halo-focus { border-color:var(--ccc-dark-blue); box-shadow:0 0 0 3px rgba(var(--halo-rgb),0.16); }
+    .bmr-input.halo-cooldown, .bmr-textarea.halo-cooldown, .bmr-cell-input.halo-cooldown { border-color:var(--ccc-dark-blue); box-shadow:0 0 0 3px rgba(var(--halo-rgb),0.12); transition:box-shadow 0.45s ease, border-color 0.45s ease; }
+    .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing { border-color:var(--ccc-dark-blue); animation:haloOrbit 1.05s linear infinite; }
+    @keyframes haloOrbit {
+      0%,100% { box-shadow:0 0 0 3px rgba(var(--halo-rgb),0.18), 0 -3px 8px 0 rgba(var(--halo-rgb),0.55); }
+      25%     { box-shadow:0 0 0 3px rgba(var(--halo-rgb),0.18), 3px 0 8px 0 rgba(var(--halo-rgb),0.55); }
+      50%     { box-shadow:0 0 0 3px rgba(var(--halo-rgb),0.18), 0 3px 8px 0 rgba(var(--halo-rgb),0.55); }
+      75%     { box-shadow:0 0 0 3px rgba(var(--halo-rgb),0.18), -3px 0 8px 0 rgba(var(--halo-rgb),0.55); }
+    }
+    /* Keyboard focus stays visible independently of the halo */
+    .bmr-input:focus-visible, .bmr-textarea:focus-visible, .bmr-cell-input:focus-visible { outline:2px solid var(--ccc-dark-blue); outline-offset:1px; }
+    /* Accessibility: no circling/pulse animation under reduced motion (media + JS-detected class) */
+    @media (prefers-reduced-motion: reduce) {
+      .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing { animation:none; box-shadow:0 0 0 3px rgba(var(--halo-rgb),0.18); }
+    }
+    .bmr-input.halo-typing.halo-no-motion, .bmr-textarea.halo-typing.halo-no-motion, .bmr-cell-input.halo-typing.halo-no-motion { animation:none; box-shadow:0 0 0 3px rgba(var(--halo-rgb),0.18); }
     .bmr-input::placeholder, .bmr-textarea::placeholder { color:var(--text-muted); opacity:0.65; }
 
     .bmr-section-intro { font-size:12.5px; color:var(--text-muted); margin:0 0 16px; line-height:1.5; }
@@ -4385,6 +4406,85 @@ document.addEventListener('DOMContentLoaded', () => {
   // Announce the initial section once the page settles
   setTimeout(() => postSectionChange(resolveInitialSection()), 100);
 });
+
+/* ============================================================================
+   Live Activity Halo — reusable input interaction primitive
+   A shared state machine gives every district response box an animated activity
+   ring: idle → focus → typing → cooldown → focus, and blur → idle. Presentation
+   is CSS only (.halo-focus / .halo-typing / .halo-cooldown); this module owns the
+   state machine and the (single-source) transition timing. Attached once via event
+   delegation, so dynamically-added rows (expenditures, timeline) are covered too.
+   No form logic, validation, schema, or payload is touched.
+   ============================================================================ */
+(function () {
+  // Single source of transition timing.
+  var CFG = { typingIdleMs: 550, cooldownMs: 900 };
+  // Response boxes only: text/email inputs and textareas inside the Forms tab.
+  var SEL = 'input[type="text"], input[type="email"], input:not([type]), textarea';
+  var SCOPE = '#section-forms';
+  var timers = new WeakMap();
+
+  function reducedMotion() {
+    try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+    catch (e) { return false; }
+  }
+  function isResponseBox(el) {
+    return !!(el && el.nodeType === 1 && typeof el.matches === 'function' && el.matches(SEL) && el.closest && el.closest(SCOPE));
+  }
+  // Disabled/read-only fields must never enter the typing (or any active) state.
+  function eligible(el) {
+    return isResponseBox(el) && !el.disabled && !el.readOnly;
+  }
+  function clearClasses(el) {
+    el.classList.remove('halo-focus', 'halo-typing', 'halo-cooldown', 'halo-no-motion');
+  }
+  function setState(el, state) {
+    clearClasses(el);
+    if (state === 'focus') el.classList.add('halo-focus');
+    else if (state === 'typing') { el.classList.add('halo-typing'); if (reducedMotion()) el.classList.add('halo-no-motion'); }
+    else if (state === 'cooldown') el.classList.add('halo-cooldown');
+    el.dataset.haloState = state;            // exposed for tests / debugging
+  }
+  function stopTimers(el) {
+    var t = timers.get(el);
+    if (t) { clearTimeout(t.idle); clearTimeout(t.cool); }
+  }
+  function toIdle(el) { stopTimers(el); clearClasses(el); if (el.dataset) el.dataset.haloState = 'idle'; }
+
+  function onFocus(el) { if (!eligible(el)) return; stopTimers(el); setState(el, 'focus'); }
+  function onBlur(el)  { if (!isResponseBox(el)) return; toIdle(el); }
+  function onInput(el) {
+    if (!eligible(el)) return;
+    setState(el, 'typing');
+    var t = timers.get(el) || {};
+    clearTimeout(t.idle); clearTimeout(t.cool);
+    t.idle = setTimeout(function () {
+      setState(el, 'cooldown');
+      t.cool = setTimeout(function () {
+        // Ease back to the calm focused state, or clear if focus has left.
+        if (document.activeElement === el) setState(el, 'focus'); else toIdle(el);
+      }, CFG.cooldownMs);
+    }, CFG.typingIdleMs);
+    timers.set(el, t);
+  }
+
+  // focusin/focusout/input all bubble, so a single delegated listener covers
+  // current and future response boxes.
+  document.addEventListener('focusin', function (e) { onFocus(e.target); });
+  document.addEventListener('focusout', function (e) { onBlur(e.target); });
+  document.addEventListener('input', function (e) { onInput(e.target); });
+
+  // Test/inspection surface (does not alter form behavior).
+  window.LiveHalo = {
+    config: CFG,
+    reducedMotion: reducedMotion,
+    isResponseBox: isResponseBox,
+    eligible: eligible,
+    stateOf: function (el) { return (el && el.dataset && el.dataset.haloState) || 'idle'; },
+    // Direct state-machine hooks (used by the test suite; also the delegated path).
+    focus: onFocus, blur: onBlur, input: onInput
+  };
+})();
 </script>
 
 <div id="a11yModal" class="a11y-modal" role="dialog" aria-modal="true" aria-labelledby="a11yModalTitle" hidden>
