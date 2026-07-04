@@ -603,6 +603,7 @@
     .bmrv-rowsum-amt { font-variant-numeric:tabular-nums; font-weight:600; color:var(--text-primary); white-space:nowrap; }
     .bmrv-line { border:1px solid var(--border-strong); border-radius:8px; padding:13px 14px; background:var(--bg-surface); display:flex; flex-direction:column; gap:11px; }
     .bmrv-line-top { display:flex; align-items:center; gap:8px; margin-bottom:1px; }
+    .bmrv-cell-label { font-size:9px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); }
     .bmrv-line-name { font-size:13px; font-weight:600; color:var(--text-primary); }
     .bmrv-nums { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin:9px 0; }
     .bmrv-fld-full { margin-top:9px; }
@@ -1271,7 +1272,7 @@
         <!-- VIDEO TRAINING GUIDE — screencast of filling out the form (shown above the form) -->
         <div class="bmrv-card" id="bmr-guide">
           <div class="bmrv-bar"><div class="bmrv-bar-left"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">Video Guide &middot; Budget Modification Request</span></div><button type="button" class="bmrv-speed-btn" id="bmrv-speed">1&times;</button></div>
-          <div class="bmrv-chapters" id="bmrv-chapters"><span class="bmrv-pill active" data-ch="0">1 &middot; Contact Info</span><span class="bmrv-pill" data-ch="1">2 &middot; Year 1 Changes</span><span class="bmrv-pill" data-ch="2">3 &middot; Year 2 Changes</span><span class="bmrv-pill" data-ch="3">4 &middot; Submit</span></div>
+          <div class="bmrv-chapters" id="bmrv-chapters"><span class="bmrv-pill active" data-ch="0">1 &middot; Contact Info</span><span class="bmrv-pill" data-ch="1">2 &middot; Year 1 Changes</span><span class="bmrv-pill" data-ch="2">3 &middot; Year 2 Changes</span><span class="bmrv-pill" data-ch="3">4 &middot; Review &amp; Submit</span></div>
           <div class="bmrv-pips" id="bmrv-pips"></div>
           <div class="bmrv-frame" id="bmrv-frame">
             <div class="bmrv-scroll" id="bmrv-scroll">
@@ -1289,6 +1290,15 @@
               <div class="bmrv-yblock y2">
                 <div class="bmrv-yhead"><span class="bmrv-chip gold">Year 2</span> Budget Modification · Jul 2027 – Jun 2028</div>
                 <div id="bmrv-y2body" class="bmrv-lines"></div>
+              </div>
+              <div class="bmrv-yblock" style="margin-top:14px;">
+                <div class="bmrv-yhead" id="mv-summary"><span class="bmrv-chip" style="background:#64748b;">Summary</span> Auto-calculated totals</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 10px;">
+                  <div class="bmrv-fld"><label>Total Award (Ceiling)</label><span class="bmrv-cell num">$100,000</span></div>
+                  <div class="bmrv-fld"><label>Modified Project Budget</label><span class="bmrv-cell num">$100,000</span></div>
+                  <div class="bmrv-fld"><label>Variance vs Award</label><span class="bmrv-cell num">$0 · Balanced</span></div>
+                  <div class="bmrv-fld"><label>Modified Y1 / Y2</label><span class="bmrv-cell num">$62,627 / $37,373</span></div>
+                </div>
               </div>
               <div style="margin-top:20px;">
                 <span class="bmr-btn primary" id="mv-submit-btn" style="display:inline-block;">Submit to CCCCO</span>
@@ -3468,8 +3478,8 @@ function relocateBudgetForm() {
 let bmrvScenes = [], bmrvCum = [], bmrvTotal = 0, bmrvT = 0, bmrvPlaying = false, bmrvLast = 0, bmrvRAF = null, bmrvLastI = -1;
 const BMRV_MOVE = 600, BMRV_TYPE = 14, BMRV_DWELL = 500;
 const BMRV_EX = { y1:'1000', y2:'5000' };
-const BMRV_IDS = { y1:{desc:'mv-d1',prop:'mv-p1',act:'mv-a1',bal:'mv-b1',proj:'mv-pr1',upd:'mv-u1'},
-                   y2:{desc:'mv-d2',prop:'mv-p2',act:'mv-a2',bal:'mv-b2',proj:'mv-pr2',upd:'mv-u2'} };
+const BMRV_IDS = { y1:{type:'mv-t1',desc:'mv-d1',prop:'mv-p1',act:'mv-a1',bal:'mv-b1',proj:'mv-pr1',upd:'mv-u1'},
+                   y2:{type:'mv-t2',desc:'mv-d2',prop:'mv-p2',act:'mv-a2',bal:'mv-b2',proj:'mv-pr2',upd:'mv-u2'} };
 function bmrvFmt(ms) { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
 function bmrvCellTD(id, cls, val) { return '<td><span class="bmrv-cell ' + (cls || '') + '"' + (id ? ' id="' + id + '"' : '') + '>' + (val || '') + '</span></td>'; }
 function bmrvBuildForm() {
@@ -3485,7 +3495,7 @@ function bmrvBuildForm() {
                '<span class="bmrv-rowsum-amt">Proposed ' + fmt(r[yk]) + '</span></div>';
       }
       return '<div class="bmrv-line">' +
-        '<div class="bmrv-line-top"><span class="bmrv-code">' + r.code + '</span><span class="bmrv-line-name">' + r.label + '</span></div>' +
+        '<div class="bmrv-line-top" id="' + m.type + '"><span class="bmrv-cell-label">Expenditure Type</span><span class="bmrv-code">' + r.code + '</span><span class="bmrv-line-name">' + r.label + '</span></div>' +
         '<div class="bmrv-fld"><label>Description</label><span class="bmrv-cell" id="' + m.desc + '"></span></div>' +
         '<div class="bmrv-fld"><label>Proposed Funds</label><span class="bmrv-cell num" id="' + m.prop + '"></span></div>' +
         '<div class="bmrv-fld"><label>Actuals (spent to date)</label><span class="bmrv-cell num" id="' + m.act + '"></span></div>' +
@@ -3499,22 +3509,29 @@ function bmrvBuildForm() {
 function bmrvBuildScenes() {
   const dist = (typeof districts !== 'undefined' && districts[0] && districts[0].name) ? districts[0].name : 'Community College District';
   bmrvScenes = [
-    { t:'mv-district', cap:'Start by entering your Community College District name.', text:dist },
+    /* ── Section 1 · Contact header (matches the form's top meta grid, in order) ── */
+    { t:'mv-district', cap:'Section 1 — Contact information. Start by entering your Community College District name.', text:dist },
     { t:'mv-by',    cap:'Enter the name and designated grant role of the person submitting this request.', text:'Dr. Jane Smith, Project Lead' },
     { t:'mv-email', cap:'Add your email address so the Chancellor\'s Office can follow up if needed.', text:'jsmith@ahc.edu' },
     { t:'mv-date',  cap:'Set today\'s submission date.', text:'2026-09-30' },
-    { t:'mv-d1', cap:'In Year 1, locate the expenditure line you are modifying. Describe the change clearly, including any supporting calculations.', text:'Stipends — Faculty to assist with delivery of Onboarding Program: 2 faculty × 50 hours × $50/hr = $5,000' },
+    /* ── Section 2 · Year 1 expenditure line — columns left to right: Expenditure Type, Description, Proposed Funds, Actuals, Fund Balance, Projections, Expenditure Updates ── */
+    { t:'mv-t1', cap:'Section 2 — Year 1 changes. First, find the Expenditure Type: the budget category from your original grant submission that you are modifying.', kind:'show', text:'' },
+    { t:'mv-d1', cap:'In the Description column, describe the change clearly, including any supporting calculations.', text:'Stipends — Faculty to assist with delivery of Onboarding Program: 2 faculty × 50 hours × $50/hr = $5,000' },
     { t:'mv-p1', cap:'Enter the Proposed Funds amount for this line. This value updates the Year 1 budget totals automatically.', text:'5000' },
     { t:'mv-a1', cap:'Enter Actuals — the amount already spent on this line to date.', text:'0' },
     { t:'mv-b1', cap:'Enter the Fund Balance — the remaining amount available for this line.', text:'5000' },
     { t:'mv-pr1', cap:'Enter your Projections — the amount you expect to spend through June 2028.', text:'0' },
     { t:'mv-u1', cap:'Use the Expenditure Updates field to provide a written narrative explaining the change. This is not a dollar amount — it is your explanation.', text:'Due to the retirement of the project lead, progress on this initiative was delayed. After consulting with constituents and securing a consultant, the district has decided to continue this project using other EEO funds and remove it from the IBP Grant.' },
-    { t:'mv-d2', cap:'Now move to Year 2. If you are adding a new expenditure line, describe it here.', text:'California Community College Employee Resource Group Conference — Consultant to support planning and post-conference data analysis.' },
-    { t:'mv-p2', cap:'Enter the Proposed Funds for this new Year 2 line.', text:'8000' },
+    /* ── Section 3 · Year 2 expenditure line — same columns, same order ── */
+    { t:'mv-t2', cap:'Section 3 — Year 2 changes. Again, start with the Expenditure Type for the line you are adding or modifying.', kind:'show', text:'' },
+    { t:'mv-d2', cap:'In the Description column, describe the Year 2 expenditure.', text:'California Community College Employee Resource Group Conference — Consultant to support planning and post-conference data analysis.' },
+    { t:'mv-p2', cap:'Enter the Proposed Funds for this Year 2 line.', text:'8000' },
     { t:'mv-a2', cap:'Enter Actuals to date for this line.', text:'0' },
     { t:'mv-b2', cap:'Enter the Fund Balance for this Year 2 line.', text:'8000' },
     { t:'mv-pr2', cap:'Enter your Projections for spending through June 2028.', text:'8000' },
-    { t:'mv-u2', cap:'Explain this new initiative in the Expenditure Updates field. Be specific about how it supports your EEO goals.', text:'With the Project Lead on leave, a consultant was hired to plan the conference and support post-event data analysis for EEO IBP reporting.' },
+    { t:'mv-u2', cap:'Explain this initiative in the Expenditure Updates field. Be specific about how it supports your EEO goals.', text:'With the Project Lead on leave, a consultant was hired to plan the conference and support post-event data analysis for EEO IBP reporting.' },
+    /* ── Section 4 · Summary + Submit (matches the form's summary block, then the footer buttons) ── */
+    { t:'mv-summary', cap:'Section 4 — Review the Summary. Total Award, Modified Project Budget, and Variance calculate automatically and must balance against your $100,000 award.', kind:'show', text:'' },
     { t:'mv-submit-btn', cap:'When your form is complete, click Submit to CCCCO to send your Budget Modification Request.', kind:'click', text:'' }
   ];
   bmrvCum = []; let acc = 0;
@@ -3534,6 +3551,9 @@ function bmrvEnter(i) {
   bmrvScenes.forEach((sc, j) => {
     const el = document.getElementById(sc.t);
     if (!el) return;
+    /* 'click' (Submit button) and 'show' (Expenditure Type / Summary) scenes are display-only —
+       never overwrite their existing content while stepping through the walkthrough. */
+    if (sc.kind === 'click' || sc.kind === 'show') return;
     if (j < i) { el.textContent = sc.text; el.classList.remove('typing'); }
     else if (j > i) { el.textContent = ''; el.classList.remove('typing'); }
   });
@@ -3549,6 +3569,8 @@ function bmrvRender(t) {
   const el = document.getElementById(sc.t);
   if (sc.kind === 'click') {
     if (el && lt >= BMRV_MOVE) { el.style.boxShadow = '0 0 0 3px #2563eb, 0 0 16px #2563eb88'; el.style.transform = lt >= BMRV_MOVE + 600 ? 'scale(0.97)' : 'scale(1)'; }
+  } else if (sc.kind === 'show') {
+    /* display-only step (Expenditure Type / Summary) — cursor + caption only, nothing to type */
   } else if (el) {
     const ch = Math.max(0, Math.min((sc.text||'').length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
     el.textContent = (sc.text||'').slice(0, ch); el.classList.toggle('typing', lt >= BMRV_MOVE && ch < (sc.text||'').length);
@@ -3596,7 +3618,7 @@ function startBmrGuide() {
   document.querySelectorAll('#bmrv-chapters .bmrv-pill').forEach(pill => {
     pill.onclick = () => {
       const ch = parseInt(pill.dataset.ch, 10);
-      const starts = [0, 4, 10, 16]; // scene indices per chapter
+      const starts = [0, 4, 11, 18]; // scene indices per chapter: Contact, Year 1, Year 2, Review & Submit
       bmrvT = bmrvCum[starts[ch]] || 0; bmrvLastI = -1; bmrvRender(bmrvT); bmrvPlay();
     };
   });
@@ -3622,7 +3644,7 @@ function startBmrGuide() {
       p.className = 'bmrv-pip' + (j < i ? ' done' : j === i ? ' active' : '');
     });
     /* chapter pills */
-    const starts = [0,4,10,16]; // Contact(0-3), Y1(4-9), Y2(10-15), Submit(16)
+    const starts = [0,4,11,18]; // Contact(0-3), Y1(4-10), Y2(11-17), Review&Submit(18-19)
     let activeCh = 0;
     starts.forEach((s,c)=>{ if (i >= s) activeCh = c; });
     document.querySelectorAll('#bmrv-chapters .bmrv-pill').forEach((p,c)=>{
