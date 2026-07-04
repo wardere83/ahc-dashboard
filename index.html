@@ -403,25 +403,34 @@
     :root { --halo-color: var(--fig-color); }
     .bmr-input.halo-focus, .bmr-textarea.halo-focus, .bmr-cell-input.halo-focus { border-color:var(--halo-color); box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 22%, transparent); }
     .bmr-input.halo-cooldown, .bmr-textarea.halo-cooldown, .bmr-cell-input.halo-cooldown { border-color:var(--halo-color); box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 16%, transparent); transition:box-shadow 0.45s ease, border-color 0.45s ease; }
-    .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing { border-color:var(--halo-color); animation:haloOrbit 1.05s linear infinite; }
-    @keyframes haloOrbit {
-      0%     { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent),  0    -4px 9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
-      12.5%  { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent),  2.8px -2.8px 9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
-      25%    { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent),  4px   0    9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
-      37.5%  { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent),  2.8px  2.8px 9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
-      50%    { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent),  0     4px  9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
-      62.5%  { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent), -2.8px  2.8px 9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
-      75%    { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent), -4px   0    9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
-      87.5%  { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent), -2.8px -2.8px 9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
-      100%   { box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent),  0    -4px 9px 0 color-mix(in srgb, var(--halo-color) 65%, transparent); }
+    /* Typing: a bright arc of light travels around the border (rotating conic ring,
+       like the VS Code prompt box). The angle is a registered custom property so it
+       animates smoothly; the conic lives in the 2px transparent border via
+       padding-box/border-box backgrounds — no wrapper element needed. */
+    @property --halo-angle { syntax:'<angle>'; inherits:false; initial-value:0turn; }
+    .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing {
+      border:2px solid transparent;
+      background:
+        linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+        conic-gradient(from var(--halo-angle),
+          color-mix(in srgb, var(--halo-color) 7%, transparent) 0turn,
+          color-mix(in srgb, var(--halo-color) 7%, transparent) 0.55turn,
+          color-mix(in srgb, var(--halo-color) 45%, transparent) 0.78turn,
+          var(--halo-color) 0.92turn,
+          color-mix(in srgb, var(--halo-color) 45%, transparent) 0.97turn,
+          color-mix(in srgb, var(--halo-color) 7%, transparent) 1turn) border-box;
+      box-shadow:0 0 9px 0 color-mix(in srgb, var(--halo-color) 26%, transparent);
+      animation:haloSpin 1.15s linear infinite;
     }
+    @keyframes haloSpin { to { --halo-angle:1turn; } }
     /* Keyboard focus stays visible independently of the halo */
     .bmr-input:focus-visible, .bmr-textarea:focus-visible, .bmr-cell-input:focus-visible { outline:2px solid var(--halo-color); outline-offset:1px; }
-    /* Accessibility: no circling/pulse animation under reduced motion (media + JS-detected class) */
+    /* Accessibility: no circling animation under reduced motion — fall back to a
+       calm static brand ring (media query + JS-detected .halo-no-motion class). */
     @media (prefers-reduced-motion: reduce) {
-      .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing { animation:none; box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent); }
+      .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing { animation:none; border:1px solid var(--halo-color); background:var(--bg-surface); box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 24%, transparent); }
     }
-    .bmr-input.halo-typing.halo-no-motion, .bmr-textarea.halo-typing.halo-no-motion, .bmr-cell-input.halo-typing.halo-no-motion { animation:none; box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 26%, transparent); }
+    .bmr-input.halo-typing.halo-no-motion, .bmr-textarea.halo-typing.halo-no-motion, .bmr-cell-input.halo-typing.halo-no-motion { animation:none; border:1px solid var(--halo-color); background:var(--bg-surface); box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 24%, transparent); }
     .bmr-input::placeholder, .bmr-textarea::placeholder { color:var(--text-muted); opacity:0.65; }
 
     .bmr-section-intro { font-size:12.5px; color:var(--text-muted); margin:0 0 16px; line-height:1.5; }
