@@ -3475,14 +3475,14 @@ function setRptSubmitStatus(msg, kind) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   }).then(r => r.json()).then(data => {
-    if (btn) { btn.disabled = false; btn.textContent = 'Submit Report'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit to CCCCO'; }
     if (data.ok) {
       setRptSubmitStatus('✓ Submitted — a copy was emailed to ' + RPT_SUBMIT_TO.join(' and ') + '.', 'ok');
     } else {
       setRptSubmitStatus('Submission error: ' + (data.error || 'unknown'), 'error');
     }
   }).catch(err => {
-    if (btn) { btn.disabled = false; btn.textContent = 'Submit Report'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Submit to CCCCO'; }
     setRptSubmitStatus('Network error — please try again or use Print / Save PDF.', 'error');
   });
 }
