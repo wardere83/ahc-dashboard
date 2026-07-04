@@ -1494,7 +1494,7 @@
 
       <!-- FORMS TAB -->
       <div id="section-forms" class="section">
-        <div class="page-header"><h2>Forms</h2><p>District request forms for the EEO IBP Grant. Click a form to open and complete it.</p></div>
+        <div class="page-header"><h2 id="forms-page-title">Forms</h2><p id="forms-page-desc">District request forms for the EEO IBP Grant. Click a form to open and complete it.</p></div>
 
         <div class="forms-list" id="forms-list">
           <button type="button" class="forms-item" onclick="openForm('grant')">
@@ -3496,6 +3496,17 @@ function setRptSubmitStatus(msg, kind) {
 }
 function rptDelRow(btn) { const tr = btn.closest('tr'); if (tr) tr.remove(); rptPersist(); }
 function resetReportForm() { try { localStorage.removeItem(RPT_STORE); } catch (e) {} renderReportForm(); }
+const FORMS_HEADER_DEFAULT = { title: 'Forms', desc: 'District request forms for the EEO IBP Grant. Click a form to open and complete it.' };
+const FORMS_HEADERS = {
+  grant:  { title: 'Grant Modification Request Form', desc: 'For substantial changes to your proposed grant workplan, activities, and/or outcomes.' },
+  budget: { title: 'Budget Modification Request Form', desc: 'For substantial budget changes, including adding or eliminating expenditures.' },
+  report: { title: 'EEO IBP Grant Report', desc: 'Periodic progress report on grant goals, expenditures to date, barriers, and project-team updates.' }
+};
+function setFormsHeader(h) {
+  const t = document.getElementById('forms-page-title'), d = document.getElementById('forms-page-desc');
+  if (t) t.textContent = h.title;
+  if (d) d.textContent = h.desc;
+}
 function openForm(which) {
   const list = document.getElementById('forms-list'),
         gw = document.getElementById('grant-mod-wrap'),
@@ -3505,6 +3516,7 @@ function openForm(which) {
   if (gw) gw.style.display = (which === 'grant') ? 'block' : 'none';
   if (bw) bw.style.display = (which === 'budget') ? 'block' : 'none';
   if (rw) rw.style.display = (which === 'report') ? 'block' : 'none';
+  setFormsHeader(FORMS_HEADERS[which] || FORMS_HEADER_DEFAULT);
   if (which === 'report') { try { startReportGuide(); } catch (e) {} }
   try { (document.querySelector('.main') || window).scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) {}
 }
@@ -3517,6 +3529,7 @@ function backToForms() {
   if (bw) bw.style.display = 'none';
   if (rw) rw.style.display = 'none';
   if (list) list.style.display = 'flex';
+  setFormsHeader(FORMS_HEADER_DEFAULT);
 }
 // Move the Budget video guide + form into the Forms tab (out of the Budget
 // Breakdown tab, which keeps only its cards) so it opens inline under Forms.
