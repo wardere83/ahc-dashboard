@@ -1517,6 +1517,151 @@
               </div>
             </div>
                         <div class="bmr-card-body">
+              <div class="bmr-meta-grid">
+                <label class="bmr-field"><span class="bmr-field-label">Community College District</span><input class="bmr-input" type="text" data-gmr="district" placeholder="District name"></label>
+                <label class="bmr-field"><span class="bmr-field-label">Submitted by - Name &amp; Designated Grant Role</span><input class="bmr-input" type="text" data-gmr="submittedBy" placeholder="Name, Grant Role"></label>
+                <label class="bmr-field"><span class="bmr-field-label">Your Email</span><input class="bmr-input" type="email" data-gmr="email" placeholder="name@district.edu"></label>
+                <label class="bmr-field"><span class="bmr-field-label">Submission Date</span><input class="bmr-input" type="date" data-gmr="date"></label>
+              </div>
+              <div class="grform-section-title">Original Workplan, Activities, and Outcomes</div>
+              <p class="grform-prompt">Please outline the original “Workplan, Activities, and Outcomes” (from section 2 of grant submission), and explain any barriers that are leading to a change in direction.</p>
+              <textarea class="bmr-textarea" rows="5" data-gmr="originalWorkplan" placeholder="Original workplan, activities, outcomes, and the barriers prompting this change…"></textarea>
+              <div class="grform-section-title">Proposed Workplan, Activities and Outcomes</div>
+              <p class="grform-prompt">Please outline your proposed “Workplan, Activities and Outcomes.”</p>
+              <textarea class="bmr-textarea" rows="5" data-gmr="proposedWorkplan" placeholder="Your proposed workplan, activities, and outcomes…"></textarea>
+              <div class="grform-section-title">Timeline</div>
+              <p class="grform-prompt">Provide the estimated start and end dates for each newly proposed activity, ensuring that all activities are completed by the grant’s end date of June 30, 2028.</p>
+              <div class="bmr-table-wrap">
+                <table class="bmr-table" style="min-width:660px;">
+                  <thead><tr><th>Activity</th><th>Timeline</th><th class="bmr-col-desc">Description</th><th style="width:38px;"></th></tr></thead>
+                  <tbody id="gmr-timeline"></tbody>
+                </table>
+              </div>
+              <div style="margin-top:10px;"><button type="button" class="bmr-btn" onclick="gmrAddRow()">+ Add activity</button></div>
+              <div class="grform-note">
+                <p>Please note that a corresponding budget modification request must also be completed to align with this proposed programmatic change.</p>
+                <button type="button" class="bmr-btn" onclick="openForm('budget')">Open the Budget Modification Form</button>
+              </div>
+              <div class="grform-cooffice">
+                <div class="grform-cooffice-title">For Chancellor’s Office Use Only</div>
+                <span class="bmr-field-label">SME Recommendations</span>
+                <p class="grform-prompt" style="margin-top:6px;">Please detail any recommendations or considerations for the Chancellor’s Office team regarding the approval of this grant modification request.</p>
+                <textarea class="bmr-textarea" rows="3" data-gmr="sme" placeholder="SME recommendations…"></textarea>
+              </div>
+              <div class="bmr-footer">
+                <label class="bmr-field"><span class="bmr-field-label">Approved by</span><input class="bmr-input" type="text" data-gmr="approvedBy" placeholder="Approver name &amp; title"></label>
+                <div class="bmr-actions">
+                  <button type="button" class="bmr-btn" onclick="resetGrantForm()">Reset</button>
+                  <button type="button" class="bmr-btn primary" onclick="window.print()">Print / Save PDF</button>
+                </div>
+              </div>
+              <div class="bmr-saved-note">Entries are saved automatically in this browser.</div>
+            </div><!-- /bmr-card-body -->
+          </div>
+        </div>
+
+        <!-- BUDGET MODIFICATION REQUEST FORM (opens inline from the list; video guide above the form, no breakdown cards) -->
+        <div id="budget-mod-wrap" style="display:none;">
+          <button type="button" class="bmr-btn forms-back" onclick="backToForms()">‹ Back to Forms</button>
+          <div id="budget-mod-host"></div>
+        </div>
+
+        <!-- EEO IBP GRANT REPORT (opens inline from the list; mirrors the Word/online form exactly) -->
+        <div id="report-wrap" style="display:none;">
+          <button type="button" class="bmr-btn forms-back" onclick="backToForms()">‹ Back to Forms</button>
+
+          <!-- VIDEO TRAINING GUIDE — screencast of filling out the EEO IBP Grant Report (shown above the form) -->
+          <div class="bmrv-card" id="report-guide">
+            <div class="bmrv-bar"><div class="bmrv-bar-left"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">Video Guide &middot; EEO IBP Grant Report</span></div><button type="button" class="bmrv-speed-btn" id="rpv-speed">1&times;</button></div>
+            <div class="bmrv-chapters" id="rpv-chapters"><span class="bmrv-pill active" data-ch="0">1 &middot; Team Info</span><span class="bmrv-pill" data-ch="1">2 &middot; Grant Goals</span><span class="bmrv-pill" data-ch="2">3 &middot; Barriers &amp; Expenditures</span><span class="bmrv-pill" data-ch="3">4 &middot; Review &amp; Submit</span></div>
+            <div class="bmrv-pips" id="rpv-pips"></div>
+            <div class="bmrv-frame" id="rpv-frame">
+              <div class="bmrv-scroll" id="rpv-scroll">
+                <div class="bmrv-doc-title">EEO IBP Grant Report</div>
+                <div class="bmrv-meta">
+                  <div class="bmrv-fld"><label>Community College District</label><span class="bmrv-cell" id="rv-district"></span></div>
+                  <div class="bmrv-fld"><label>Project Lead Name and Title</label><span class="bmrv-cell" id="rv-lead"></span></div>
+                  <div class="bmrv-fld"><label>Project Lead Email</label><span class="bmrv-cell" id="rv-leademail"></span></div>
+                  <div class="bmrv-fld"><label>Support Staff for Grant Activities — Name and Title</label><span class="bmrv-cell" id="rv-staff"></span></div>
+                  <div class="bmrv-fld"><label>Support Staff Email</label><span class="bmrv-cell" id="rv-staffemail"></span></div>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Has your project team changed since the grant began?</label>
+                  <div class="rpv-opts"><span class="rpv-opt" id="rv-team-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-team-no"><i class="rpv-dot"></i>No</span></div>
+                  <span class="bmrv-cell rpv-box" id="rv-teamdetail"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Grant goals as submitted in section 2.3 (Year 1)</label>
+                  <span class="bmrv-cell rpv-box" id="rv-goals"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">7.a. Are the goals listed above currently being met?</label>
+                  <div class="rpv-opts"><span class="rpv-opt" id="rv-goalsmet-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-goalsmet-no"><i class="rpv-dot"></i>No</span></div>
+                  <span class="bmrv-cell rpv-box" id="rv-goalsdetail"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Significant updates to goals or planned activities?</label>
+                  <div class="rpv-opts"><span class="rpv-opt" id="rv-updates-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-updates-no"><i class="rpv-dot"></i>No</span></div>
+                  <span class="bmrv-cell rpv-box" id="rv-updatesdetail"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Barriers, and the steps you are taking to address them</label>
+                  <span class="bmrv-cell rpv-box" id="rv-barriers"></span>
+                </div>
+                <div class="bmrv-yblock y1">
+                  <div class="bmrv-yhead"><span class="bmrv-chip">Expenditures</span> Total Grant Expenditures to Date</div>
+                  <div class="bmrv-lines">
+                    <div class="bmrv-line">
+                      <div class="bmrv-line-top"><span class="bmrv-line-name">An approved budget line</span></div>
+                      <div class="bmrv-fld"><label>Expenditure Type</label><span class="bmrv-cell" id="rv-ex-type"></span></div>
+                      <div class="bmrv-fld"><label>Year</label><span class="bmrv-cell" id="rv-ex-year"></span></div>
+                      <div class="bmrv-fld"><label>Description</label><span class="bmrv-cell" id="rv-ex-desc"></span></div>
+                      <div class="bmrv-fld"><label>Approved Grant Award Amount</label><span class="bmrv-cell num" id="rv-ex-approved"></span></div>
+                      <div class="bmrv-fld"><label>Total Expenditures to Date</label><span class="bmrv-cell num" id="rv-ex-spent"></span></div>
+                      <div class="bmrv-fld"><label>Unexpended Balance</label><span class="bmrv-cell num" id="rv-ex-balance"></span></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Expenditure Report Upload</label>
+                  <span class="bmrv-cell rpv-box" id="rv-upload">Attach a corresponding expenditure report (PDF, Excel, or CSV).</span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Do you intend to submit a budget modification request?</label>
+                  <div class="rpv-opts"><span class="rpv-opt" id="rv-bmr-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-bmr-no"><i class="rpv-dot"></i>No</span></div>
+                  <span class="bmrv-cell rpv-box" id="rv-bmrnote"></span>
+                </div>
+                <div class="bmrv-q">
+                  <label class="bmrv-qlabel">Optional — anything else to share</label>
+                  <span class="bmrv-cell rpv-box" id="rv-optional">Optional: note any other barriers or context for the Chancellor&rsquo;s Office.</span>
+                </div>
+                <div class="bmrv-q" style="max-width:340px;">
+                  <label class="bmrv-qlabel">Enter your name to certify *</label>
+                  <span class="bmrv-cell" id="rv-certify"></span>
+                </div>
+                <div style="margin-top:20px;">
+                  <span class="bmr-btn primary" id="rv-submit-btn" style="display:inline-block;">Submit to CCCCO</span>
+                </div>
+              </div>
+              <svg class="bmrv-cursor" id="rpv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
+              <div class="bmrv-caption" id="rpv-caption"><div class="bmrv-caption-inner"><span class="bmrv-avatar">&#128105;</span><span class="bmrv-caption-text" id="rpv-caption-text"></span></div></div>
+              <button type="button" class="bmrv-poster" id="rpv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">EEO IBP Grant Report &middot; ~4 min walkthrough</span></button>
+            </div>
+            <div class="bmrv-controls">
+              <button type="button" class="bmrv-play" id="rpv-play" aria-label="Play or pause">▶</button>
+              <span class="bmrv-time" id="rpv-time">0:00 / 0:00</span>
+              <div class="bmrv-track" id="rpv-track"><div class="bmrv-prog" id="rpv-prog"></div></div>
+              <button type="button" class="bmrv-replay" id="rpv-replay" aria-label="Replay">↻</button>
+            </div>
+          </div>
+              <div class="bmr-card" id="report-form" style="margin-top:18px;">
+            <div class="bmr-card-head">
+              <div>
+                <div class="bmr-title">EEO IBP Grant Report</div>
+                <div class="bmr-subtitle">Periodic progress report on grant goals, expenditures to date, barriers, and project-team updates. Complete each section below, then certify and submit.</div>
+              </div>
+            </div>
+            <div class="bmr-card-body">
               <!-- ── Contact Info ── -->
               <div class="bmr-meta-grid">
                 <label class="bmr-field"><span class="bmr-field-label">Community College District <span class="grform-required">*</span></span><input class="bmr-input" type="text" data-rpt="district" placeholder="District name" required></label>
@@ -1623,105 +1768,6 @@
               </div>
             </div><!-- /bmr-card-body -->
           </div>
-        </div>
-
-        <!-- BUDGET MODIFICATION REQUEST FORM (opens inline from the list; video guide above the form, no breakdown cards) -->
-        <div id="budget-mod-wrap" style="display:none;">
-          <button type="button" class="bmr-btn forms-back" onclick="backToForms()">‹ Back to Forms</button>
-          <div id="budget-mod-host"></div>
-        </div>
-
-        <!-- EEO IBP GRANT REPORT (opens inline from the list; mirrors the Word/online form exactly) -->
-        <div id="report-wrap" style="display:none;">
-          <button type="button" class="bmr-btn forms-back" onclick="backToForms()">‹ Back to Forms</button>
-
-          <!-- VIDEO TRAINING GUIDE — screencast of filling out the EEO IBP Grant Report (shown above the form) -->
-          <div class="bmrv-card" id="report-guide">
-            <div class="bmrv-bar"><div class="bmrv-bar-left"><span class="bmrv-dot r"></span><span class="bmrv-dot y"></span><span class="bmrv-dot g"></span><span class="bmrv-bar-title">Video Guide &middot; EEO IBP Grant Report</span></div><button type="button" class="bmrv-speed-btn" id="rpv-speed">1&times;</button></div>
-            <div class="bmrv-chapters" id="rpv-chapters"><span class="bmrv-pill active" data-ch="0">1 &middot; Team Info</span><span class="bmrv-pill" data-ch="1">2 &middot; Grant Goals</span><span class="bmrv-pill" data-ch="2">3 &middot; Barriers &amp; Expenditures</span><span class="bmrv-pill" data-ch="3">4 &middot; Certification</span></div>
-            <div class="bmrv-pips" id="rpv-pips"></div>
-            <div class="bmrv-frame" id="rpv-frame">
-              <div class="bmrv-scroll" id="rpv-scroll">
-                <div class="bmrv-doc-title">EEO IBP Grant Report</div>
-                <div class="bmrv-meta">
-                  <div class="bmrv-fld"><label>Community College District</label><span class="bmrv-cell" id="rv-district"></span></div>
-                  <div class="bmrv-fld"><label>Project Lead Name and Title</label><span class="bmrv-cell" id="rv-lead"></span></div>
-                  <div class="bmrv-fld"><label>Project Lead Email</label><span class="bmrv-cell" id="rv-leademail"></span></div>
-                  <div class="bmrv-fld"><label>Support Staff for Grant Activities — Name and Title</label><span class="bmrv-cell" id="rv-staff"></span></div>
-                  <div class="bmrv-fld"><label>Support Staff Email</label><span class="bmrv-cell" id="rv-staffemail"></span></div>
-                </div>
-                <div class="bmrv-q">
-                  <label class="bmrv-qlabel">Has your project team changed since the grant began?</label>
-                  <div class="rpv-opts"><span class="rpv-opt" id="rv-team-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-team-no"><i class="rpv-dot"></i>No</span></div>
-                  <span class="bmrv-cell rpv-box" id="rv-teamdetail"></span>
-                </div>
-                <div class="bmrv-q">
-                  <label class="bmrv-qlabel">Grant goals as submitted in section 2.3 (Year 1)</label>
-                  <span class="bmrv-cell rpv-box" id="rv-goals"></span>
-                </div>
-                <div class="bmrv-q">
-                  <label class="bmrv-qlabel">7.a. Are the goals listed above currently being met?</label>
-                  <div class="rpv-opts"><span class="rpv-opt" id="rv-goalsmet-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-goalsmet-no"><i class="rpv-dot"></i>No</span></div>
-                  <span class="bmrv-cell rpv-box" id="rv-goalsdetail"></span>
-                </div>
-                <div class="bmrv-q">
-                  <label class="bmrv-qlabel">Significant updates to goals or planned activities?</label>
-                  <div class="rpv-opts"><span class="rpv-opt" id="rv-updates-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-updates-no"><i class="rpv-dot"></i>No</span></div>
-                  <span class="bmrv-cell rpv-box" id="rv-updatesdetail"></span>
-                </div>
-                <div class="bmrv-q">
-                  <label class="bmrv-qlabel">Barriers, and the steps you are taking to address them</label>
-                  <span class="bmrv-cell rpv-box" id="rv-barriers"></span>
-                </div>
-                <div class="bmrv-yblock y1">
-                  <div class="bmrv-yhead"><span class="bmrv-chip">Expenditures</span> Total Grant Expenditures to Date</div>
-                  <div class="bmrv-lines">
-                    <div class="bmrv-line">
-                      <div class="bmrv-line-top"><span class="bmrv-line-name">An approved budget line</span></div>
-                      <div class="bmrv-fld"><label>Expenditure Type</label><span class="bmrv-cell" id="rv-ex-type"></span></div>
-                      <div class="bmrv-fld"><label>Year</label><span class="bmrv-cell" id="rv-ex-year"></span></div>
-                      <div class="bmrv-fld"><label>Description</label><span class="bmrv-cell" id="rv-ex-desc"></span></div>
-                      <div class="bmrv-fld"><label>Approved Grant Award Amount</label><span class="bmrv-cell num" id="rv-ex-approved"></span></div>
-                      <div class="bmrv-fld"><label>Total Expenditures to Date</label><span class="bmrv-cell num" id="rv-ex-spent"></span></div>
-                      <div class="bmrv-fld"><label>Unexpended Balance</label><span class="bmrv-cell num" id="rv-ex-balance"></span></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="bmrv-q">
-                  <label class="bmrv-qlabel">Do you intend to submit a budget modification request?</label>
-                  <div class="rpv-opts"><span class="rpv-opt" id="rv-bmr-yes"><i class="rpv-dot"></i>Yes</span><span class="rpv-opt" id="rv-bmr-no"><i class="rpv-dot"></i>No</span></div>
-                  <span class="bmrv-cell rpv-box" id="rv-bmrnote"></span>
-                </div>
-                <div class="bmrv-q" style="max-width:340px;">
-                  <label class="bmrv-qlabel">Enter your name to certify *</label>
-                  <span class="bmrv-cell" id="rv-certify"></span>
-                </div>
-                <div style="margin-top:20px;">
-                  <span class="bmr-btn primary" id="rv-submit-btn" style="display:inline-block;">Submit to CCCCO</span>
-                </div>
-              </div>
-              <svg class="bmrv-cursor" id="rpv-cursor" viewBox="0 0 24 24" fill="#fff" stroke="#1b2330" stroke-width="1.5"><path d="M4 3 L4 19 L8.5 14.5 L11.5 21 L14 20 L11 13.6 L18 13.6 Z"/></svg>
-              <div class="bmrv-caption" id="rpv-caption"><div class="bmrv-caption-inner"><span class="bmrv-avatar">&#128105;</span><span class="bmrv-caption-text" id="rpv-caption-text"></span></div></div>
-              <button type="button" class="bmrv-poster" id="rpv-poster" aria-label="Play the video guide"><span class="bmrv-poster-play">▶</span><span class="bmrv-poster-text">EEO IBP Grant Report &middot; ~4 min walkthrough</span></button>
-            </div>
-            <div class="bmrv-controls">
-              <button type="button" class="bmrv-play" id="rpv-play" aria-label="Play or pause">▶</button>
-              <span class="bmrv-time" id="rpv-time">0:00 / 0:00</span>
-              <div class="bmrv-track" id="rpv-track"><div class="bmrv-prog" id="rpv-prog"></div></div>
-              <button type="button" class="bmrv-replay" id="rpv-replay" aria-label="Replay">↻</button>
-            </div>
-          </div>
-              <!-- EEO Form Bottom Actions -->
-    <div style="padding:20px 24px 28px;border-top:1px solid var(--border);background:var(--bg-surface);">
-      <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 14px;">The Chancellor's Office may modify reporting requirements each year. Submitting certifies the information is accurate to the best of your knowledge.</p>
-      <label style="display:block;margin-bottom:12px;"><span style="font-size:0.82rem;font-weight:600;display:block;margin-bottom:4px;">Type your full name to certify and submit *</span><input type="text" id="rpt-certify-confirm" class="bmr-input" placeholder="Full name" style="width:100%;max-width:380px;"></label>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:4px;">
-        <button type="button" class="bmr-btn" onclick="rptSaveDraft()">Save Draft</button>
-        <button type="button" class="bmr-btn" onclick="resetReportForm()">Reset</button>
-        <button type="button" class="bmr-btn primary" id="rpt-submit-btn-footer" onclick="submitRptForm()">Submit to CCCCO</button>
-      </div>
-      <div id="rpt-submit-status-footer" role="status" aria-live="polite" style="margin-top:10px;"></div>
-    </div>
 
       </div>
 
@@ -3696,8 +3742,10 @@ function rpvBuildScenes() {
     { t:'rv-ex-approved',    cap:'Enter the approved grant award amount for this line.', text:'$18,000' },
     { t:'rv-ex-spent',       cap:'Then enter the total expenditures to date.', text:'$12,500' },
     { t:'rv-ex-balance',     cap:'The unexpended balance is the amount remaining.', text:'$5,500' },
+    { t:'rv-upload',         cap:'Under Expenditure Report Upload, attach a corresponding expenditure report — PDF, Excel, or CSV — to support the amounts above.', kind:'show', text:'' },
     { t:'rv-bmr-yes',        cap:'Does your district intend to submit a budget modification request? Select Yes or No.', kind:'pick' },
     { t:'rv-bmrnote',        cap:'If Yes, a note appears — contact Drs. John Parker and Herbert English at your earliest convenience to discuss next steps.', text:'If yes, please contact Drs. John Parker and Herbert English at your earliest convenience.' },
+    { t:'rv-optional',       cap:'The Optional field is your space to add any other barriers or context you would like the Chancellor\'s Office to know. It is not required.', kind:'show', text:'' },
     { t:'rv-certify',        cap:'Finally, type your full name to certify the report is complete and accurate.', text:'Dr. Jane Smith' },
     { t:'rv-submit-btn',     cap:'Click Submit to CCCCO to send your completed report.', kind:'click' }
   ];
@@ -3719,12 +3767,15 @@ function rpvEnter(i) {
     if (j === i) return;
     const el = document.getElementById(sc.t);
     if (!el) return;
+    /* 'click' (Submit button) and 'show' (Upload / Optional) are display-only — never overwrite */
+    if (sc.kind === 'click' || sc.kind === 'show') return;
     if (sc.kind === 'pick') { el.classList.toggle('rpv-sel', j < i); }
     else { el.textContent = (j < i) ? sc.text : ''; el.classList.remove('typing'); }
   });
-  const cur = document.getElementById(rpvScenes[i].t);
-  if (cur) {
-    if (rpvScenes[i].kind === 'pick') cur.classList.remove('rpv-sel');
+  const curSc = rpvScenes[i];
+  const cur = document.getElementById(curSc.t);
+  if (cur && curSc.kind !== 'click' && curSc.kind !== 'show') {
+    if (curSc.kind === 'pick') cur.classList.remove('rpv-sel');
     else { cur.textContent = ''; cur.classList.remove('typing'); }
   }
   const cap = document.getElementById('rpv-caption');
@@ -3740,6 +3791,8 @@ function rpvRender(t) {
     if (el) el.classList.toggle('rpv-sel', lt >= BMRV_MOVE);
   } else if (sc.kind === 'click') {
     if (el && lt >= BMRV_MOVE) { el.style.boxShadow = '0 0 0 3px #2563eb, 0 0 16px #2563eb88'; el.style.transform = lt >= BMRV_MOVE + 600 ? 'scale(0.97)' : 'scale(1)'; }
+  } else if (sc.kind === 'show') {
+    /* display-only step (Upload / Optional) — cursor + caption only, nothing to type */
   } else if (el) {
     const txt = sc.text || '';
     const ch = Math.max(0, Math.min(txt.length, Math.floor((lt - BMRV_MOVE) / BMRV_TYPE)));
@@ -3792,7 +3845,7 @@ function startReportGuide() {
   document.querySelectorAll('#rpv-chapters .bmrv-pill').forEach(pill => {
     pill.onclick = () => {
       const ch = parseInt(pill.dataset.ch, 10);
-      const starts = [0, 7, 11, 19];
+      const starts = [0, 7, 12, 20];
       rpvT = rpvCum[starts[ch]] || 0; rpvLastI = -1; rpvRender(rpvT); rpvPlay();
     };
   });
@@ -3808,7 +3861,7 @@ function startReportGuide() {
     /* pips */
     rpvScenes.forEach((_,j)=>{ const p=document.getElementById('rpv-pip-'+j); if(!p)return; p.className='bmrv-pip'+(j<i?' done':j===i?' active':''); });
     /* chapter pills */
-    const starts=[0,7,12,19]; let activeCh=0; starts.forEach((s,c)=>{ if(i>=s) activeCh=c; });
+    const starts=[0,7,12,20]; let activeCh=0; starts.forEach((s,c)=>{ if(i>=s) activeCh=c; });
     document.querySelectorAll('#rpv-chapters .bmrv-pill').forEach((p,c)=>{ p.classList.toggle('active',c===activeCh); });
 
   };
