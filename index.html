@@ -3358,14 +3358,16 @@ const RPT_SUBMIT_TO = ['eeosubmissions@cccco.edu', 'admin@bulleconsulting.com'];
 const EEO_RPT_URL = 'https://eeo-rpt-sync.shrill-king-ef4e.workers.dev';  // EEO IBP Grant Report Worker
 function setRptSubmitStatus(msg, kind) {
   const el = document.getElementById('rpt-submit-status');
-  if (!el) return;
+      const el2 = document.getElementById('rpt-submit-status-footer');
+  if (!elif (!el && !el2) return;
   el.textContent = msg;
   el.className = 'bmr-submit-status' + (kind ? ' ' + kind : '');
+      if (el2) { el2.textContent = msg; el2.className = 'bmr-submit-status' + (kind ? ' ' + kind : ''); }
 }
 function submitRptForm() {
   const btn = document.getElementById('rpt-submit-btn');
   // Validate certify
-  const certify = (document.querySelector('[data-rpt="certify"]') || {}).value || '';
+      const certify = (document.getElementById('rpt-certify-confirm') || document.querySelector('[data-rpt="certify"]') || {}).value || '';
   if (!certify.trim()) {
     setRptSubmitStatus('Please enter your name in the certification field before submitting.', 'warn');
     return;
