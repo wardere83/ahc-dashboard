@@ -79,10 +79,13 @@ function runSuite() {
     assert.strictEqual(typeof H.config.cooldownMs, 'number');
   });
 
-  test('recognizes response boxes only within the Forms tab', () => {
+  test('recognizes response boxes by their field class, anywhere in the app', () => {
     assert.strictEqual(H.isResponseBox(input), true);
-    const outside = d.createElement('input'); outside.type = 'text'; d.body.appendChild(outside);
-    assert.strictEqual(H.isResponseBox(outside), false, 'input outside #section-forms is not a response box');
+    const plain = d.createElement('input'); plain.type = 'text'; d.body.appendChild(plain);
+    assert.strictEqual(H.isResponseBox(plain), false, 'a non form-field input is ignored');
+    // A budget-table cell input (.bmr-cell-input) is covered wherever it lives.
+    const cell = d.createElement('input'); cell.type = 'text'; cell.className = 'bmr-cell-input bmr-num'; d.body.appendChild(cell);
+    assert.strictEqual(H.isResponseBox(cell), true, 'budget-area .bmr-cell-input boxes are covered');
   });
 
   test('idle → focus → typing → cooldown → focus (full state machine)', () => {

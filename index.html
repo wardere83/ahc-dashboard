@@ -4435,9 +4435,10 @@ document.addEventListener('DOMContentLoaded', () => {
 (function () {
   // Single source of transition timing.
   var CFG = { typingIdleMs: 550, cooldownMs: 900 };
-  // Response boxes only: text/email inputs and textareas inside the Forms tab.
-  var SEL = 'input[type="text"], input[type="email"], input:not([type]), textarea';
-  var SCOPE = '#section-forms';
+  // Every district response box, identified by its shared field classes — covers the
+  // Grant Modification, EEO Report, and Budget Modification forms (incl. the budget
+  // table cells), wherever they are rendered in the app.
+  var SEL = '.bmr-input, .bmr-textarea, .bmr-cell-input';
   var timers = new WeakMap();
 
   function reducedMotion() {
@@ -4445,7 +4446,7 @@ document.addEventListener('DOMContentLoaded', () => {
     catch (e) { return false; }
   }
   function isResponseBox(el) {
-    return !!(el && el.nodeType === 1 && typeof el.matches === 'function' && el.matches(SEL) && el.closest && el.closest(SCOPE));
+    return !!(el && el.nodeType === 1 && typeof el.matches === 'function' && el.matches(SEL));
   }
   // Disabled/read-only fields must never enter the typing (or any active) state.
   function eligible(el) {
