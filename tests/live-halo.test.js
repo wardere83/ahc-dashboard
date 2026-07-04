@@ -112,6 +112,16 @@ function runSuite() {
     blur(input);
   });
 
+  test('circling animation is not restarted on every keystroke', () => {
+    focus(input);
+    type(input);
+    const enters = input.dataset.haloTypingEnters;               // entered typing once
+    type(input); type(input); type(input);                       // more keystrokes in the same burst
+    assert.strictEqual(input.dataset.haloTypingEnters, enters, 'typing state entered once per burst (animation not reset)');
+    assert.ok(has(input, 'halo-typing'), 'ring stays on while typing');
+    blur(input);
+  });
+
   test('blur clears all halo state → idle', () => {
     focus(input); type(input);
     blur(input);
