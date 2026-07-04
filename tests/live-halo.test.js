@@ -143,11 +143,21 @@ function runSuite() {
     blur(textarea);
   });
 
-  test('prefers-reduced-motion: typing carries no animated ring', () => {
+  test('circling halo is active on focus (cursor in box), not only while typing', () => {
+    focus(input);
+    assert.strictEqual(H.stateOf(input), 'focus');
+    assert.ok(has(input, 'halo-focus'), 'halo shows as soon as the cursor is in the box');
+    blur(input);
+    assert.strictEqual(H.stateOf(input), 'idle', 'cleared when the cursor leaves');
+  });
+
+  test('prefers-reduced-motion: no circling on focus or typing (static border)', () => {
     REDUCED = true;
-    focus(input); type(input);
+    focus(input);
+    assert.ok(has(input, 'halo-no-motion'), 'focus under reduced motion → static border, no spin');
+    type(input);
     assert.strictEqual(H.stateOf(input), 'typing', 'still tracks the typing state');
-    assert.ok(has(input, 'halo-no-motion'), 'JS marks the box so the circling animation is suppressed');
+    assert.ok(has(input, 'halo-no-motion'), 'typing under reduced motion → still no spin');
     blur(input);
     REDUCED = false;
   });

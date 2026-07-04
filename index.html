@@ -401,36 +401,37 @@
     /* Halo tint follows the district's own brand color (theme-adaptive). Override
        --halo-color per district if a distinct accent is desired. */
     :root { --halo-color: var(--fig-color); }
-    .bmr-input.halo-focus, .bmr-textarea.halo-focus, .bmr-cell-input.halo-focus { border-color:var(--halo-color); box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 22%, transparent); }
-    .bmr-input.halo-cooldown, .bmr-textarea.halo-cooldown, .bmr-cell-input.halo-cooldown { border-color:var(--halo-color); box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 16%, transparent); transition:box-shadow 0.45s ease, border-color 0.45s ease; }
-    /* Typing: a bright arc of light travels around the border (rotating conic ring,
-       like the VS Code prompt box). The angle is a registered custom property so it
-       animates smoothly; the conic lives in the 2px transparent border via
-       padding-box/border-box backgrounds — no wrapper element needed. */
     @property --halo-angle { syntax:'<angle>'; inherits:false; initial-value:0turn; }
-    .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing {
+    /* Cursor in the box → the box's OWN border becomes a circling brand-colored halo:
+       a bright arc of light sweeps around the edge while the rest waits (like the VS
+       Code prompt box). Shown the whole time the field is focused — focus, typing and
+       cooldown — not only while typing. The halo IS the border line; no extra ring is
+       drawn above/around it. padding-box/border-box backgrounds, so no wrapper needed. */
+    .bmr-input.halo-focus, .bmr-textarea.halo-focus, .bmr-cell-input.halo-focus,
+    .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing,
+    .bmr-input.halo-cooldown, .bmr-textarea.halo-cooldown, .bmr-cell-input.halo-cooldown {
       border:2px solid transparent;
+      box-shadow:none;
       background:
         linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
         conic-gradient(from var(--halo-angle),
-          color-mix(in srgb, var(--halo-color) 7%, transparent) 0turn,
-          color-mix(in srgb, var(--halo-color) 7%, transparent) 0.55turn,
-          color-mix(in srgb, var(--halo-color) 45%, transparent) 0.78turn,
+          color-mix(in srgb, var(--halo-color) 8%, transparent) 0turn,
+          color-mix(in srgb, var(--halo-color) 8%, transparent) 0.55turn,
+          color-mix(in srgb, var(--halo-color) 50%, transparent) 0.80turn,
           var(--halo-color) 0.92turn,
-          color-mix(in srgb, var(--halo-color) 45%, transparent) 0.97turn,
-          color-mix(in srgb, var(--halo-color) 7%, transparent) 1turn) border-box;
-      box-shadow:0 0 9px 0 color-mix(in srgb, var(--halo-color) 26%, transparent);
+          color-mix(in srgb, var(--halo-color) 50%, transparent) 0.97turn,
+          color-mix(in srgb, var(--halo-color) 8%, transparent) 1turn) border-box;
       animation:haloSpin 1.15s linear infinite;
     }
     @keyframes haloSpin { to { --halo-angle:1turn; } }
-    /* Keyboard focus stays visible independently of the halo */
-    .bmr-input:focus-visible, .bmr-textarea:focus-visible, .bmr-cell-input:focus-visible { outline:2px solid var(--halo-color); outline-offset:1px; }
-    /* Accessibility: no circling animation under reduced motion — fall back to a
-       calm static brand ring (media query + JS-detected .halo-no-motion class). */
+    /* Accessibility: no circling animation under reduced motion — the same border
+       becomes a calm static brand line (no spin, still no outer ring). */
     @media (prefers-reduced-motion: reduce) {
-      .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing { animation:none; border:1px solid var(--halo-color); background:var(--bg-surface); box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 24%, transparent); }
+      .bmr-input.halo-focus, .bmr-textarea.halo-focus, .bmr-cell-input.halo-focus,
+      .bmr-input.halo-typing, .bmr-textarea.halo-typing, .bmr-cell-input.halo-typing,
+      .bmr-input.halo-cooldown, .bmr-textarea.halo-cooldown, .bmr-cell-input.halo-cooldown { animation:none; border:2px solid var(--halo-color); background:var(--bg-surface); box-shadow:none; }
     }
-    .bmr-input.halo-typing.halo-no-motion, .bmr-textarea.halo-typing.halo-no-motion, .bmr-cell-input.halo-typing.halo-no-motion { animation:none; border:1px solid var(--halo-color); background:var(--bg-surface); box-shadow:0 0 0 3px color-mix(in srgb, var(--halo-color) 24%, transparent); }
+    .bmr-input.halo-no-motion, .bmr-textarea.halo-no-motion, .bmr-cell-input.halo-no-motion { animation:none; border:2px solid var(--halo-color); background:var(--bg-surface); box-shadow:none; }
     .bmr-input::placeholder, .bmr-textarea::placeholder { color:var(--text-muted); opacity:0.65; }
 
     .bmr-section-intro { font-size:12.5px; color:var(--text-muted); margin:0 0 16px; line-height:1.5; }
@@ -4458,11 +4459,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (state === 'focus') el.classList.add('halo-focus');
     else if (state === 'typing') {
       el.classList.add('halo-typing');
-      if (reducedMotion()) el.classList.add('halo-no-motion');
       // Count entries into typing so the animation isn't restarted mid-burst (tested).
       el.dataset.haloTypingEnters = String((parseInt(el.dataset.haloTypingEnters, 10) || 0) + 1);
     }
     else if (state === 'cooldown') el.classList.add('halo-cooldown');
+    // The halo circles for the whole time the cursor is in the box (focus/typing/cooldown);
+    // under reduced motion, mark it so the border falls back to a static brand line.
+    if ((state === 'focus' || state === 'typing' || state === 'cooldown') && reducedMotion()) el.classList.add('halo-no-motion');
     el.dataset.haloState = state;            // exposed for tests / debugging
   }
   function stopTimers(el) {
