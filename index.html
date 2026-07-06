@@ -19,6 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
   <style>
     /* ════════════ APPLE-INSPIRED POLISH ON CCCCO PALETTE ════════════
        Clean typography, generous whitespace, subtle layered shadows,
@@ -3008,36 +3009,147 @@ function bmrContentSig(state) { return JSON.stringify(state.years || {}) + '|' +
 // POST the completed form to the bmr-sync Worker, which stores it (feeding the
 // EEO Data Intelligence CRM) and emails a complete copy to the recipients.
 // If the service can't be reached, fall back to the staff member's mail app.
-function submitBmrToWorker(state, btn) {
+function bmrDocEsc(v) { return (v == null ? '' : String(v)).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function bmrDocMoney(v) { return (v == null || v === '') ? '—' : fmt(Number(v)); }
+
+// A complete, self-contained HTML document that mirrors the Budget Modification
+// form's design with every field the user filled in. Used as the .html
+// attachment and as the source for the .pdf attachment.
+function buildBmrFormDocHtml(state) {
+  state = state || loadBmrState();
+  const meta = state.meta || {};
+  const yrTotals = {};
+  function yearTable(yk) {
+    const ym = (yearMeta && yearMeta[yk]) || { label: yk, dates: '' };
+    const rows = (state.years && state.years[yk] && state.years[yk].rows) || {};
+    let tProp = 0, tAct = 0, tBal = 0, tProj = 0, balAny = false;
+    const trs = BUDGET_BASELINE.map(b => {
+      const rs = rows[b.code] || {};
+      const proposed = rs.proposed != null ? rs.proposed : baselineYear(b.code, yk);
+      tProp += proposed; tAct += (rs.actuals || 0); tProj += (rs.projections || 0);
+      if (rs.balance != null) { tBal += rs.balance; balAny = true; }
+      return '<tr><td class="bd-code' + (b.code === '7000' ? ' bd-ind' : '') + '">' + b.code + '</td>' +
+        '<td>' + bmrDocEsc(rs.description || b.label) + '</td>' +
+        '<td class="bd-num">' + bmrDocMoney(proposed) + '</td>' +
+        '<td class="bd-num">' + bmrDocMoney(rs.actuals) + '</td>' +
+        '<td class="bd-num">' + (rs.balance != null ? bmrDocMoney(rs.balance) : '—') + '</td>' +
+        '<td class="bd-num">' + bmrDocMoney(rs.projections) + '</td>' +
+        '<td>' + bmrDocEsc(rs.updates || '') + '</td></tr>';
+    }).join('');
+    yrTotals[yk] = tProp;
+    return '<div class="bd-year bd-year-' + yk + '"><div class="bd-year-head">' +
+      '<span class="bd-chip">' + bmrDocEsc(ym.label) + '</span>' +
+      '<span class="bd-year-title">' + bmrDocEsc(ym.label) + ' Budget Modification</span>' +
+      '<span class="bd-year-dates">' + bmrDocEsc(ym.dates) + '</span>' +
+      '<span class="bd-year-total">Modified budget: <strong>' + fmt(tProp) + '</strong></span></div>' +
+      '<table class="bd-table"><thead><tr><th>Expenditure Type</th><th>Description</th>' +
+      '<th class="bd-num">Proposed Funds</th><th class="bd-num">Actuals</th><th class="bd-num">Fund Balance</th>' +
+      '<th class="bd-num">Projections</th><th>Expenditure Updates</th></tr></thead><tbody>' + trs + '</tbody>' +
+      '<tfoot><tr><td colspan="2">' + bmrDocEsc(ym.label) + ' Totals:</td>' +
+      '<td class="bd-num">' + fmt(tProp) + '</td><td class="bd-num">' + fmt(tAct) + '</td>' +
+      '<td class="bd-num">' + (balAny ? fmt(tBal) : '—') + '</td><td class="bd-num">' + fmt(tProj) + '</td><td></td></tr></tfoot></table></div>';
+  }
+  const y1 = yearTable('y1'), y2 = yearTable('y2');
+  const award = districts[0].funding;
+  const modified = (yrTotals.y1 || 0) + (yrTotals.y2 || 0);
+  const variance = Math.round(modified - award);
+  const varText = variance === 0 ? 'Balanced to award' : (variance > 0 ? 'Over award +' : 'Under award −') + fmt(Math.abs(variance));
+  const varVal = variance === 0 ? '+$0' : (variance > 0 ? '+' : '−') + fmt(Math.abs(variance));
+  const metaRow = (k, v) => v ? '<tr><td class="bd-mk">' + bmrDocEsc(k) + '</td><td class="bd-mv">' + bmrDocEsc(v) + '</td></tr>' : '';
+  return '<!doctype html><html><head><meta charset="utf-8"><title>Budget Modification Request Form — ' +
+    bmrDocEsc(meta.district || BMR_SYNC_NAME) + '</title><style>' +
+    '*{box-sizing:border-box}body{font-family:Arial,Helvetica,sans-serif;color:#12233b;margin:0;padding:26px;background:#fff}' +
+    '.bd-doc{max-width:1000px;margin:0 auto}.bd-h1{font-size:22px;font-weight:800;color:#1f3864;margin:0 0 2px}' +
+    '.bd-sub{font-size:13px;color:#5b6b82;margin:0 0 16px}.bd-meta{border-collapse:collapse;margin:0 0 18px;font-size:13px}' +
+    '.bd-mk{color:#5b6b82;padding:3px 18px 3px 0;white-space:nowrap}.bd-mv{font-weight:700;padding:3px 0}' +
+    '.bd-year{border:1px solid #d7deea;border-radius:10px;overflow:hidden;margin:0 0 18px}' +
+    '.bd-year-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;background:#f2f5fb;border-bottom:1px solid #d7deea}' +
+    '.bd-chip{background:#1f3864;color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}' +
+    '.bd-year-y2 .bd-chip{background:#b8860b}.bd-year-title{font-weight:800;font-size:14px}.bd-year-dates{color:#5b6b82;font-size:12px}' +
+    '.bd-year-total{margin-left:auto;font-size:12px;color:#5b6b82}.bd-table{width:100%;border-collapse:collapse;font-size:12px}' +
+    '.bd-table th{background:#fafbfe;text-align:left;padding:7px 9px;border-bottom:1px solid #d7deea;color:#41506a;font-size:11px}' +
+    '.bd-table td{padding:7px 9px;border-bottom:1px solid #edf0f6;vertical-align:top}.bd-num{text-align:right;white-space:nowrap}' +
+    '.bd-code{font-weight:700}.bd-ind{color:#b8860b}.bd-table tfoot td{font-weight:800;background:#f7f9fd;border-top:2px solid #d7deea}' +
+    '.bd-recon{display:flex;gap:12px;flex-wrap:wrap;margin:4px 0 16px}.bd-card{flex:1;min-width:150px;border:1px solid #d7deea;border-radius:10px;padding:10px 12px}' +
+    '.bd-card .l{font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:#5b6b82}.bd-card .v{font-size:18px;font-weight:800;color:#1f3864;margin-top:2px}' +
+    '.bd-card .s{font-size:11px;color:#5b6b82;margin-top:2px}.bd-approve{font-size:13px;margin-top:6px}' +
+    '</style></head><body><div class="bd-doc">' +
+    '<div class="bd-h1">Budget Modification Request Form</div><div class="bd-sub">EEO IBP Grant Initiative</div>' +
+    '<table class="bd-meta">' + metaRow('Community College District', meta.district || BMR_SYNC_NAME) +
+    metaRow('Submitted by', meta.submittedBy) + metaRow('Email', meta.email) + metaRow('Submission date', meta.date) + '</table>' +
+    y1 + y2 +
+    '<div class="bd-recon">' +
+    '<div class="bd-card"><div class="l">Total Award (Ceiling)</div><div class="v">' + fmt(award) + '</div><div class="s">Fixed grant award</div></div>' +
+    '<div class="bd-card"><div class="l">Modified Project Budget</div><div class="v">' + fmt(modified) + '</div><div class="s">Both years, after modifications</div></div>' +
+    '<div class="bd-card"><div class="l">Variance vs Award</div><div class="v">' + varVal + '</div><div class="s">' + bmrDocEsc(varText) + '</div></div>' +
+    '<div class="bd-card"><div class="l">Modified Y1 / Y2</div><div class="v">' + fmt(yrTotals.y1 || 0) + ' / ' + fmt(yrTotals.y2 || 0) + '</div></div>' +
+    '</div>' +
+    (meta.approvedBy ? '<div class="bd-approve"><strong>Approved by:</strong> ' + bmrDocEsc(meta.approvedBy) + '</div>' : '') +
+    '</div></body></html>';
+}
+
+// Render the form document to a PDF (base64) in the browser. Best-effort:
+// resolves null if the library isn't available so submission never blocks.
+function bmrGeneratePdf(html) {
+  return new Promise(resolve => {
+    if (typeof window.html2pdf === 'undefined') { resolve(null); return; }
+    let holder = null;
+    const cleanup = () => { if (holder && holder.parentNode) holder.parentNode.removeChild(holder); };
+    try {
+      holder = document.createElement('div');
+      holder.style.cssText = 'position:fixed;left:-100000px;top:0;width:1000px;background:#fff;';
+      const styleM = html.match(/<style[\s\S]*?<\/style>/i);
+      const bodyM = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+      holder.innerHTML = (styleM ? styleM[0] : '') + (bodyM ? bodyM[1] : html);
+      document.body.appendChild(holder);
+      window.html2pdf().set({
+        margin: [8, 8, 8, 8], image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy', 'avoid-all'] }
+      }).from(holder).outputPdf('datauristring')
+        .then(uri => { cleanup(); resolve(typeof uri === 'string' ? uri.split(',')[1] : null); })
+        .catch(() => { cleanup(); resolve(null); });
+    } catch (e) { cleanup(); resolve(null); }
+  });
+}
+
+async function submitBmrToWorker(state, btn) {
   const problem = bmrReadiness(state);
-  if (problem) { setBmrSubmitStatus(problem, 'warn'); return Promise.resolve(false); }
+  if (problem) { setBmrSubmitStatus(problem, 'warn'); return false; }
   if (!BMR_SYNC_URL) {
     window.location.href = bmrMailtoHref(state);
     setBmrSubmitStatus('Opening your email app with a complete copy for ' + BMR_SUBMIT_TO.join(' and ') + '.', 'ok');
-    return Promise.resolve(false);
+    return false;
   }
   if (btn) btn.disabled = true;
+  setBmrSubmitStatus('Preparing your submission (form + PDF)…', 'pending');
+  const formHtml = buildBmrFormDocHtml(state);
+  const pdfBase64 = await bmrGeneratePdf(formHtml);   // best-effort; null if unavailable
   setBmrSubmitStatus('Submitting to CCCCO…', 'pending');
   const payload = {
     district: BMR_SYNC_ID, name: BMR_SYNC_NAME, award: districts[0].funding,
     baseline: BUDGET_BASELINE, model: BUDGET_MODEL, state: state, recipients: BMR_SUBMIT_TO,
+    formHtml: formHtml, pdfBase64: pdfBase64 || undefined,
     submittedAt: new Date().toISOString()
   };
-  return fetch(BMR_SYNC_URL.replace(/\/+$/, '') + '/bmr/' + BMR_SYNC_ID + '/submit', {
-    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload)
-  })
-    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json().catch(() => ({})); })
-    .then(() => {
-      bmrLastSubmitSig = bmrContentSig(state);
-      setBmrSubmitStatus('✓ Submitted — a copy was emailed to ' + BMR_SUBMIT_TO.join(' and ') + '.', 'ok');
-      return true;
-    })
-    .catch(() => {
-      setBmrSubmitStatus('Couldn’t reach the submission service — opening your email app with a complete copy instead.', 'warn');
-      window.location.href = bmrMailtoHref(state);
-      return false;
-    })
-    .finally(() => { if (btn) btn.disabled = false; });
+  try {
+    const r = await fetch(BMR_SYNC_URL.replace(/\/+$/, '') + '/bmr/' + BMR_SYNC_ID + '/submit', {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload)
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    await r.json().catch(() => ({}));
+    bmrLastSubmitSig = bmrContentSig(state);
+    const withPdf = pdfBase64 ? 'form (HTML + PDF)' : 'form';
+    setBmrSubmitStatus('✓ Submitted — the completed ' + withPdf + ' was emailed to ' + BMR_SUBMIT_TO.join(' and ') + '.', 'ok');
+    return true;
+  } catch (e) {
+    setBmrSubmitStatus('Couldn’t reach the submission service — opening your email app with a complete copy instead.', 'warn');
+    window.location.href = bmrMailtoHref(state);
+    return false;
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 function submitBmrForm() {
