@@ -2905,9 +2905,9 @@ function saveBmrState(state) {
 const BMR_SEED = {
   meta: {
     district: 'Allan Hancock Joint CCD',
-    submittedBy: '',
-    email: '',
-    date: '',
+    submittedBy: 'Dr. LeeAnne McNulty, Director, Institutional Grants',
+    email: 'leeanne.mcnulty@hancockcollege.edu',
+    date: '2026-06-29',
     approvedBy: ''
   },
   years: {
@@ -2930,9 +2930,20 @@ const BMR_SEED = {
 
 function seedBmrIfEmpty() {
   try {
-    if (!localStorage.getItem(BMR_STORE)) {
+    const raw = localStorage.getItem(BMR_STORE);
+    if (!raw) {
       localStorage.setItem(BMR_STORE, JSON.stringify(BMR_SEED));
+      return;
     }
+    // Backfill empty meta fields from BMR_SEED so seeded defaults still land
+    // if the store already existed but the meta fields were never filled in.
+    const state = JSON.parse(raw) || {};
+    state.meta = state.meta || {};
+    let changed = false;
+    ['district','submittedBy','email','date'].forEach(k => {
+      if (!state.meta[k] && BMR_SEED.meta[k]) { state.meta[k] = BMR_SEED.meta[k]; changed = true; }
+    });
+    if (changed) localStorage.setItem(BMR_STORE, JSON.stringify(state));
   } catch (e) {}
 }
 
