@@ -3165,9 +3165,16 @@ async function submitBmrToWorker(state, btn) {
   const formHtml = buildBmrFormDocHtml(state);
   const pdfBase64 = await bmrGeneratePdf(formHtml);   // best-effort; null if unavailable
   setBmrSubmitStatus('Submitting to CCCCO…', 'pending');
+  // Give the submitting user a confirmation copy by adding THEIR address — without
+  // altering the pre-configured CCCCO/admin recipients.
+  const submitterEmail = ((state.meta && state.meta.email) || '').trim();
+  const recipients = (submitterEmail && !BMR_SUBMIT_TO.some(a => a.toLowerCase() === submitterEmail.toLowerCase()))
+    ? BMR_SUBMIT_TO.concat(submitterEmail) : BMR_SUBMIT_TO.slice();
   const payload = {
-    district: BMR_SYNC_ID, name: BMR_SYNC_NAME, award: districts[0].funding,
-    baseline: BUDGET_BASELINE, model: BUDGET_MODEL, state: state, recipients: BMR_SUBMIT_TO,
+    district: BMR_SYNC_ID, name: BMR_SYNC_NAME, formName: 'Budget Modification Request',
+    award: districts[0].funding,
+    baseline: BUDGET_BASELINE, model: BUDGET_MODEL, state: state, recipients: recipients,
+    submittedBy: (state.meta && state.meta.submittedBy) || '',
     formHtml: formHtml, pdfBase64: pdfBase64 || undefined,
     submittedAt: new Date().toISOString()
   };
@@ -3178,11 +3185,11 @@ async function submitBmrToWorker(state, btn) {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     await r.json().catch(() => ({}));
     bmrLastSubmitSig = bmrContentSig(state);
-    const withPdf = pdfBase64 ? 'form (HTML + PDF)' : 'form';
-    setBmrSubmitStatus('✓ Submitted — the completed ' + withPdf + ' was emailed to ' + BMR_SUBMIT_TO.join(' and ') + '.', 'ok');
+    const copyNote = submitterEmail ? ' (with a copy to you at ' + submitterEmail + ')' : '';
+    setBmrSubmitStatus('✓ Submitted — the completed form was emailed to ' + BMR_SUBMIT_TO.join(' and ') + copyNote + '.', 'ok');
     return true;
   } catch (e) {
-    setBmrSubmitStatus('Couldn’t reach the submission service — opening your email app with a complete copy instead.', 'warn');
+    setBmrSubmitStatus('Submission didn’t reach the service — your draft is saved. Please click Submit to try again. (Opening your email app as a backup.)', 'warn');
     window.location.href = bmrMailtoHref(state);
     return false;
   } finally {
