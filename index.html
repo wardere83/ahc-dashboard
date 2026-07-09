@@ -2898,6 +2898,44 @@ function saveBmrState(state) {
   try { localStorage.setItem(BMR_STORE, JSON.stringify(state)); } catch(e) {}
 }
 
+/* ── Factual reference data — Allan Hancock College Tier 2 Budget Modification.
+   Seeded as the starting draft on first load so the district sees its data in
+   place and can edit any field. Never overwrites an existing (edited) draft;
+   the draft then persists in localStorage until a confirmed submission. ── */
+const BMR_SEED = {
+  meta: {
+    district: 'Allan Hancock Joint CCD',
+    submittedBy: '',
+    email: '',
+    date: '',
+    approvedBy: 'LeeAnne McNulty, Director, Institutional Grants'
+  },
+  years: {
+    y1: { rows: {
+      '1000': { description: '', proposed: 40720, actuals: 14166, balance: 16554, projections: 40720, updates: '+10,000 Move funds from Independent contractors to Instructional Salaries.' },
+      '3000': { description: '', proposed: 8836,  actuals: 3567,  balance: 3098,  projections: 8836,  updates: '+2,170 to align with update faculty pay request.' },
+      '4000': { description: '', proposed: 375,   actuals: 0,     balance: 759,   projections: 375,   updates: '-384 Less materials and supplies needed.' },
+      '5000': { description: '', proposed: 4000,  actuals: 0,     balance: 21500, projections: 4000,  updates: '-17500 funds requested to be moved to increase Instructional Salaries and Benefits.' },
+      '7000': { description: '', proposed: 2697,  actuals: 0,     balance: 2982,  projections: 0,     updates: '- 285 Indirect costs will be booked mid July to properly align with the budget.' }
+    } },
+    y2: { rows: {
+      '1000': { description: '', proposed: 30360, actuals: 0, balance: 15360, projections: 30360, updates: '+15,000 Move funds from Independent contractors to Instructional Salaries.' },
+      '3000': { description: '', proposed: 6588,  actuals: 0, balance: 3333,  projections: 6588,  updates: '+3255 to align with update faculty pay request.' },
+      '4000': { description: '', proposed: 359,   actuals: 0, balance: 400,   projections: 359,   updates: '-41 Less materials and supplies needed.' },
+      '5000': { description: '', proposed: 4000,  actuals: 0, balance: 16500, projections: 4000,  updates: '-12500 funds requested to be moved to increase Instructional Salaries and Benefits.' },
+      '7000': { description: '', proposed: 2065,  actuals: 0, balance: 1780,  projections: 2065,  updates: '+285 modification due to budget changes.' }
+    } }
+  }
+};
+
+function seedBmrIfEmpty() {
+  try {
+    if (!localStorage.getItem(BMR_STORE)) {
+      localStorage.setItem(BMR_STORE, JSON.stringify(BMR_SEED));
+    }
+  } catch (e) {}
+}
+
 /* ── BMR live sync: publish this district's Budget Modification data to the
       shared feed consumed by the EEO Data Intelligence "BMR Updates" tab ── */
 const BMR_SYNC_URL = 'https://bmr-sync.shrill-king-ef4e.workers.dev';   // bmr-sync Worker URL; publishing is disabled while empty
@@ -3152,8 +3190,38 @@ async function submitBmrToWorker(state, btn) {
   }
 }
 
+// Build the pre-submit confirmation summary (year totals + variance vs award).
+function bmrSubmitSummary(state) {
+  const yTot = yk => BUDGET_BASELINE.reduce((s, b) => {
+    const rs = (state.years && state.years[yk] && state.years[yk].rows && state.years[yk].rows[b.code]) || {};
+    return s + (rs.proposed != null ? rs.proposed : baselineYear(b.code, yk));
+  }, 0);
+  const y1 = yTot('y1'), y2 = yTot('y2'), total = y1 + y2, award = districts[0].funding;
+  const variance = Math.round(total - award);
+  const vtxt = variance === 0 ? 'Balanced to award (variance $0)'
+    : (variance > 0 ? 'OVER award by ' : 'UNDER award by ') + fmt(Math.abs(variance));
+  return 'Please confirm your Budget Modification Request submission:\n\n'
+    + 'Year 1 modified total:      ' + fmt(y1) + '\n'
+    + 'Year 2 modified total:      ' + fmt(y2) + '\n'
+    + 'Combined modified budget:   ' + fmt(total) + '\n'
+    + 'Award ceiling:              ' + fmt(award) + '\n'
+    + 'Variance vs award:          ' + vtxt + '\n\n'
+    + 'On confirm, the completed form is emailed to CCCCO and Bulle admin. Continue?';
+}
+
 function submitBmrForm() {
-  submitBmrToWorker(loadBmrState(), document.getElementById('bmr-submit-btn'));
+  const state = loadBmrState();
+  const problem = bmrReadiness(state);
+  if (problem) { setBmrSubmitStatus(problem, 'warn'); return; }
+  // Confirmation step: summarize totals + variance before final send.
+  if (!window.confirm(bmrSubmitSummary(state))) {
+    setBmrSubmitStatus('Submission cancelled — your draft is saved.', 'warn');
+    return;
+  }
+  submitBmrToWorker(state, document.getElementById('bmr-submit-btn')).then(ok => {
+    // Clear the draft ONLY after a confirmed successful submission.
+    if (ok) { try { localStorage.removeItem(BMR_STORE); } catch (e) {} }
+  });
 }
 
 // Print / Save PDF: also submit a copy (unless this exact content was just sent), then print.
@@ -4479,6 +4547,7 @@ function renderAll() {
 
 /* ════════════ INIT ════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+  seedBmrIfEmpty();         // put Allan Hancock's factual data in place on first load
   applySavedBudgetMods();   // fold saved budget modifications into the model first
   renderAll();
   requestAnimationFrame(() => initCharts());
