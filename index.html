@@ -2888,7 +2888,7 @@ function renderBudget() {
      Year 1 / Year 2 cards, the KPI cards and the Timeline live.
    - All entries persist in localStorage.
 ════════════════════════════════════════════════════════════════ */
-const BMR_STORE = 'avc_budget_mod_form_v1';
+const BMR_STORE = 'ahc_budget_mod_form_v1';
 const parseMoney = s => { const n = parseFloat(String(s).replace(/−/g, '-').replace(/[^0-9.\-]/g, '')); return isFinite(n) ? n : 0; };
 
 function loadBmrState() {
