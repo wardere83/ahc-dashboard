@@ -2908,7 +2908,7 @@ const BMR_SEED = {
     submittedBy: '',
     email: '',
     date: '',
-    approvedBy: 'LeeAnne McNulty, Director, Institutional Grants'
+    approvedBy: ''
   },
   years: {
     y1: { rows: {
@@ -3183,7 +3183,10 @@ async function submitBmrToWorker(state, btn) {
       method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload)
     });
     if (!r.ok) throw new Error('HTTP ' + r.status);
-    await r.json().catch(() => ({}));
+    const data = await r.json().catch(() => ({}));
+    // The Worker returns 200 with mailed:false if delivery fails — treat that as
+    // a failure so we never show success (or clear the draft) without delivery.
+    if (data && data.mailed === false) throw new Error('delivery failed: ' + (data.mailError || 'unknown'));
     bmrLastSubmitSig = bmrContentSig(state);
     const copyNote = submitterEmail ? ' (with a copy to you at ' + submitterEmail + ')' : '';
     setBmrSubmitStatus('✓ Submitted — the completed form was emailed to ' + BMR_SUBMIT_TO.join(' and ') + copyNote + '.', 'ok');
