@@ -953,6 +953,10 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       Spend-Down Monitor
     </button>
+    <button class="nav-item" onclick="showSection('fundbalance',this)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
+      Fund Balance
+    </button>
     <div class="sidebar-section-label">District Forms</div>
     <button class="nav-item" onclick="showSection('forms',this)">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -1530,6 +1534,13 @@
         </div>
       </div>
 
+      <!-- FUND BALANCE TAB — balances entered by the district on the Budget Modification Request -->
+      <div id="section-fundbalance" class="section">
+        <div class="page-header"><h2>Fund Balance</h2><p>Remaining fund balance by expenditure type, as entered by the district on the Budget Modification Request form (submitted 6/29/2026, approved by CCCCO staff).</p></div>
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));" id="fundbalance-kpis"></div>
+        <div class="budget-grid budget-grid--2col" id="fundbalance-grid"></div>
+      </div>
+
       <!-- FORMS TAB -->
       <div id="section-forms" class="section">
         <div class="page-header"><h2 id="forms-page-title">Forms</h2><p id="forms-page-desc">District request forms for the EEO IBP Grant. Click a form to open and complete it.</p></div>
@@ -1834,6 +1845,7 @@
       <button class="mobile-nav-btn" onclick="showSection('timeline',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="nav_timeline">Timeline</span></button>
       <button class="mobile-nav-btn" onclick="showSection('contacts',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-i18n="nav_contacts">Contacts</span></button>
       <button class="mobile-nav-btn" onclick="showSection('spenddown',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-i18n="nav_spenddown">Spend</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('fundbalance',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg><span>Balance</span></button>
       <button class="mobile-nav-btn" onclick="showSection('forms',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Forms</span></button>
     </div>
   </nav>
@@ -2866,15 +2878,17 @@ function renderBudget() {
       <div class="budget-line${cls}"><span class="budget-line-label">${r.label}</span><span class="budget-line-amount">${fmt(r.amount)}</span></div>
       <div class="budget-line-bar"><div class="budget-line-bar-fill" style="width:${pct}%;${isIndirect ? 'background:var(--ccc-dark-gold);' : ''}"></div></div>`;
   }).join('');
+  const fbLine = yk => `
+      <div class="budget-line" style="border-top:1px dashed var(--border);margin-top:4px;padding-top:10px;"><span class="budget-line-label"><strong>Fund Balance</strong> · entered by district (BMR)</span><span class="budget-line-amount">${fmt(fundBalanceTotal(yk))}</span></div>`;
   grid.innerHTML = `
     <div class="budget-card">
       <div class="budget-card-head"><div><div class="budget-card-name">Year 1</div><div class="budget-card-dates">Jan 2026 – Jun 2027</div></div><div class="budget-card-total">${fmt(Y1_TOTAL)}</div></div>
-      <div class="budget-lines-wrap">${renderLines(Y1, Y1_TOTAL)}</div>
+      <div class="budget-lines-wrap">${renderLines(Y1, Y1_TOTAL)}${fbLine('y1')}</div>
       <div class="budget-note">${Y1_NOTE}</div>
     </div>
     <div class="budget-card">
       <div class="budget-card-head accent"><div><div class="budget-card-name">Year 2</div><div class="budget-card-dates">Jul 2027 – Jun 2028</div></div><div class="budget-card-total">${fmt(Y2_TOTAL)}</div></div>
-      <div class="budget-lines-wrap">${renderLines(Y2, Y2_TOTAL)}</div>
+      <div class="budget-lines-wrap">${renderLines(Y2, Y2_TOTAL)}${fbLine('y2')}</div>
       <div class="budget-note">${Y2_NOTE}</div>
     </div>`;
 }
@@ -3378,6 +3392,9 @@ function onBmrInput(e) {
   // Editing Proposed Funds re-flows through the Year 1 / Year 2 cards, KPIs and
   // Timeline. Expenditure Updates is a narrative box and changes no numbers.
   if (field === 'proposed') recomputeBudgetFromState();
+  // Fund Balance edits re-flow through the Fund Balance tab, the Budget cards'
+  // fund-balance line, and the Spend-Down KPIs.
+  if (field === 'balance') { renderFundBalance(); renderBudget(); renderSpendDown(); }
   bmrRecalc();
 }
 
@@ -3483,6 +3500,54 @@ function applySavedBudgetMods() {
   });
 }
 
+/* ════════════ FUND BALANCE — balances entered by the district on the BMR form ════════════ */
+// Rows for one project year, merging any saved form edits over the seeded
+// 6/29/2026 submission so blanks fall back to the submitted values.
+function fundBalanceRows(yk) {
+  const state = loadBmrState();
+  const saved = yearRows(state, yk);
+  const seed = BMR_SEED.years[yk].rows;
+  return Object.keys(Object.assign({}, seed, saved)).map(code => {
+    const s = saved[code] || {}, sd = seed[code] || {};
+    const balance = (s.balance != null) ? Number(s.balance) : (sd.balance != null ? Number(sd.balance) : null);
+    const base = BUDGET_BASELINE.find(r => r.code === code);
+    const label = base ? base.label : (s.description || sd.description || 'Additional line');
+    return { code, label, balance };
+  }).filter(r => r.balance != null && isFinite(r.balance));
+}
+function fundBalanceTotal(yk) {
+  return fundBalanceRows(yk).reduce((s, r) => s + r.balance, 0);
+}
+function renderFundBalance() {
+  const kpis = document.getElementById('fundbalance-kpis');
+  const grid = document.getElementById('fundbalance-grid');
+  if (!kpis && !grid) return;
+  const years = { y1: fundBalanceRows('y1'), y2: fundBalanceRows('y2') };
+  const tot = { y1: years.y1.reduce((s,r)=>s+r.balance,0), y2: years.y2.reduce((s,r)=>s+r.balance,0) };
+  if (kpis) {
+    kpis.innerHTML =
+      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Year 1 Fund Balance</div><div class="kpi-value medium-blue">' + fmt(tot.y1) + '</div><div class="kpi-sub">Jan 2026 – Jun 2027</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Year 2 Fund Balance</div><div class="kpi-value gold">' + fmt(tot.y2) + '</div><div class="kpi-sub">Jul 2027 – Jun 2028</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Total Fund Balance</div><div class="kpi-value blue">' + fmt(tot.y1 + tot.y2) + '</div><div class="kpi-sub">Of the ' + fmt(districts[0].funding) + ' award</div></div>';
+  }
+  if (grid) {
+    const meta = { y1:{name:'Year 1', dates:'Jan 2026 – Jun 2027', accent:''}, y2:{name:'Year 2', dates:'Jul 2027 – Jun 2028', accent:' accent'} };
+    grid.innerHTML = ['y1','y2'].map(yk => {
+      const lines = years[yk].map(r => {
+        const pct = tot[yk] > 0 ? ((r.balance / tot[yk]) * 100).toFixed(1) : 0;
+        const isIndirect = r.code === '7000';
+        return '<div class="budget-line' + (isIndirect ? ' indirect-line' : '') + '"><span class="budget-line-label">' + r.code + ' - ' + r.label + '</span><span class="budget-line-amount">' + fmt(r.balance) + '</span></div>' +
+               '<div class="budget-line-bar"><div class="budget-line-bar-fill" style="width:' + pct + '%;' + (isIndirect ? 'background:var(--ccc-dark-gold);' : '') + '"></div></div>';
+      }).join('');
+      return '<div class="budget-card">' +
+        '<div class="budget-card-head' + meta[yk].accent + '"><div><div class="budget-card-name">' + meta[yk].name + ' Fund Balance</div><div class="budget-card-dates">' + meta[yk].dates + '</div></div><div class="budget-card-total">' + fmt(tot[yk]) + '</div></div>' +
+        '<div class="budget-lines-wrap">' + lines + '</div>' +
+        '<div class="budget-note">Fund balance by expenditure type as entered by the district on the Budget Modification Request form. Edits to the form’s Fund Balance column update this tab live.</div>' +
+      '</div>';
+    }).join('');
+  }
+}
+
 function resetBudgetModForm() {
   localStorage.removeItem(BMR_STORE);
   BUDGET_MODEL = BUDGET_BASELINE.map(r => ({ ...r }));
@@ -3493,6 +3558,8 @@ function resetBudgetModForm() {
   renderBudget();
   renderTimeline();
   renderBudgetModForm();
+  renderFundBalance();
+  renderSpendDown();
 }
 
 /* ════════════ GRANT MODIFICATION REQUEST FORM (Forms tab) ════════════ */
@@ -4513,7 +4580,9 @@ function renderSpendDown() {
     kpiRow.innerHTML =
       '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">' + t('kpi_total_grant_label') + '</div><div class="kpi-value blue">' + fmt(totalGrant) + '</div><div class="kpi-sub">Tier 1 award</div></div>' +
       '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">' + t('kpi_y1_budget_label') + '</div><div class="kpi-value medium-blue">' + fmt(y1) + '</div><div class="kpi-sub">' + ((y1/totalGrant)*100).toFixed(1) + '% · Jan 2026 – Jun 2027</div></div>' +
-      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">' + ((y2/totalGrant)*100).toFixed(1) + '% · Jul 2027 – Jun 2028</div></div>';
+      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">' + ((y2/totalGrant)*100).toFixed(1) + '% · Jul 2027 – Jun 2028</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Y1 Fund Balance</div><div class="kpi-value medium-blue">' + fmt(fundBalanceTotal('y1')) + '</div><div class="kpi-sub">Entered by district (BMR)</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Y2 Fund Balance</div><div class="kpi-value gold">' + fmt(fundBalanceTotal('y2')) + '</div><div class="kpi-sub">Entered by district (BMR)</div></div>';
   }
 
   renderUnderspendList();
@@ -4569,6 +4638,7 @@ function renderAll() {
   renderTimeline();
   renderContacts();
   renderSpendDown();
+  renderFundBalance();
   renderBudgetModForm();
   // Re-init charts so legend labels translate alongside the rest of the UI
   if (typeof Chart !== 'undefined') initCharts();
