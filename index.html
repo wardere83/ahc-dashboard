@@ -953,10 +953,6 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
       Spend-Down Monitor
     </button>
-    <button class="nav-item" onclick="showSection('fundbalance',this)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg>
-      Fund Balance
-    </button>
     <div class="sidebar-section-label">District Forms</div>
     <button class="nav-item" onclick="showSection('forms',this)">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -1527,18 +1523,11 @@
           <div class="card-header"><div class="card-title" data-i18n="spend_table_title">Spend-Down Detail</div><div class="chart-label" data-i18n="spend_table_sub">Allan Hancock CCD · Year-by-Year Allocation vs. Spend</div></div>
           <div class="data-table-wrap">
             <table class="data-table" id="spend-table">
-              <thead><tr><th data-i18n="th_period">Period</th><th class="num" data-i18n="th_period_budget">Period Budget</th><th class="num" data-i18n="th_disbursed_pct">Spent So Far</th><th class="center" data-i18n="th_spend_pace">Pace</th><th class="center" data-i18n="th_status">Status</th></tr></thead>
+              <thead><tr><th data-i18n="th_period">Period</th><th class="num" data-i18n="th_period_budget">Period Budget</th><th class="num">Fund Balance</th><th class="center" data-i18n="th_spend_pace">Pace</th><th class="center" data-i18n="th_status">Status</th></tr></thead>
               <tbody id="spend-table-body"></tbody>
             </table>
           </div>
         </div>
-      </div>
-
-      <!-- FUND BALANCE TAB — balances entered by the district on the Budget Modification Request -->
-      <div id="section-fundbalance" class="section">
-        <div class="page-header"><h2>Fund Balance</h2><p>Remaining fund balance by expenditure type, as entered by the district on the Budget Modification Request form (submitted 6/29/2026, approved by CCCCO staff).</p></div>
-        <div class="kpi-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));" id="fundbalance-kpis"></div>
-        <div class="budget-grid budget-grid--2col" id="fundbalance-grid"></div>
       </div>
 
       <!-- FORMS TAB -->
@@ -1844,9 +1833,7 @@
       <button class="mobile-nav-btn" onclick="showSection('budget',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span data-i18n="nav_budget">Budget</span></button>
       <button class="mobile-nav-btn" onclick="showSection('timeline',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="nav_timeline">Timeline</span></button>
       <button class="mobile-nav-btn" onclick="showSection('contacts',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span data-i18n="nav_contacts">Contacts</span></button>
-      <button class="mobile-nav-btn" onclick="showSection('spenddown',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-i18n="nav_spenddown">Spend</span></button>
-      <button class="mobile-nav-btn" onclick="showSection('fundbalance',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg><span>Balance</span></button>
-      <button class="mobile-nav-btn" onclick="showSection('forms',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Forms</span></button>
+      <button class="mobile-nav-btn" onclick="showSection('spenddown',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span data-i18n="nav_spenddown">Spend</span></button>      <button class="mobile-nav-btn" onclick="showSection('forms',this,true)" data-mobile-nav><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Forms</span></button>
     </div>
   </nav>
 </div>
@@ -3392,9 +3379,9 @@ function onBmrInput(e) {
   // Editing Proposed Funds re-flows through the Year 1 / Year 2 cards, KPIs and
   // Timeline. Expenditure Updates is a narrative box and changes no numbers.
   if (field === 'proposed') recomputeBudgetFromState();
-  // Fund Balance edits re-flow through the Fund Balance tab, the Budget cards'
-  // fund-balance line, and the Spend-Down KPIs.
-  if (field === 'balance') { renderFundBalance(); renderBudget(); renderSpendDown(); }
+  // Fund Balance edits re-flow through the Budget cards' fund-balance line
+  // and the Spend-Down Monitor's Fund Balance column and KPIs.
+  if (field === 'balance') { renderBudget(); renderSpendDown(); }
   bmrRecalc();
 }
 
@@ -3518,35 +3505,6 @@ function fundBalanceRows(yk) {
 function fundBalanceTotal(yk) {
   return fundBalanceRows(yk).reduce((s, r) => s + r.balance, 0);
 }
-function renderFundBalance() {
-  const kpis = document.getElementById('fundbalance-kpis');
-  const grid = document.getElementById('fundbalance-grid');
-  if (!kpis && !grid) return;
-  const years = { y1: fundBalanceRows('y1'), y2: fundBalanceRows('y2') };
-  const tot = { y1: years.y1.reduce((s,r)=>s+r.balance,0), y2: years.y2.reduce((s,r)=>s+r.balance,0) };
-  if (kpis) {
-    kpis.innerHTML =
-      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Year 1 Fund Balance</div><div class="kpi-value medium-blue">' + fmt(tot.y1) + '</div><div class="kpi-sub">Jan 2026 – Jun 2027</div></div>' +
-      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Year 2 Fund Balance</div><div class="kpi-value gold">' + fmt(tot.y2) + '</div><div class="kpi-sub">Jul 2027 – Jun 2028</div></div>' +
-      '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Total Fund Balance</div><div class="kpi-value blue">' + fmt(tot.y1 + tot.y2) + '</div><div class="kpi-sub">Of the ' + fmt(districts[0].funding) + ' award</div></div>';
-  }
-  if (grid) {
-    const meta = { y1:{name:'Year 1', dates:'Jan 2026 – Jun 2027', accent:''}, y2:{name:'Year 2', dates:'Jul 2027 – Jun 2028', accent:' accent'} };
-    grid.innerHTML = ['y1','y2'].map(yk => {
-      const lines = years[yk].map(r => {
-        const pct = tot[yk] > 0 ? ((r.balance / tot[yk]) * 100).toFixed(1) : 0;
-        const isIndirect = r.code === '7000';
-        return '<div class="budget-line' + (isIndirect ? ' indirect-line' : '') + '"><span class="budget-line-label">' + r.code + ' - ' + r.label + '</span><span class="budget-line-amount">' + fmt(r.balance) + '</span></div>' +
-               '<div class="budget-line-bar"><div class="budget-line-bar-fill" style="width:' + pct + '%;' + (isIndirect ? 'background:var(--ccc-dark-gold);' : '') + '"></div></div>';
-      }).join('');
-      return '<div class="budget-card">' +
-        '<div class="budget-card-head' + meta[yk].accent + '"><div><div class="budget-card-name">' + meta[yk].name + ' Fund Balance</div><div class="budget-card-dates">' + meta[yk].dates + '</div></div><div class="budget-card-total">' + fmt(tot[yk]) + '</div></div>' +
-        '<div class="budget-lines-wrap">' + lines + '</div>' +
-        '<div class="budget-note">Fund balance by expenditure type as entered by the district on the Budget Modification Request form. Edits to the form’s Fund Balance column update this tab live.</div>' +
-      '</div>';
-    }).join('');
-  }
-}
 
 function resetBudgetModForm() {
   localStorage.removeItem(BMR_STORE);
@@ -3558,7 +3516,6 @@ function resetBudgetModForm() {
   renderBudget();
   renderTimeline();
   renderBudgetModForm();
-  renderFundBalance();
   renderSpendDown();
 }
 
@@ -4372,37 +4329,28 @@ function initCharts() {
 
 const AHC_PERIODS = [
   // Amounts reflect the approved 6/29/2026 Budget Modification (Y1 $56,628 /
-  // Y2 $43,372); each object code's Y1 total is split across the two fiscal
-  // years by the original FY ratio.
+  // Y2 $43,372), summarized by expenditure type to match the Budget Breakdown
+  // page. `balance` is the fund balance entered by the district on the BMR.
   {
     id:'y1', label:'Year 1', dates:'Jan 2026 – Jun 2027', budget:56628, year:'Year 1',
     role:'Framework, first DRS cohort & mentorship launch (FY 2025-26 + FY 2026-27)',
     lineItems:[
-      { fy:'FY 2025-26', code:'1000', label:'Instructional Salaries — mentor framework development', amount:15270 },
-      { fy:'FY 2026-27', code:'1000', label:'Instructional Salaries — mentor SMEs build training', amount:25450 },
-      { fy:'FY 2025-26', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:3314 },
-      { fy:'FY 2026-27', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:5522 },
-      { fy:'FY 2025-26', code:'4000', label:'Supplies & Materials — printing / operational', amount:177 },
-      { fy:'FY 2026-27', code:'4000', label:'Supplies & Materials — printing / operational', amount:198 },
-      { fy:'FY 2025-26', code:'5000', label:'Equity Specialist — independent contractor', amount:930 },
-      { fy:'FY 2026-27', code:'5000', label:'Equity Specialist — independent contractor', amount:1861 },
-      { fy:'FY 2026-27', code:'5000', label:'Travel — PD & dissemination (2 people)', amount:465 },
-      { fy:'FY 2026-27', code:'5000', label:'Mentorship development — independent contractor', amount:744 },
-      { fy:'FY 2025-26', code:'7000', label:'Indirect costs — 5% of direct', amount:876 },
-      { fy:'FY 2026-27', code:'7000', label:'Indirect costs — 5% of direct', amount:1821 }
+      { code:'1000', label:'Instructional Salaries',     amount:40720, balance:16554 },
+      { code:'3000', label:'Employee Benefits',          amount:8836,  balance:3098 },
+      { code:'4000', label:'Supplies & Materials',       amount:375,   balance:759 },
+      { code:'5000', label:'Other Operating & Services', amount:4000,  balance:21500 },
+      { code:'7000', label:'Indirect',                   amount:2697,  balance:2982 }
     ]
   },
   {
     id:'y2', label:'Year 2', dates:'Jul 2027 – Jun 2028', budget:43372, year:'Year 2',
     role:'Mentees in full training cycle & final outcomes analysis (FY 2027-28)',
     lineItems:[
-      { fy:'FY 2027-28', code:'1000', label:'Instructional Salaries — 8 mentees in training cycle', amount:30360 },
-      { fy:'FY 2027-28', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:6588 },
-      { fy:'FY 2027-28', code:'4000', label:'Supplies & Materials — printing / operational', amount:359 },
-      { fy:'FY 2027-28', code:'5000', label:'Equity Specialist — independent contractor', amount:2424 },
-      { fy:'FY 2027-28', code:'5000', label:'Travel — PD & dissemination (2 people)', amount:606 },
-      { fy:'FY 2027-28', code:'5000', label:'Mentorship development — independent contractor', amount:970 },
-      { fy:'FY 2027-28', code:'7000', label:'Indirect costs — 5% of direct', amount:2065 }
+      { code:'1000', label:'Instructional Salaries',     amount:30360, balance:15360 },
+      { code:'3000', label:'Employee Benefits',          amount:6588,  balance:3333 },
+      { code:'4000', label:'Supplies & Materials',       amount:359,   balance:400 },
+      { code:'5000', label:'Other Operating & Services', amount:4000,  balance:16500 },
+      { code:'7000', label:'Indirect',                   amount:2065,  balance:1780 }
     ]
   }
 ];
@@ -4549,9 +4497,7 @@ function renderUnderspendList() {
     if (flagged.length === 0) {
       listEl.innerHTML = '<div style="padding:16px;color:var(--success);font-weight:600;">' + t('all_clear') + '</div>';
     } else {
-      const totalBudget = AHC_PERIODS.reduce((a,p) => a + p.budget, 0);
       listEl.innerHTML = flagged.map(li => {
-        const pct = ((li.amount/totalBudget)*100).toFixed(2);
         const pace = periodPaces[li.id] || 'moderate';
         const paceLabel = t('pace_' + pace);
         const paceColor = PACE_COLOR[pace];
@@ -4560,10 +4506,10 @@ function renderUnderspendList() {
         if (pace !== 'moderate') badges.push('<span style="background:' + paceColor + ';color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">' + paceLabel + '</span>');
         if (isOffTrack) badges.push('<span style="background:#c53030;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;text-transform:uppercase;">' + t('status_off') + '</span>');
         return '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);">' +
-          '<div><strong>' + li.periodLabel + ' &middot; ' + li.code + '</strong><br><span style="font-size:12px;color:var(--text-muted)">' + li.fy + ' &middot; ' + li.label + '</span></div>' +
+          '<div><strong>' + li.periodLabel + ' &middot; ' + li.code + '</strong><br><span style="font-size:12px;color:var(--text-muted)">' + li.label + '</span></div>' +
           '<div style="text-align:right;min-width:200px;">' +
             '<div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap;">' + badges.join('') + '</div>' +
-            '<span style="font-size:12px;color:var(--text-muted);display:block;margin-top:4px;">Line-item: ' + fmt(li.amount) + ' (' + pct + '% of total)</span>' +
+            '<span style="font-size:12px;color:var(--text-muted);display:block;margin-top:4px;">Line-item: ' + fmt(li.amount) + ' &middot; Fund Balance: ' + fmt(li.balance || 0) + '</span>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -4579,8 +4525,8 @@ function renderSpendDown() {
   if (kpiRow) {
     kpiRow.innerHTML =
       '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">' + t('kpi_total_grant_label') + '</div><div class="kpi-value blue">' + fmt(totalGrant) + '</div><div class="kpi-sub">Tier 1 award</div></div>' +
-      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">' + t('kpi_y1_budget_label') + '</div><div class="kpi-value medium-blue">' + fmt(y1) + '</div><div class="kpi-sub">' + ((y1/totalGrant)*100).toFixed(1) + '% · Jan 2026 – Jun 2027</div></div>' +
-      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">' + ((y2/totalGrant)*100).toFixed(1) + '% · Jul 2027 – Jun 2028</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">' + t('kpi_y1_budget_label') + '</div><div class="kpi-value medium-blue">' + fmt(y1) + '</div><div class="kpi-sub">Jan 2026 – Jun 2027</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">Jul 2027 – Jun 2028</div></div>' +
       '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Y1 Fund Balance</div><div class="kpi-value medium-blue">' + fmt(fundBalanceTotal('y1')) + '</div><div class="kpi-sub">Entered by district (BMR)</div></div>' +
       '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Y2 Fund Balance</div><div class="kpi-value gold">' + fmt(fundBalanceTotal('y2')) + '</div><div class="kpi-sub">Entered by district (BMR)</div></div>';
   }
@@ -4591,18 +4537,21 @@ function renderSpendDown() {
   const tbody = document.getElementById('spend-table-body');
   if (tbody) {
     tbody.innerHTML = AHC_PERIODS.map(p => {
-      const pct = ((p.budget/totalGrant)*100).toFixed(1);
       const yearBandColor = p.id === 'y1' ? 'var(--ccc-dark-blue)' : 'var(--ccc-dark-gold)';
+      // Live fund balances from the saved BMR form state (fall back to the line item's seeded value)
+      const fbLive = fundBalanceRows(p.id);
+      const liveBal = (code, fallback) => { const r = fbLive.find(x => x.code === code); return r ? r.balance : (fallback || 0); };
+      const yearBalance = (p.lineItems || []).reduce((s, li) => s + liveBal(li.code, li.balance), 0);
       // Header summary row: read-only totals for the year, no buttons (only line items carry Pace/Status)
       const headerRow =
         '<tr class="spend-year-row" data-year-key="' + p.id + '">' +
           '<td style="border-left:4px solid ' + yearBandColor + ';padding-left:12px;min-width:140px;"><div style="font-family:var(--font-display);font-size:13.5px;font-weight:700;color:var(--fig-color);letter-spacing:-0.01em;line-height:1.2;">' + p.label + '</div><div style="font-size:10.5px;color:var(--text-muted);letter-spacing:0.01em;margin-top:2px;">' + p.dates + '</div></td>' +
           '<td class="amount num" style="font-weight:700;">' + fmt(p.budget) + '</td>' +
-          '<td colspan="3" class="center" style="font-size:10.5px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;background:var(--bg-surface-2);">Year summary &middot; line items below</td>' +
+          '<td class="amount num" style="font-weight:700;">' + fmt(yearBalance) + '</td>' +
+          '<td colspan="2" class="center" style="font-size:10.5px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;text-transform:uppercase;background:var(--bg-surface-2);">Year summary &middot; line items below</td>' +
         '</tr>';
       const lineRows = (p.lineItems || []).map((li, idx) => {
         const liId = p.id + '-li' + idx;
-        const liPct = ((li.amount/totalGrant)*100).toFixed(2);
         const isIndirect = li.code === '7000';
         const codeBadge = '<span style="display:inline-block;padding:1px 7px;border-radius:6px;background:' + (isIndirect ? 'rgba(255,205,0,0.18)' : 'rgba(0,51,160,0.10)') + ';color:' + (isIndirect ? 'var(--ccc-dark-gold)' : 'var(--ccc-medium-blue)') + ';font-size:10px;font-weight:700;letter-spacing:0.04em;margin-right:8px;">' + li.code + '</span>';
         const isOffTrack = periodStatuses[liId] === 'off';
@@ -4612,10 +4561,9 @@ function renderSpendDown() {
         const paceColor = PACE_COLOR[pace];
         const paceText  = t('pace_' + pace);
         return '<tr class="spend-line-row" data-year-key="' + p.id + '">' +
-          '<td style="padding-left:32px;border-left:4px solid ' + yearBandColor + ';opacity:0.95;"><span style="font-size:11px;color:var(--text-muted);font-weight:600;letter-spacing:0.04em;margin-right:8px;">' + li.fy + '</span>' + codeBadge + '<span style="font-size:12.5px;color:var(--text-primary);">' + li.label + '</span></td>' +
+          '<td style="padding-left:32px;border-left:4px solid ' + yearBandColor + ';opacity:0.95;">' + codeBadge + '<span style="font-size:12.5px;color:var(--text-primary);">' + li.label + '</span></td>' +
           '<td class="amount num" style="font-size:12.5px;">' + fmt(li.amount) + '</td>' +
-          
-          '<td><div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%;background:var(--text-muted)"></div></div><span style="font-size:11px;color:var(--text-muted);">0.0%</span></td>' +
+          '<td class="amount num" style="font-size:12.5px;">' + fmt(liveBal(li.code, li.balance)) + '</td>' +
           '<td class="center"><button onclick="togglePeriodPace(this,\'' + liId + '\')" data-pace="' + pace + '" style="background:' + paceColor + ';color:#fff;padding:4px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.04em;text-transform:uppercase;min-width:80px;display:inline-block;text-align:center;">' + paceText + '</button></td>' +
           '<td class="center"><button onclick="togglePeriodStatus(this,\'' + liId + '\')" data-on="' + (isOffTrack?'0':'1') + '" style="background:' + statusColor + ';color:#fff;padding:4px 12px;border-radius:14px;font-size:11px;font-weight:700;white-space:nowrap;cursor:pointer;border:none;letter-spacing:0.04em;text-transform:uppercase;min-width:80px;display:inline-block;text-align:center;">' + statusText + '</button></td>' +
         '</tr>';
@@ -4638,7 +4586,6 @@ function renderAll() {
   renderTimeline();
   renderContacts();
   renderSpendDown();
-  renderFundBalance();
   renderBudgetModForm();
   // Re-init charts so legend labels translate alongside the rest of the UI
   if (typeof Chart !== 'undefined') initCharts();
