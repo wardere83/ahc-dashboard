@@ -1342,7 +1342,7 @@
                   <div class="bmrv-fld"><label>Total Award (Ceiling)</label><span class="bmrv-cell num">$100,000</span></div>
                   <div class="bmrv-fld"><label>Modified Project Budget</label><span class="bmrv-cell num">$100,000</span></div>
                   <div class="bmrv-fld"><label>Variance vs Award</label><span class="bmrv-cell num">$0 · Balanced</span></div>
-                  <div class="bmrv-fld"><label>Modified Y1 / Y2</label><span class="bmrv-cell num">$62,627 / $37,373</span></div>
+                  <div class="bmrv-fld"><label>Modified Y1 / Y2</label><span class="bmrv-cell num">$56,628 / $43,372</span></div>
                 </div>
               </div>
               <div style="margin-top:20px;">
@@ -4304,35 +4304,38 @@ function initCharts() {
 // statuses/paces stored against these periods.
 
 const AHC_PERIODS = [
+  // Amounts reflect the approved 6/29/2026 Budget Modification (Y1 $56,628 /
+  // Y2 $43,372); each object code's Y1 total is split across the two fiscal
+  // years by the original FY ratio.
   {
-    id:'y1', label:'Year 1', dates:'Jan 2026 – Jun 2027', budget:62627, year:'Year 1',
+    id:'y1', label:'Year 1', dates:'Jan 2026 – Jun 2027', budget:56628, year:'Year 1',
     role:'Framework, first DRS cohort & mentorship launch (FY 2025-26 + FY 2026-27)',
     lineItems:[
-      { fy:'FY 2025-26', code:'1000', label:'Instructional Salaries — mentor framework development', amount:11520 },
-      { fy:'FY 2026-27', code:'1000', label:'Instructional Salaries — mentor SMEs build training', amount:19200 },
-      { fy:'FY 2025-26', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:2500 },
-      { fy:'FY 2026-27', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:4166 },
-      { fy:'FY 2025-26', code:'4000', label:'Supplies & Materials — printing / operational', amount:359 },
-      { fy:'FY 2026-27', code:'4000', label:'Supplies & Materials — printing / operational', amount:400 },
-      { fy:'FY 2025-26', code:'5000', label:'Equity Specialist — independent contractor', amount:5000 },
-      { fy:'FY 2026-27', code:'5000', label:'Equity Specialist — independent contractor', amount:10000 },
-      { fy:'FY 2026-27', code:'5000', label:'Travel — PD & dissemination (2 people)', amount:2500 },
-      { fy:'FY 2026-27', code:'5000', label:'Mentorship development — independent contractor', amount:4000 },
-      { fy:'FY 2025-26', code:'7000', label:'Indirect costs — 5% of direct', amount:969 },
-      { fy:'FY 2026-27', code:'7000', label:'Indirect costs — 5% of direct', amount:2013 }
+      { fy:'FY 2025-26', code:'1000', label:'Instructional Salaries — mentor framework development', amount:15270 },
+      { fy:'FY 2026-27', code:'1000', label:'Instructional Salaries — mentor SMEs build training', amount:25450 },
+      { fy:'FY 2025-26', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:3314 },
+      { fy:'FY 2026-27', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:5522 },
+      { fy:'FY 2025-26', code:'4000', label:'Supplies & Materials — printing / operational', amount:177 },
+      { fy:'FY 2026-27', code:'4000', label:'Supplies & Materials — printing / operational', amount:198 },
+      { fy:'FY 2025-26', code:'5000', label:'Equity Specialist — independent contractor', amount:930 },
+      { fy:'FY 2026-27', code:'5000', label:'Equity Specialist — independent contractor', amount:1861 },
+      { fy:'FY 2026-27', code:'5000', label:'Travel — PD & dissemination (2 people)', amount:465 },
+      { fy:'FY 2026-27', code:'5000', label:'Mentorship development — independent contractor', amount:744 },
+      { fy:'FY 2025-26', code:'7000', label:'Indirect costs — 5% of direct', amount:876 },
+      { fy:'FY 2026-27', code:'7000', label:'Indirect costs — 5% of direct', amount:1821 }
     ]
   },
   {
-    id:'y2', label:'Year 2', dates:'Jul 2027 – Jun 2028', budget:37373, year:'Year 2',
+    id:'y2', label:'Year 2', dates:'Jul 2027 – Jun 2028', budget:43372, year:'Year 2',
     role:'Mentees in full training cycle & final outcomes analysis (FY 2027-28)',
     lineItems:[
-      { fy:'FY 2027-28', code:'1000', label:'Instructional Salaries — 8 mentees in training cycle', amount:15360 },
-      { fy:'FY 2027-28', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:3333 },
-      { fy:'FY 2027-28', code:'4000', label:'Supplies & Materials — printing / operational', amount:400 },
-      { fy:'FY 2027-28', code:'5000', label:'Equity Specialist — independent contractor', amount:10000 },
-      { fy:'FY 2027-28', code:'5000', label:'Travel — PD & dissemination (2 people)', amount:2500 },
-      { fy:'FY 2027-28', code:'5000', label:'Mentorship development — independent contractor', amount:4000 },
-      { fy:'FY 2027-28', code:'7000', label:'Indirect costs — 5% of direct', amount:1780 }
+      { fy:'FY 2027-28', code:'1000', label:'Instructional Salaries — 8 mentees in training cycle', amount:30360 },
+      { fy:'FY 2027-28', code:'3000', label:'Employee Benefits — 21.7% fringe rate', amount:6588 },
+      { fy:'FY 2027-28', code:'4000', label:'Supplies & Materials — printing / operational', amount:359 },
+      { fy:'FY 2027-28', code:'5000', label:'Equity Specialist — independent contractor', amount:2424 },
+      { fy:'FY 2027-28', code:'5000', label:'Travel — PD & dissemination (2 people)', amount:606 },
+      { fy:'FY 2027-28', code:'5000', label:'Mentorship development — independent contractor', amount:970 },
+      { fy:'FY 2027-28', code:'7000', label:'Indirect costs — 5% of direct', amount:2065 }
     ]
   }
 ];
