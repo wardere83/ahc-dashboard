@@ -1309,7 +1309,7 @@
           <div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">Total Award</div><div class="kpi-value blue" id="kpi-total-award">$100,000</div><div class="kpi-sub">Tier 2 award</div></div>
           <div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Direct Costs</div><div class="kpi-value medium-blue" id="kpi-direct">$95,238</div><div class="kpi-sub" id="kpi-direct-sub">95% of total</div></div>
           <div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">Indirect (7000)</div><div class="kpi-value gold" id="kpi-indirect">$4,762</div><div class="kpi-sub" id="kpi-indirect-sub">5% of direct</div></div>
-          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label">Y1 / Y2 Split</div><div class="kpi-value grey" id="kpi-split">63% / 37%</div><div class="kpi-sub" id="kpi-split-sub">$62,627 / $37,373</div></div>
+          <div class="kpi-card"><div class="kpi-accent-bar grey"></div><div class="kpi-label">Y1 / Y2 Split</div><div class="kpi-value grey" id="kpi-split">57% / 43%</div><div class="kpi-sub" id="kpi-split-sub">$56,628 / $43,372</div></div>
         </div>
 
         <div class="budget-grid budget-grid--2col" id="budget-grid"></div>
@@ -1400,7 +1400,7 @@
               </div>
               <div class="bmr-summary-card gold">
                 <div class="bmr-summary-label">Modified Y1 / Y2</div>
-                <div class="bmr-summary-value" id="bmr-sum-year">$62,627 / $37,373</div>
+                <div class="bmr-summary-value" id="bmr-sum-year">$56,628 / $43,372</div>
                 <div class="bmr-summary-sub" id="bmr-sum-year-sub">Baseline $62,627 / $37,373</div>
               </div>
             </div>
@@ -1873,9 +1873,9 @@ const districts = [
       {name:'Laura Becker',title:'Director, Business Services',role:'Fiscal Reporter',email:'laura.becker@hancockcollege.edu',phone:'(805) 922-6966 ext. 3268',photo:'photos/laura-becker.jpg'}
     ],
     fundMonitor:{name:'Bulle Consulting',role:'Grant Monitor',email:'admin@bulleconsulting.com',phone:''},
-    budgetHighlights:{'Instructional Salaries (1000)':46080,'Employee Benefits (3000)':9999,'Supplies and Materials (4000)':1159,'Other Operating Expenses and Services (5000)':38000,'Indirect Costs (7000)':4762},
-    yearlyBudget:{y1:62627,y2:37373},
-    fiscalYearBudget:{'2025-26':20348,'2026-27':42279,'2027-28':37373},
+    budgetHighlights:{'Instructional Salaries (1000)':71080,'Employee Benefits (3000)':15424,'Supplies and Materials (4000)':734,'Other Operating Expenses and Services (5000)':8000,'Indirect Costs (7000)':4762},
+    yearlyBudget:{y1:56628,y2:43372},
+    fiscalYearBudget:{'2025-26':18399,'2026-27':38229,'2027-28':43372},
     primaryFocus:'DRS for Classified Hiring & Faculty Mentorship',
     leadAddress:'800 S. College Drive, Santa Maria, CA 93454',
     website:'https://www.hancockcollege.edu/caep/',
@@ -2908,7 +2908,7 @@ const BMR_SEED = {
     submittedBy: 'Dr. LeeAnne McNulty, Director, Institutional Grants',
     email: 'leeanne.mcnulty@hancockcollege.edu',
     date: '2026-06-29',
-    approvedBy: ''
+    approvedBy: 'CCCCO Staff'
   },
   years: {
     y1: { rows: {
@@ -2940,7 +2940,7 @@ function seedBmrIfEmpty() {
     const state = JSON.parse(raw) || {};
     state.meta = state.meta || {};
     let changed = false;
-    ['district','submittedBy','email','date'].forEach(k => {
+    ['district','submittedBy','email','date','approvedBy'].forEach(k => {
       if (!state.meta[k] && BMR_SEED.meta[k]) { state.meta[k] = BMR_SEED.meta[k]; changed = true; }
     });
     if (changed) localStorage.setItem(BMR_STORE, JSON.stringify(state));
