@@ -19,7 +19,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script>window.Chart || document.write('<script src="vendor/chart.umd.js"><\/script>');</script>
   <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+  <script>window.html2pdf || document.write('<script src="vendor/html2pdf.bundle.min.js"><\/script>');</script>
   <style>
     /* ════════════ APPLE-INSPIRED POLISH ON CCCCO PALETTE ════════════
        Clean typography, generous whitespace, subtle layered shadows,
@@ -1406,9 +1408,9 @@
           </div>
           <div class="bmr-card-body">
             <div class="bmr-meta-grid">
-              <label class="bmr-field"><span class="bmr-field-label">Community College District</span><input class="bmr-input" type="text" data-bmr-meta="district" placeholder="Antelope Valley CCD"></label>
+              <label class="bmr-field"><span class="bmr-field-label">Community College District</span><input class="bmr-input" type="text" data-bmr-meta="district" placeholder="Allan Hancock Joint CCD"></label>
               <label class="bmr-field"><span class="bmr-field-label">Submitted by - Name &amp; Designated Grant Role</span><input class="bmr-input" type="text" data-bmr-meta="submittedBy" placeholder="Name, Project Lead"></label>
-              <label class="bmr-field"><span class="bmr-field-label">Your Email</span><input class="bmr-input" type="email" data-bmr-meta="email" placeholder="name@avc.edu"></label>
+              <label class="bmr-field"><span class="bmr-field-label">Your Email</span><input class="bmr-input" type="email" data-bmr-meta="email" placeholder="name@hancockcollege.edu"></label>
               <label class="bmr-field"><span class="bmr-field-label">Submission Date</span><input class="bmr-input" type="date" data-bmr-meta="date"></label>
             </div>
 
@@ -2062,7 +2064,7 @@ const translations = {
     kpi_indirect_costs:'Indirect (5%)',
     kpi_indirect_costs_sub:'Object code 7000',
     kpi_y1y2_split:'Year 1 / Year 2',
-    kpi_y1y2_split_sub:'$122,638 / $27,362',
+    kpi_y1y2_split_sub:'$56,628 / $43,372',
     chart_funding_objcode:'Funding by Object Code',
     chart_direct_indirect:'Direct vs. Indirect',
     chart_by_objcode:'By Object Code',
@@ -2410,7 +2412,7 @@ const translations = {
     kpi_indirect_costs:'Անուղղակի (5%)',
     kpi_indirect_costs_sub:'Օբյեկտի կոդը 7000',
     kpi_y1y2_split:'Տարի 1 / Տարի 2',
-    kpi_y1y2_split_sub:'$122,638 / $27,362',
+    kpi_y1y2_split_sub:'$56,628 / $43,372',
     chart_funding_objcode:'Ֆինանսավորում օբյեկտի կոդով',
     chart_direct_indirect:'Ուղղակի ընդդեմ անուղղակի',
     chart_by_objcode:'Օբյեկտի կոդով',
@@ -2573,7 +2575,7 @@ const translations = {
     kpi_indirect_costs:'간접 (5%)',
     kpi_indirect_costs_sub:'개체 코드 7000',
     kpi_y1y2_split:'1년차 / 2년차',
-    kpi_y1y2_split_sub:'$122,638 / $27,362',
+    kpi_y1y2_split_sub:'$56,628 / $43,372',
     chart_funding_objcode:'개체 코드별 자금 조달',
     chart_direct_indirect:'직접 대 간접',
     chart_by_objcode:'개체 코드별',
@@ -3964,6 +3966,7 @@ function rptSaveDraft() {
 }
 
 const RPT_EXP_TYPES = [
+  'Instructional Salaries (1000)',
   'Non-Instructional Salaries (2000)',
   'Employee Benefits (3000)',
   'Supplies and Materials (4000)',
@@ -4916,7 +4919,7 @@ function renderSpendDown() {
   const kpiRow = document.getElementById('spend-kpi-row');
   if (kpiRow) {
     kpiRow.innerHTML =
-      '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">' + t('kpi_total_grant_label') + '</div><div class="kpi-value blue">' + fmt(totalGrant) + '</div><div class="kpi-sub">Tier 1 award</div></div>' +
+      '<div class="kpi-card"><div class="kpi-accent-bar blue"></div><div class="kpi-label">' + t('kpi_total_grant_label') + '</div><div class="kpi-value blue">' + fmt(totalGrant) + '</div><div class="kpi-sub">Tier 2 award</div></div>' +
       '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">' + t('kpi_y1_budget_label') + '</div><div class="kpi-value medium-blue">' + fmt(y1) + '</div><div class="kpi-sub">Jan 2026 – Jun 2027</div></div>' +
       '<div class="kpi-card"><div class="kpi-accent-bar gold"></div><div class="kpi-label">' + t('kpi_y2_budget_label') + '</div><div class="kpi-value gold">' + fmt(y2) + '</div><div class="kpi-sub">Jul 2027 – Jun 2028</div></div>' +
       '<div class="kpi-card"><div class="kpi-accent-bar medium-blue"></div><div class="kpi-label">Y1 Fund Balance</div><div class="kpi-value medium-blue">' + fmt(fundBalanceTotal('y1')) + '</div><div class="kpi-sub">Entered by district (BMR)</div></div>' +
